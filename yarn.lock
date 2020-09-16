@@ -2029,7 +2029,7 @@ vue-router@4.0.0-beta.9:
 
 vue@^3.0.0-rc.11, vue@^3.0.0-rc.5:
   version "3.0.0-rc.11"
-  resolved "https://registry.npm.taobao.org/vue/download/vue-3.0.0-rc.11.tgz#c383e74262a51f6bcffd8da9b2049db617533000"
+  resolved "https://registry.npm.taobao.org/vue/download/vue-3.0.0-rc.11.tgz?cache=0&sync_timestamp=1600190494494&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue%2Fdownload%2Fvue-3.0.0-rc.11.tgz#c383e74262a51f6bcffd8da9b2049db617533000"
   integrity sha1-w4PnQmKlH2vP/Y2psgSdthdTMAA=
   dependencies:
     "@vue/compiler-dom" "3.0.0-rc.11"
