@@ -1,2 +1,7 @@
-@import './reset.scss';
-@import './common.scss';
+@import './reset'; // reset css
+@import './common'; // 通用设置
+@import './initial-variables'; // 基础变量
+@import './derived-variables'; // 衍生变量
+@import './mixin'; // mixin
+@import './control';
+@import './functions'
