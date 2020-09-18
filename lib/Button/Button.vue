@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../style/index.scss";
+@import "../../style/index.scss";
 
 $button-color: $text-strong !default;
 $button-background-color: $scheme-main !default;
