@@ -1,0 +1,21 @@
+{
+ "compilerOptions": {
+   "module": "ES2020",
+   "declaration": true,
+   "noImplicitAny": false,
+   "removeComments": true,
+   "moduleResolution": "node",
+   "esModuleInterop": true,
+   "jsx": "preserve",
+   "noLib": false,
+   "target": "es6",
+   "sourceMap": true,
+   "lib": [
+     "es2020", "DOM"
+   ],
+   "allowSyntheticDefaultImports": true
+ },
+ "exclude": [
+   "node_modules"
+ ]
+}
