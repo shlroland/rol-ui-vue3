@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import Button from "../Button.vue";
+import Button from '../Button.vue'
 export default {
   components: {
     Button,
@@ -12,8 +12,8 @@ export default {
     return {
       aa(){
         alert(1111)
-      }
+      },
     }
-  }
-};
+  },
+}
 </script>

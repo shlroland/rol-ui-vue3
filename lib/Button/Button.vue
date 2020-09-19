@@ -1,20 +1,21 @@
 <template>
   <button
-    :class="['rol-button',
-    `is-${size}`,
-    type ? `is-${type}`: '',
-    shape ? `is-${shape}`: '',
-    {
-    'is-fullwidth': fullwidth,
-    'is-outlined': outlined,
-    'is-inverted':inverted,
-    'is-loading':loading,
-    'is-hovered':hovered,
-    'is-focused':focused,
-    'is-active':active,
-    'is-static':isStatic,
-    }
-  ]"
+    :class="[
+      'rol-button',
+      `is-${size}`,
+      type ? `is-${type}` : '',
+      shape ? `is-${shape}` : '',
+      {
+        'is-fullwidth': fullwidth,
+        'is-outlined': outlined,
+        'is-inverted': inverted,
+        'is-loading': loading,
+        'is-hovered': hovered,
+        'is-focused': focused,
+        'is-active': active,
+        'is-static': isStatic,
+      },
+    ]"
     :disabled="disabled"
     :autofocus="autofocus"
     :type="nativeType"
@@ -24,89 +25,88 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent } from "vue";
+import { PropType, defineComponent } from 'vue'
 
 type RButtonType = PropType<
-  | "primary"
-  | "success"
-  | "warning"
-  | "danger"
-  | "info"
-  | "link"
-  | "text"
-  | "white"
-  | "light"
-  | "Dark"
-  | "black"
->;
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'link'
+  | 'text'
+  | 'white'
+  | 'light'
+  | 'Dark'
+  | 'black'
+>
 
-type RButtonSize = PropType<"small" | "normal" | "medium" | "large">;
+type RButtonSize = PropType<'small' | 'normal' | 'medium' | 'large'>
 
-type RButtonNativeType = PropType<"button" | "submit" | "reset">;
+type RButtonNativeType = PropType<'button' | 'submit' | 'reset'>
 
-type RButtonShapeType = PropType<"round" | "circle">;
+type RButtonShapeType = PropType<'round' | 'circle'>
 
-interface RButtonProps {
-  type: string;
-  size: string;
-  nativeType: string;
-  shape: string;
-  icon: string;
-  light: boolean;
-  fullwidth: boolean;
-  outlined: boolean;
-  inverted: boolean;
-  loading: boolean;
-  hovered: boolean;
-  focused: boolean;
-  active: boolean;
-  isStatic: boolean;
-  disabled: boolean;
-  autofocus: boolean;
-}
+// interface RButtonProps {
+//   type: string
+//   size: string
+//   nativeType: string
+//   shape: string
+//   icon: string
+//   light: boolean
+//   fullwidth: boolean
+//   outlined: boolean
+//   inverted: boolean
+//   loading: boolean
+//   hovered: boolean
+//   focused: boolean
+//   active: boolean
+//   isStatic: boolean
+//   disabled: boolean
+//   autofocus: boolean
+// }
 
 export default defineComponent({
-  name: "RolButton",
-
+  name: 'RolButton',
   props: {
     type: {
       type: String as RButtonType,
-      default: "",
+      default: '',
       validator: (val: string) => {
         return [
-          "primary",
-          "success",
-          "warning",
-          "danger",
-          "info",
-          "link",
-          "text",
-          "white",
-          "light",
-          "Dark",
-          "black",
-        ].includes(val);
+          'primary',
+          'success',
+          'warning',
+          'danger',
+          'info',
+          'link',
+          'text',
+          'white',
+          'light',
+          'Dark',
+          'black',
+        ].includes(val)
       },
     },
     size: {
       type: String as RButtonSize,
-      default: "normal",
+      default: 'normal',
       validator: (val: string) => {
-        return ["small", "normal", "medium", "large"].includes(val);
+        return ['small', 'normal', 'medium', 'large'].includes(val)
       },
     },
     nativeType: {
       type: String as RButtonNativeType,
-      default: "button",
+      default: 'button',
       validator: (val: string) => {
-        return ["button", "submit", "reset"].includes(val);
+        return ['button', 'submit', 'reset'].includes(val)
       },
     },
     shape: {
       type: String as RButtonShapeType,
-      default: "",
+      default: '',
       validator: (val: string) => {
-        return ["round", "circle"].includes(val);
+        return ['round', 'circle'].includes(val)
       },
     },
     light: Boolean,
@@ -121,12 +121,11 @@ export default defineComponent({
     isStatic: Boolean,
     autofocus: Boolean,
   },
-  setup(props, ctx) {},
-});
+})
 </script>
 
 <style lang="scss">
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
 $button-color: $text-strong !default;
 $button-background-color: $scheme-main !default;
