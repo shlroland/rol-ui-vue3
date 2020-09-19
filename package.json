@@ -1,6 +1,7 @@
 {
   "name": "rol-ui-vue3",
   "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -16,6 +17,8 @@
   },
   "devDependencies": {
     "@andoshin11/storybook-vue3": "^0.0.5",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@storybook/addon-essentials": "^6.0.21",
     "@storybook/addon-links": "^6.0.21",
     "@storybook/addon-storysource": "^6.0.21",
@@ -28,7 +31,9 @@
     "@vue/test-utils": "^2.0.0-beta.5",
     "eslint": "^7.9.0",
     "eslint-plugin-vue": "^7.0.0-beta.3",
+    "husky": "^4.3.0",
     "jest": "^26.4.2",
+    "lint-staged": "^10.4.0",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
@@ -40,5 +45,12 @@
     "vue-loader": "^16.0.0-beta.7",
     "vue-loader-v16": "^16.0.0-beta.5.4",
     "vue-template-compiler": "^2.6.12"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push-todo-open": "npm run test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
