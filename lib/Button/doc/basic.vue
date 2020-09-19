@@ -1,5 +1,5 @@
 <template>
-  <Button></Button>
+  <Button>按钮</Button>
 </template>
 
 <script lang="ts">
@@ -8,5 +8,12 @@ export default {
   components: {
     Button,
   },
+  setup(){
+    return {
+      aa(){
+        alert(1111)
+      }
+    }
+  }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <Button></Button>
+    <Button>按钮</Button>
 </template>
 
 <script lang="ts">

@@ -1,9 +1,30 @@
 <template>
-  <button class="rol-button is-hovered is-static is-primary">111</button>
+  <button
+    :class="['rol-button',
+    `is-${size}`,
+    type ? `is-${type}`: '',
+    shape ? `is-${shape}`: '',
+    {
+    'is-fullwidth': fullwidth,
+    'is-outlined': outlined,
+    'is-inverted':inverted,
+    'is-loading':loading,
+    'is-hovered':hovered,
+    'is-focused':focused,
+    'is-active':active,
+    'is-static':isStatic,
+    }
+  ]"
+    :disabled="disabled"
+    :autofocus="autofocus"
+    :type="nativeType"
+  >
+    <slot></slot>
+  </button>
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
+import { PropType, defineComponent } from "vue";
 
 type RButtonType = PropType<
   | "primary"
@@ -26,28 +47,82 @@ type RButtonNativeType = PropType<"button" | "submit" | "reset">;
 type RButtonShapeType = PropType<"round" | "circle">;
 
 interface RButtonProps {
-  //   type: string;
-  //   size: string;
-  //   nativeType: string;
-  //   shape: string
-  //   light: boolean
-  //   fullwidth:boolean
-  //   outlined:boolean
-  //   inverted:boolean
-  //   loading: boolean;
-  //   disabled: boolean;
-  //   hovered: boolean
-  //   focused: boolean
-  //   active: boolean
-  //   static: boolean
-  //   autofocus: boolean;
-  //   icon: string;
-  //   circle: boolean;
+  type: string;
+  size: string;
+  nativeType: string;
+  shape: string;
+  icon: string;
+  light: boolean;
+  fullwidth: boolean;
+  outlined: boolean;
+  inverted: boolean;
+  loading: boolean;
+  hovered: boolean;
+  focused: boolean;
+  active: boolean;
+  isStatic: boolean;
+  disabled: boolean;
+  autofocus: boolean;
 }
 
-export default {
+export default defineComponent({
   name: "RolButton",
-};
+
+  props: {
+    type: {
+      type: String as RButtonType,
+      default: "",
+      validator: (val: string) => {
+        return [
+          "primary",
+          "success",
+          "warning",
+          "danger",
+          "info",
+          "link",
+          "text",
+          "white",
+          "light",
+          "Dark",
+          "black",
+        ].includes(val);
+      },
+    },
+    size: {
+      type: String as RButtonSize,
+      default: "normal",
+      validator: (val: string) => {
+        return ["small", "normal", "medium", "large"].includes(val);
+      },
+    },
+    nativeType: {
+      type: String as RButtonNativeType,
+      default: "button",
+      validator: (val: string) => {
+        return ["button", "submit", "reset"].includes(val);
+      },
+    },
+    shape: {
+      type: String as RButtonShapeType,
+      default: "",
+      validator: (val: string) => {
+        return ["round", "circle"].includes(val);
+      },
+    },
+    light: Boolean,
+    fullwidth: Boolean,
+    outlined: Boolean,
+    inverted: Boolean,
+    loading: Boolean,
+    disabled: Boolean,
+    hovered: Boolean,
+    focused: Boolean,
+    active: Boolean,
+    isStatic: Boolean,
+    autofocus: Boolean,
+  },
+  setup(props, ctx) {},
+});
 </script>
 
 <style lang="scss">
