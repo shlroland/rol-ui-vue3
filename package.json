@@ -1,12 +1,15 @@
 {
   "name": "rol-ui-vue3",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "private": true,
   "license": "MIT",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "storybook": "node_modules/.bin/start-storybook -p 6006",
-    "test": "./node_modules/.bin/jest"
+    "test": "./node_modules/.bin/jest",
+    "commit": "git-cz"
   },
   "dependencies": {
     "vue": "^3.0.0",
@@ -29,10 +32,13 @@
     "@typescript-eslint/parser": "^4.1.1",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/test-utils": "^2.0.0-beta.5",
+    "commitizen": "^4.2.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.9.0",
     "eslint-plugin-vue": "^7.0.0-beta.3",
     "husky": "^4.3.0",
     "jest": "^26.4.2",
+    "lerna": "^3.22.1",
     "lint-staged": "^10.4.0",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
@@ -49,7 +55,16 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push-todo-open": "npm run test"
+      "pre-push-todo-open": "npm run test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
     }
   }
 }

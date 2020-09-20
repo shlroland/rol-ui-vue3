@@ -1,16 +1,19 @@
 <template>
   <Button>按钮</Button>
+  <!-- <Icon /> -->
 </template>
 
 <script lang="ts">
 import Button from '../Button.vue'
+// import Icon from '@lib/Icon/Icon.vue'
 export default {
   components: {
     Button,
+    // Icon,
   },
-  setup(){
+  setup() {
     return {
-      aa(){
+      aa() {
         alert(1111)
       },
     }

@@ -5,11 +5,16 @@
 
 <script lang="ts">
 import Button from '@rol-ui-vue3/Button/src/Button.vue'
-// import Icon from '@lib/Icon/Icon.vue'
 export default {
   components: {
     Button,
-    // Icon,
+  },
+  setup() {
+    return {
+      aa() {
+        alert(1111)
+      },
+    }
   },
 }
 </script>
