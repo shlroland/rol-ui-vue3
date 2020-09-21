@@ -5,7 +5,6 @@
     transform="shrink-6 left-4"
     :mask="['far', 'circle']"
     :class="[{ icon: true }, 'coffee', 'wm', { app: false }]"
-    style="color: red;"
     xxx="2222"
   />
 </template>
@@ -27,3 +26,6 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+</style>
