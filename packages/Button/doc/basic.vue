@@ -1,10 +1,10 @@
 <template>
   <Button>按钮</Button>
-  <!-- <Icon /> -->
+  <Button type="primary">搜索</Button>
 </template>
 
 <script lang="ts">
-import Button from '@rol-ui-vue3/Button/src/Button.vue'
+import Button from '@rol-ui/Button/src/Button.vue'
 export default {
   components: {
     Button,

@@ -20,12 +20,13 @@
     :autofocus="autofocus"
     :type="nativeType"
   >
-    <slot></slot>
+    <span v-if="$slots.default"><slot></slot></span>
   </button>
 </template>
 
 <script lang="ts">
 import { PropType, defineComponent } from 'vue'
+// import {  } from '@rol-ui-vue3'
 
 type RButtonType = PropType<
   | 'primary'

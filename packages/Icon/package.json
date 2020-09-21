@@ -1,5 +1,5 @@
 {
-  "name": "@rol-ui-vue3/icon",
+  "name": "@rol-ui/icon",
   "version": "0.0.1",
   "main": "dist/index.js",
   "license": "MIT",

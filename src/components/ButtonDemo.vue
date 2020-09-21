@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts">
-import Button from '@rol-ui-vue3/Button/src/Button.vue'
-import Icon from '@rol-ui-vue3/Icon/src/index.vue'
+import Button from '@rol-ui/Button/src/Button.vue'
+import Icon from '@rol-ui/Icon/src/index.vue'
 export default {
   components: {
     Button,

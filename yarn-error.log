@@ -28,7 +28,7 @@ Trace:
 
 npm manifest: 
   {
-    "name": "rol-ui-vue3",
+    "name": "rol-ui",
     "version": "0.0.1",
     "private": true,
     "license": "MIT",

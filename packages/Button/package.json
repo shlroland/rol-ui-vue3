@@ -1,5 +1,5 @@
 {
-  "name": "@rol-ui-vue3/button",
+  "name": "@rol-ui/button",
   "version": "0.0.1",
   "main": "dist/index.js",
   "license": "MIT",
