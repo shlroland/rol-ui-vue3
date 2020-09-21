@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import Icon from '@rol-ui/icon/src/index.vue'
+import Icon from '@rol-ui/icon'
 
 export default {
   components: {

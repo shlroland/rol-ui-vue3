@@ -4,7 +4,8 @@
 </template>
 
 <script lang="ts">
-import Button from '@rol-ui/Button/src/Button.vue'
+import Button from '@rol-ui/Button'
+
 export default {
   components: {
     Button,
