@@ -63,10 +63,13 @@ module.exports = {
       },
     ],
     'vue/max-attributes-per-line': [
-      'error',
+      2,
       {
-        singleline: 3,
-        multiline: 1,
+        singleline: 20,
+        multiline: {
+          max: 1,
+          allowFirstLine: false,
+        },
       },
     ],
     'vue/require-default-prop': 'off',

@@ -5,5 +5,6 @@ module.exports = {
   printWidth: 80,
   tabWidth: 2,
   endOfLine: 'auto',
-  arrowParens: 'avoid'
+  arrowParens: 'avoid',
+  htmlWhitespaceSensitivity: 'strict',
 }

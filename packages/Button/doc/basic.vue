@@ -1,6 +1,6 @@
 <template>
   <Button>按钮</Button>
-  <Button type="primary">搜索</Button>
+  <Button type="primary" icon="search">搜索</Button>
 </template>
 
 <script lang="ts">

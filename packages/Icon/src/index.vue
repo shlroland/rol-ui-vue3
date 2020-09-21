@@ -1,3 +1,8 @@
+<template>
+  <span class="rol-icon">
+    <component :is="node" />
+  </span>
+</template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { classList, normalizeIconArgs, objectWithKey, convert } from './utils'
@@ -121,9 +126,37 @@ export default defineComponent({
       return console.error('Could not find one or more icon(s)', iconArgs, mask)
     }
     const abstractElement = renderedIcon.abstract[0]
-    return convert(abstractElement, {}, attrs)
+    return { node: convert(abstractElement, {}, attrs)() }
   },
 })
 </script>
 
-<style></style>
+<style lang="scss">
+$icon-dimensions: 1.5rem !default;
+$icon-dimensions-small: 1rem !default;
+$icon-dimensions-medium: 2rem !default;
+$icon-dimensions-large: 3rem !default;
+
+.rol-icon {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  height: $icon-dimensions;
+  width: $icon-dimensions;
+  // Sizes
+  // &.is-small {
+  //   height: $icon-dimensions-small;
+  //   width: $icon-dimensions-small;
+  // }
+
+  // &.is-medium {
+  //   height: $icon-dimensions-medium;
+  //   width: $icon-dimensions-medium;
+  // }
+
+  // &.is-large {
+  //   height: $icon-dimensions-large;
+  //   width: $icon-dimensions-large;
+  // }
+}
+</style>

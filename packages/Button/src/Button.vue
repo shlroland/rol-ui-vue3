@@ -20,13 +20,18 @@
     :autofocus="autofocus"
     :type="nativeType"
   >
-    <span v-if="$slots.default"><slot></slot></span>
+    <span v-if="icon" class="rol-button-icon">
+      <Icon :icon="icon" />
+    </span>
+    <span v-if="$slots.default">
+      <slot></slot>
+    </span>
   </button>
 </template>
 
 <script lang="ts">
 import { PropType, defineComponent } from 'vue'
-// import {  } from '@rol-ui-vue3'
+import Icon from '@rol-ui/icon/src/index.vue'
 
 type RButtonType = PropType<
   | 'primary'
@@ -68,6 +73,9 @@ type RButtonShapeType = PropType<'round' | 'circle'>
 // }
 export default defineComponent({
   name: 'RolButton',
+  components: {
+    Icon,
+  },
   props: {
     type: {
       type: String as RButtonType,
@@ -109,6 +117,10 @@ export default defineComponent({
         return ['round', 'circle'].includes(val)
       },
     },
+    icon: {
+      type: [Object, Array, String],
+      default: '',
+    },
     light: Boolean,
     fullwidth: Boolean,
     outlined: Boolean,
@@ -120,6 +132,12 @@ export default defineComponent({
     active: Boolean,
     isStatic: Boolean,
     autofocus: Boolean,
+  },
+  setup(props) {
+    console.log(1)
+    // const IconSize = () {
+    //   sw
+    // }
   },
 })
 </script>
@@ -204,6 +222,45 @@ $button-colors: $colors !default;
   white-space: nowrap;
   strong {
     color: inherit;
+  }
+
+  &-icon {
+    &,
+    &.is-small,
+    &.is-medium,
+    &.is-large {
+      height: 1.5em;
+      width: 1.5em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &:first-child:not(:last-child) {
+      @include ltr-property(
+        'margin',
+        calc(#{-1 / 2 * $button-padding-horizontal} - #{$button-border-width}),
+        false
+      );
+      @include ltr-property('margin', $button-padding-horizontal / 4);
+    }
+
+    &:last-child:not(:first-child) {
+      @include ltr-property('margin', $button-padding-horizontal / 4, false);
+      @include ltr-property(
+        'margin',
+        calc(#{-1 / 2 * $button-padding-horizontal} - #{$button-border-width})
+      );
+    }
+
+    &:first-child:last-child {
+      margin-left: calc(
+        #{-1 / 2 * $button-padding-horizontal} - #{$button-border-width}
+      );
+      margin-right: calc(
+        #{-1 / 2 * $button-padding-horizontal} - #{$button-border-width}
+      );
+    }
   }
 
   &:hover,

@@ -15,7 +15,6 @@ import Icon from '@rol-ui/icon/src/index.vue'
 export default {
   components: {
     Icon,
-    // Icon,
   },
   setup() {
     return {
