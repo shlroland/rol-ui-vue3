@@ -44,10 +44,11 @@ module.exports = {
         },
         singleline: {
           delimiter: 'semi',
-          requireLast: true,
+          requireLast: false,
         },
       },
     ],
+    'prefer-rest-params': 'off',
     // vue
     'vue/no-v-html': 'off',
     'vue/singleline-html-element-content-newline': 'off',
