@@ -41,12 +41,14 @@ export default defineComponent({
     },
   },
   setup(props, { slots }) {
-    const defaults = slots.default()
-    defaults.forEach(tag => {
+    let defaults = slots.default()
+    defaults = defaults.filter(tag => {
       if (tag.type !== Button) {
-        throw new Error(
+        console.warn(
           'The children of ButtonGroup must be Button Component,Please delete all elements except Button',
         )
+      } else {
+        return true
       }
     })
     return {
