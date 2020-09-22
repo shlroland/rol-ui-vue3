@@ -1,0 +1,15 @@
+@include bem(container) {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  flex-basis: auto;
+  min-width: 0;
+
+  @include when(vertical) {
+    flex-direction: column;
+  }
+  &,
+  * {
+    box-sizing: border-box;
+  }
+}

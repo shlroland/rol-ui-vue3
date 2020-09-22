@@ -1,19 +1,18 @@
 0 silly argv {
-0 silly argv   _: [ 'add' ],
-0 silly argv   D: true,
-0 silly argv   dev: true,
-0 silly argv   scope: '@rol-ui-vue3/icon',
-0 silly argv   globs: [],
+0 silly argv   _: [ 'create' ],
+0 silly argv   y: true,
+0 silly argv   yes: true,
 0 silly argv   lernaVersion: '3.22.1',
 0 silly argv   '$0': '/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/.bin/lerna',
-0 silly argv   pkg: '@fortawesome/@fortawesome/free-brands-svg-icons'
+0 silly argv   name: 'Layout'
 0 silly argv }
 1 notice cli v3.22.1
 2 verbose rootPath /Users/shenhaoliang/Desktop/project/rol-ui-vue3
-3 error Error: Invalid package name "@fortawesome/": name can only contain URL-friendly characters
-3 error     at invalidPackageName (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/npm-package-arg/npa.js:86:15)
-3 error     at Result.setName (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/npm-package-arg/npa.js:121:11)
-3 error     at new Result (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/npm-package-arg/npa.js:111:23)
-3 error     at resolve (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/npm-package-arg/npa.js:58:15)
-3 error     at npa (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/npm-package-arg/npa.js:52:10)
-3 error     at AddCommand.initialize (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/@lerna/add/index.js:39:17)
+3 error Error: Invalid version: "indenpendent"
+3 error     at Object.fixVersionField (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/normalize-package-data/lib/fixer.js:191:13)
+3 error     at /Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/normalize-package-data/lib/normalize.js:32:38
+3 error     at Array.forEach (<anonymous>)
+3 error     at normalize (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/normalize-package-data/lib/normalize.js:31:15)
+3 error     at final (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/read-package-json/read-json.js:424:5)
+3 error     at then (/Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/read-package-json/read-json.js:156:5)
+3 error     at /Users/shenhaoliang/Desktop/project/rol-ui-vue3/node_modules/read-package-json/read-json.js:276:12

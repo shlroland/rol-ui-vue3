@@ -55,7 +55,7 @@ $button-colors: $colors !default;
   font-size: $size-large;
 }
 
-.rol-button {
+@include bem(button) {
   @extend %control;
   @extend %unselectable;
   padding-bottom: $button-padding-vertical;
@@ -90,29 +90,18 @@ $button-colors: $colors !default;
     }
 
     &:first-child:not(:last-child) {
-      @include ltr-property(
-        'margin',
-        calc(#{-1 / 2 * $button-padding-horizontal} - #{$button-border-width}),
-        false
-      );
+      @include ltr-property('margin', calc(#{-1 / 2 * $button-padding-horizontal} - #{$button-border-width}), false);
       @include ltr-property('margin', $button-padding-horizontal / 4);
     }
 
     &:last-child:not(:first-child) {
       @include ltr-property('margin', $button-padding-horizontal / 4, false);
-      @include ltr-property(
-        'margin',
-        calc(#{-1 / 2 * $button-padding-horizontal} - #{$button-border-width})
-      );
+      @include ltr-property('margin', calc(#{-1 / 2 * $button-padding-horizontal} - #{$button-border-width}));
     }
 
     &:first-child:last-child {
-      margin-left: calc(
-        #{-1 / 2 * $button-padding-horizontal} - #{$button-border-width}
-      );
-      margin-right: calc(
-        #{-1 / 2 * $button-padding-horizontal} - #{$button-border-width}
-      );
+      margin-left: calc(#{-1 / 2 * $button-padding-horizontal} - #{$button-border-width});
+      margin-right: calc(#{-1 / 2 * $button-padding-horizontal} - #{$button-border-width});
     }
   }
 
@@ -211,10 +200,7 @@ $button-colors: $colors !default;
       }
       &.is-loading {
         &::after {
-          border-color: transparent
-            transparent
-            $color-invert
-            $color-invert !important;
+          border-color: transparent transparent $color-invert $color-invert !important;
         }
       }
       &.is-outlined {
@@ -238,10 +224,7 @@ $button-colors: $colors !default;
           &:focus,
           &.is-focused {
             &::after {
-              border-color: transparent
-                transparent
-                $color-invert
-                $color-invert !important;
+              border-color: transparent transparent $color-invert $color-invert !important;
             }
           }
         }
@@ -361,7 +344,7 @@ $button-colors: $colors !default;
   }
 }
 
-.rol-buttons {
+@include bem(buttons) {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
