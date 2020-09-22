@@ -3,3 +3,4 @@ declare module '*.vue' {
     const componentOptions: ComponentOptions
     export default componentOptions
 }
+declare type TimeoutHandle = ReturnType<typeof global.setTimeout>
