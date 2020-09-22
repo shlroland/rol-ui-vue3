@@ -25,7 +25,7 @@ type FlipProps = PropType<FlipProp>
 type RotateProps = PropType<RotateProp>
 
 export default defineComponent({
-  name: 'Icon',
+  name: 'RolIcon',
   props: {
     border: {
       type: Boolean,

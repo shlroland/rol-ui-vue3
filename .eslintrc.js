@@ -74,5 +74,6 @@ module.exports = {
     ],
     'vue/require-default-prop': 'off',
     'vue/html-closing-bracket-spacing': 'error',
+    'vue/no-parsing-error': [2, { 'x-invalid-end-tag': false }],
   },
 }
