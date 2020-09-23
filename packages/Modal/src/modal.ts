@@ -30,10 +30,6 @@ const modal = defineComponent({
       type: Boolean,
       default: false,
     },
-    center: {
-      type: Boolean,
-      default: false,
-    },
     customClass: {
       type: String,
       default: '',
@@ -78,9 +74,12 @@ const modal = defineComponent({
       type: String,
       default: '15vh',
     },
+    center: {
+      type: Boolean,
+      default: false,
+    },
     width: {
       type: String,
-      default: '50%',
       validator: isValidWidthUnit,
     },
     zIndex: {
@@ -115,7 +114,7 @@ const modal = defineComponent({
     )
 
     const footer = ctx.slots.footer ? h('footer', { class: 'rol-modal-card-foot' }, ctx.slots.footer()) : null
-
+    console.log(style)
     const combination = h(
       'div',
       {
@@ -124,7 +123,7 @@ const modal = defineComponent({
         class: ['rol-modal-card', props.customClass],
         role: 'dialog',
         ref: 'modalRef',
-        style: style,
+        style: style.value,
         onClick: (e: MouseEvent) => e.stopPropagation(),
       },
       [header, body, footer],
@@ -136,6 +135,7 @@ const modal = defineComponent({
           RolOverlay,
           {
             onClick: onModalClick,
+            center: props.center,
           },
           {
             default: () => combination,

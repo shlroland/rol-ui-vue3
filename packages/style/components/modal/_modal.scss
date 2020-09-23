@@ -34,7 +34,6 @@ $modal-breakpoint: $tablet !default;
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   overflow: hidden;
   position: fixed;
   z-index: $modal-z;
@@ -42,7 +41,9 @@ $modal-breakpoint: $tablet !default;
     @extend %overlay;
     background-color: $modal-background-background-color;
   }
-
+  &.is-centered {
+    justify-content: center;
+  }
 }
 
 $modal: '.rol-modal';

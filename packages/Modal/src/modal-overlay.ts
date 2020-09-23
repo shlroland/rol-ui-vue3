@@ -13,6 +13,10 @@ export default defineComponent({
     zIndex: {
       type: Number,
     },
+    center: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['click'],
   setup(props, { slots, emit }) {
@@ -25,7 +29,12 @@ export default defineComponent({
         ? h(
             'div',
             {
-              class: ['rol-modal', { 'rol-modal-background': true }, props.overlayClass],
+              class: [
+                'rol-modal',
+                { 'rol-modal-background': true },
+                { 'is-centered': props.center },
+                props.overlayClass,
+              ],
               style: {
                 zIndex: props.zIndex,
               },

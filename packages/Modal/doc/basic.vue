@@ -1,6 +1,6 @@
 <template>
   123211
-  <Modal title="modal组件" :visible="true">
+  <Modal title="modal组件" :center="true" :visible="true">
     <template #footer>
       <button class="rol-button is-success">Save changes</button>
       <button class="rol-button">Cancel</button>

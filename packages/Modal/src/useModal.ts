@@ -33,7 +33,9 @@ export default function (props: any, ctx: SetupContext) {
   const style = computed(() => {
     const style = {} as CSSStyleDeclaration
     if (!props.fullscreen) {
-      style.marginTop = props.top
+      if (!props.center) {
+        style.marginTop = props.top
+      }
       if (props.width) {
         style.width = props.width
       }
