@@ -55,7 +55,6 @@ export default function (props: any, ctx: SetupContext) {
   }
 
   function close() {
-    // if (this.willClose && !this.willClose()) return;
     clearTimer(openTimer)
     clearTimer(closeTimer)
 
@@ -80,6 +79,19 @@ export default function (props: any, ctx: SetupContext) {
     _visible.value = false
   }
 
+  function hide() {
+    closed.value = true
+    _visible.value = false
+  }
+
+  function handleClose() {
+    hide()
+  }
+
+  function onModalClick() {
+    handleClose()
+  }
+
   watch(
     () => props.visible,
     val => {
@@ -102,5 +114,7 @@ export default function (props: any, ctx: SetupContext) {
     visible: _visible,
     style,
     zIndex,
+    onModalClick,
+    handleClose,
   }
 }

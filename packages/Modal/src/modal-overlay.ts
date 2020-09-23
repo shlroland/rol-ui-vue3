@@ -19,6 +19,7 @@ export default defineComponent({
     const onMaskClick = () => {
       emit('click')
     }
+
     return () => {
       return props.mask
         ? h(

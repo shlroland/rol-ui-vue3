@@ -63,12 +63,12 @@ $modal: '.rol-modal';
 }
 #{$modal}-close {
   @extend %delete;
-  background: none;
-  height: $modal-close-dimensions;
-  position: fixed;
-  @include ltr-position($modal-close-right);
-  top: $modal-close-top;
-  width: $modal-close-dimensions;
+  // background: none;
+  // height: $modal-close-dimensions;
+  // position: fixed;
+  // @include ltr-position($modal-close-right);
+  // top: $modal-close-top;
+  // width: $modal-close-dimensions;
 }
 #{$modal}-card {
   display: flex;
@@ -108,6 +108,7 @@ $modal: '.rol-modal';
       }
     }
   }
+
   &-body {
     background-color: $modal-card-body-background-color;
     flex-grow: 1;
@@ -115,5 +116,32 @@ $modal: '.rol-modal';
     overflow: auto;
     padding: $modal-card-body-padding;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+.rol-modal-fade-enter-active {
+  animation: rol-modal-fade-in 0.3s !important;
+}
+
+.rol-modal-fade-leave-active {
+  animation: rol-modal-fade-out 0.3s;
+}
+
+@keyframes rol-modal-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes rol-modal-fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
