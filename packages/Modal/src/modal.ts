@@ -1,5 +1,5 @@
-import { defineComponent, h, PropType, withDirectives, vShow, SetupContext, Transition } from 'vue'
-import useModal from './useModal'
+import { defineComponent, h, PropType, withDirectives, vShow, Teleport, Transition, SetupContext } from 'vue'
+import useModal, { CLOSE_EVENT, OPEN_EVENT, CLOSED_EVENT, OPENED_EVENT, UPDATE_VISIBLE } from './useModal'
 import RolOverlay from './modal-overlay'
 import { isValidWidthUnit } from '@rol-ui/utils/util'
 
@@ -21,7 +21,7 @@ const modal = defineComponent({
     },
     appendToBody: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     beforeClose: {
       type: Function as PropType<(...args: any[]) => unknown>,
@@ -50,7 +50,7 @@ const modal = defineComponent({
       type: Boolean,
       default: true,
     },
-    modal: {
+    overlay: {
       type: Boolean,
       default: true,
     },
@@ -86,8 +86,12 @@ const modal = defineComponent({
       type: Number,
     },
   },
+  emits: [CLOSE_EVENT, OPEN_EVENT, CLOSED_EVENT, OPENED_EVENT, UPDATE_VISIBLE],
   setup(props, ctx) {
-    const { visible, handleClose, onModalClick, style } = useModal(props, ctx)
+    const { visible, handleClose, onModalClick, style, zIndex, afterEnter, afterLeave } = useModal(
+      props,
+      ctx as SetupContext,
+    )
 
     const closeBtn = props.showClose
       ? h('button', {
@@ -114,13 +118,12 @@ const modal = defineComponent({
     )
 
     const footer = ctx.slots.footer ? h('footer', { class: 'rol-modal-card-foot' }, ctx.slots.footer()) : null
-    console.log(style)
     const combination = h(
       'div',
       {
         ariaModal: true,
         ariaLabel: props.title || 'modal',
-        class: ['rol-modal-card', props.customClass],
+        class: ['rol-modal-card', { 'is-fullscreen': props.fullscreen }, props.customClass],
         role: 'dialog',
         ref: 'modalRef',
         style: style.value,
@@ -136,6 +139,8 @@ const modal = defineComponent({
           {
             onClick: onModalClick,
             center: props.center,
+            zIndex: zIndex.value,
+            mask: props.overlay,
           },
           {
             default: () => combination,
@@ -148,12 +153,14 @@ const modal = defineComponent({
         Transition,
         {
           name: 'rol-modal-fade',
+          onAfterEnter: afterEnter,
+          onAfterLeave: afterLeave,
         },
         {
           default: () => overlay,
         },
       )
-      return renderIns
+      return props.appendToBody ? h(Teleport, { to: 'body' }, renderIns) : renderIns
     }
   },
 })

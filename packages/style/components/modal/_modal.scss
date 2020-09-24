@@ -61,6 +61,14 @@ $modal: '.rol-modal';
     max-height: calc(100vh - #{$modal-content-spacing-tablet});
     width: $modal-content-width;
   }
+  @include when(fullscreen) {
+    width: 100vw;
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 100vh;
+    overflow: auto;
+    @extend %overlay;
+  }
 }
 #{$modal}-close {
   @extend %delete;

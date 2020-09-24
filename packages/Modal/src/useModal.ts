@@ -1,34 +1,37 @@
 import { computed, onMounted, ref, SetupContext, watch } from 'vue'
 import { isServer } from '@rol-ui/utils/is$'
 import { clearTimer } from '@rol-ui/utils/util'
+import { useModalEvent } from '@rol-ui/hooks'
 
 interface UseModalProps {
   beforeClose?: (close: (shouldCancel: boolean) => void) => void
-  closeOnClickModal: boolean
-  closeOnPressEscape: boolean
-  closeDelay: number
-  destroyOnClose: boolean
-  fullscreen: boolean
-  lockScroll: boolean
+  closeOnClickModal?: boolean
+  closeOnPressEscape?: boolean
+  closeDelay?: number
+  destroyOnClose?: boolean
+  fullscreen?: boolean
+  lockScroll?: boolean
   visible: boolean
-  openDelay: number
-  top: string
-  width: string
+  openDelay?: number
+  top?: string
+  width?: string
   zIndex?: number
+  center?: boolean
 }
 
 export const CLOSE_EVENT = 'close'
 export const OPEN_EVENT = 'open'
 export const CLOSED_EVENT = 'closed'
 export const OPENED_EVENT = 'opened'
+export const UPDATE_VISIBLE = 'update:visible'
 
-export default function (props: any, ctx: SetupContext) {
+export default function (props: UseModalProps, ctx: SetupContext) {
   const _visible = ref(false)
   const closed = ref(false)
   const modalRef = ref(null)
   const openTimer = ref<TimeoutHandle>(null)
   const closeTimer = ref<TimeoutHandle>(null)
-  const zIndex = ref(2001)
+  const zIndex = ref(props.zIndex || 2001)
 
   const style = computed(() => {
     const style = {} as CSSStyleDeclaration
@@ -43,6 +46,16 @@ export default function (props: any, ctx: SetupContext) {
     style.zIndex = String(zIndex.value + 1)
     return style
   })
+
+  function afterEnter() {
+    ctx.emit(OPENED_EVENT)
+  }
+
+  function afterLeave() {
+    ctx.emit(CLOSED_EVENT)
+    ctx.emit(UPDATE_VISIBLE, false)
+  }
+
   function open() {
     clearTimer(closeTimer)
     clearTimer(openTimer)
@@ -87,11 +100,22 @@ export default function (props: any, ctx: SetupContext) {
   }
 
   function handleClose() {
-    hide()
+    if (props.closeOnClickModal) {
+      hide()
+    }
   }
 
   function onModalClick() {
     handleClose()
+  }
+
+  if (props.closeOnPressEscape) {
+    useModalEvent(
+      {
+        handleClose,
+      },
+      _visible,
+    )
   }
 
   watch(
@@ -118,5 +142,7 @@ export default function (props: any, ctx: SetupContext) {
     zIndex,
     onModalClick,
     handleClose,
+    afterEnter,
+    afterLeave,
   }
 }
