@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, SetupContext, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, SetupContext, watch } from 'vue'
 import { isServer } from '@rol-ui/utils/is$'
 import { clearTimer } from '@rol-ui/utils/util'
 import { useModalEvent } from '@rol-ui/hooks'
@@ -28,7 +28,7 @@ export const UPDATE_VISIBLE = 'update:visible'
 export default function (props: UseModalProps, ctx: SetupContext) {
   const _visible = ref(false)
   const closed = ref(false)
-  const modalRef = ref(null)
+  const modalRef = ref<HTMLDivElement>(null)
   const openTimer = ref<TimeoutHandle>(null)
   const closeTimer = ref<TimeoutHandle>(null)
   const zIndex = ref(props.zIndex || 2001)
@@ -94,19 +94,24 @@ export default function (props: UseModalProps, ctx: SetupContext) {
     _visible.value = false
   }
 
-  function hide() {
+  function hide(shouldCancel: boolean) {
+    if (shouldCancel) return
     closed.value = true
     _visible.value = false
   }
 
   function handleClose() {
-    if (props.closeOnClickModal) {
-      hide()
+    if (props.beforeClose) {
+      props.beforeClose(hide)
+    } else {
+      close()
     }
   }
 
   function onModalClick() {
-    handleClose()
+    if (props.closeOnClickModal) {
+      handleClose()
+    }
   }
 
   if (props.closeOnPressEscape) {
@@ -124,8 +129,16 @@ export default function (props: UseModalProps, ctx: SetupContext) {
       if (val) {
         closed.value = false
         open()
+        ctx.emit(OPEN_EVENT)
+        nextTick(() => {
+          console.log(modalRef)
+          modalRef.value.scrollTop = 0
+        })
       } else {
         close()
+        if (!closed.value) {
+          ctx.emit(CLOSE_EVENT)
+        }
       }
     },
   )

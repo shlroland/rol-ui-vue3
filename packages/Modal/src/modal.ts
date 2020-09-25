@@ -88,17 +88,18 @@ const modal = defineComponent({
   },
   emits: [CLOSE_EVENT, OPEN_EVENT, CLOSED_EVENT, OPENED_EVENT, UPDATE_VISIBLE],
   setup(props, ctx) {
-    const { visible, handleClose, onModalClick, style, zIndex, afterEnter, afterLeave } = useModal(
-      props,
-      ctx as SetupContext,
-    )
-
-    const closeBtn = props.showClose
+    return useModal(props, ctx as SetupContext)
+  },
+  render() {
+    if (this.destroyOnClose && !this.visible) {
+      return null
+    }
+    const closeBtn = this.showClose
       ? h('button', {
           type: 'button',
           class: 'rol-modal-close',
           ariaLabel: 'close',
-          onClick: handleClose,
+          onClick: this.handleClose,
         })
       : null
 
@@ -107,61 +108,75 @@ const modal = defineComponent({
       {
         class: 'rol-modal-card-head',
       },
-      [ctx.slots.header ? ctx.slots.header() : h('p', { class: 'rol-modal-card-title' }, props.title), closeBtn],
+      [this.$slots.header ? this.slots.header() : h('p', { class: 'rol-modal-card-title' }, this.title), closeBtn],
     )
     const body = h(
       'section',
       {
         class: 'rol-modal-card-body',
       },
-      ctx.slots.default?.(),
+      this.$slots.default?.(),
     )
 
-    const footer = ctx.slots.footer ? h('footer', { class: 'rol-modal-card-foot' }, ctx.slots.footer()) : null
-    const combination = h(
+    const footer = this.$slots.footer ? h('footer', { class: 'rol-modal-card-foot' }, this.$slots.footer()) : null
+    const combinationCard = h(
       'div',
       {
         ariaModal: true,
-        ariaLabel: props.title || 'modal',
-        class: ['rol-modal-card', { 'is-fullscreen': props.fullscreen }, props.customClass],
+        ariaLabel: this.title || 'modal',
+        class: ['rol-modal-card', { 'is-fullscreen': this.fullscreen }, this.customClass],
         role: 'dialog',
         ref: 'modalRef',
-        style: style.value,
+        style: this.style,
         onClick: (e: MouseEvent) => e.stopPropagation(),
       },
       [header, body, footer],
     )
 
-    return () => {
-      const overlay = withDirectives(
-        h(
-          RolOverlay,
-          {
-            onClick: onModalClick,
-            center: props.center,
-            zIndex: zIndex.value,
-            mask: props.overlay,
-          },
-          {
-            default: () => combination,
-          },
-        ),
-        [[vShow, visible.value]],
-      )
+    const content = h(
+      'div',
+      {
+        ariaModal: true,
+        ariaLabel: 'modal',
+        class: ['rol-modal-content', this.customClass],
+        role: 'dialog',
+        ref: 'modalRef',
+        style: this.style,
+        onClick: (e: MouseEvent) => e.stopPropagation(),
+      },
+      {
+        default: () => this.$slots.default?.(),
+      },
+    )
 
-      const renderIns = h(
-        Transition,
+    const overlay = withDirectives(
+      h(
+        RolOverlay,
         {
-          name: 'rol-modal-fade',
-          onAfterEnter: afterEnter,
-          onAfterLeave: afterLeave,
+          onClick: this.onModalClick,
+          center: this.center,
+          zIndex: this.zIndex,
+          mask: this.overlay,
         },
         {
-          default: () => overlay,
+          default: () => (this.type === 'content' ? content : combinationCard),
         },
-      )
-      return props.appendToBody ? h(Teleport, { to: 'body' }, renderIns) : renderIns
-    }
+      ),
+      [[vShow, this.visible]],
+    )
+
+    const renderIns = h(
+      Transition,
+      {
+        name: 'rol-modal-fade',
+        onAfterEnter: this.afterEnter,
+        onAfterLeave: this.afterLeave,
+      },
+      {
+        default: () => overlay,
+      },
+    )
+    return this.appendToBody ? h(Teleport, { to: 'body' }, renderIns) : renderIns
   },
 })
 
