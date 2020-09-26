@@ -1,0 +1,5 @@
+@include bem(popup-parent) {
+  @include modify(hidden) {
+    overflow: hidden;
+  }
+}

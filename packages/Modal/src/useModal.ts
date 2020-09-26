@@ -2,6 +2,7 @@ import { computed, nextTick, onMounted, ref, SetupContext, watch } from 'vue'
 import { isServer } from '@rol-ui/utils/is$'
 import { clearTimer } from '@rol-ui/utils/util'
 import { useModalEvent } from '@rol-ui/hooks'
+import useLockScreen from '@rol-ui/hooks/useLockScreen'
 
 interface UseModalProps {
   beforeClose?: (close: (shouldCancel: boolean) => void) => void
@@ -92,6 +93,10 @@ export default function (props: UseModalProps, ctx: SetupContext) {
 
   function doClose() {
     _visible.value = false
+  }
+
+  if (props.lockScroll) {
+    useLockScreen(_visible)
   }
 
   function hide(shouldCancel: boolean) {

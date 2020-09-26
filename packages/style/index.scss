@@ -7,11 +7,13 @@
 @import './utils/mixin'; // mixin
 @import './utils/control';
 @import './utils/functions';
+@import './utils/popup';
+@import './utils//supprot';
 
 // components
-
 @import './components/button'; // button
 @import './components/grid'; // grid
 @import './components/icon'; //icon
 @import './components/layout'; // layout
 @import './components/modal';// modal
+@import './components/scrollbar/'

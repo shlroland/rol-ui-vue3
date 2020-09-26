@@ -68,7 +68,7 @@
   <div>323424234</div>
   <div>323424234</div>
   <div>323424234</div>
-  <Modal v-model:visible="visible" title="modal组件">
+  <Modal v-model:visible="visible" lock-scroll title="modal组件">
     <template #footer>
       <button class="rol-button is-success">Save changes</button>
       <button class="rol-button">Cancel</button>

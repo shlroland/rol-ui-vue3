@@ -1,0 +1,24 @@
+@include bem(scrollbar) {
+  overflow: hidden;
+  position: relative;
+  &:hover,
+  &:active,
+  &:focus {
+    > .rol-scrollbar__bar {
+      opacity: 1;
+      transition: opacity 340ms ease-out;
+    }
+  }
+  @include e(wrap) {
+    overflow: scroll;
+    height: 100%;
+
+    @include modify(hidden-default) {
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+    }
+  }
+}
