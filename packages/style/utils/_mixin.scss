@@ -140,9 +140,9 @@
 @mixin e($element) {
   $E: $element !global;
   $selector: &;
-  $currentSelector: "";
+  $currentSelector: '';
   @each $unit in $element {
-    $currentSelector: #{$currentSelector + "." + $B + $element-separator + $unit + ","};
+    $currentSelector: #{$currentSelector + '.' + $B + $element-separator + $unit + ','};
   }
 
   @if hitAllSpecialNestRule($selector) {
@@ -161,7 +161,6 @@
     }
   }
 }
-
 
 @mixin modify($modifier) {
   $currentSelector: '';
@@ -274,4 +273,16 @@
   }
 }
 
+@mixin overflow-touch {
+  -webkit-overflow-scrolling: touch;
+}
 
+@mixin block($spacing: $block-spacing) {
+  &:not(:last-child) {
+    margin-bottom: $spacing;
+  }
+}
+
+%block {
+  @include block;
+}

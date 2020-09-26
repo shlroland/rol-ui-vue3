@@ -1,11 +1,6 @@
 <template>
   <Icon
-    :icon="['fas', 'camera']"
-    size="lg"
-    transform="shrink-6 left-4"
-    :mask="['far', 'circle']"
-    :class="[{ icon: true }, 'coffee', 'wm', { app: false }]"
-    xxx="2222"
+    name="camera"
   />
 </template>
 
@@ -26,5 +21,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

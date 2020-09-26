@@ -41,7 +41,7 @@ export default defineComponent({
       validator: (value: string) =>
         ['horizontal', 'vertical', 'both'].indexOf(value) > -1,
     },
-    icon: {
+    name: {
       type: [Object, Array, String] as IconProps,
       required: true,
     },
@@ -106,7 +106,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const { attrs } = ctx
-    const iconArgs = normalizeIconArgs(props.icon)
+    const iconArgs = normalizeIconArgs(props.name)
     const classes = objectWithKey('classes', classList(props))
     const transform = objectWithKey(
       'transform',

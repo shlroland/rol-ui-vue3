@@ -22,7 +22,7 @@
     :type="nativeType"
   >
     <span v-if="icon" class="rol-button-icon">
-      <Icon :icon="icon" />
+      <Icon :name="icon" />
     </span>
     <span v-if="$slots.default">
       <slot></slot>
