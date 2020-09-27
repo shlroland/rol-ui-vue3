@@ -42,6 +42,7 @@ module.exports = {
         },
       },
     ],
+    '@typescript-eslint/no-extra-semi': 'off',
     'prefer-rest-params': 'off',
     // vue
     'vue/no-v-html': 'off',

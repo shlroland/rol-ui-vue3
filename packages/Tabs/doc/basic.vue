@@ -1,26 +1,24 @@
 <template>
   <div class="demo-container">
-    <Tabs>
+    <Tabs :model-value="'first'">
+      <TabPane label="JavaScript" name="first">JavaScript</TabPane>
+      <TabPane label="TypeScript" name="second">TypeScript</TabPane>
+      <TabPane label="HTML5" name="third">HTML5</TabPane>
+      <TabPane label="CSS" name="third">CSS</TabPane>
+    </Tabs>
+  </div>
+  <!-- <div class="demo-container">
+    <tabs-nav align="centered">
       <ul>
         <li class="is-active"><a>Pictures</a></li>
         <li><a>Music</a></li>
         <li><a>Videos</a></li>
         <li><a>Documents</a></li>
       </ul>
-    </Tabs>
+    </tabs-nav>
   </div>
   <div class="demo-container">
-    <Tabs class="is-right">
-      <ul>
-        <li class="is-active"><a>Pictures</a></li>
-        <li><a>Music</a></li>
-        <li><a>Videos</a></li>
-        <li><a>Documents</a></li>
-      </ul>
-    </Tabs>
-  </div>
-  <div class="demo-container">
-    <Tabs>
+    <tabs-nav>
       <ul>
         <li class="is-active">
           <a>
@@ -47,37 +45,48 @@
           </a>
         </li>
       </ul>
-    </Tabs>
+    </tabs-nav>
   </div>
   <div class="demo-container">
-    <Tabs class="is-large">
+    <tabs-nav size="small">
       <ul>
         <li class="is-active"><a>Pictures</a></li>
         <li><a>Music</a></li>
         <li><a>Videos</a></li>
         <li><a>Documents</a></li>
       </ul>
-    </Tabs>
+    </tabs-nav>
   </div>
   <div class="demo-container">
-    <Tabs class="is-toggle">
+    <tabs-nav type="toggle">
       <ul>
         <li class="is-active"><a>Pictures</a></li>
         <li><a>Music</a></li>
         <li><a>Videos</a></li>
         <li><a>Documents</a></li>
       </ul>
-    </Tabs>
+    </tabs-nav>
   </div>
+  <div class="demo-container">
+    <tabs-nav type="toggle" toggle-rounded>
+      <ul>
+        <li class="is-active"><a>Pictures</a></li>
+        <li><a>Music</a></li>
+        <li><a>Videos</a></li>
+        <li><a>Documents</a></li>
+      </ul>
+    </tabs-nav>
+  </div> -->
 </template>
 
 <script>
-import { Tabs } from '@rol-ui/tabs'
-import Icon from '@rol-ui/icon'
+import Tabs, { TabPane } from '@rol-ui/tabs'
+// import Icon from '@rol-ui/icon'
 export default {
   components: {
     Tabs,
-    Icon,
+    TabPane,
+    // TabsNav,
   },
 }
 </script>
