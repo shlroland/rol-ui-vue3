@@ -169,7 +169,6 @@ export default defineComponent({
         setPaneInstances()
       })
     })
-
     return {
       nav$,
       currentName,
@@ -178,14 +177,19 @@ export default defineComponent({
     }
   },
   render() {
-    const { handleTabClick } = this
+    const { handleTabClick, panes, currentName } = this
 
     const header = h(
       'div',
       {
         class: ['rol-tabs__header'],
       },
-      [h(TabNav, {})],
+      [
+        h(TabNav, {
+          panes,
+          currentName,
+        }),
+      ],
     )
 
     const panels = h(

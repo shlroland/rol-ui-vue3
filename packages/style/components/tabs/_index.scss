@@ -68,6 +68,13 @@ $tabs-active-bar: $link !default;
       background-color: $tabs-border-bottom-color;
       z-index: 1;
     }
+    &:focus,
+    &:focus:active {
+      outline: none;
+    }
+    *:focus {
+      outline: none;
+    }
 
     a {
       align-items: center;

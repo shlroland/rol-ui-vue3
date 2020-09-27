@@ -7,6 +7,15 @@
       <TabPane label="CSS" name="third">CSS</TabPane>
     </Tabs>
   </div>
+
+  <!-- <div :class="['rol-tabs__nav-wrap', align ? `is-${align}` : '', size ? `is-${size}` : '', type ? `is-${type}` : '']">
+    <ul>
+      <li class="is-active"><a>Pictures</a></li>
+      <li><a>Music</a></li>
+      <li><a>Videos</a></li>
+      <li><a>Documents</a></li>
+    </ul>
+  </div> -->
   <!-- <div class="demo-container">
     <tabs-nav align="centered">
       <ul>

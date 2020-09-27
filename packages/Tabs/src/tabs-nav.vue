@@ -1,26 +1,6 @@
-<template>
-  <div
-    :class="[
-      'rol-tabs__nav-wrap',
-      align ? `is-${align}` : '',
-      size ? `is-${size}` : '',
-      type ? `is-${type}` : '',
-      {
-        'is-toggle-rounded': toggleRounded,
-      },
-    ]"
-  >
-    <ul>
-      <li class="is-active"><a>Pictures</a></li>
-      <li><a>Music</a></li>
-      <li><a>Videos</a></li>
-      <li><a>Documents</a></li>
-    </ul>
-  </div>
-</template>
-
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, h, inject, PropType } from 'vue'
+import { Pane, RootTabs } from './tabs'
 
 type RTabsAlign = PropType<'centered' | 'right'>
 type RTabsSize = PropType<'small' | 'medium' | 'large'>
@@ -32,24 +12,73 @@ export default defineComponent({
       type: String as RTabsAlign,
       default: '',
       validator: (val: string) => {
-        return ['centered', 'right'].includes(val)
+        return ['centered', 'right', ''].includes(val)
       },
     },
     size: {
       type: String as RTabsSize,
       default: '',
       validator: (val: string) => {
-        return ['small', 'medium', 'large'].includes(val)
+        return ['small', 'medium', 'large', ''].includes(val)
       },
     },
     type: {
       type: String as RTabsType,
       default: '',
       validator: (val: string) => {
-        return ['boxed'].includes(val)
+        return ['boxed', ''].includes(val)
       },
     },
-    toggleRounded: Boolean,
+    panes: {
+      type: Array as PropType<Pane[]>,
+      default: () => [] as Pane[],
+    },
+    currentName: {
+      type: String,
+      default: '',
+    },
+  },
+  setup(props) {
+    const rootTabs = inject<RootTabs>('rootTabs')
+    // let tabs = ref(null)
+
+    return {}
+  },
+  render() {
+    const { panes, align, size, type } = this
+    const tabs = panes.map((pane, index) => {
+      let tabName = pane.props.name || pane.index || `${index}`
+      // const closable = pane.isClosable || editable
+      pane.index = `${index}`
+      const tabLabelContent = pane.instance.slots.label?.() || pane.props.label
+      const tabindex = pane.active ? 0 : -1
+      return h(
+        'li',
+        {
+          class: {
+            'is-active': pane.active,
+          },
+          id: `tab-${tabName}`,
+          key: `tab-${tabName}`,
+          'aria-controls': `pane-${tabName}`,
+          role: 'tab',
+          'aria-selected': pane.active,
+          ref: `tab-${tabName}`,
+          tabindex: tabindex,
+        },
+        [h('a', {}, [tabLabelContent])],
+      )
+      return pane
+    })
+    console.log(tabs)
+
+    return h(
+      'div',
+      {
+        class: ['rol-tabs__nav-wrap', align ? `is-${align}` : '', size ? `is-${size}` : '', type ? `is-${type}` : ''],
+      },
+      [h('ul', {}, tabs)],
+    )
   },
 })
 </script>
