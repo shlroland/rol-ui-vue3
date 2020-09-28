@@ -1,10 +1,10 @@
 <template>
   <div class="demo-container">
-    <Tabs :model-value="'first'">
+    <Tabs v-model:model-value="activeName">
       <TabPane label="JavaScript" name="first">JavaScript</TabPane>
       <TabPane label="TypeScript" name="second">TypeScript</TabPane>
       <TabPane label="HTML5" name="third">HTML5</TabPane>
-      <TabPane label="CSS" name="third">CSS</TabPane>
+      <TabPane label="CSS" name="fourth">CSS</TabPane>
     </Tabs>
   </div>
 
@@ -96,6 +96,11 @@ export default {
     Tabs,
     TabPane,
     // TabsNav,
+  },
+  data() {
+    return {
+      activeName: 'first',
+    }
   },
 }
 </script>

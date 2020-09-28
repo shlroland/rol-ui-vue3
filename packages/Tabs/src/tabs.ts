@@ -132,13 +132,13 @@ export default defineComponent({
       }
     }
 
-    const changeCurrentName = value => {
+    const changeCurrentName = (value: string) => {
       currentName.value = value
       ctx.emit('input', value)
       ctx.emit('update:modelValue', value)
     }
 
-    const setCurrentName = value => {
+    const setCurrentName = (value: string) => {
       if (currentName.value !== value && props.beforeLeave) {
         const before = props.beforeLeave(value, currentName.value)
         if (before && (before as Promise<void>).then) {
@@ -153,12 +153,12 @@ export default defineComponent({
           )
         } else if (before !== false) {
           changeCurrentName(value)
-        } else {
-          changeCurrentName(value)
         }
+      } else {
+        changeCurrentName(value)
       }
     }
-    const handleTabClick = (tab, tabName, event) => {
+    const handleTabClick = (tab: Pane, tabName: string, event: MouseEvent) => {
       if (tab.props.disabled) return
       setCurrentName(tabName)
       ctx.emit('tab-click', tab, event)
@@ -188,6 +188,8 @@ export default defineComponent({
         h(TabNav, {
           panes,
           currentName,
+          onTabClick: handleTabClick,
+          ref: 'nav$',
         }),
       ],
     )
