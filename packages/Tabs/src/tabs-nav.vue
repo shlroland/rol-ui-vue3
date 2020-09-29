@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, h, inject, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, h, inject, PropType, ref, watch } from 'vue'
 import { NOOP } from '@vue/shared'
 import { Pane, RootTabs, RTabsAlign, RTabsSize, RTabsType } from './tabs'
 import TabBar from './tabs-bar.vue'
@@ -58,7 +58,15 @@ export default defineComponent({
     const navScroll$ = ref<RefElement>(null)
     const nav$ = ref<RefElement>(null)
     const el$ = ref<RefElement>(null)
-
+    const sizeName = computed(() => {
+      return ['top', 'bottom'].includes(rootTabs.props.tabPosition) ? 'width' : 'height'
+    })
+    const navStyle = computed(() => {
+      const dir = sizeName.value === 'width' ? 'X' : 'Y'
+      return {
+        transform: `translate${dir}(-${navOffset.value}px)`,
+      }
+    })
     // watch(
     //   () => props.panes,
     //   val => {
@@ -73,10 +81,12 @@ export default defineComponent({
 
     // }
 
-    return {}
+    return {
+      rootTabs,
+    }
   },
   render() {
-    const { panes, align, size, type, fullwidth, onTabClick } = this
+    const { panes, align, size, type, fullwidth, onTabClick, rootTabs } = this
     const tabs = panes.map((pane, index) => {
       let tabName = pane.props.name || pane.index || `${index}`
       // const closable = pane.isClosable || editable
@@ -88,6 +98,7 @@ export default defineComponent({
         {
           class: {
             'is-active': pane.active,
+            [`is-${rootTabs.props.tabPosition}`]: true,
           },
           id: `tab-${tabName}`,
           key: `tab-${tabName}`,
@@ -114,6 +125,7 @@ export default defineComponent({
           size ? `is-${size}` : '',
           type ? `is-${type}` : '',
           fullwidth ? 'is-fullwidth' : '',
+          `is-${rootTabs.props.tabPosition}`,
         ],
       },
       [

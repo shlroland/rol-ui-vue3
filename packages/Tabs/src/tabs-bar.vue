@@ -1,5 +1,5 @@
 <template>
-  <div :class="['rol-tabs__active-bar']" :style="barStyle"></div>
+  <div :class="['rol-tabs__active-bar', `is-${rootTabs.props.tabPosition}`]" :style="barStyle"></div>
 </template>
 
 <script lang="ts">
@@ -22,7 +22,7 @@ export default defineComponent({
       let offset = 0
       let tabSize = 0
 
-      const sizeName = 'width'
+      const sizeName = ['top', 'bottom'].includes(rootTabs.props.tabPosition) ? 'width' : 'height'
       const sizeDir = sizeName === 'width' ? 'x' : 'y'
       props.tabs.every(tab => {
         let $el = instance.parent.refs?.[`tab-${tab.paneName}`] as Element

@@ -88,6 +88,10 @@ export default defineComponent({
         return ['boxed', ''].includes(val)
       },
     },
+    tabPosition: {
+      type: String,
+      default: 'top',
+    },
     fullwidth: Boolean,
   },
   emits: ['update:modelValue', 'input', 'tab-click'],
@@ -207,12 +211,12 @@ export default defineComponent({
     }
   },
   render() {
-    const { handleTabClick, panes, currentName, type, size, align,fullwidth } = this
+    const { handleTabClick, panes, currentName, type, size, align, fullwidth, tabPosition } = this
 
     const header = h(
       'div',
       {
-        class: ['rol-tabs__header'],
+        class: ['rol-tabs__header', , `is-${tabPosition}`],
       },
       [
         h(TabNav, {
@@ -239,9 +243,9 @@ export default defineComponent({
     const tabs = h(
       'div',
       {
-        class: ['rol-tabs'],
+        class: ['rol-tabs', `rol-tabs--${tabPosition}`],
       },
-      [header, panels],
+      tabPosition !== 'bottom' ? [header, panels] : [panels, header],
     )
     return tabs
   },
