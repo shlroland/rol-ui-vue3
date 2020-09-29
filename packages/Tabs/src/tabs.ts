@@ -95,6 +95,10 @@ export default defineComponent({
       },
     )
 
+    watch(currentName, () => {
+      setPaneInstances(true)
+    })
+
     const getPaneInstanceFromSlot = (vnode: VNode, paneInstanceList: ComponentInternalInstance[] = []) => {
       Array.from((vnode.children || []) as ArrayLike<VNode>).forEach(node => {
         let type = node.type
@@ -126,9 +130,9 @@ export default defineComponent({
         )
         if (isForceUpdate || panesChanged) {
           panes.value = paneInstanceList
-        } else if (panes.value.length !== 0) {
-          panes.value = []
         }
+      } else if (panes.value.length !== 0) {
+        panes.value = []
       }
     }
 
@@ -163,6 +167,7 @@ export default defineComponent({
       setCurrentName(tabName)
       ctx.emit('tab-click', tab, event)
     }
+
 
     onMounted(() => {
       watchEffect(() => {

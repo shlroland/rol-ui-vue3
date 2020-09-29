@@ -4,3 +4,5 @@ declare module '*.vue' {
   export default component
 }
 declare type TimeoutHandle = ReturnType<typeof global.setTimeout>
+
+declare type Nullable<T> = T | null

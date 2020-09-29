@@ -1,11 +1,17 @@
 <script lang="ts">
-import { defineComponent, h, inject, PropType } from 'vue'
+import { defineComponent, h, inject, PropType, ref, watch } from 'vue'
 import { NOOP } from '@vue/shared'
 import { Pane, RootTabs } from './tabs'
-
+import TabBar from './tabs-bar.vue'
+type Nullable<T> = T | null
 type RTabsAlign = PropType<'centered' | 'right'>
 type RTabsSize = PropType<'small' | 'medium' | 'large'>
 type RTabsType = PropType<'boxed'>
+type RefElement = Nullable<HTMLElement>
+interface Scrollable {
+  next?: boolean
+  prev?: number
+}
 
 export default defineComponent({
   props: {
@@ -45,6 +51,27 @@ export default defineComponent({
   },
   setup(props) {
     const rootTabs = inject<RootTabs>('rootTabs')
+
+    const scrollable = ref<boolean | Scrollable>(false)
+    const navOffset = ref(0)
+    const isFocus = ref(false)
+    const focusable = ref(true)
+
+    const navScroll$ = ref<RefElement>(null)
+    const nav$ = ref<RefElement>(null)
+    const el$ = ref<RefElement>(null)
+
+
+    // watch(
+    //   () => props.panes,
+    //   val => {
+    //     console.log(val)
+    //   },
+    // )
+
+    // const scrollToActiveTab = () => {
+
+    // }
     // const changeTab = e => {
 
     // }
@@ -80,14 +107,13 @@ export default defineComponent({
       )
       return pane
     })
-    console.log(tabs)
 
     return h(
       'div',
       {
         class: ['rol-tabs__nav-wrap', align ? `is-${align}` : '', size ? `is-${size}` : '', type ? `is-${type}` : ''],
       },
-      [h('ul', {}, tabs)],
+      [h('ul', {}, [h(TabBar, { tabs: panes }), tabs])],
     )
   },
 })
