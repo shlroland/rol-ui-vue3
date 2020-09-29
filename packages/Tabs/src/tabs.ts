@@ -206,7 +206,7 @@ export default defineComponent({
     }
   },
   render() {
-    const { handleTabClick, panes, currentName, type, size } = this
+    const { handleTabClick, panes, currentName, type, size, align } = this
 
     const header = h(
       'div',
@@ -220,6 +220,7 @@ export default defineComponent({
           onTabClick: handleTabClick,
           type,
           size,
+          align,
           ref: 'nav$',
         }),
       ],

@@ -1,6 +1,6 @@
 <template>
   <div class="demo-container">
-    <Tabs v-model:model-value="activeName" :type="type" :size="size">
+    <Tabs v-model:model-value="activeName" :type="type" :size="size" :align="align">
       <TabPane label="JavaScript" name="first">JavaScript</TabPane>
       <TabPane label="TypeScript" name="second">TypeScript</TabPane>
       <TabPane label="HTML5" name="third">HTML5</TabPane>
@@ -102,6 +102,7 @@ export default {
       activeName: 'first',
       type: 'boxed',
       size: 'small',
+      align: 'centered',
     }
   },
 }
