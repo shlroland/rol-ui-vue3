@@ -68,26 +68,26 @@ export default defineComponent({
       default: null,
     },
     align: {
-        type: String as RTabsAlign,
-        default: '',
-        validator: (val: string) => {
-          return ['centered', 'right', ''].includes(val)
-        },
+      type: String as RTabsAlign,
+      default: '',
+      validator: (val: string) => {
+        return ['centered', 'right', ''].includes(val)
       },
-      size: {
-        type: String as RTabsSize,
-        default: '',
-        validator: (val: string) => {
-          return ['small', 'medium', 'large', ''].includes(val)
-        },
+    },
+    size: {
+      type: String as RTabsSize,
+      default: '',
+      validator: (val: string) => {
+        return ['small', 'medium', 'large', ''].includes(val)
       },
-      type: {
-        type: String as RTabsType,
-        default: '',
-        validator: (val: string) => {
-          return ['boxed', ''].includes(val)
-        },
+    },
+    type: {
+      type: String as RTabsType,
+      default: '',
+      validator: (val: string) => {
+        return ['boxed', ''].includes(val)
       },
+    },
   },
   emits: ['update:modelValue', 'input', 'tab-click'],
   setup(props, ctx) {
@@ -206,7 +206,7 @@ export default defineComponent({
     }
   },
   render() {
-    const { handleTabClick, panes, currentName, type } = this
+    const { handleTabClick, panes, currentName, type, size } = this
 
     const header = h(
       'div',
@@ -219,6 +219,7 @@ export default defineComponent({
           currentName,
           onTabClick: handleTabClick,
           type,
+          size,
           ref: 'nav$',
         }),
       ],
