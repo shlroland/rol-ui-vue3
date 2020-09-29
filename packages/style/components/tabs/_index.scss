@@ -131,14 +131,6 @@ $tabs-header-margin: 15px;
         padding-left: 0.75em;
       }
     }
-    @include bem(icon) {
-      &:first-child {
-        @include ltr-property('margin', 0.5em);
-      }
-      &:last-child {
-        @include ltr-property('margin', 0.5em, false);
-      }
-    }
     // Alignment
     &.is-centered {
       ul {

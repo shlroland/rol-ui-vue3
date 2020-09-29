@@ -11,6 +11,10 @@ interface Scrollable {
 }
 
 export default defineComponent({
+  name: 'RolTabNav',
+  components: {
+    TabBar,
+  },
   props: {
     align: {
       type: String as RTabsAlign,
