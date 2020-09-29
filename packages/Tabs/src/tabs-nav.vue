@@ -33,6 +33,7 @@ export default defineComponent({
         return ['boxed', ''].includes(val)
       },
     },
+    fullwidth: Boolean,
     panes: {
       type: Array as PropType<Pane[]>,
       default: () => [] as Pane[],
@@ -75,7 +76,7 @@ export default defineComponent({
     return {}
   },
   render() {
-    const { panes, align, size, type, onTabClick } = this
+    const { panes, align, size, type, fullwidth, onTabClick } = this
     const tabs = panes.map((pane, index) => {
       let tabName = pane.props.name || pane.index || `${index}`
       // const closable = pane.isClosable || editable
@@ -107,7 +108,13 @@ export default defineComponent({
     return h(
       'div',
       {
-        class: ['rol-tabs__nav-wrap', align ? `is-${align}` : '', size ? `is-${size}` : '', type ? `is-${type}` : ''],
+        class: [
+          'rol-tabs__nav-wrap',
+          align ? `is-${align}` : '',
+          size ? `is-${size}` : '',
+          type ? `is-${type}` : '',
+          fullwidth ? 'is-fullwidth' : '',
+        ],
       },
       [
         h('ul', {}, [

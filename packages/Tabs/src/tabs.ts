@@ -88,6 +88,7 @@ export default defineComponent({
         return ['boxed', ''].includes(val)
       },
     },
+    fullwidth: Boolean,
   },
   emits: ['update:modelValue', 'input', 'tab-click'],
   setup(props, ctx) {
@@ -206,7 +207,7 @@ export default defineComponent({
     }
   },
   render() {
-    const { handleTabClick, panes, currentName, type, size, align } = this
+    const { handleTabClick, panes, currentName, type, size, align,fullwidth } = this
 
     const header = h(
       'div',
@@ -221,6 +222,7 @@ export default defineComponent({
           type,
           size,
           align,
+          fullwidth,
           ref: 'nav$',
         }),
       ],
