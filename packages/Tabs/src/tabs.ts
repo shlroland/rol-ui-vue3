@@ -47,6 +47,10 @@ export interface Pane {
   isClosable: ComputedRef<boolean>
 }
 
+export type RTabsAlign = PropType<'centered' | 'right'>
+export type RTabsSize = PropType<'small' | 'medium' | 'large'>
+export type RTabsType = PropType<'boxed'>
+
 export default defineComponent({
   name: 'Tabs',
   components: { TabNav },
@@ -63,6 +67,27 @@ export default defineComponent({
       type: Function as PropType<BeforeLeave>,
       default: null,
     },
+    align: {
+        type: String as RTabsAlign,
+        default: '',
+        validator: (val: string) => {
+          return ['centered', 'right', ''].includes(val)
+        },
+      },
+      size: {
+        type: String as RTabsSize,
+        default: '',
+        validator: (val: string) => {
+          return ['small', 'medium', 'large', ''].includes(val)
+        },
+      },
+      type: {
+        type: String as RTabsType,
+        default: '',
+        validator: (val: string) => {
+          return ['boxed', ''].includes(val)
+        },
+      },
   },
   emits: ['update:modelValue', 'input', 'tab-click'],
   setup(props, ctx) {
@@ -168,7 +193,6 @@ export default defineComponent({
       ctx.emit('tab-click', tab, event)
     }
 
-
     onMounted(() => {
       watchEffect(() => {
         setPaneInstances()
@@ -182,7 +206,7 @@ export default defineComponent({
     }
   },
   render() {
-    const { handleTabClick, panes, currentName } = this
+    const { handleTabClick, panes, currentName, type } = this
 
     const header = h(
       'div',
@@ -194,6 +218,7 @@ export default defineComponent({
           panes,
           currentName,
           onTabClick: handleTabClick,
+          type,
           ref: 'nav$',
         }),
       ],

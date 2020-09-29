@@ -1,12 +1,9 @@
 <script lang="ts">
 import { defineComponent, h, inject, PropType, ref, watch } from 'vue'
 import { NOOP } from '@vue/shared'
-import { Pane, RootTabs } from './tabs'
+import { Pane, RootTabs, RTabsAlign, RTabsSize, RTabsType } from './tabs'
 import TabBar from './tabs-bar.vue'
 type Nullable<T> = T | null
-type RTabsAlign = PropType<'centered' | 'right'>
-type RTabsSize = PropType<'small' | 'medium' | 'large'>
-type RTabsType = PropType<'boxed'>
 type RefElement = Nullable<HTMLElement>
 interface Scrollable {
   next?: boolean
@@ -61,7 +58,6 @@ export default defineComponent({
     const nav$ = ref<RefElement>(null)
     const el$ = ref<RefElement>(null)
 
-
     // watch(
     //   () => props.panes,
     //   val => {
@@ -113,7 +109,16 @@ export default defineComponent({
       {
         class: ['rol-tabs__nav-wrap', align ? `is-${align}` : '', size ? `is-${size}` : '', type ? `is-${type}` : ''],
       },
-      [h('ul', {}, [h(TabBar, { tabs: panes }), tabs])],
+      [
+        h('ul', {}, [
+          !type
+            ? h(TabBar, {
+                tabs: panes,
+              })
+            : null,
+          tabs,
+        ]),
+      ],
     )
   },
 })
