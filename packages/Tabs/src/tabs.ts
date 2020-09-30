@@ -6,6 +6,7 @@ import {
   Fragment,
   getCurrentInstance,
   h,
+  nextTick,
   onMounted,
   PropType,
   provide,
@@ -126,6 +127,13 @@ export default defineComponent({
     )
 
     watch(currentName, () => {
+      if (nav$.value) {
+        nextTick(() => {
+          nav$.value.$nextTick(() => {
+            nav$.value.scrollToActiveTab()
+          })
+        })
+      }
       setPaneInstances(true)
     })
 

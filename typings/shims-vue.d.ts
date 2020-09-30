@@ -6,3 +6,6 @@ declare module '*.vue' {
 declare type TimeoutHandle = ReturnType<typeof global.setTimeout>
 
 declare type Nullable<T> = T | null
+
+
+declare type CustomizedHTMLElement<T> = HTMLElement & T
