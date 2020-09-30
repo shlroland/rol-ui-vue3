@@ -94,8 +94,9 @@ export default defineComponent({
       default: 'top',
     },
     fullwidth: Boolean,
+    closable: Boolean,
   },
-  emits: ['update:modelValue', 'input', 'tab-click'],
+  emits: ['update:modelValue', 'input', 'tab-click', 'edit', 'tab-remove'],
   setup(props, ctx) {
     const nav$ = ref<typeof TabNav>(null)
     const currentName = ref(props.modelValue || props.activeName || '0')
@@ -206,6 +207,13 @@ export default defineComponent({
       ctx.emit('tab-click', tab, event)
     }
 
+    const handleTabRemove = (pane, ev) => {
+      if (pane.props.disabled) return
+      ev.stopPropagation()
+      ctx.emit('edit', pane.props.name, 'remove')
+      ctx.emit('tab-remove', pane.props.name)
+    }
+
     onMounted(() => {
       watchEffect(() => {
         setPaneInstances()
@@ -216,10 +224,11 @@ export default defineComponent({
       currentName,
       panes,
       handleTabClick,
+      handleTabRemove,
     }
   },
   render() {
-    const { handleTabClick, panes, currentName, type, size, align, fullwidth, tabPosition } = this
+    const { handleTabClick, panes, currentName, type, size, align, fullwidth, tabPosition,handleTabRemove } = this
 
     const header = h(
       'div',
@@ -231,6 +240,7 @@ export default defineComponent({
           panes,
           currentName,
           onTabClick: handleTabClick,
+          onTabRemove: handleTabRemove,
           type,
           size,
           align,

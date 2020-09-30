@@ -66,8 +66,12 @@ export default defineComponent({
       type: Function as PropType<(tab: Pane, tabName: string, ev: Event) => void>,
       default: NOOP,
     },
+    onTabRemove: {
+      type: Function as PropType<(tab: Pane, ev: Event) => void>,
+      default: NOOP,
+    },
   },
-  setup(props) {
+  setup() {
     const rootTabs = inject<RootTabs>('rootTabs')
 
     const scrollable = ref<boolean | Scrollable>(false)
@@ -252,6 +256,7 @@ export default defineComponent({
       scrollable,
       setFocus,
       removeFocus,
+      onTabRemove,
     } = this
 
     const scrollBtn = scrollable
@@ -269,7 +274,21 @@ export default defineComponent({
 
     const tabs = panes.map((pane, index) => {
       let tabName = pane.props.name || pane.index || `${index}`
-      // const closable = pane.isClosable || editable
+      const closable = pane.isClosable
+
+      const btnClose = closable
+        ? h(
+            'span',
+            {
+              class: 'close-icon',
+              onClick: ev => {
+                onTabRemove(pane, ev)
+              },
+            },
+            ['✕'],
+          )
+        : null
+
       pane.index = `${index}`
       const tabLabelContent = pane.instance.slots.label?.() || pane.props.label
       const tabindex = pane.active ? 0 : -1
@@ -279,6 +298,7 @@ export default defineComponent({
           class: {
             'is-active': pane.active,
             [`is-${rootTabs.props.tabPosition}`]: true,
+            'is-closable': closable,
           },
           id: `tab-${tabName}`,
           key: `tab-${tabName}`,
@@ -297,7 +317,7 @@ export default defineComponent({
             onTabClick(pane, tabName, ev)
           },
         },
-        [h('a', {}, [tabLabelContent])],
+        [h('a', {}, [tabLabelContent, btnClose])],
       )
       return pane
     })
@@ -309,7 +329,7 @@ export default defineComponent({
         {
           class: [
             'rol-tabs__nav-wrap',
-            align ? `is-${align}` : '',
+            align ? `is-align-${align}` : '',
             size ? `is-${size}` : '',
             type ? `is-${type}` : '',
             fullwidth ? 'is-fullwidth' : '',
