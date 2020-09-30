@@ -88,6 +88,27 @@ export default defineComponent({
       }
     })
 
+    const scrollPrev = () => {
+      const containerSize = navScroll$.value[`offset${capitalize(sizeName.value)}`]
+      const currentOffset = navOffset.value
+      if (!currentOffset) return
+      let newOffset = currentOffset > containerSize ? currentOffset - containerSize : 0
+      navOffset.value = newOffset
+    }
+
+    const scrollNext = () => {
+      const navSize = nav$.value[`offset${capitalize(sizeName.value)}`]
+      const containerSize = navScroll$.value[`offset${capitalize(sizeName.value)}`]
+      const currentOffset = navOffset.value
+
+      if (navSize - currentOffset <= containerSize) return
+
+      let newOffset =
+        navSize - currentOffset > containerSize * 2 ? currentOffset + containerSize : navSize - containerSize
+
+      navOffset.value = newOffset
+    }
+
     const scrollToActiveTab = () => {
       if (!scrollable.value) return
       const nav = nav$.value
@@ -211,10 +232,41 @@ export default defineComponent({
       visibilityChangeHandler,
       windowBlurHandler,
       windowFocusHandler,
+      scrollPrev,
+      scrollNext,
+      scrollable,
     }
   },
   render() {
-    const { panes, align, size, type, fullwidth, onTabClick, rootTabs, navStyle } = this
+    const {
+      panes,
+      align,
+      size,
+      type,
+      fullwidth,
+      onTabClick,
+      rootTabs,
+      navStyle,
+      scrollPrev,
+      scrollNext,
+      scrollable,
+      setFocus,
+      removeFocus,
+    } = this
+
+    const scrollBtn = scrollable
+      ? [
+          h('span', {
+            class: ['rol-tabs__nav-prev', scrollable.prev ? '' : 'is-disabled'],
+            onClick: scrollPrev,
+          }),
+          h('span', {
+            class: ['rol-tabs__nav-next', scrollable.next ? '' : 'is-disabled'],
+            onClick: scrollNext,
+          }),
+        ]
+      : null
+
     const tabs = panes.map((pane, index) => {
       let tabName = pane.props.name || pane.index || `${index}`
       // const closable = pane.isClosable || editable
@@ -235,6 +287,12 @@ export default defineComponent({
           'aria-selected': pane.active,
           ref: `tab-${tabName}`,
           tabindex: tabindex,
+          onFocus: () => {
+            setFocus()
+          },
+          onBlur: () => {
+            removeFocus()
+          },
           onClick: (ev: MouseEvent) => {
             onTabClick(pane, tabName, ev)
           },
@@ -244,41 +302,45 @@ export default defineComponent({
       return pane
     })
 
-    return h(
-      'div',
-      {
-        class: [
-          'rol-tabs__nav-wrap',
-          align ? `is-${align}` : '',
-          size ? `is-${size}` : '',
-          type ? `is-${type}` : '',
-          fullwidth ? 'is-fullwidth' : '',
-          `is-${rootTabs.props.tabPosition}`,
-        ],
-        ref: 'navScroll$',
-      },
-      [
-        // h('div', { class: 'rol-tabs__nav-scroll', ref: 'navScroll$' }, [
-        h(
-          'ul',
-          {
-            class: ['rol-tabs__nav', `is-${rootTabs.props.tabPosition}`],
-            ref: 'nav$',
-            style: navStyle,
-            role: 'tablist',
-          },
-          [
-            !type
-              ? h(TabBar, {
-                  tabs: panes,
-                })
-              : null,
-            tabs,
+    return [
+      scrollBtn,
+      h(
+        'div',
+        {
+          class: [
+            'rol-tabs__nav-wrap',
+            align ? `is-${align}` : '',
+            size ? `is-${size}` : '',
+            type ? `is-${type}` : '',
+            fullwidth ? 'is-fullwidth' : '',
+            scrollable ? 'is-scrollable' : '',
+            `is-${rootTabs.props.tabPosition}`,
           ],
-        ),
-        // ]),
-      ],
-    )
+          ref: 'navScroll$',
+        },
+        [
+          // h('div', { class: 'rol-tabs__nav-scroll', ref: 'navScroll$' }, [
+          h(
+            'ul',
+            {
+              class: ['rol-tabs__nav', `is-${rootTabs.props.tabPosition}`],
+              ref: 'nav$',
+              style: navStyle,
+              role: 'tablist',
+            },
+            [
+              !type
+                ? h(TabBar, {
+                    tabs: panes,
+                  })
+                : null,
+              tabs,
+            ],
+          ),
+          // ]),
+        ],
+      ),
+    ]
   },
 })
 </script>

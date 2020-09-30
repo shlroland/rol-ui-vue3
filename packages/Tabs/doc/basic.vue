@@ -1,6 +1,6 @@
 <template>
   <div class="demo-container">
-    <Tabs v-model:model-value="activeName">
+    <Tabs v-model:model-value="activeName" :type="type">
       <TabPane label="JavaScript" name="first">JavaScript</TabPane>
       <TabPane label="TypeScript" name="second">TypeScript</TabPane>
       <TabPane label="HTML5" name="third">HTML5</TabPane>

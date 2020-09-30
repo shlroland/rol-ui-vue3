@@ -263,6 +263,17 @@
   @include delete;
 }
 
+@mixin arrow($rotate: 0, $width: 10px, $height: 10px) {
+  display: inline-block;
+  content: ' ';
+  height: $width;
+  width: $height;
+  border-width: 1px 1px 0 0;
+  border-color: $text;
+  border-style: solid;
+  transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate($rotate);
+}
+
 @mixin ltr-position($spacing, $right: true) {
   $normal: if($right, 'right', 'left');
   $opposite: if($right, 'left', 'right');
