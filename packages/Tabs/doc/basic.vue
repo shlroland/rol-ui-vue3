@@ -1,13 +1,13 @@
 <template>
   <div class="demo-container">
-    <Tabs v-model:model-value="activeName" closable>
+    <Tabs v-model:model-value="activeName">
       <TabPane label="JavaScript" name="first">JavaScript</TabPane>
       <TabPane label="TypeScript" name="second">TypeScript</TabPane>
       <TabPane label="HTML5" name="third">HTML5</TabPane>
       <TabPane label="CSS" name="fourth">CSS</TabPane>
       <TabPane label="JavaScript" name="1">JavaScript</TabPane>
       <TabPane label="TypeScript" name="2">TypeScript</TabPane>
-      <TabPane label="HTML5" name="3">HTML5</TabPane>
+      <!-- <TabPane label="HTML5" name="3">HTML5</TabPane>
       <TabPane label="CSS" name="4">CSS</TabPane>
       <TabPane label="JavaScript" name="5">JavaScript</TabPane>
       <TabPane label="TypeScript" name="6">TypeScript</TabPane>
@@ -28,7 +28,7 @@
       <TabPane label="JavaScript" name="29">JavaScript</TabPane>
       <TabPane label="TypeScript" name="210">TypeScript</TabPane>
       <TabPane label="HTML5" name="211">HTML5</TabPane>
-      <TabPane label="CSS" name="212">CSS</TabPane>
+      <TabPane label="CSS" name="212">CSS</TabPane> -->
     </Tabs>
   </div>
 </template>
@@ -55,7 +55,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 .demo-container {
   margin-bottom: 40px;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-container">
+  <div class="demo-container-tabs">
     <Popper
       placement="left-end"
       effect="light"
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style>
-.demo-container {
+.demo-container-tabs {
   margin-bottom: 40px;
   width: 500px;
   height: 500px;
