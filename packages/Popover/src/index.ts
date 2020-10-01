@@ -1,5 +1,5 @@
 import { computed, defineComponent, h, PropType } from 'vue'
-import RolPopper, { Effect,Options, Placement, RTrigger } from '@rol-ui/popper'
+import RolPopper, { Effect, Options, Placement, RTrigger } from '@rol-ui/popper'
 import { UPDATE_VISIBLE_EVENT } from '@rol-ui/utils/constants'
 import throwError from '@rol-ui/utils/error'
 
@@ -14,6 +14,10 @@ export default defineComponent({
       default: '',
     },
     popperClass: {
+      type: String,
+      default: '',
+    },
+    title: {
       type: String,
       default: '',
     },
@@ -87,7 +91,9 @@ export default defineComponent({
       ctx.emit(UPDATE_VISIBLE_EVENT, val)
     }
 
-    const popoverClass = computed(() => props.popperClass + ' ' + 'rol-popover')
+    const popoverClass = computed(
+      () => `${props.popperClass}  rol-popover ${props.content ? 'rol-popover--plain' : ''}`,
+    )
     console.log(ctx.slots.reference())
     return () => {
       return h(
@@ -112,7 +118,10 @@ export default defineComponent({
           'onUpdate:visible': onUpdateVisible,
         },
         {
-          default: () => (ctx.slots.content ? ctx.slots.content() : props.content),
+          default: () =>
+            ctx.slots.content
+              ? ctx.slots.content()
+              : [props.title ? h('div', { class: 'rol-popover__title' }, [props.title]) : null, props.content],
           trigger: () => ctx.slots.reference(),
         },
       )
