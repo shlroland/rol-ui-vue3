@@ -116,7 +116,7 @@ export default {
   },
   transition: {
     type: String,
-    default: 'roll-fade-in-linear',
+    default: 'rol-fade-in-linear',
   },
   trigger: {
     type: [String, Array] as PropType<RTrigger>,

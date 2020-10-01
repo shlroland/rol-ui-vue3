@@ -60,7 +60,6 @@ export default function (props: RPopperOptions, { emit }: SetupContext<REmitOpti
     popperInstance = null
   }
   const initPopperInstance = () => {
-    console.log(triggerRef.value.$el)
     const _trigger = isHTMLElement(triggerRef.value)
       ? triggerRef.value
       : (triggerRef.value as ComponentPublicInstance).$el

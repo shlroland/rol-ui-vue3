@@ -1,6 +1,6 @@
 <template>
   <div class="demo-container">
-    <Popper placement="bottom" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+    <Popper placement="left-end" effect="light" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
       <template #trigger>
         <Button type="primary">Button</Button>
       </template>
@@ -23,5 +23,10 @@ export default {
 <style>
 .demo-container {
   margin-bottom: 40px;
+  width: 500px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
