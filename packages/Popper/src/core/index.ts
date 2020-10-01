@@ -68,6 +68,14 @@ export default function (props: RPopperOptions, { emit }: SetupContext<REmitOpti
     popperInstance.update()
   }
 
+  watch(visibility, () => {
+    if (popperInstance) {
+      popperInstance.update()
+    } else {
+      initPopperInstance()
+    }
+  })
+
   const _show = () => {
     if (props.hideAfter > 0) {
       hideTimer = window.setTimeout(() => {
