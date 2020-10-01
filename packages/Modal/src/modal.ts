@@ -1,7 +1,8 @@
 import { defineComponent, h, PropType, withDirectives, vShow, Teleport, Transition, SetupContext } from 'vue'
-import useModal, { CLOSE_EVENT, OPEN_EVENT, CLOSED_EVENT, OPENED_EVENT, UPDATE_VISIBLE } from './useModal'
+import useModal, { CLOSE_EVENT, OPEN_EVENT, CLOSED_EVENT, OPENED_EVENT } from './useModal'
 import RolOverlay from './modal-overlay'
 import { isValidWidthUnit } from '@rol-ui/utils/util'
+import { UPDATE_VISIBLE_EVENT } from '@rol-ui/utils/constants'
 
 type RModalType = PropType<'content' | 'card'>
 
@@ -86,7 +87,7 @@ const modal = defineComponent({
       type: Number,
     },
   },
-  emits: [CLOSE_EVENT, OPEN_EVENT, CLOSED_EVENT, OPENED_EVENT, UPDATE_VISIBLE],
+  emits: [CLOSE_EVENT, OPEN_EVENT, CLOSED_EVENT, OPENED_EVENT, UPDATE_VISIBLE_EVENT],
   setup(props, ctx) {
     return useModal(props, ctx as SetupContext)
   },

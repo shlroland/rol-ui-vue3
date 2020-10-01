@@ -31,9 +31,14 @@ export type RPopperOptions = {
   tabIndex: string
   trigger: RTrigger
   visible: boolean
+  popperClass: string
 }
 
 export default {
+  trigger: {
+    type: [String, Array] as PropType<RTrigger>,
+    default: 'hover',
+  },
   arrowOffset: {
     type: Number,
     default: 5,
@@ -118,10 +123,7 @@ export default {
     type: String,
     default: 'rol-fade-in-linear',
   },
-  trigger: {
-    type: [String, Array] as PropType<RTrigger>,
-    default: 'hover',
-  },
+
   tabIndex: {
     type: String,
     default: '0',

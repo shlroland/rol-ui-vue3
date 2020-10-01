@@ -3,6 +3,7 @@ import { isServer } from '@rol-ui/utils/is$'
 import { clearTimer } from '@rol-ui/utils/util'
 import { useModalEvent } from '@rol-ui/hooks'
 import useLockScreen from '@rol-ui/hooks/useLockScreen'
+import { UPDATE_VISIBLE_EVENT } from '@rol-ui/utils/constants'
 
 interface UseModalProps {
   beforeClose?: (close: (shouldCancel: boolean) => void) => void
@@ -24,7 +25,6 @@ export const CLOSE_EVENT = 'close'
 export const OPEN_EVENT = 'open'
 export const CLOSED_EVENT = 'closed'
 export const OPENED_EVENT = 'opened'
-export const UPDATE_VISIBLE = 'update:visible'
 
 export default function (props: UseModalProps, ctx: SetupContext) {
   const _visible = ref(false)
@@ -54,7 +54,7 @@ export default function (props: UseModalProps, ctx: SetupContext) {
 
   function afterLeave() {
     ctx.emit(CLOSED_EVENT)
-    ctx.emit(UPDATE_VISIBLE, false)
+    ctx.emit(UPDATE_VISIBLE_EVENT, false)
   }
 
   function open() {
