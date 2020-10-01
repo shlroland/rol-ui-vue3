@@ -1,0 +1,51 @@
+$popover-background-color: $background !default;
+$popover-border-color: $border !default;
+$popover-padding: 12px !default;
+$popover-index: 2000 !default;
+$popover-color-text-regular: $text !default;
+$popover-font-size: $font-size-base !default;
+$popover-box-shadow-light: $box-shadow-light !default;
+$popover-padding-large: 18px 20px !default;
+$popover-title-font-color: $text-strong !default;
+$popover-title-font-size: $font-size-medium !default;
+
+.rol-popper.rol-popover {
+  position: absolute;
+  background: $popover-background-color;
+  min-width: 150px;
+  border-radius: 4px;
+  border: 1px solid $popover-border-color;
+  padding: $popover-padding;
+  z-index: $popover-index;
+  color: $popover-color-text-regular;
+  line-height: 1.4;
+  text-align: justify;
+  font-size: $popover-font-size;
+  box-shadow: $popover-box-shadow-light;
+  word-break: break-all;
+  @include modify(plain) {
+    padding: $popover-padding-large;
+  }
+  @include e(title) {
+    color: $popover-title-font-color;
+    font-size: $popover-title-font-size;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  @include e(reference) {
+    &:focus:not(.focusing),
+    &:focus:hover {
+      outline-width: 0;
+    }
+  }
+
+  &:focus:active,
+  &:focus {
+    outline-width: 0;
+  }
+
+  .rol-popper__arrow::before {
+    border: 1px solid $popover-border-color;
+    background: $popover-background-color;
+  }
+}

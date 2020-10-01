@@ -25,7 +25,7 @@ export default defineComponent({
   },
   render() {
     const {
-      class:className,
+      class: className,
       $slots,
       tabIndex,
       popperId,
@@ -60,9 +60,11 @@ export default defineComponent({
       },
       [$slots.default?.() || this.content, arrow],
     )
+
+
     const trigger = renderTrigger($slots.trigger?.(), {
       ariaDescribedby: popperId,
-      class:className,
+      class: className,
       ref: 'triggerRef',
       tabindex: tabIndex,
       onMouseDown: stop,

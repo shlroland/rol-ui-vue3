@@ -1,19 +1,21 @@
 <template>
   <div class="demo-container">
-    <Tooltip content="alert('111')" :effect="effect" popper-class="popperIII">
-      <Button type="primary">Button</Button>
-    </Tooltip>
+    <Popover content="alert('111')" popper-class="popperIII">
+      <template #reference>
+        <Button type="primary">Button</Button>
+      </template>
+    </Popover>
   </div>
   <Button @click="visible = !visible">切换</Button>
 </template>
 
 <script>
-import Tooltip from '@rol-ui/tooltip'
+import Popover from '@rol-ui/popover'
 import Button from '@rol-ui/button'
 
 export default {
   components: {
-    Tooltip,
+    Popover,
     Button,
   },
   data() {
