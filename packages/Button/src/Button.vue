@@ -84,6 +84,7 @@ export default defineComponent({
           'light',
           'Dark',
           'black',
+          '',
         ].includes(val)
       },
     },

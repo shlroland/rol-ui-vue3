@@ -59,7 +59,6 @@ export default defineComponent({
       },
       [$slots.default?.() || this.content, arrow],
     )
-    console.log($slots.trigger?.())
     const trigger = renderTrigger($slots.trigger?.(), {
       ariaDescribedby: popperId,
       ref: 'triggerRef',

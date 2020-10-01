@@ -1,11 +1,16 @@
 <template>
   <div class="demo-container">
-    <Popper placement="left-end" effect="light" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+    <Popper
+      placement="left-end"
+      effect="light"
+      content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+    >
       <template #trigger>
         <Button type="primary">Button</Button>
       </template>
     </Popper>
   </div>
+  <Button @click="visible = !visible">切换</Button>
 </template>
 
 <script>
@@ -16,6 +21,11 @@ export default {
   components: {
     Popper,
     Button,
+  },
+  data() {
+    return {
+      visible: true,
+    }
   },
 }
 </script>
