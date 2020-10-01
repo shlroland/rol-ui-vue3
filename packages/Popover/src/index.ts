@@ -13,9 +13,17 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    style: {
+      type: Object,
+      default: () => ({}),
+    },
     popperClass: {
       type: String,
       default: '',
+    },
+    width: {
+      type: String,
+      default: '200px',
     },
     title: {
       type: String,
@@ -94,7 +102,11 @@ export default defineComponent({
     const popoverClass = computed(
       () => `${props.popperClass}  rol-popover ${props.content ? 'rol-popover--plain' : ''}`,
     )
-    console.log(ctx.slots.reference())
+
+    const popoverStyle = computed(() => {
+      return Object.assign(props.style, { width: props.width })
+    })
+
     return () => {
       return h(
         RolPopper,
@@ -115,6 +127,7 @@ export default defineComponent({
           popperOptions: props.popperOptions,
           visible: props.visible,
           popperClass: popoverClass.value,
+          popperStyle: popoverStyle.value,
           'onUpdate:visible': onUpdateVisible,
         },
         {

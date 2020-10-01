@@ -11,6 +11,7 @@ export type RTriggerType = 'click' | 'hover' | 'focus' | 'manual'
 export type RTrigger = RTriggerType | RTriggerType[]
 export type RefElement = Nullable<HTMLElement>
 export type Offset = [number, number] | number
+export type RPopperStyle = string | CSSStyleDeclaration
 
 export type RPopperOptions = {
   arrowOffset: number
@@ -32,6 +33,7 @@ export type RPopperOptions = {
   trigger: RTrigger
   visible: boolean
   popperClass: string
+  popperStyle: RPopperStyle
 }
 
 export default {
@@ -101,6 +103,10 @@ export default {
   },
   popperClass: {
     type: String,
+    default: '',
+  },
+  popperStyle: {
+    type: [String, Object] as PropType<RPopperStyle>,
     default: '',
   },
   pure: {

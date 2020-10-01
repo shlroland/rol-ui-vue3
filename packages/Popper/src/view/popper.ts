@@ -5,6 +5,7 @@ interface RRenderPopperProps {
   name: string
   effect: Effect
   popperClass: string
+  popperStyle?: string | CSSStyleDeclaration
   popperId: string
   pure: boolean
   visibility: boolean
@@ -19,6 +20,7 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
     effect,
     name,
     popperClass,
+    popperStyle,
     pure,
     popperId,
     visibility,
@@ -38,6 +40,7 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
             {
               'aria-hidden': String(!visibility),
               class: ['rol-popper', 'is-' + effect, popperClass, pure ? 'el-popper__pure' : ''],
+              style: popperStyle,
               id: popperId,
               ref: 'popperRef',
               role: 'tooltip',
