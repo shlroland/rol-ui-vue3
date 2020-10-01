@@ -1,9 +1,8 @@
 <template>
   <div class="demo-container">
-    <div>12311</div>
-    <Popper>
+    <Popper placement="bottom" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
       <template #trigger>
-        <Button :type="primary">Button</Button>
+        <Button type="primary">Button</Button>
       </template>
     </Popper>
   </div>

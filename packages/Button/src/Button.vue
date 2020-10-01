@@ -35,17 +35,7 @@ import { PropType, defineComponent } from 'vue'
 import Icon from '@rol-ui/icon/src/index.vue'
 
 type RButtonType = PropType<
-  | 'primary'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'info'
-  | 'link'
-  | 'text'
-  | 'white'
-  | 'light'
-  | 'Dark'
-  | 'black'
+  'primary' | 'success' | 'warning' | 'danger' | 'info' | 'link' | 'text' | 'white' | 'light' | 'Dark' | 'black'
 >
 
 type RButtonSize = PropType<'small' | 'normal' | 'medium' | 'large'>
@@ -99,7 +89,7 @@ export default defineComponent({
     },
     size: {
       type: String as RButtonSize,
-      default: '',
+      default: 'normal',
       validator: (val: string) => {
         return ['small', 'normal', 'medium', 'large'].includes(val)
       },
@@ -115,7 +105,7 @@ export default defineComponent({
       type: String as RButtonShapeType,
       default: '',
       validator: (val: string) => {
-        return ['round', 'circle'].includes(val)
+        return ['round', 'circle', ''].includes(val)
       },
     },
     icon: {

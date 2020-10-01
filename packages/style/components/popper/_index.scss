@@ -9,6 +9,13 @@ $popper-arrow-size: 6px !default;
 $popper-border-color: $border-light !default;
 $popper-background-color: $background !default;
 
+.rol-popper__mask {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+}
+
 @include bem(popper) {
   position: absolute;
   border-radius: $popper-border-radius;
@@ -19,13 +26,6 @@ $popper-background-color: $background !default;
   $popper-min-width: 10px;
   word-wrap: break-word;
   visibility: visible;
-
-  @include e(mask) {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-  }
 
   %arrow-base {
     position: absolute;

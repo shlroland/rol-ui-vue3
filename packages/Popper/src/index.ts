@@ -1,10 +1,10 @@
-import { defineComponent, onActivated, onBeforeUnmount, onDeactivated, onMounted } from 'vue'
+import { defineComponent, Fragment, h, onActivated, onBeforeUnmount, onDeactivated, onMounted, Teleport } from 'vue'
 import { UPDATE_VISIBLE_EVENT } from './core'
 import defaultProps from './core/props'
 import usePopper from './core'
 import throwError from '@rol-ui/utils/error'
+import { renderArrow, renderMask, renderPopper, renderTrigger } from './view'
 import { renderBlock } from '@rol-ui/utils/vnode'
-import renderTrigger from './view/trigger'
 
 export default defineComponent({
   name: 'RolPopper',
@@ -24,7 +24,42 @@ export default defineComponent({
     return popperStates
   },
   render() {
-    const { $slots, tabIndex, popperId } = this
+    const {
+      $slots,
+      tabIndex,
+      popperId,
+      showArrow,
+      effect,
+      transition,
+      popperClass,
+      pure,
+      onPopperMouseEnter,
+      onPopperMouseLeave,
+      onAfterEnter,
+      onAfterLeave,
+      visibility,
+      appendToBody,
+      hide,
+    } = this
+
+    const arrow = renderArrow(showArrow)
+
+    const popper = renderPopper(
+      {
+        effect,
+        name: transition,
+        popperClass,
+        popperId,
+        pure,
+        onMouseEnter: onPopperMouseEnter,
+        onMouseLeave: onPopperMouseLeave,
+        onAfterEnter,
+        onAfterLeave,
+        visibility,
+      },
+      [$slots.default?.() || this.content, arrow],
+    )
+    console.log($slots.trigger?.())
     const trigger = renderTrigger($slots.trigger?.(), {
       ariaDescribedby: popperId,
       ref: 'triggerRef',
@@ -33,7 +68,10 @@ export default defineComponent({
       onMouseUp: stop,
       ...this.events,
     })
-    console.log(trigger)
-    return trigger
+
+    return renderBlock(Fragment, null, [
+      trigger,
+      appendToBody ? h(Teleport, { to: 'body' }, renderMask(popper, { hide })) : popper,
+    ])
   },
 })
