@@ -103,3 +103,5 @@ export const getStyle = function (element: HTMLElement, styleName: string) {
     return element.style[styleName]
   }
 }
+
+export const stop = (e: Event) => e.stopPropagation()

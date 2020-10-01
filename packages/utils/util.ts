@@ -13,4 +13,6 @@ export const generateId = (): number => Math.floor(Math.random() * 10000)
 
 export const isBool = (val: unknown) => typeof val === 'boolean'
 export const isNumber = (val: unknown) => typeof val === 'number'
-export const isHTMLElement = (val: unknown) => toRawType(val).startsWith('HTML')
+export const isHTMLElement = (val: unknown) => {
+  return toRawType(val).startsWith('HTML')
+}

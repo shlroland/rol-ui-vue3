@@ -6,8 +6,9 @@ import { createPopper } from '@popperjs/core'
 import usePopperOptions from './usePopperOptions'
 
 export const UPDATE_VISIBLE_EVENT = 'update:visible'
+type REmitOptions = typeof UPDATE_VISIBLE_EVENT | 'after-enter' | 'after-leave'
 
-export default function (props: RPopperOptions, { emit }: SetupContext) {
+export default function (props: RPopperOptions, { emit }: SetupContext<REmitOptions[]>) {
   const arrowRef = ref<RefElement>(null)
   const triggerRef = ref<ComponentPublicInstance | HTMLElement>(null)
   const popperRef = ref<RefElement>(null)
@@ -59,6 +60,7 @@ export default function (props: RPopperOptions, { emit }: SetupContext) {
     popperInstance = null
   }
   const initPopperInstance = () => {
+    console.log(triggerRef.value.$el)
     const _trigger = isHTMLElement(triggerRef.value)
       ? triggerRef.value
       : (triggerRef.value as ComponentPublicInstance).$el
@@ -116,7 +118,6 @@ export default function (props: RPopperOptions, { emit }: SetupContext) {
   }
 
   const doDestroy = (forceDestroy?: boolean) => {
-    /* istanbul ignore if */
     if (!popperInstance || (visibility.value && !forceDestroy)) return
     detachPopper()
   }
@@ -204,5 +205,27 @@ export default function (props: RPopperOptions, { emit }: SetupContext) {
     } else {
       mapEvents(props.trigger)
     }
+  }
+
+  return {
+    doDestroy,
+    show,
+    hide,
+    onPopperMouseEnter,
+    onPopperMouseLeave,
+    onAfterEnter: () => {
+      emit('after-enter')
+    },
+    onAfterLeave: () => {
+      emit('after-leave')
+    },
+    initPopperInstance,
+    arrowRef,
+    events,
+    popperId,
+    popperInstance,
+    popperRef,
+    triggerRef,
+    visibility,
   }
 }
