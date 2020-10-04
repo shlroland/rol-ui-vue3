@@ -31,18 +31,9 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import Icon from '@rol-ui/icon/src/index.vue'
-
-type RButtonType = PropType<
-  'primary' | 'success' | 'warning' | 'danger' | 'info' | 'link' | 'text' | 'white' | 'light' | 'Dark' | 'black'
->
-
-type RButtonSize = PropType<'small' | 'normal' | 'medium' | 'large'>
-
-type RButtonNativeType = PropType<'button' | 'submit' | 'reset'>
-
-type RButtonShapeType = PropType<'round' | 'circle'>
+import type { RButtonShapeType, RButtonSize, RButtonType } from './ButtonType'
 
 // interface RButtonProps {
 //   type: string
@@ -69,7 +60,7 @@ export default defineComponent({
   },
   props: {
     type: {
-      type: String as RButtonType,
+      type: String as PropType<RButtonType>,
       default: '',
       validator: (val: string) => {
         return [
@@ -89,7 +80,7 @@ export default defineComponent({
       },
     },
     size: {
-      type: String as RButtonSize,
+      type: String as PropType<RButtonSize>,
       default: 'normal',
       validator: (val: string) => {
         return ['small', 'normal', 'medium', 'large'].includes(val)
@@ -103,7 +94,7 @@ export default defineComponent({
       },
     },
     shape: {
-      type: String as RButtonShapeType,
+      type: String as PropType<RButtonShapeType>,
       default: '',
       validator: (val: string) => {
         return ['round', 'circle', ''].includes(val)

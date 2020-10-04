@@ -9,20 +9,14 @@ import { classList, normalizeIconArgs, objectWithKey, convert } from './utils'
 import {
   parse as faParse,
   icon as faIcon,
-  IconProp,
-  SizeProp,
-  FlipProp,
-  RotateProp,
   library,
 } from '@fortawesome/fontawesome-svg-core'
+import type { FlipProps, IconProps, RotateProps, SizeProps } from './IconType'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 library.add(fas, fab)
 
-type IconProps = PropType<IconProp>
-type SizeProps = PropType<SizeProp>
-type FlipProps = PropType<FlipProp>
-type RotateProps = PropType<RotateProp>
+
 
 export default defineComponent({
   name: 'RolIcon',
@@ -36,13 +30,13 @@ export default defineComponent({
       default: false,
     },
     flip: {
-      type: String as FlipProps,
+      type: String as PropType<FlipProps>,
       default: null,
       validator: (value: string) =>
         ['horizontal', 'vertical', 'both'].indexOf(value) > -1,
     },
     name: {
-      type: [Object, Array, String] as IconProps,
+      type: [Object, Array, String] as PropType<IconProps>,
       required: true,
     },
     mask: {
@@ -54,7 +48,7 @@ export default defineComponent({
       default: false,
     },
     rotation: {
-      type: [String, Number] as RotateProps,
+      type: [String, Number] as PropType<RotateProps>,
       default: null,
       validator: (value: string | number) =>
         [90, 180, 270].indexOf(parseInt(value as string, 10)) > -1,
@@ -64,7 +58,7 @@ export default defineComponent({
       default: false,
     },
     size: {
-      type: String as SizeProps,
+      type: String as PropType<SizeProps>,
       default: null,
       validator: (value: string) =>
         [
