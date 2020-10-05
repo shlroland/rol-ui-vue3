@@ -1,0 +1,33 @@
+$card-border-color: $border-light !default;
+$card-border-radius: 4px !default;
+$card-padding: 20px !default;
+$card-background-color: $white !default;
+$card-text-color-primary: $text !default;
+
+@include bem(card) {
+  border-radius: $card-border-radius;
+  border: 1px solid $card-border-color;
+  background-color: $card-background-color;
+  overflow: hidden;
+  color: $card-text-color-primary;
+  transition: 0.3s;
+  @include when(always-shadow) {
+    box-shadow: $box-shadow-light;
+  }
+  @include when(hover-shadow) {
+    &:hover,
+    &:focus {
+      box-shadow: $box-shadow-light;
+    }
+  }
+  @include e(header) {
+    padding: #{$card-padding - 2 $card-padding};
+    border-bottom: 1px solid $card-border-color;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+  }
+  @include e(body) {
+    padding: $card-padding;
+  }
+}
