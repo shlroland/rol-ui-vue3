@@ -2,8 +2,13 @@
   @include e(main) {
     display: flex;
     align-items: center;
+    margin-block-end: 1em;
+    margin-block-start: 1em;
   }
   @include e(popIcon) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-right: 5px;
   }
   @include e(action) {

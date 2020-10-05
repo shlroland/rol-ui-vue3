@@ -1,6 +1,6 @@
 <template>
   <Icon
-    name="camera"
+    name="exclamation-circle"
   />
 </template>
 
