@@ -16,6 +16,15 @@
       @click="clickHandler"
     />
   </div>
+  <template v-if="preview">
+    <image-viewer
+      v-if="showViewer"
+      :z-index="zIndex"
+      :initial-index="imageIndex"
+      :on-close="closeViewer"
+      :url-list="previewSrcList"
+    />
+  </template>
 </template>
 
 <script lang="ts">
@@ -25,6 +34,7 @@ import useAttrs from '@rol-ui/hooks/useAttrs'
 import { isHtmlEle, isServer, isSupportObjectFit } from '@rol-ui/utils/is$'
 import { getScrollContainer, isInContainer, off, on } from '@rol-ui/utils/dom'
 import throttle from 'lodash/throttle'
+import ImageViewer from './image-viewer.vue'
 
 enum ObjectFit {
   NONE = 'none',
@@ -34,9 +44,12 @@ enum ObjectFit {
   SCALE_DOWN = 'scale-down',
   EMPTY = '',
 }
-
+let prevOverflow = ''
 export default defineComponent({
   name: 'RolImage',
+  components: {
+    ImageViewer,
+  },
   inheritAttrs: false,
   props: {
     src: {
@@ -73,6 +86,7 @@ export default defineComponent({
     const imgHeight = ref(0)
     const container = ref<HTMLElement | null>(null)
     const show = ref(props.lazy)
+    const showViewer = ref(false)
 
     let _scrollContainer = null
     let _lazyLoadHandler = null
@@ -213,7 +227,16 @@ export default defineComponent({
     })
 
     const clickHandler = () => {
-      console.log('click')
+      if (!preview.value) return
+
+      prevOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      showViewer.value = true
+    }
+
+    const closeViewer = () => {
+      document.body.style.overflow = prevOverflow
+      showViewer.value = false
     }
     return {
       container,
@@ -227,6 +250,8 @@ export default defineComponent({
       imgWidth,
       imgHeight,
       attrs,
+      showViewer,
+      closeViewer,
     }
   },
 })

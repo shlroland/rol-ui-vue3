@@ -6,17 +6,12 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { classList, normalizeIconArgs, objectWithKey, convert } from './utils'
-import {
-  parse as faParse,
-  icon as faIcon,
-  library,
-} from '@fortawesome/fontawesome-svg-core'
+import { parse as faParse, icon as faIcon, library } from '@fortawesome/fontawesome-svg-core'
 import type { FlipProps, IconProps, RotateProps, SizeProps } from './IconType'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-library.add(fas, fab)
-
-
+import { far } from '@fortawesome/free-regular-svg-icons'
+library.add(fas, fab, far)
 
 export default defineComponent({
   name: 'RolIcon',
@@ -32,8 +27,7 @@ export default defineComponent({
     flip: {
       type: String as PropType<FlipProps>,
       default: null,
-      validator: (value: string) =>
-        ['horizontal', 'vertical', 'both'].indexOf(value) > -1,
+      validator: (value: string) => ['horizontal', 'vertical', 'both'].indexOf(value) > -1,
     },
     name: {
       type: [Object, Array, String] as PropType<IconProps>,
@@ -50,8 +44,7 @@ export default defineComponent({
     rotation: {
       type: [String, Number] as PropType<RotateProps>,
       default: null,
-      validator: (value: string | number) =>
-        [90, 180, 270].indexOf(parseInt(value as string, 10)) > -1,
+      validator: (value: string | number) => [90, 180, 270].indexOf(parseInt(value as string, 10)) > -1,
     },
     swapOpacity: {
       type: Boolean,
@@ -61,21 +54,7 @@ export default defineComponent({
       type: String as PropType<SizeProps>,
       default: null,
       validator: (value: string) =>
-        [
-          'lg',
-          'xs',
-          'sm',
-          '1x',
-          '2x',
-          '3x',
-          '4x',
-          '5x',
-          '6x',
-          '7x',
-          '8x',
-          '9x',
-          '10x',
-        ].indexOf(value) > -1,
+        ['lg', 'xs', 'sm', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x'].indexOf(value) > -1,
     },
     spin: {
       type: Boolean,
@@ -104,9 +83,7 @@ export default defineComponent({
     const classes = objectWithKey('classes', classList(props))
     const transform = objectWithKey(
       'transform',
-      typeof props.transform === 'string'
-        ? faParse.transform(props.transform)
-        : props.transform,
+      typeof props.transform === 'string' ? faParse.transform(props.transform) : props.transform,
     )
     const mask = objectWithKey('mask', normalizeIconArgs(props.mask))
     const renderedIcon = faIcon(iconArgs, {
@@ -125,6 +102,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

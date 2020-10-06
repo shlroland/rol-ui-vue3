@@ -8,6 +8,9 @@
   <div class="demo-image__lazy">
     <Image v-for="nurl in urls" :key="nurl" :src="nurl" lazy />
   </div>
+  <div class="demo-image__preview">
+    <Image style="width: 100px; height: 100px;" :src="url" :preview-src-list="srcList" />
+  </div>
 </template>
 
 <script>
@@ -30,12 +33,17 @@ export default {
         'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
         'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
       ],
+
+      srcList: [
+        'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
+        'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
+      ],
     }
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .block {
   padding: 30px 0;
   text-align: center;
