@@ -12,7 +12,13 @@ export const isValidWidthUnit = (val: string) =>
 export const generateId = (): number => Math.floor(Math.random() * 10000)
 
 export const isBool = (val: unknown) => typeof val === 'boolean'
+
 export const isNumber = (val: unknown) => typeof val === 'number'
+
 export const isHTMLElement = (val: unknown) => {
   return toRawType(val).startsWith('HTML')
+}
+
+export const entries = <T>(obj: Hash<T>): [string, T][] => {
+  return Object.keys(obj).map((key: string) => [key, obj[key]])
 }

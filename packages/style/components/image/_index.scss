@@ -1,0 +1,42 @@
+%size {
+  width: 100%;
+  height: 100%;
+}
+
+$image-background-color: $white-bis !default;
+$image-color-text-placeholder: $text-light !default;
+
+@include bem(image) {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+
+  @include e(inner) {
+    @extend %size;
+    vertical-align: top;
+    @include modify(center) {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      display: block;
+    }
+  }
+  @include e(placeholder) {
+    @extend %size;
+    background: $image-background-color;
+  }
+  @include e(error) {
+    @extend %size;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    background: $image-background-color;
+    color: $image-color-text-placeholder;
+    vertical-align: middle;
+  }
+  @include e(preview) {
+    cursor: pointer;
+  }
+}
