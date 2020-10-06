@@ -19,7 +19,7 @@
           <Icon name="search-minus" @click.stop="handleActions('zoomOut')" />
           <Icon name="search-plus" @click.stop="handleActions('zoomIn')" />
           <i class="rol-image-viewer__actions__divider"></i>
-          <Icon :name="mode.icon" />
+          <Icon :name="mode.icon" @click.stop="toggleMode" />
           <i class="rol-image-viewer__actions__divider"></i>
           <Icon name="undo" @click.stop="handleActions('anticlocelise')" />
           <Icon name="redo" @click.stop="handleActions('clocelise')" />
@@ -35,6 +35,7 @@
           :style="imgStyle"
           @load="handleImgLoad"
           @error="handleImgError"
+          @mousedown="handleMouseDown"
         />
       </div>
     </div>
@@ -43,7 +44,11 @@
 
 <script lang="ts">
 import Icon from '@rol-ui/icon'
-import { computed, PropType, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, PropType, reactive, ref, watch } from 'vue'
+import { rafThrottle } from '@rol-ui/utils/util'
+import { EVENT_CODE } from '@rol-ui/utils/aria'
+import { off, on } from '@rol-ui/utils/dom'
+import { isFirefox } from '@rol-ui/utils/is$'
 
 const Mode = {
   CONTAIN: {
@@ -55,6 +60,8 @@ const Mode = {
     icon: 'compress',
   },
 }
+
+const mousewheelEventName = isFirefox() ? 'DOMMouseScroll' : 'mousewheel'
 
 export default {
   name: 'RolImageViewer',
@@ -87,6 +94,8 @@ export default {
     const loading = ref(true)
     const infinite = ref(true)
     const index = ref(props.initialIndex)
+    const img = ref<HTMLImageElement | null>(null)
+    const wrapper = ref<HTMLDivElement | null>(null)
     const mode = ref(Mode.CONTAIN)
     let transform = reactive({
       scale: 1,
@@ -95,6 +104,10 @@ export default {
       offsetY: 0,
       enableTransition: false,
     })
+
+    let _keyDownHandler = null
+    let _mouseWheelHandler = null
+    let _dragHandler = null
 
     const isSingle = computed(() => {
       return props.urlList.length <= 1
@@ -112,7 +125,6 @@ export default {
 
     const imgStyle = computed(() => {
       const { scale, deg, offsetX, offsetY, enableTransition } = transform
-      console.log(transform)
       const style: {
         transform: string
         transition: string
@@ -133,6 +145,7 @@ export default {
     })
 
     const hide = () => {
+      deviceSupportUninstall()
       props.onClose()
     }
 
@@ -143,6 +156,34 @@ export default {
     const handleImgError = e => {
       loading.value = false
       e.target.alt = '加载失败'
+    }
+
+    const handleMouseDown = (e: MouseEvent) => {
+      if (loading.value || e.button !== 0) return
+      const { offsetX, offsetY } = transform
+      const startX = e.pageX
+      const startY = e.pageY
+      _dragHandler = rafThrottle(ev => {
+        transform.offsetX = offsetX + ev.pageX - startX
+        transform.offsetY = offsetY + ev.pageY - startY
+      })
+      on(document, 'mousemove', _dragHandler)
+      on(document, 'mouseup', () => {
+        off(document, 'mousemove', _dragHandler)
+      })
+
+      e.preventDefault()
+    }
+
+    const toggleMode = () => {
+      if (loading.value) return
+      const modeNames = Object.keys(Mode)
+      const modeValues = Object.values(Mode)
+      const currentMode = mode.value.name
+      const index = modeValues.findIndex(i => i.name === currentMode)
+      const nextIndex = (index + 1) % modeNames.length
+      mode.value = Mode[modeNames[nextIndex]]
+      reset()
     }
 
     const prev = () => {
@@ -186,6 +227,86 @@ export default {
       transform.enableTransition = enableTransition
     }
 
+    const reset = () => {
+      transform = {
+        scale: 1,
+        deg: 0,
+        offsetX: 0,
+        offsetY: 0,
+        enableTransition: false,
+      }
+    }
+
+    const deviceSupportInstall = () => {
+      _keyDownHandler = rafThrottle(e => {
+        switch (e.code) {
+          case EVENT_CODE.esc:
+            hide()
+            break
+          case EVENT_CODE.space:
+            toggleMode()
+            break
+          // LEFT_ARROW
+          case EVENT_CODE.left:
+            prev()
+            break
+          case EVENT_CODE.up:
+            handleActions('zoomIn')
+            break
+          // RIGHT_ARROW
+          case EVENT_CODE.right:
+            next()
+            break
+          // DOWN_ARROW
+          case EVENT_CODE.down:
+            handleActions('zoomOut')
+            break
+        }
+      })
+
+      _mouseWheelHandler = rafThrottle(e => {
+        const delta = e.wheelDelta ? e.wheelDelta : -e.detail
+        if (delta > 0) {
+          handleActions('zoomIn', {
+            zoomRate: 0.015,
+            enableTransition: false,
+          })
+        } else {
+          handleActions('zoomOut', {
+            zoomRate: 0.015,
+            enableTransition: false,
+          })
+        }
+      })
+      on(document, 'keydown', _keyDownHandler)
+      on(document, mousewheelEventName, _mouseWheelHandler)
+    }
+
+    const deviceSupportUninstall = () => {
+      off(document, 'keydown', _keyDownHandler)
+      off(document, mousewheelEventName, _mouseWheelHandler)
+      _keyDownHandler = null
+      _mouseWheelHandler = null
+    }
+
+    watch(index, () => {
+      reset()
+    })
+
+    watch(currentImg, () => {
+      nextTick(() => {
+        const $img = img.value
+        if (!$img.complete) {
+          loading.value = true
+        }
+      })
+    })
+
+    onMounted(() => {
+      deviceSupportInstall()
+      wrapper.value?.focus()
+    })
+
     return {
       index,
       hide,
@@ -200,6 +321,10 @@ export default {
       imgStyle,
       handleActions,
       mode,
+      img,
+      wrapper,
+      toggleMode,
+      handleMouseDown,
     }
   },
 }

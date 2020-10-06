@@ -1,5 +1,6 @@
 import { Ref } from 'vue'
 import { toRawType } from '@vue/shared'
+import { AnyFunction } from './types'
 
 export const clearTimer = (timer: Ref<TimeoutHandle>) => {
   clearTimeout(timer.value)
@@ -21,4 +22,16 @@ export const isHTMLElement = (val: unknown) => {
 
 export const entries = <T>(obj: Hash<T>): [string, T][] => {
   return Object.keys(obj).map((key: string) => [key, obj[key]])
+}
+
+export const rafThrottle: <T extends AnyFunction<any>>(fn: T) => AnyFunction<void> = fn => {
+  let locked = false
+  return function (...args: any[]) {
+    if (locked) return
+    locked = true
+    window.requestAnimationFrame(() => {
+      fn.apply(this, args)
+      locked = false
+    })
+  }
 }
