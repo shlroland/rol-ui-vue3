@@ -153,10 +153,10 @@ export default defineComponent({
     const indicatorsClasses = computed(() => {
       const classes = ['rol-carousel__indicators', 'rol-carousel__indicators--' + props.direction]
       if (hasLabel.value) {
-        classes.push('el-carousel__indicators--labels')
+        classes.push('rol-carousel__indicators--labels')
       }
       if (props.indicatorPosition === 'outside' || props.type === 'card') {
-        classes.push('el-carousel__indicators--outside')
+        classes.push('rol-carousel__indicators--outside')
       }
       return classes
     })

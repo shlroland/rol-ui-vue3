@@ -10,6 +10,7 @@
       'is-animating': data.animating,
     }"
     :style="itemStyle"
+    @click="handleItemClick"
   >
     <div class="rol-carousel__mask"></div>
     <slot></slot>
@@ -95,7 +96,11 @@ export default defineComponent({
     const calcCardTranslate = (index: number, activeIndex: number) => {
       const parentWidth = injectCarouselScope.offsetWidth.value
       if (data.inStage) {
-        return parentWidth * ((2 - CARD_SCALE) * (index - activeIndex) + 1)
+        return (parentWidth * ((2 - CARD_SCALE) * (index - activeIndex) + 1)) / 4
+      } else if (index < activeIndex) {
+        return (-(1 + CARD_SCALE) * parentWidth) / 4
+      } else {
+        return ((3 + CARD_SCALE) * parentWidth) / 4
       }
     }
 
@@ -119,6 +124,7 @@ export default defineComponent({
         }
         data.inStage = Math.round(Math.abs(index - activeIndex)) <= 1
         data.active = index === activeIndex
+        data.translate = calcCardTranslate(index, activeIndex)
         data.scale = data.active ? 1 : CARD_SCALE
       } else {
         data.active = index === activeIndex
@@ -126,6 +132,13 @@ export default defineComponent({
         data.translate = calcTranslate(index, activeIndex, isVertical)
       }
       data.ready = true
+    }
+
+    const handleItemClick = () => {
+      if (injectCarouselScope && injectCarouselScope.type === 'card') {
+        const index = injectCarouselScope.items.value.map(d => d.uid).indexOf(instance.uid)
+        injectCarouselScope.setActiveItem(index)
+      }
     }
 
     onMounted(() => {
@@ -144,6 +157,7 @@ export default defineComponent({
       itemStyle,
       translateItem,
       type: injectCarouselScope.type,
+      handleItemClick,
     }
   },
 })

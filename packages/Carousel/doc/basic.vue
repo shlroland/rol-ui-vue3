@@ -9,6 +9,42 @@
           </CarouselItem>
         </Carousel>
       </div>
+      <div class="block">
+        <span class="demonstration">Click 指示器触发</span>
+        <Carousel trigger="click" height="150px">
+          <CarouselItem v-for="item in 4" :key="item">
+            <h3 class="small">{{ item }}</h3>
+          </CarouselItem>
+        </Carousel>
+      </div>
+    </div>
+    <div>
+      <Carousel indicator-position="outside">
+        <CarouselItem v-for="item in 4" :key="item">
+          <h3>{{ item }}</h3>
+        </CarouselItem>
+      </Carousel>
+    </div>
+    <div>
+      <Carousel :interval="5000" arrow="never">
+        <CarouselItem v-for="item in 4" :key="item">
+          <h3>{{ item }}</h3>
+        </CarouselItem>
+      </Carousel>
+    </div>
+    <div>
+      <Carousel :interval="4000" type="card" height="200px">
+        <CarouselItem v-for="item in 6" :key="item">
+          <h3 class="medium">{{ item }}</h3>
+        </CarouselItem>
+      </Carousel>
+    </div>
+    <div style="margin: 10px 0;">
+      <Carousel height="200px" direction="vertical" :autoplay="false">
+        <CarouselItem v-for="item in 3" :key="item">
+          <h3 class="medium">{{ item }}</h3>
+        </CarouselItem>
+      </Carousel>
     </div>
   </div>
 </template>
