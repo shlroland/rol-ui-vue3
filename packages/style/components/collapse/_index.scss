@@ -1,0 +1,70 @@
+$collapse-border-color: $border-light !default;
+$collapse-font-color-disabled-base: $grey-light !default;
+$collapse-header-height: $size-1 !default;
+$collapse-header-background-color: $white !default;
+$collapse-header-font-color: $text !default;
+$collapse-header-font-size: $font-size-small !default;
+$collapse-header-font-weight: $weight-medium !default;
+$collapse-header-arrow-font-weight: $weight-light !default;
+$collapse-content-background-color: $white !default;
+$collapse-content-font-size: $font-size-small !default;
+$collapse-content-font-color: $text !default;
+
+@include bem(collapse) {
+  border-top: 1px solid $collapse-border-color;
+  border-bottom: 1px solid $collapse-border-color;
+}
+
+@include bem(collapse-item) {
+  @include when(disabled) {
+    .rol-collapse-item__header {
+      color: $collapse-font-color-disabled-base;
+      cursor: not-allowed;
+    }
+  }
+  @include e(header) {
+    display: flex;
+    align-items: center;
+    height: $collapse-header-height;
+    line-height: $collapse-header-height;
+    background-color: $collapse-header-background-color;
+    color: $collapse-header-font-color;
+    cursor: pointer;
+    font-weight: $collapse-header-font-weight;
+    transition: border-bottom-color 0.3s;
+    outline: none;
+    @include e(arrow) {
+      margin: 0 8px 0 auto;
+      transition: transform 0.3s;
+      font-weight: $collapse-header-arrow-font-weight;
+      @include when(active) {
+        transform: rotate(90deg);
+      }
+    }
+    &.focusing:focus:not(:hover) {
+      color: $collapse-header-font-color;
+    }
+    @include when(active) {
+      border-bottom-color: transparent;
+    }
+  }
+
+  @include e(wrap) {
+    will-change: height;
+    background-color: $collapse-content-background-color;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-bottom: 1px solid $collapse-border-color;
+  }
+
+  @include e(content) {
+    padding-bottom: 25px;
+    font-size: $collapse-content-font-size;
+    color: $collapse-content-font-color;
+    line-height: 1.769230769230769;
+  }
+
+  &:last-child {
+    margin-bottom: -1px;
+  }
+}
