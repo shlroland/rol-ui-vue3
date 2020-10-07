@@ -2,6 +2,10 @@ import { Ref } from 'vue'
 import { toRawType } from '@vue/shared'
 import { AnyFunction } from './types'
 
+export type PartialCSSStyleDeclaration = Partial<
+  Pick<CSSStyleDeclaration, 'transform' | 'transition' | 'animation'>
+>
+
 export const clearTimer = (timer: Ref<TimeoutHandle>) => {
   clearTimeout(timer.value)
   timer.value = null
@@ -34,4 +38,18 @@ export const rafThrottle: <T extends AnyFunction<any>>(fn: T) => AnyFunction<voi
       locked = false
     })
   }
+}
+
+export const autoprefixer = function (style: PartialCSSStyleDeclaration): PartialCSSStyleDeclaration {
+  const rules = ['transform', 'transition', 'animation']
+  const prefixes = ['ms-', 'webkit-']
+  rules.forEach(rule => {
+    const value = style[rule]
+    if (rule && value) {
+      prefixes.forEach(prefix => {
+        style[prefix + rule] = value
+      })
+    }
+  })
+  return style
 }
