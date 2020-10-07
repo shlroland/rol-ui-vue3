@@ -80,7 +80,9 @@ $radius-large: 6px !default;
 $radius-rounded: 290486px !default;
 $speed: 86ms !default;
 
-
+$index-normal: 1 !default;
+$index-top: 1000 !default;
+$index-popper: 2000 !default;
 
 // Flags
 $variable-columns: true !default;

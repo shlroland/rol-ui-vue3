@@ -277,7 +277,6 @@ $tabs-scroll-button-text-color: $text-light;
   }
 
   @include modify(bottom) {
-    @debug &;
     .rol-tabs__header.is-bottom {
       margin-bottom: 0;
       margin-top: $tabs-header-margin;
