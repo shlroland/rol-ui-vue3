@@ -109,6 +109,7 @@ $carousel-indicator-out-color: $border-hover !default;
   @include e(indicator) {
     background-color: transparent;
     cursor: pointer;
+
     &:hover button {
       opacity: 0.72;
     }
@@ -146,14 +147,14 @@ $carousel-indicator-out-color: $border-hover !default;
   }
 }
 
-.carousel-arrow-left-enter,
+.carousel-arrow-left-enter-active,
 .carousel-arrow-left-leave-active {
-  transform: translateY(-50%) translateX(-10px);
+  transform: translate3d(-10px, -50%, 0);
   opacity: 0;
 }
 
-.carousel-arrow-right-enter,
+.carousel-arrow-right-enter-active,
 .carousel-arrow-right-leave-active {
-  transform: translateY(-50%) translateX(10px);
+  transform: translate3d(10px, -50%, 0);
   opacity: 0;
 }

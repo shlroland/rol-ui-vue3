@@ -1,18 +1,41 @@
 <template>
-  <div ref="root" :class="carouselClasses">
+  <div ref="root" :class="carouselClasses" @mouseenter.stop="handleMouseEnter" @mouseleave.stop="handleMouseLeave">
     <div class="rol-carousel__container" :style="{ height: height }">
       <transition v-if="arrowDisplay" name="carousel-arrow-left">
-        <button type="button" class="rol-carousel__arrow rol-carousel__arrow--left">
+        <button
+          v-show="(arrow === 'always' || data.hover) && (loop || data.activeIndex > 0)"
+          type="button"
+          class="rol-carousel__arrow rol-carousel__arrow--left"
+        >
           <Icon name="chevron-left" />
         </button>
       </transition>
       <transition v-if="arrowDisplay" name="carousel-arrow-right">
-        <button type="button" class="rol-carousel__arrow rol-carousel__arrow--right">
+        <button
+          v-show="(arrow === 'always' || data.hover) && (loop || data.activeIndex < items.value.length - 1)"
+          type="button"
+          class="rol-carousel__arrow rol-carousel__arrow--right"
+        >
           <Icon name="chevron-right" />
         </button>
       </transition>
       <slot></slot>
     </div>
+    <ul v-if="indicatorPosition !== 'none'" :class="indicatorsClasses">
+      <li
+        v-for="(item, index) in items"
+        :key="index"
+        :class="[
+          'rol-carousel__indicator',
+          'rol-carousel__indicator--' + direction,
+          { 'is-active': index === data.activeIndex },
+        ]"
+      >
+        <button class="rol-carousel__button">
+          <span v-if="hasLabel">{{ item.label }}</span>
+        </button>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -110,11 +133,24 @@ export default defineComponent({
     const root = ref<HTMLDivElement | null>(null)
     const offsetWidth = ref(0)
     const offsetHeight = ref(0)
-
+    const hasLabel = computed(() => {
+      return items.value.some(item => item.label.toString().length > 0)
+    })
     const carouselClasses = computed(() => {
       const classes = ['rol-carousel', 'rol-carousel--' + props.direction]
       if (props.type === 'card') {
         classes.push('rol-carousel--card')
+      }
+      return classes
+    })
+
+    const indicatorsClasses = computed(() => {
+      const classes = ['rol-carousel__indicators', 'rol-carousel__indicators--' + props.direction]
+      if (hasLabel.value) {
+        classes.push('el-carousel__indicators--labels')
+      }
+      if (props.indicatorPosition === 'outside' || props.type === 'card') {
+        classes.push('el-carousel__indicators--outside')
       }
       return classes
     })
@@ -152,6 +188,13 @@ export default defineComponent({
       data.timer = setInterval(() => playSlides(), props.interval)
     }
 
+    const pauseTimer = () => {
+      if (data.timer) {
+        clearInterval(data.timer)
+        data.timer = null
+      }
+    }
+
     const playSlides = () => {
       if (data.activeIndex < items.value.length - 1) {
         data.activeIndex = data.activeIndex + 1
@@ -164,6 +207,16 @@ export default defineComponent({
       items.value.forEach((item, index) => {
         item.translateItem(index, data.activeIndex, oldIndex)
       })
+    }
+
+    const handleMouseEnter = () => {
+      data.hover = true
+      pauseTimer()
+    }
+
+    const handleMouseLeave = () => {
+      data.hover = false
+      startTimer()
     }
 
     watch(
@@ -202,6 +255,11 @@ export default defineComponent({
       carouselClasses,
       arrowDisplay,
       root,
+      indicatorsClasses,
+      items,
+      data,
+      handleMouseEnter,
+      handleMouseLeave,
     }
   },
 })
