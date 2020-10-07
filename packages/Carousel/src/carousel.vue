@@ -6,6 +6,7 @@
           v-show="(arrow === 'always' || data.hover) && (loop || data.activeIndex > 0)"
           type="button"
           class="rol-carousel__arrow rol-carousel__arrow--left"
+          @click.stop="throttledArrowClick(data.activeIndex - 1)"
         >
           <Icon name="chevron-left" />
         </button>
@@ -15,6 +16,7 @@
           v-show="(arrow === 'always' || data.hover) && (loop || data.activeIndex < items.value.length - 1)"
           type="button"
           class="rol-carousel__arrow rol-carousel__arrow--right"
+          @click.stop="throttledArrowClick(data.activeIndex + 1)"
         >
           <Icon name="chevron-right" />
         </button>
@@ -30,6 +32,8 @@
           'rol-carousel__indicator--' + direction,
           { 'is-active': index === data.activeIndex },
         ]"
+        @mouseenter="throttledIndicatorHover(index)"
+        @click.stop="handleIndicatorClick(index)"
       >
         <button class="rol-carousel__button">
           <span v-if="hasLabel">{{ item.label }}</span>
@@ -43,6 +47,8 @@
 import { computed, defineComponent, onMounted, provide, reactive, Ref, ref, ToRefs, UnwrapRef, watch } from 'vue'
 import Icon from '@rol-ui/icon'
 import { RCarouselItemData, RCarouselItemProps } from './carousel-item.vue'
+import throttle from 'lodash/throttle'
+
 interface RCarouselProps {
   initialIndex: number
   height: string
@@ -161,6 +167,24 @@ export default defineComponent({
       items.value.push(item)
     }
 
+    const throttledArrowClick = throttle((index: number) => {
+      setActiveItem(index)
+    }, 300)
+
+    const throttledIndicatorHover = throttle((index: number) => {
+      handleIndicatorHover(index)
+    }, 300)
+
+    const handleIndicatorHover = (index: number) => {
+      if (props.trigger === 'hover' && index !== data.activeIndex) {
+        data.activeIndex = index
+      }
+    }
+
+    const handleIndicatorClick = index => {
+      data.activeIndex = index
+    }
+
     const setActiveItem = (index: number | string) => {
       if (typeof index === 'string') {
         const filteredItems = items.value.filter(item => item.name === index)
@@ -174,12 +198,17 @@ export default defineComponent({
         return
       }
       const oldIndex = data.activeIndex
+      let length = items.value.length
       if (index < 0) {
         data.activeIndex = props.loop ? length - 1 : 0
       } else if (index >= length) {
         data.activeIndex = props.loop ? 0 : length - 1
       } else {
         data.activeIndex = index
+      }
+
+      if (oldIndex === data.activeIndex) {
+        resetItemPosition(oldIndex)
       }
     }
 
@@ -260,6 +289,10 @@ export default defineComponent({
       data,
       handleMouseEnter,
       handleMouseLeave,
+      throttledArrowClick,
+      hasLabel,
+      handleIndicatorClick,
+      throttledIndicatorHover,
     }
   },
 })
