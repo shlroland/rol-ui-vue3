@@ -1,11 +1,11 @@
-# `BreadCrumb`
+# `Breadcrumb`
 
 > TODO: description
 
 ## Usage
 
 ```
-const breadCrumb = require('BreadCrumb');
+const breadcrumb = require('Breadcrumb');
 
 // TODO: DEMONSTRATE API
 ```

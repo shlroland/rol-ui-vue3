@@ -18,6 +18,7 @@ $breadcrumb-item-separator-color: $border-hover !default;
     display: flex;
     justify-content: center;
     padding: $breadcrumb-item-padding-vertical $breadcrumb-item-padding-horizontal;
+    cursor: pointer;
     &:hover {
       color: $breadcrumb-item-hover-color;
     }
@@ -29,16 +30,18 @@ $breadcrumb-item-separator-color: $border-hover !default;
       .rol-breadcrumb__item {
         @include ltr-property('padding', 0, false);
       }
+      .rol-breadcrumb__separator {
+        display: none;
+      }
     }
-    &.is-active {
+    &:last-child{
       .rol-breadcrumb__item {
         color: $breadcrumb-item-active-color;
         cursor: default;
         pointer-events: none;
       }
     }
-    @include e(separators) {
-        @debug &;
+    @include e(separator) {
       color: $breadcrumb-item-separator-color;
       content: '\0002f';
     }

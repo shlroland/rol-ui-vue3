@@ -7,11 +7,20 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
+import { PropType, provide, VNode } from 'vue'
 
 type RAlignment = PropType<'left' | 'centered' | 'right'>
 type RSize = PropType<'small' | 'normal' | 'medium' | 'large'>
-type RSeparator = PropType<'arrow-separator' | 'bullet-separator' | 'dot-separator' | 'succeeds-separator'>
+
+interface RBreadcrumbProps {
+  alignment: string
+  size: string
+  separator: string
+}
+
+export interface RBreadcrumbProvide {
+  separatorIns: string | VNode[]
+}
 
 export default {
   name: 'RolBreadcrumb',
@@ -31,12 +40,16 @@ export default {
       },
     },
     separator: {
-      type: String as RSeparator,
-      default: '',
-      validator(val: string): boolean {
-        return ['arrow-separator', 'bullet-separator', 'dot-separator', 'succeeds-separator', ''].indexOf(val) !== -1
-      },
+      type: String,
+      default: '/',
     },
+  },
+  setup(props: RBreadcrumbProps, { slots }) {
+    const separatorIns = slots?.separator ? slots?.separator() : props.separator
+
+    provide<RBreadcrumbProvide>('rootBreadcrumb', {
+      separatorIns,
+    })
   },
 }
 </script>
