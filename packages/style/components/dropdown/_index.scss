@@ -1,0 +1,188 @@
+$dropdown-color-text-regular: $text !default;
+$dropdown-font-size-base: $font-size-base !default;
+$button-border-color: $border !default;
+$dropdown-border-radius-base: 4px !default;
+$dropdown-menuItem-hover-fill: $background !default;
+$dropdown-menuItem-hover-color: $scheme-invert !default;
+$dropdown-border-color-lighter: $border-light !default;
+$dropdown-font-color-disabled-base: $text-light !default;
+$dropdown-content-shadow: 0 0.5em 1em -0.125em rgba($scheme-invert, 0.1), 0 0px 0 1px rgba($scheme-invert, 0.02) !default;
+
+@include bem(dropdown-popper) {
+  padding: 0px;
+  box-shadow: $dropdown-content-shadow;
+  @include when(light) {
+    border: 1px solid $grey-lighter;
+    .rol-popper__arrow::before {
+      border: 1px solid $grey-lighter;
+      background: $white;
+    }
+  }
+  .rol-dropdown-menu {
+    border: none;
+  }
+}
+
+@include bem(dropdown) {
+  display: inline-block;
+  position: relative;
+  color: $dropdown-color-text-regular;
+  font-size: $dropdown-font-size-base;
+
+  .rol-button-group {
+    display: block;
+  }
+
+  & .rol-dropdown__caret-button {
+    padding-left: 5px;
+    padding-right: 5px;
+    position: relative;
+    border-left: none;
+    &::before {
+      $gap: 5px;
+
+      content: '';
+      position: absolute;
+      display: block;
+      width: 1px;
+      top: $gap;
+      bottom: $gap;
+      left: 0;
+      background: mix(white, transparent, 50%);
+    }
+
+    &:hover {
+      &::before {
+        top: 0;
+        bottom: 0;
+      }
+    }
+    & .rol-dropdown__icon {
+      padding-left: 0;
+    }
+  }
+  @include e(icon) {
+    font-size: 12px;
+    margin: 0 3px;
+  }
+
+  .rol-dropdown-selfdefine {
+    outline: none;
+    &:focus:active,
+    &:focus:not(.focusing) {
+      outline-width: 0;
+    }
+  }
+}
+
+@include bem(dropdown-menu) {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 10px 0;
+  margin: 0;
+  background-color: $white;
+  border: none;
+  border-radius: $dropdown-border-radius-base;
+  box-shadow: none;
+
+  @include e(item) {
+    list-style: none;
+    line-height: 36px;
+    padding: 0 20px;
+    margin: 0;
+    font-size: $font-size-base;
+    color: $text;
+    cursor: pointer;
+    outline: none;
+    &:not(.is-disabled):hover,
+    &:focus {
+      background-color: $dropdown-menuItem-hover-fill;
+      color: $dropdown-menuItem-hover-color;
+    }
+
+    i {
+      margin-right: 5px;
+    }
+
+    @include modify(divided) {
+      $divided-offset: 6px;
+      position: relative;
+      margin-top: $divided-offset;
+      border-top: 1px solid $dropdown-border-color-lighter;
+      &:before {
+        content: '';
+        height: $divided-offset;
+        display: block;
+        margin: 0 -20px;
+        background-color: $white;
+      }
+    }
+    @include when(disabled) {
+      cursor: default;
+      color: $dropdown-font-color-disabled-base;
+      pointer-events: none;
+    }
+  }
+
+  @include modify(large) {
+    padding: 16px 0;
+
+    @include e(item) {
+      line-height: 44px;
+      padding: 0 24px;
+      font-size: 16px;
+
+      &.rol-dropdown-menu__item--divided {
+        $divided-offset: 10px;
+        margin-top: $divided-offset;
+
+        &:before {
+          height: $divided-offset;
+          margin: 0 -24px;
+        }
+      }
+    }
+  }
+
+  @include modify(medium) {
+    padding: 14px 0;
+
+    @include e(item) {
+      line-height: 40px;
+      padding: 0 22px;
+      font-size: 14px;
+
+      &.rol-dropdown-menu__item--divided {
+        $divided-offset: 8px;
+        margin-top: $divided-offset;
+
+        &:before {
+          height: $divided-offset;
+          margin: 0 -22px;
+        }
+      }
+    }
+  }
+
+  @include modify(small) {
+    padding: 4.5px 0;
+
+    @include e(item) {
+      line-height: 25.5px;
+      padding: 0 12.5px;
+      font-size: 12px;
+
+      &.rol-dropdown-menu__item--divided {
+        $divided-offset: 4px;
+        margin-top: $divided-offset;
+
+        &:before {
+          height: $divided-offset;
+          margin: 0 -12.5px;
+        }
+      }
+    }
+  }
+}

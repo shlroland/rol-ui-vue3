@@ -24,6 +24,7 @@ $breadcrumb-item-separator-color: $border-hover !default;
       cursor: pointer;
       color: $breadcrumb-item-color;
       text-decoration: none;
+      transition: $color-transition-base;
       &:hover {
         color: $breadcrumb-item-hover-color;
       }
