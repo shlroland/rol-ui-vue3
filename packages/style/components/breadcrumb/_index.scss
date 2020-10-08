@@ -1,6 +1,7 @@
 $breadcrumb-item-color: $link !default;
 $breadcrumb-item-hover-color: $link-hover !default;
 $breadcrumb-item-active-color: $text-strong !default;
+$breadcrumb-item-text-color: $text-light !default;
 
 $breadcrumb-item-padding-vertical: 0 !default;
 $breadcrumb-item-padding-horizontal: 0.75em !default;
@@ -14,13 +15,18 @@ $breadcrumb-item-separator-color: $border-hover !default;
   white-space: nowrap;
   @include e(item) {
     align-items: center;
-    color: $breadcrumb-item-color;
     display: flex;
     justify-content: center;
     padding: $breadcrumb-item-padding-vertical $breadcrumb-item-padding-horizontal;
-    cursor: pointer;
-    &:hover {
-      color: $breadcrumb-item-hover-color;
+    color: $breadcrumb-item-text-color;
+    &.is-link,
+    a {
+      cursor: pointer;
+      color: $breadcrumb-item-color;
+      text-decoration: none;
+      &:hover {
+        color: $breadcrumb-item-hover-color;
+      }
     }
   }
   li {
@@ -34,11 +40,14 @@ $breadcrumb-item-separator-color: $border-hover !default;
         display: none;
       }
     }
-    &:last-child{
+    &:last-child {
       .rol-breadcrumb__item {
-        color: $breadcrumb-item-active-color;
-        cursor: default;
-        pointer-events: none;
+        &.is-link,
+        a {
+          color: $breadcrumb-item-active-color;
+          cursor: default;
+          pointer-events: none;
+        }
       }
     }
     @include e(separator) {
@@ -83,29 +92,5 @@ $breadcrumb-item-separator-color: $border-hover !default;
   }
   &.is-large {
     font-size: $size-large;
-  }
-  // Styles
-  &.has-arrow-separator {
-    li + li::before {
-      content: '\02192';
-    }
-  }
-
-  &.has-bullet-separator {
-    li + li::before {
-      content: '\02022';
-    }
-  }
-
-  &.has-dot-separator {
-    li + li::before {
-      content: '\000b7';
-    }
-  }
-
-  &.has-succeeds-separator {
-    li + li::before {
-      content: '\0227B';
-    }
   }
 }

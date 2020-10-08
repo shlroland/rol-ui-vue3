@@ -1,19 +1,59 @@
 <script lang="ts">
-import { h, inject } from 'vue'
+import { h, inject, onMounted, ref } from 'vue'
 import { RBreadcrumbProvide } from './index.vue'
+import { useRouter } from 'vue-router'
 export default {
   name: 'RolBreadcrumbItem',
-  setup(props, { slots }) {
+  props: {
+    to: {
+      type: [String, Object],
+      default: '',
+    },
+    replace: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
     const { separatorIns } = inject<RBreadcrumbProvide>('rootBreadcrumb')
+    // const link = ref<HTMLSpanElement | null>(null)
+    const router = useRouter()
+    // onMounted(() => {
+    //   link.value.setAttribute('role', 'link')
+    //   link.value.addEventListener('click', () => {
+    //     if (!props.to) return
+    //     const router = useRouter()
+    //     if (!router) return
+    //     props.replace ? router.replace(props.to) : router.push(props.to)
+    //   })
+    // })
 
-    const separator = h('span', { class: 'rol-breadcrumb__separator', role: 'presentation' }, separatorIns)
-    const content = h('span', { class: 'rol-breadcrumb__item' }, [slots?.default()])
-
-    return () => {
-      return h('li', {}, [separator, content])
+    const handleLink = () => {
+      if (!router && !props.to) return
+      props.replace ? router.replace(props.to) : router.push(props.to)
     }
+
+    return {
+      separatorIns,
+      handleLink,
+    }
+  },
+  render() {
+    const { separatorIns, $slots, to, handleLink } = this
+    const separator = h('span', { class: 'rol-breadcrumb__separator', role: 'presentation' }, separatorIns)
+    const content = h(
+      'span',
+      {
+        class: ['rol-breadcrumb__item', to ? 'is-link' : null],
+        role: 'link',
+        onClick: () => {
+          handleLink()
+        },
+      },
+      [$slots?.default()],
+    )
+
+    return h('li', {}, [separator, content])
   },
 }
 </script>
-
-<style></style>
