@@ -15,7 +15,7 @@ $collapse-content-font-color: $text !default;
   border-bottom: 1px solid $collapse-border-color;
 }
 
-@include bem(collapse-item) {
+@include bem('collapse-item') {
   @include when(disabled) {
     .rol-collapse-item__header {
       color: $collapse-font-color-disabled-base;
@@ -30,6 +30,8 @@ $collapse-content-font-color: $text !default;
     background-color: $collapse-header-background-color;
     color: $collapse-header-font-color;
     cursor: pointer;
+    border-bottom: 1px solid $collapse-border-color;
+    font-size: $collapse-header-font-size;
     font-weight: $collapse-header-font-weight;
     transition: border-bottom-color 0.3s;
     outline: none;
@@ -37,6 +39,7 @@ $collapse-content-font-color: $text !default;
       margin: 0 8px 0 auto;
       transition: transform 0.3s;
       font-weight: $collapse-header-arrow-font-weight;
+      transform-origin: left center;
       @include when(active) {
         transform: rotate(90deg);
       }
@@ -67,4 +70,7 @@ $collapse-content-font-color: $text !default;
   &:last-child {
     margin-bottom: -1px;
   }
+}
+.collapse-transition {
+  transition: 0.3s height ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
 }
