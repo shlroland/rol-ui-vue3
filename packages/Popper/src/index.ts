@@ -1,6 +1,6 @@
 import { defineComponent, Fragment, h, onActivated, onBeforeUnmount, onDeactivated, onMounted, Teleport } from 'vue'
 import { UPDATE_VISIBLE_EVENT } from './core'
-import defaultProps from './core/props'
+import defaultProps, { RPopperOptions } from './core/props'
 import usePopper from './core'
 import throwError from '@rol-ui/utils/error'
 import { renderArrow, renderMask, renderPopper, renderTrigger } from './view'
@@ -10,7 +10,7 @@ export default defineComponent({
   name: 'RolPopper',
   props: defaultProps,
   emits: [UPDATE_VISIBLE_EVENT, 'after-enter', 'after-leave'],
-  setup(props, ctx) {
+  setup(props:RPopperOptions, ctx) {
     if (!ctx.slots.trigger) {
       throwError('RolPopper', 'Trigger must be provided')
     }

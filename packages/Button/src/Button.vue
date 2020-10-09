@@ -33,7 +33,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import Icon from '@rol-ui/icon/src/index.vue'
-import type { RButtonShapeType, RButtonSize, RButtonType } from './ButtonType'
+import type { RButtonNativeType, RButtonShapeType, RButtonSize, RButtonType } from './ButtonType'
 
 // interface RButtonProps {
 //   type: string
@@ -87,7 +87,7 @@ export default defineComponent({
       },
     },
     nativeType: {
-      type: String as RButtonNativeType,
+      type: String as PropType<RButtonNativeType>,
       default: 'button',
       validator: (val: string) => {
         return ['button', 'submit', 'reset'].includes(val)
