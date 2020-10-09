@@ -1,4 +1,4 @@
-import { ComponentPublicInstance, defineComponent, ref, VNode } from 'vue'
+import { ComponentPublicInstance, computed, defineComponent, h, ref, VNode, watchEffect } from 'vue'
 import RolPopper from '@rol-ui/popper'
 
 export default defineComponent({
@@ -42,9 +42,42 @@ export default defineComponent({
       default: 'light',
     },
   },
-  setup(props) {
+  setup(props, { slots }) {
+    const visible = ref(true)
     const triggerVnode = ref<Nullable<VNode>>(null)
     const caretButton = ref<Nullable<ComponentPublicInstance>>(null)
+    const triggerElm = computed<Nullable<HTMLButtonElement>>(() =>
+      !props.splitButton ? triggerVnode.value?.el : caretButton.value?.$el,
+    )
 
+    watchEffect(() => {
+      triggerVnode.value = slots.default?.()[0]
+    })
+
+    return () =>
+      h(
+        RolPopper,
+        {
+          ref: 'popper',
+          placement: props.placement,
+          effect: props.effect,
+          visibie: visible,
+          manualMode: true,
+          // 'onUpdate:visible': onVisibleUpdate,
+          popperClass: 'rol-dropdown-popper',
+          trigger: [props.trigger],
+        },
+        {
+          default: () => slots.dropdown?.(),
+          trigger: () =>
+            h(
+              'div',
+              {
+                class: 'rol-dropdown',
+              },
+              [triggerVnode.value],
+            ),
+        },
+      )
   },
 })

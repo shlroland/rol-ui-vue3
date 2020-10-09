@@ -1,5 +1,5 @@
 <template>
-  <ul class="rol-dropdown-menu">
+  <ul class="rol-dropdown-menu" :class="[size && `el-dropdown-menu--${size}`]">
     <slot></slot>
   </ul>
 </template>
