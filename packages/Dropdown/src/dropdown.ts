@@ -13,7 +13,6 @@ import {
   ref,
   VNode,
   watch,
-  watchEffect,
 } from 'vue'
 import RolPopper from '@rol-ui/popper'
 import RolButton, { RButtonSize } from '@rol-ui/button'
