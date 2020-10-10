@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dropdown>
+    <Dropdown trigger="click">
       <span class="rol-dropdown-link"> 下拉菜单</span>
       <template #dropdown>
         <DropdownMenu>

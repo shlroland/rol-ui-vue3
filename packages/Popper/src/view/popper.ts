@@ -39,7 +39,7 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
             'div',
             {
               'aria-hidden': String(!visibility),
-              class: ['rol-popper', 'is-' + effect, popperClass, pure ? 'el-popper__pure' : ''],
+              class: ['rol-popper', 'is-' + effect, popperClass, pure ? 'rol-popper__pure' : ''],
               style: popperStyle,
               id: popperId,
               ref: 'popperRef',

@@ -102,7 +102,7 @@ export default defineComponent({
   emits: [UPDATE_VISIBLE_EVENT],
   setup(props, ctx) {
     if (props.manual && typeof props.visible === 'undefined') {
-      throwError('[RolTooltip]', 'You need to pass a v-model to el-tooltip when `manual` is true')
+      throwError('[RolTooltip]', 'You need to pass a v-model to rol-tooltip when `manual` is true')
     }
     const onUpdateVisible = val => {
       ctx.emit(UPDATE_VISIBLE_EVENT, val)

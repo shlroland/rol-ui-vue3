@@ -33,11 +33,11 @@
     <CollapseTransition>
       <div
         v-show="isActive"
-        :id="`el-collapse-content-${id}`"
+        :id="`rol-collapse-content-${id}`"
         class="rol-collapse-item__wrap"
         role="tabpanel"
         :aria-hidden="!isActive"
-        :aria-labelledby="`el-collapse-head-${id}`"
+        :aria-labelledby="`rol-collapse-head-${id}`"
       >
         <div class="rol-collapse-item__content">
           <slot></slot>

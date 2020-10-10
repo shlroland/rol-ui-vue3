@@ -7,6 +7,7 @@
     }"
     :aria-disabled="disabled"
     :tabindex="disabled ? null : -1"
+    @click="handleClick"
   >
     <Icon v-if="icon" :name="icon" />
     <slot></slot>
@@ -15,7 +16,8 @@
 
 <script lang="ts">
 import Icon, { IconProps } from '@rol-ui/icon'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, getCurrentInstance, inject, PropType } from 'vue'
+import { DropdownInstance } from './dropdown'
 
 export default defineComponent({
   name: 'RolDropdownItem',
@@ -30,6 +32,20 @@ export default defineComponent({
     disabled: Boolean,
     divided: Boolean,
     icon: { type: [Object, Array, String] as PropType<IconProps> },
+  },
+  setup(props) {
+    const rolDropdown = inject<DropdownInstance>('rolDropdown')
+    const _instance = getCurrentInstance()
+
+    function handleClick(e: UIEvent) {
+      if (rolDropdown.hideOnClick.value) {
+        rolDropdown.handleClick?.()
+      }
+      rolDropdown.commandHandler?.(props.command, _instance, e)
+    }
+    return {
+      handleClick,
+    }
   },
 })
 </script>
