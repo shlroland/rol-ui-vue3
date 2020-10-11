@@ -1,10 +1,11 @@
-@include b(page-header) {
+@include bem(page-header) {
   display: flex;
   line-height: 24px;
   @include e(left) {
+    @debug &;
     display: flex;
     cursor: pointer;
-    margin-left: 40px;
+    margin-right: 40px;
     position: relative;
     &::after {
       content: '';
@@ -12,12 +13,13 @@
       width: 1px;
       height: 16px;
       right: -20px;
+      top: 50%;
       transform: translateY(-50%);
       background-color: $border;
     }
 
     .rol-icon-back {
-      font-size: 18px;
+      font-size: 16px;
       margin-right: 6px;
       align-self: center;
     }

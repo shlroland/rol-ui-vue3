@@ -1,7 +1,7 @@
 <template>
   <div class="rol-page-header">
-    <div class="rol-page__left">
-      <Icon name="arrow-left" />
+    <div class="rol-page-header__left">
+      <Icon class="rol-icon-back" name="arrow-left" />
       <div class="rol-page-header__title">
         <slot name="title">{{ title }}</slot>
       </div>
