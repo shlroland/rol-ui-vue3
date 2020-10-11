@@ -1,0 +1,267 @@
+// $menu-background-color: $white;
+// $menu-border-right: 1px solid $border;
+// $menu-item-height: 3.5em;
+// $menu-item-title-height: 2.5em;
+// $menu-item-title-padding: 0.75em;
+// $menu-margin: 0.375em;
+
+// @mixin menu-item {
+//   height: 56px;
+//   line-height: 56px;
+//   font-size: 14px;
+//   color: $text;
+//   padding: 0 20px;
+//   list-style: none;
+//   cursor: pointer;
+//   position: relative;
+//   transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+//   box-sizing: border-box;
+//   white-space: nowrap;
+
+//   * {
+//     vertical-align: middle;
+//   }
+
+//   i {
+//     color: $text-light;
+//   }
+
+//   &:hover,
+//   &:focus {
+//     outline: none;
+//     background-color: $background;
+//   }
+
+//   @include when(disabled) {
+//     opacity: 0.25;
+//     cursor: not-allowed;
+//     background: none !important;
+//   }
+// }
+
+// @include bem(menu) {
+//   font-size: $size-normal;
+//   list-style: none;
+//   position: relative;
+//   margin: 0;
+//   padding-left: 0;
+//   border-right: $menu-border-right;
+//   background-color: $menu-background-color;
+//   @include clearfix;
+
+//   @include m(horizontal) {
+//     border-right: none;
+//     & > .rol-menu-item {
+//       float: left;
+//       height: $menu-item-height;
+//       line-height: $menu-item-height;
+//       margin: 0;
+//       border-bottom: 2px solid transparent;
+//       color: $text-light;
+
+//       a,
+//       a:hover {
+//         color: inherit;
+//       }
+
+//       &:not(.is-disabled):hover,
+//       &:not(.is-disabled):focus {
+//         background-color: $background;
+//       }
+//     }
+
+//     & > .rol-submenu {
+//       float: left;
+
+//       &:focus,
+//       &:hover {
+//         outline: none;
+//         .rol-submenu__title {
+//           color: $text-strong;
+//         }
+//       }
+
+//       &.is-active {
+//         .rol-submenu__title {
+//           border-bottom: 2px solid $link;
+//           color: $link-invert;
+//         }
+//       }
+
+//       & .rol-submenu__title {
+//         height: $menu-item-height;
+//         line-height: $menu-item-height;
+//         border-bottom: 2px solid transparent;
+//         color: $text-light;
+//         &:hover {
+//           background-color: $background;
+//         }
+//       }
+
+//       & .rol-submenu__icon-arrow {
+//         position: static;
+//         vertical-align: middle;
+//         margin-left: 8px;
+//         margin-top: -3px;
+//       }
+//     }
+
+//     & .rol-menu {
+//       & .rol-menu-item,
+//       & .rol-submenu__title {
+//         background-color: $white;
+//         float: none;
+//         height: $menu-item-title-height;
+//         line-height: $menu-item-title-height;
+//         padding: 0 $menu-item-title-padding;
+//         color: $text-light;
+//       }
+//       & .rol-menu-item.is-active,
+//       & .rol-submenu.is-active > .rol-submenu__title {
+//         color: $link-invert;
+//       }
+//       & .rol-menu-item:not(.is-disabled):hover,
+//       & .rol-menu-item:not(.is-disabled):focus {
+//         outline: none;
+//         color: $text-strong;
+//       }
+//       & > .rol-menu-item.is-active {
+//         border-bottom: 2px solid $link;
+//         color: $link-invert;
+//       }
+//     }
+//   }
+//   @include m(collapse) {
+//     width: 4em;
+//     > .rol-menu-item,
+//     > .rol-submenu > .rol-submenu__title {
+//       .rol-icon {
+//         margin: 0;
+//         vertical-align: middle;
+//         width: 1.5em;
+//         text-align: center;
+//       }
+//       .rol-submenu__icon-arrow {
+//         display: none;
+//       }
+//       span {
+//         height: 0;
+//         width: 0;
+//         overflow: hidden;
+//         visibility: hidden;
+//         display: inline-block;
+//       }
+//     }
+//     > .rol-menu-item.is-active i {
+//       color: inherit;
+//     }
+
+//     .rol-menu .rol-submenu {
+//       min-width: 200px;
+//     }
+//     .rol-submenu {
+//       position: relative;
+//       & .rol-menu {
+//         position: absolute;
+//         margin-left: $menu-margin;
+//         top: 0;
+//         left: 100%;
+//         z-index: 10;
+//         border: 1px solid $border-light;
+//         border-radius: $radius-small;
+//         box-shadow: $box-shadow-light;
+//       }
+//       &.is-opened {
+//         > .rol-submenu__title .rol-submenu__icon-arrow {
+//           transform: none;
+//         }
+//       }
+//     }
+//   }
+//   @include m(popup) {
+//     z-index: 100;
+//     min-width: 200px;
+//     border: none;
+//     padding: 5px 0;
+//     border-radius: $radius-small;
+//     box-shadow: $box-shadow-light;
+//     &-bottom-start {
+//       margin-top: $menu-margin;
+//     }
+//     &-right-start {
+//       margin-left: $menu-margin;
+//       margin-right: $menu-margin;
+//     }
+//   }
+//   @include bem(menu-item) {
+//     @include menu-item;
+//     & .rol-icon {
+//       margin-right: $menu-margin;
+//       width: $size-4;
+//       text-align: center;
+//       font-size: 1.125rem;
+//       vertical-align: middle;
+//     }
+//     @include when(active) {
+//       color: $link-invert;
+//       i {
+//         color: inherit;
+//       }
+//     }
+//   }
+//   @include bem(submenu) {
+//     list-style: none;
+//     margin: 0;
+//     padding-left: 0;
+
+//     @include e(title) {
+//       @include menu-item;
+
+//       &:hover {
+//         background-color: $background;
+//       }
+//     }
+//     & .rol-menu {
+//       border: none;
+//     }
+//     & .rol-menu-item {
+//       height: $size-1;
+//       line-height: $size-1;
+//       padding: 0 2.75em;
+//       min-width: 200px;
+//     }
+//     @include e(icon-arrow) {
+//       position: absolute;
+//       top: 50%;
+//       right: 20px;
+//       margin-top: -7px;
+//       transition: transform 0.3s;
+//       font-size: 12px;
+//     }
+//     @include when(active) {
+//       .rol-submenu__title {
+//         border-bottom-color: $link;
+//       }
+//     }
+//     @include when(opened) {
+//       > .rol-submenu__title .rol-submenu__icon-arrow {
+//         transform: rotateZ(180deg);
+//       }
+//     }
+//     @include when(disabled) {
+//       .rol-submenu__title,
+//       .rol-menu-item {
+//         opacity: 0.25;
+//         cursor: not-allowed;
+//         background: none !important;
+//       }
+//     }
+//     .rol-icon {
+//       vertical-align: middle;
+//       margin-right: $menu-margin;
+//       width: 1.5em;
+//       text-align: center;
+//       font-size: 18px;
+//     }
+//   }
+// }
