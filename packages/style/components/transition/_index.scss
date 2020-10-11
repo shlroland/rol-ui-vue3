@@ -1,9 +1,9 @@
-$all-transition: all .3s cubic-bezier(.645,.045,.355,1) !default;
+$all-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) !default;
 $fade-transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) !default;
 $fade-linear-transition: opacity 200ms linear !default;
 $md-fade-transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1), opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) !default;
-$border-transition-base: border-color .2s cubic-bezier(.645,.045,.355,1) !default;
-$color-transition-base: color .2s cubic-bezier(.645,.045,.355,1) !default;
+$border-transition-base: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default;
+$color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default;
 
 .fade-in-linear-enter-active,
 .fade-in-linear-leave-active {
@@ -27,9 +27,25 @@ $color-transition-base: color .2s cubic-bezier(.645,.045,.355,1) !default;
 
 .rol-fade-in-enter-active,
 .rol-fade-in-leave-active {
-  transition: all .3s cubic-bezier(.55,0,.1,1);
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
 .rol-fade-in-enter-from,
 .rol-fade-in-leave-active {
+  opacity: 0;
+}
+
+.rol-notification-fade-enter {
+  &.right {
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  &.left {
+    left: 0;
+    transform: translateX(-100%);
+  }
+}
+
+.rol-notification-fade-leave-active {
   opacity: 0;
 }
