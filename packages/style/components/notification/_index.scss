@@ -12,7 +12,17 @@ $notification-colors: $colors !default;
   width: $notification-width;
   background-color: $notification-background-color;
   border-radius: $notification-radius;
-  position: relative;
+  position: fixed;
+  transition: opacity 0.3s, transform 0.3s, left 0.3s, right 0.3s, top 0.4s, bottom 0.3s;
+  overflow: hidden;
+
+  &.right {
+    right: 16px;
+  }
+
+  &.left {
+    left: 16px;
+  }
   @include ltr {
     padding: $notification-padding-ltr;
   }
@@ -26,15 +36,15 @@ $notification-colors: $colors !default;
   }
 
   @include e(content) {
-    color: $text-light;
     margin: 0;
+    font-size: $size-small;
   }
 
   @include e(title) {
     font-weight: bold;
-    font-size: $size-medium;
-    color: $text-strong;
+    font-size: $size-normal;
     margin: 0;
+    margin-bottom: 0.5em;
   }
 
   strong {
