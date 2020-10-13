@@ -3,7 +3,7 @@
     <div
       v-show="visible"
       :id="id"
-      ref="$notification"
+      ref="notificationDom"
       :class="['rol-notification', customClass, horizontalClass, type ? `is-${type}` : '', light && 'is-light']"
       :style="positionStyle"
       role="alert"
@@ -30,7 +30,7 @@ import { RButtonType } from '@rol-ui/Button'
 import { EVENT_CODE } from '@rol-ui/utils/aria'
 import { off, on } from '@rol-ui/utils/dom'
 import { computed, defineComponent, onMounted, PropType, ref, VNode, watch } from 'vue'
-export type NotificationVM = VNode
+
 export default defineComponent({
   name: 'RolNotification',
   props: {
@@ -49,7 +49,7 @@ export default defineComponent({
     offset: { type: Number, default: 0 },
     customClass: { type: String, default: '' },
     message: {
-      type: [String, Object] as PropType<string | NotificationVM>,
+      type: [String, Object] as PropType<string | VNode>,
       default: '',
     },
     title: { type: String, default: '' },
@@ -83,7 +83,7 @@ export default defineComponent({
     const visible = ref(false)
     const closed = ref(false)
     const timer = ref(null)
-    const $notification = ref<HTMLDivElement | null>(null)
+    const notificationDom = ref<HTMLDivElement | null>(null)
 
     const close = () => {
       closed.value = true
@@ -107,9 +107,9 @@ export default defineComponent({
 
     const destroyElement = () => {
       visible.value = false
-      off($notification.value, 'transitionend', destroyElement)
+      off(notificationDom.value, 'transitionend', destroyElement)
       if (props.onClose) props.onClose()
-      $notification.value.parentNode.removeChild($notification.value)
+      if (notificationDom.value) notificationDom.value.parentNode.removeChild(notificationDom.value)
     }
 
     const click = () => {
@@ -132,7 +132,7 @@ export default defineComponent({
     watch(closed, newVal => {
       if (newVal) {
         visible.value = false
-        on($notification.value, 'transitionend', destroyElement)
+        on(notificationDom.value, 'transitionend', destroyElement)
       }
     })
 
@@ -145,7 +145,7 @@ export default defineComponent({
     return {
       horizontalClass,
       positionStyle,
-      $notification,
+      notificationDom,
       close,
       visible,
       destroyElement,

@@ -34,7 +34,7 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
   opacity: 0;
 }
 
-.rol-notification-fade-enter {
+.rol-notification-fade-enter-from {
   &.right {
     right: 0;
     transform: translateX(100%);
