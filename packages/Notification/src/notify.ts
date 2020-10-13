@@ -1,7 +1,7 @@
 import { isServer } from '@rol-ui/utils/is$'
 import PopupManager from '@rol-ui/utils/popup-manager'
 import NotificationConstructor from './index.vue'
-import { createVNode, isVNode, render, VNode } from 'vue'
+import { createVNode, isVNode, nextTick, render, VNode } from 'vue'
 
 export type NotificationVM = VNode
 type NotificationQueueItem = {
@@ -23,7 +23,7 @@ export type NotificationOptions = {
   offset?: number // defaults 0
   position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' // default top-right
   showClose?: boolean
-  type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'link' | 'text' | ''
+  type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'link' | ''
   title?: string
 }
 
@@ -50,6 +50,9 @@ export const close = (id: string, userOnClose?: (vm: NotificationVM) => void) =>
 
   const removedHeight = vm.el.offsetHeight
   render(null, $el)
+  nextTick(() => {
+    document.body.removeChild($el)
+  })
   notifications.splice(index, 1)
   const len = notifications.length
   if (len < 1) return
@@ -60,7 +63,7 @@ export const close = (id: string, userOnClose?: (vm: NotificationVM) => void) =>
       const verticalPos = vm.props.position.split('-')[0]
       const pos = parseInt(notifications[i].vm.el.style[verticalPos], 10) - removedHeight - 16
       notifications[i].vm.component.props.offset = pos
-      render(notifications[i].vm, notifications[i].$el)
+      // render(notifications[i].vm, notifications[i].$el)
     }
   }
 }
@@ -121,7 +124,7 @@ const closeAll = () => {
   }
 }
 
-;(['primary', 'success', 'warning', 'danger', 'info', 'link', 'text'] as const).forEach(type => {
+;(['primary', 'success', 'warning', 'danger', 'info', 'link'] as const).forEach(type => {
   Object.assign(
     notification,
     {

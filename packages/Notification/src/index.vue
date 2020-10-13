@@ -26,7 +26,6 @@
 </template>
 
 <script lang="ts">
-import { RButtonType } from '@rol-ui/Button'
 import { EVENT_CODE } from '@rol-ui/utils/aria'
 import { off, on } from '@rol-ui/utils/dom'
 import { computed, defineComponent, onMounted, PropType, ref, VNode, watch } from 'vue'
@@ -35,10 +34,10 @@ export default defineComponent({
   name: 'RolNotification',
   props: {
     type: {
-      type: String as PropType<RButtonType>,
+      type: String as PropType<'primary' | 'success' | 'warning' | 'danger' | 'info' | 'link' | ''>,
       default: '',
       validator: (val: string) => {
-        return ['primary', 'success', 'warning', 'danger', 'info', 'link', 'text', ''].includes(val)
+        return ['primary', 'success', 'warning', 'danger', 'info', 'link', ''].includes(val)
       },
     },
     light: Boolean,

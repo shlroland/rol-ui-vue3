@@ -1,0 +1,70 @@
+$message-min-width: 380px !default;
+$message-shadow: $box-shadow-base !default;
+$message-background-color: $background !default;
+$message-padding: $size-6 $size-6 $size-6 $size-5 !default;
+$message-success-font-color: $success !default;
+$message-info-font-color: $info !default;
+$message-warning-font-color: $warning !default;
+$message-danger-font-color: $danger !default;
+$message-primary-font-color: $primary !default;
+$message-link-font-color: $link !default;
+
+@include bem(message) {
+  min-width: $message-min-width;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: $border-light;
+  position: fixed;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+  background-color: $message-background-color;
+  transition: all 0.3s;
+  overflow: hidden;
+  padding: $message-padding;
+  display: flex;
+  align-items: center;
+  @include when(center) {
+    justify-content: center;
+  }
+  @include when(closable) {
+    padding-right: $size-6;
+    .rol-message__content {
+      padding-right: 16px;
+    }
+  }
+  @each $name, $pair in $notification-colors {
+    $color: nth($pair, 1);
+    $color-invert: nth($pair, 2);
+    @include modify(#{$name}) {
+      background-color: $color;
+      color: $color-invert;
+      .rol-message__content {
+        color: $color-invert;
+      }
+      // If light and dark colors are provided
+      @if length($pair) >= 4 {
+        $color-light: nth($pair, 3);
+        $color-dark: nth($pair, 4);
+        &.is-light {
+          background-color: $color-light;
+          color: $color-dark;
+        }
+      }
+    }
+  }
+  @include e(icon) {
+    margin-right: $size-7;
+  }
+
+  @include e(content) {
+    padding: 0;
+    font-size: 14px;
+    line-height: 1;
+    &:focus {
+      outline-width: 0;
+    }
+  }
+}

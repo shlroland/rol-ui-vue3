@@ -7,7 +7,7 @@
 
 <script>
 import Button from '@rol-ui/button'
-import Notification from '@rol-ui/notification'
+import Message from '@rol-ui/meassage'
 export default {
   components: {
     // NotificationIns,
@@ -15,9 +15,9 @@ export default {
   },
   methods: {
     openMsg() {
-      Notification({
-        title: '提示',
+      Message({
         message: '这是一条自动关闭的消息',
+        duration: 5000,
       })
     },
     open2() {

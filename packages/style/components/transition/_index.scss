@@ -49,3 +49,11 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
 .rol-notification-fade-leave-active {
   opacity: 0;
 }
+
+
+.rol-message-fade-enter-from,
+.rol-message-fade-leave-active {
+  opacity: 0;
+  transform: translate(-50%, -100%);
+
+}
