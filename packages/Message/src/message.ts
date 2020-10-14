@@ -75,10 +75,10 @@ const Message: RMessage = function (options = {}): RMessageHandle {
 
   const message = options.message
   vm = createVNode(MessageConstrutor, props, isVNode(options.message) ? { default: () => message } : null)
+  document.body.appendChild(container)
 
   render(vm, container)
   instances.push({ vm, $el: container })
-  document.body.appendChild(container)
 
   return {
     close: options.onClose,
@@ -101,15 +101,15 @@ const close: (id: string, userOnClose?: (vm: MessageVM) => void) => void = (id, 
   const removedHeight = vm.el.offsetHeight
   render(null, $el)
   instances.splice(index, 1)
+  nextTick(() => {
+    document.body.removeChild($el)
+  })
   const len = instances.length
   if (len < 1) return
   for (let i = index; i < len; i++) {
     const pos = parseInt(instances[i].vm.el.style['top'], 10) - removedHeight - 16
     instances[i].vm.component.props.offset = pos
   }
-  nextTick(() => {
-    document.body.removeChild($el)
-  })
 }
 
 export function closeAll(): void {

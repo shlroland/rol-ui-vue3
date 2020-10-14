@@ -17,7 +17,7 @@ export default {
     openMsg() {
       Message({
         message: '这是一条自动关闭的消息',
-        duration: 5000,
+        duration: 4000,
       })
     },
     open2() {
