@@ -8,6 +8,7 @@ export type MessageVM = VNode
 export type RMessageOptions = {
   customClass?: string
   center?: boolean
+  light?: boolean
   dangerouslyUseHTMLString?: boolean // default false
   duration?: number // default 3000
   iconClass?: string
@@ -31,9 +32,16 @@ export interface RMessageHandle {
   close: () => void
 }
 
+type RMessageFunc = (options?: RMessageOptions | string) => RMessageHandle
 export interface RMessage {
   (options?: RMessageOptions | string): RMessageHandle
   closeAll(): void
+  primary?: RMessageFunc
+  success?: RMessageFunc
+  warning?: RMessageFunc
+  danger?: RMessageFunc
+  info?: RMessageFunc
+  link?: RMessageFunc
 }
 
 let vm: MessageVM

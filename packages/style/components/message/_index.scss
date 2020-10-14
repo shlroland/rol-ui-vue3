@@ -26,6 +26,7 @@ $message-link-font-color: $link !default;
   padding: $message-padding;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   @include when(center) {
     justify-content: center;
   }
@@ -51,6 +52,9 @@ $message-link-font-color: $link !default;
         &.is-light {
           background-color: $color-light;
           color: $color-dark;
+          .rol-message__content {
+            color: $color-dark;
+          }
         }
       }
     }
@@ -66,5 +70,9 @@ $message-link-font-color: $link !default;
     &:focus {
       outline-width: 0;
     }
+  }
+
+  @include e(closeBtn) {
+    @extend %delete;
   }
 }

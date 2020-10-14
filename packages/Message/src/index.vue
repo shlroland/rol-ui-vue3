@@ -9,6 +9,7 @@
         type && `rol-message--${type}`,
         center ? 'is-center' : '',
         showClose ? 'is-closable' : '',
+        light ? 'is-light' : '',
         customClass,
       ]"
       :style="customStyle"
@@ -52,7 +53,6 @@ export default defineComponent({
         return ['primary', 'success', 'warning', 'danger', 'info', 'link', ''].includes(val)
       },
     },
-    light: Boolean,
     id: { type: String, default: '' },
     message: {
       type: [String, Object] as PropType<string | MessageVM>,
@@ -60,6 +60,7 @@ export default defineComponent({
     },
     offset: { type: Number, default: 0 },
     center: { type: Boolean, default: false },
+    light: { type: Boolean, default: false },
     customClass: { type: String, default: '' },
     zIndex: { type: Number, default: 0 },
     duration: { type: Number, default: 4500 },
@@ -77,6 +78,8 @@ export default defineComponent({
         zIndex: props.zIndex,
       }
     })
+
+    console.log(props.light)
 
     const visible = ref(false)
     const closed = ref(false)
