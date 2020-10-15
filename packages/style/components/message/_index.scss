@@ -8,6 +8,7 @@ $message-warning-font-color: $warning !default;
 $message-danger-font-color: $danger !default;
 $message-primary-font-color: $primary !default;
 $message-link-font-color: $link !default;
+$message-colors: $colors;
 
 @include bem(message) {
   min-width: $message-min-width;
