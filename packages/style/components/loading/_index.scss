@@ -1,0 +1,80 @@
+$loading-spinner-size: 42px !default;
+$loading-fullscreen-spinner-size: 50px !default;
+
+@include bem(loading-parent) {
+  @include modify(relative) {
+    position: relative !important;
+  }
+  @include modify(hidden) {
+    overflow: hidden !important;
+  }
+}
+
+@include bem(loading-mask) {
+  position: absolute;
+  z-index: 2000;
+  background-color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: opacity 0.3s;
+
+  @include when(fullscreen) {
+    position: fixed;
+    .rol-loading-spinner {
+      margin-top: #{- $loading-fullscreen-spinner-size / 2};
+
+      .circular {
+        height: $loading-fullscreen-spinner-size;
+        width: $loading-fullscreen-spinner-size;
+      }
+    }
+  }
+}
+
+@include bem(loading-spinner) {
+  top: 50%;
+  margin-top: #{- $loading-spinner-size / 2};
+  width: 100%;
+  text-align: center;
+  position: absolute;
+
+  .rol-loading-text {
+    color: $primary;
+    margin: 3px 0;
+    font-size: $size-6;
+  }
+  .circular {
+    height: $loading-spinner-size;
+    width: $loading-spinner-size;
+    animation: loading-rotate 2s linear infinite;
+  }
+}
+
+.rol-loading-fade-enter-from,
+.rol-loading-fade-leave-active {
+  opacity: 0;
+}
+
+@keyframes loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loading-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -40px;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -120px;
+  }
+}
