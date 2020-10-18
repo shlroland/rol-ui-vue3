@@ -1,16 +1,20 @@
 <template>
   <transition name="rol-alert-fade">
-    <div v-show="visible" role="alert" :class="['rol-alert', center ? 'is-center' : '']">
+    <div
+      v-show="visible"
+      role="alert"
+      :class="['rol-alert', center ? 'is-center' : '', light ? 'is-light' : '', typeClass]"
+    >
       <div class="rol-alert__content">
         <span v-if="title || $slots.title" :class="['rol-alert__title', isBoldTitle]">
           <slot name="title">{{ title }}</slot>
         </span>
-        <p class="rol-alert__description">
+        <p v-if="description || $slots.default" class="rol-alert__description">
           <slot>
             {{ description }}
           </slot>
         </p>
-        <button v-if="closable" class="rol-alert__closebtn"></button>
+        <button v-if="closable" class="rol-alert__closebtn" @click="close"></button>
       </div>
     </div>
   </transition>
@@ -30,13 +34,18 @@ export default defineComponent({
       default: '',
     },
     center: Boolean,
+    blod: Boolean,
+    light: Boolean,
     closable: {
       type: Boolean,
       default: true,
     },
     type: {
-      type: String as PropType<'success' | 'info' | 'error' | 'warning'>,
+      type: String as PropType<'primary' | 'success' | 'warning' | 'danger' | 'info' | 'link' | ''>,
       default: 'info',
+      validator: (val: string) => {
+        return ['primary', 'success', 'warning', 'danger', 'info', 'link', ''].includes(val)
+      },
     },
   },
   emits: ['click'],
@@ -53,6 +62,7 @@ export default defineComponent({
       visible,
       isBoldTitle,
       close,
+      typeClass,
     }
   },
 })
