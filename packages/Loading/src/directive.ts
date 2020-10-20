@@ -1,20 +1,12 @@
-import {
-  App,
-  ComponentInternalInstance,
-  ComputedOptions,
-  DirectiveBinding,
-  nextTick,
-  ObjectDirective,
-  SetupContext,
-} from 'vue'
+import { App, ComponentInternalInstance, DirectiveBinding, nextTick, ObjectDirective, SetupContext } from 'vue'
 import Loading from './index.vue'
 import assign from 'lodash/assign'
 import { createComponent } from '@rol-ui/utils/component'
 import { removeClass } from '@rol-ui/utils/dom'
 import { addStyle } from './addStyle'
 
-interface defaultProps {
-  target: HTMLElement
+export interface defaultProps {
+  target: HTMLElement | string
   body: boolean
   fullscreen: boolean
   lock: boolean
@@ -24,7 +16,7 @@ interface defaultProps {
   customClass: string
 }
 
-const defaults: defaultProps = {
+export const defaults: defaultProps = {
   target: null,
   body: false,
   fullscreen: true,
@@ -39,8 +31,9 @@ interface CtxProps extends SetupContext {
   $el: any
 }
 
-interface releaseComponentInternalInstance extends ComponentInternalInstance {
+export interface releaseComponentInternalInstance extends ComponentInternalInstance {
   ctx?: CtxProps
+  close?: () => void
 }
 
 const toggleLoading = (el: any, binding: DirectiveBinding<any>) => {

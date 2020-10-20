@@ -10,3 +10,7 @@ export function createComponent(Component: Component | string, props: any, child
   render(vnode, container)
   return vnode.component
 }
+
+export function unmountComponent(ComponnetInstance) {
+  render(undefined, ComponnetInstance.vnode[COMPONENT_CONTAINER_SYMBOL])
+}
