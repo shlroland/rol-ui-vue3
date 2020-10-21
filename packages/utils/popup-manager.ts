@@ -18,7 +18,7 @@ interface StackFrame {
   modalClass: string
 }
 
-type Instance = ComponentPublicInstance<unknown, ComponentMethods>
+export type Instance = ComponentPublicInstance<unknown, ComponentMethods>
 
 interface PopupManager {
   getInstance: (id: string) => Instance
