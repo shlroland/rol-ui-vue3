@@ -1,6 +1,6 @@
 <template>
   <Button>按 钮</Button>
-  <MessageBoxIns />
+  <MessageBoxIns title="消息弹框" />
 </template>
 
 <script lang="ts">
