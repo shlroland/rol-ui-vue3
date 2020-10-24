@@ -97,7 +97,7 @@ const defautState: defaultStateProps = {
   isOnComposition: false,
   distinguishCancelAndClose: false,
   type$: '',
-  visible: true,
+  visible: false,
   validateError: false,
 }
 
