@@ -1,0 +1,40 @@
+$pagination-font-color: $text-strong !default;
+$pagination-background-color: $white !default;
+$pagination-font-size: 13px !default;
+$pagination-border-radius: 3px !default;
+$pagination-button-width: 35.5px !default;
+$pagination-button-height: 28px !default;
+$pagination-button-disabled-color: $text-light !default;
+$pagination-button-disabled-background-color: $border !default;
+$pagination-hover-color: $link-hover !default;
+
+@include bem(pagination) {
+  white-space: nowrap;
+  padding: 2px 5px;
+  color: $pagination-font-color;
+  font-weight: bold;
+  @include clearfix;
+
+  span:not([class*='suffix']),
+  button {
+    display: inline-block;
+    font-size: $pagination-font-size;
+    min-width: $pagination-button-width;
+    height: $pagination-button-height;
+    line-height: $pagination-button-height;
+    vertical-align: top;
+    box-sizing: border-box;
+  }
+  .rol-input__inner {
+    text-align: center;
+    -moz-appearance: textfield;
+    line-height: normal;
+  }
+
+  .rol-input__suffix {
+      right: 0;
+      transform: scale(0.8);
+  }
+
+  
+}

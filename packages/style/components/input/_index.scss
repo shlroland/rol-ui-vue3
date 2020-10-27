@@ -1,0 +1,380 @@
+$input-font-size: $font-size-base !default;
+/// color||Color|0
+$input-font-color: $grey-darker !default;
+/// height||Other|4
+$input-width: 140px !default;
+/// height||Other|4
+$input-height: 40px !default;
+$input-border: 1px solid $border-light !default;
+$input-border-color: $grey-lighter !default;
+/// borderRadius||Border|2
+$input-border-radius: 4px !default;
+$input-border-color-hover: $grey-lighter !default;
+/// color||Color|0
+$input-background-color: $white !default;
+$input-fill-disabled: $background !default;
+$input-color-disabled: $text-light !default;
+/// color||Color|0
+$input-icon-color: $grey-lighter !default;
+/// color||Color|0
+$input-placeholder-color: $grey-lighter !default;
+$input-max-width: 314px !default;
+
+$input-hover-border: $grey-darker !default;
+$input-clear-hover-color: $grey-light !default;
+
+$input-focus-border: $link !default;
+$input-focus-fill: $white !default;
+
+$input-disabled-fill: $text-light !default;
+$input-disabled-border: $background !default;
+$input-disabled-color: $text-light !default;
+$input-disabled-placeholder-color: $grey-lighter !default;
+
+/// fontSize||Font|1
+$input-medium-font-size: 14px !default;
+/// height||Other|4
+$input-medium-height: 36px !default;
+/// fontSize||Font|1
+$input-small-font-size: 13px !default;
+/// height||Other|4
+$input-small-height: 32px !default;
+/// fontSize||Font|1
+$input-mini-font-size: 12px !default;
+/// height||Other|4
+$input-mini-height: 28px !default;
+
+@include bem(textarea) {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  vertical-align: bottom;
+  font-size: $font-size-base;
+  @include e(inner) {
+    display: block;
+    resize: vertical;
+    padding: 5px 15px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: inherit;
+    color: $input-font-color;
+    background-color: $input-background-color;
+    background-image: none;
+    border: $input-border;
+    border-radius: $input-border-radius;
+    transition: $border-transition-base;
+
+    &::placeholder {
+      color: $input-placeholder-color;
+    }
+
+    &:hover {
+      border-color: $input-hover-border;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $input-focus-border;
+    }
+  }
+
+  & .rol-input__count {
+    color: $info;
+    background-color: $white;
+    position: absolute;
+    font-size: 12px;
+    bottom: 5px;
+    right: 10px;
+  }
+
+  @include when(disabled) {
+    .rol-textarea__inner {
+      background-color: $input-disabled-fill;
+      border-color: $input-disabled-border;
+      color: $input-disabled-color;
+      cursor: not-allowed;
+
+      &::placeholder {
+        color: $input-disabled-placeholder-color;
+      }
+    }
+  }
+
+  @include when(exceed) {
+    .rol-textarea__inner {
+      border-color: $danger;
+    }
+
+    .rol-input__count {
+      color: $danger;
+    }
+  }
+}
+
+@include bem(input) {
+  position: relative;
+  font-size: $font-size-base;
+  display: inline-block;
+  width: 100%;
+  @include scroll-bar;
+
+  & .rol-input__clear {
+    color: $font-size-base;
+    font-size: $input-font-size;
+    cursor: pointer;
+    transition: $color-transition-base;
+
+    &:hover {
+      color: $input-clear-hover-color;
+    }
+  }
+  & .rol-input__count {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    color: $info;
+    font-size: 12px;
+
+    .rol-input__count-inner {
+      background: $white;
+      line-height: initial;
+      display: inline-block;
+      padding: 0 5px;
+    }
+  }
+
+  @include e(inner) {
+    -webkit-appearance: none;
+    background-color: $input-background-color;
+    background-image: none;
+    border-radius: $input-border-radius;
+    border: $input-border;
+    box-sizing: border-box;
+    color: $input-font-color;
+    display: inline-block;
+    font-size: inherit;
+    height: $input-height;
+    line-height: $input-height;
+    outline: none;
+    padding: 0 15px;
+    transition: $border-transition-base;
+    width: 100%;
+
+    &::placeholder {
+      color: $input-placeholder-color;
+    }
+    &:hover {
+      border-color: $input-hover-border;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $input-focus-border;
+    }
+  }
+
+  @include e(suffix) {
+    position: absolute;
+    height: 100%;
+    right: 5px;
+    text-align: center;
+    color: $input-icon-color;
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+  @include e(suffix-inner) {
+    pointer-events: all;
+  }
+  @include e(prefix) {
+    position: absolute;
+    height: 100%;
+    left: 5px;
+    top: 0;
+    text-align: center;
+    color: $input-icon-color;
+    transition: all 0.3s;
+  }
+  @include e(icon) {
+    height: 100%;
+    width: 25px;
+    text-align: center;
+    transition: all 0.3s;
+    line-height: $input-height;
+  }
+
+  @include e(validateIcon) {
+    pointer-events: none;
+  }
+
+  @include when(active) {
+    .rol-input__inner {
+      outline: none;
+      border-color: $input-focus-border;
+    }
+  }
+
+  @include when(disabled) {
+    .rol-input__inner {
+      background-color: $input-disabled-fill;
+      border-color: $input-disabled-border;
+      color: $input-disabled-color;
+      cursor: not-allowed;
+      &::placeholder {
+        color: $input-disabled-placeholder-color;
+      }
+    }
+    .rol-input__icon {
+      cursor: not-allowed;
+    }
+  }
+
+  @include when(exceed) {
+    .rol-input__inner {
+      border-color: $danger;
+    }
+
+    .rol-input__suffix {
+      .rol-input__count {
+        color: $danger;
+      }
+    }
+  }
+
+  @include modify(suffix) {
+    .rol-input__inner {
+      padding-right: 30px;
+    }
+  }
+
+  @include modify(prefix) {
+    .rol-input__inner {
+      padding-left: 30px;
+    }
+  }
+
+  @include modify(medium) {
+    font-size: $input-medium-font-size;
+
+    @include e(inner) {
+      height: $input-medium-height;
+      line-height: $input-medium-height;
+    }
+
+    .rol-input__icon {
+      line-height: $input-medium-height;
+    }
+  }
+  @include modify(small) {
+    font-size: $input-small-font-size;
+
+    @include e(inner) {
+      height: $input-small-height;
+      line-height: $input-small-height;
+    }
+
+    .rol-input__icon {
+      line-height: $input-small-height;
+    }
+  }
+  @include modify(mini) {
+    font-size: $input-mini-font-size;
+
+    @include e(inner) {
+      height: $input-mini-height;
+      line-height: $input-mini-height;
+    }
+
+    .rol-input__icon {
+      line-height: $input-mini-height;
+    }
+  }
+}
+
+@include bem(input-group) {
+  line-height: normal;
+  display: inline-table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  > .rol-input__inner {
+    vertical-align: middle;
+    display: table-cell;
+  }
+
+  @include e((append, prepend)) {
+    background-color: $background;
+    color: $info;
+    vertical-align: middle;
+    display: table-cell;
+    position: relative;
+    border: $input-border;
+    border-radius: $input-border-radius;
+    padding: 0 20px;
+    width: 1px;
+    white-space: nowrap;
+    &:focus {
+      outline: none;
+    }
+
+    .rol-select,
+    .rol-button {
+      display: inline-block;
+      margin: -10px -20px;
+    }
+
+    button.rol-button,
+    div.rol-select .rol-input__inner,
+    div.rol-select:hover .rol-input__inner {
+      border-color: transparent;
+      background-color: transparent;
+      color: inherit;
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    .rol-button,
+    .rol-input {
+      font-size: inherit;
+    }
+  }
+
+  @include e(prepend) {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  @include e(append) {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  @include modify(prepend) {
+    .rol-input__inner {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .rol-select .rol-input.is-focus .rol-input__inner {
+      border-color: transparent;
+    }
+  }
+
+  @include modify(append) {
+    .rol-input__inner {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .rol-select .rol-input.is-focus .rol-input__inner {
+      border-color: transparent;
+    }
+  }
+}
+
+.rol-input__inner::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  
