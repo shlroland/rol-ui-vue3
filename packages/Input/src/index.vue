@@ -15,6 +15,8 @@
       $attrs.class,
     ]"
     :style="$attrs.style"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
   >
     <template v-if="type !== 'textarea'">
       <div v-if="$slots.prepend" class="rol-input-group__prepend">
@@ -31,6 +33,11 @@
         :autocomplete="autocomplete"
         :tabindex="tabindex"
         :aria-label="label"
+        @compositionstart="handleCompositionStart"
+        @compositionupdate="handleCompositionUpdate"
+        @compositionend="handleCompositionEnd"
+        @input="handleInput"
+        @change="handleChange"
       />
       <span v-if="$slots.prefix || prefixIcon" class="rol-input__prefix">
         <slot name="prefix"></slot>
@@ -78,8 +85,9 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, ref, shallowRef } from 'vue'
+import { computed, nextTick, PropType, ref, shallowRef } from 'vue'
 import Icon from '@rol-ui/icon'
+import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
 
 type AutosizeProp =
   | {
@@ -161,13 +169,18 @@ export default {
       default: true,
     },
   },
+  emits: ['mouseenter', 'mouseleave', 'input', 'change', UPDATE_MODELVALUE_EVENT],
   setup(props, ctx) {
     const passwordVisible = ref(false)
     const nativeInputValue = computed(() => String(props.modelValue))
     const focused = ref(false)
     const hovering = ref(false)
+    const isComposing = ref(false)
+    const input = ref(null)
+    const textarea = ref(null)
     const _textareaCalcStyle = shallowRef({})
 
+    const inputOrTextarea = computed(() => input.value || textarea.value)
     const inputSize = computed(() => props.size)
     const inputDisabled = computed(() => props.disabled)
     const upperLimit = computed(() => ctx.attrs.maxlength)
@@ -214,6 +227,52 @@ export default {
       return ctx.slots.suffix || props.suffixIcon || showClear.value || props.showPassword || isWordLimitVisible.value
     })
 
+    const setNativeInputValue = () => {
+      const input = inputOrTextarea.value
+      if (!input || input.value === nativeInputValue.value) return
+      input.value = nativeInputValue.value
+    }
+
+    const handleInput = (event: InputEvent) => {
+      const { value } = event.target as HTMLInputElement
+      if (isComposing.value) return
+      if (value === nativeInputValue.value) return
+
+      ctx.emit(UPDATE_MODELVALUE_EVENT, value)
+      ctx.emit('input', value)
+      nextTick(setNativeInputValue)
+    }
+
+    const handleChange = event => {
+      ctx.emit('change', event.target.value)
+    }
+
+    const onMouseLeave = e => {
+      hovering.value = false
+      ctx.emit('mouseleave', e)
+    }
+
+    const onMouseEnter = e => {
+      hovering.value = true
+      ctx.emit('mouseenter', e)
+    }
+
+    const handleCompositionStart = () => {
+      isComposing.value = true
+    }
+
+    const handleCompositionUpdate = (event: CompositionEvent) => {
+      const text = (event.target as HTMLInputElement).value
+      const lastCharacter = text[text.length - 1] || ''
+      isComposing.value = !!lastCharacter
+    }
+
+    const handleCompositionEnd = () => {
+      if (isComposing.value) {
+        isComposing.value = false
+      }
+    }
+
     return {
       inputSize,
       inputDisabled,
@@ -226,6 +285,13 @@ export default {
       textLength,
       upperLimit,
       textareaStyle,
+      onMouseEnter,
+      onMouseLeave,
+      handleCompositionStart,
+      handleCompositionUpdate,
+      handleCompositionEnd,
+      handleInput,
+      handleChange,
     }
   },
 }

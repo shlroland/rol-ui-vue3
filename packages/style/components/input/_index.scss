@@ -5,8 +5,8 @@ $input-font-color: $grey-darker !default;
 $input-width: 140px !default;
 /// height||Other|4
 $input-height: 40px !default;
-$input-border: 1px solid $border-light !default;
-$input-border-color: $grey-lighter !default;
+$input-border: 1px solid $border !default;
+$input-border-color: $grey-light !default;
 /// borderRadius||Border|2
 $input-border-radius: 4px !default;
 $input-border-color-hover: $grey-lighter !default;
@@ -20,15 +20,15 @@ $input-icon-color: $grey-lighter !default;
 $input-placeholder-color: $grey-lighter !default;
 $input-max-width: 314px !default;
 
-$input-hover-border: $grey-darker !default;
+$input-hover-border: $grey !default;
 $input-clear-hover-color: $grey-light !default;
 
 $input-focus-border: $link !default;
 $input-focus-fill: $white !default;
 
-$input-disabled-fill: $text-light !default;
-$input-disabled-border: $background !default;
-$input-disabled-color: $text-light !default;
+$input-disabled-fill: $background !default;
+$input-disabled-border: $grey-lighter !default;
+$input-disabled-color: $text-strong !default;
 $input-disabled-placeholder-color: $grey-lighter !default;
 
 /// fontSize||Font|1
