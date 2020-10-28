@@ -26,7 +26,7 @@
         v-if="type !== 'textarea'"
         ref="input"
         class="rol-input__inner"
-        v-bind="$attrs"
+        v-bind="attrs"
         :type="showPassword ? (passwordVisible ? 'text' : 'password') : type"
         :disabled="inputDisabled"
         :readonly="readonly"
@@ -38,6 +38,8 @@
         @compositionend="handleCompositionEnd"
         @input="handleInput"
         @change="handleChange"
+        @focus="handleFocus"
+        @blur="handleBlur"
       />
       <span v-if="$slots.prefix || prefixIcon" class="rol-input__prefix">
         <slot name="prefix"></slot>
@@ -54,8 +56,14 @@
             class="rol-input__icon rol-input__clear"
             :name="['far', 'times-circle']"
             @mousedown.prevent
+            @click="clear"
           />
-          <Icon v-if="showPwdVisible" :name="['far', 'eye']" class="rol-input__icon rol-input__clear" />
+          <Icon
+            v-if="showPwdVisible"
+            :name="['far', 'eye']"
+            class="rol-input__icon rol-input__clear"
+            @click.stop="handlePasswordVisible"
+          />
           <span v-if="isWordLimitVisible" class="rol-input__count">
             <span class="rol-input__count-inner"> {{ textLength }}/{{ upperLimit }} </span>
           </span>
@@ -69,13 +77,20 @@
       v-else
       ref="textarea"
       class="rol-textarea__inner"
-      v-bind="$attrs"
+      v-bind="attrs"
       :tabindex="tabindex"
       :disabled="inputDisabled"
       :readonly="readonly"
       :autocomplete="autocomplete"
       :style="textareaStyle"
       :aria-label="label"
+      @compositionstart="handleCompositionStart"
+      @compositionupdate="handleCompositionUpdate"
+      @compositionend="handleCompositionEnd"
+      @input="handleInput"
+      @focus="handleFocus"
+      @blur="handleBlur"
+      @change="handleChange"
     ></textarea>
     <span
       v-if="isWordLimitVisible && type === 'textarea'"
@@ -85,9 +100,13 @@
 </template>
 
 <script lang="ts">
-import { computed, nextTick, PropType, ref, shallowRef } from 'vue'
+import { computed, getCurrentInstance, nextTick, onMounted, onUpdated, PropType, ref, shallowRef, watch } from 'vue'
+import { isObject } from '@vue/shared'
 import Icon from '@rol-ui/icon'
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
+import useAttrs from '@rol-ui/hooks/useAttrs'
+import { isServer } from '@rol-ui/utils/is$'
+import calcTextareaHeight from './calcTextareaHeight'
 
 type AutosizeProp =
   | {
@@ -95,6 +114,11 @@ type AutosizeProp =
       maxRows?: number
     }
   | boolean
+
+const PENDANT_MAP = {
+  suffix: 'append',
+  prefix: 'prepend',
+}
 
 export default {
   name: 'RolInput',
@@ -149,11 +173,11 @@ export default {
       default: false,
     },
     suffixIcon: {
-      type: String,
+      type: [Object, Array, String] ,
       default: '',
     },
     prefixIcon: {
-      type: String,
+      type: [Object, Array, String],
       default: '',
     },
     label: {
@@ -169,8 +193,10 @@ export default {
       default: true,
     },
   },
-  emits: ['mouseenter', 'mouseleave', 'input', 'change', UPDATE_MODELVALUE_EVENT],
+  emits: ['mouseenter', 'mouseleave', 'input', 'change', 'blur', 'focus', 'clear', UPDATE_MODELVALUE_EVENT],
   setup(props, ctx) {
+    const instance = getCurrentInstance()
+    const attrs = useAttrs(true)
     const passwordVisible = ref(false)
     const nativeInputValue = computed(() => String(props.modelValue))
     const focused = ref(false)
@@ -227,6 +253,42 @@ export default {
       return ctx.slots.suffix || props.suffixIcon || showClear.value || props.showPassword || isWordLimitVisible.value
     })
 
+    const resizeTextarea = () => {
+      const { type, autosize } = props
+
+      if (isServer || type !== 'textarea') return
+      if (autosize) {
+        const minRows = isObject(autosize) ? autosize.minRows : void 0
+        const maxRows = isObject(autosize) ? autosize.maxRows : void 0
+        _textareaCalcStyle.value = calcTextareaHeight(textarea.value, minRows, maxRows)
+      } else {
+        _textareaCalcStyle.value = {
+          minHeight: calcTextareaHeight(textarea.value).minHeight,
+        }
+      }
+    }
+
+    const calcIconOffset = place => {
+      const { el } = instance.vnode
+      const elList: HTMLSpanElement[] = Array.from(el.querySelectorAll(`.rol-input__${place}`))
+      const target = elList.find(item => item.parentNode === el)
+      if (!target) return
+      const pendant = PENDANT_MAP[place]
+
+      if (ctx.slots[pendant]) {
+        target.style.transform = `translateX(${place === 'suffix' ? '-' : ''}${
+          el.querySelector(`.rol-input-group__${pendant}`).offsetWidth
+        }px)`
+      } else {
+        target.removeAttribute('style')
+      }
+    }
+
+    const updateIconOffset = () => {
+      calcIconOffset('prefix')
+      calcIconOffset('suffix')
+    }
+
     const setNativeInputValue = () => {
       const input = inputOrTextarea.value
       if (!input || input.value === nativeInputValue.value) return
@@ -245,6 +307,33 @@ export default {
 
     const handleChange = event => {
       ctx.emit('change', event.target.value)
+    }
+
+    const focus = () => {
+      nextTick(() => {
+        inputOrTextarea.value.focus()
+      })
+    }
+
+    const blur = () => {
+      inputOrTextarea.value.blur()
+    }
+
+    const select = () => {
+      inputOrTextarea.value.select()
+    }
+
+    const handleFocus = event => {
+      focused.value = true
+      ctx.emit('focus', event)
+    }
+
+    const handleBlur = event => {
+      focused.value = false
+      ctx.emit('blur', event)
+      // if (props.validateEvent) {
+      //   this.dispatch('ElFormItem', 'el.form.blur', [props.modelValue])
+      // }
     }
 
     const onMouseLeave = e => {
@@ -273,7 +362,53 @@ export default {
       }
     }
 
+    const clear = () => {
+      ctx.emit(UPDATE_MODELVALUE_EVENT, '')
+      ctx.emit('change', '')
+      ctx.emit('clear')
+    }
+
+    const handlePasswordVisible = () => {
+        // debugger
+      passwordVisible.value = !passwordVisible.value
+      focus()
+    }
+
+    watch(
+      () => props.modelValue,
+      () => {
+        nextTick(resizeTextarea)
+      },
+    )
+
+    watch(nativeInputValue, () => {
+      setNativeInputValue()
+    })
+
+    watch(
+      () => props.type,
+      () => {
+        nextTick(() => {
+          setNativeInputValue()
+          resizeTextarea()
+          updateIconOffset()
+        })
+      },
+    )
+
+    onMounted(() => {
+      setNativeInputValue()
+      updateIconOffset()
+      nextTick(resizeTextarea)
+    })
+
+    onUpdated(() => {
+      nextTick(updateIconOffset)
+    })
+
     return {
+      input,
+      textarea,
       inputSize,
       inputDisabled,
       inputExceed,
@@ -292,6 +427,14 @@ export default {
       handleCompositionEnd,
       handleInput,
       handleChange,
+      handleFocus,
+      handleBlur,
+      attrs,
+      select,
+      focus,
+      blur,
+      handlePasswordVisible,
+      clear,
     }
   },
 }

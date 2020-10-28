@@ -52,9 +52,11 @@ module.exports = {
       {
         html: {
           void: 'always',
-          normal: 'never',
-          component: 'always',
+          normal: 'any',
+          component: 'any',
         },
+        svg: 'always',
+        math: 'always',
       },
     ],
     'vue/max-attributes-per-line': [
@@ -70,5 +72,6 @@ module.exports = {
     'vue/require-default-prop': 'off',
     'vue/html-closing-bracket-spacing': 'error',
     'vue/no-parsing-error': [2, { 'x-invalid-end-tag': false }],
+    'vue/valid-v-slot': 'off',
   },
 }
