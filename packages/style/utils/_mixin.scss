@@ -233,6 +233,15 @@
     background-color: Rgba($scheme-invert, 0.4);
   }
   // Sizes
+  &.is-mini {
+    height: 12px;
+    max-height: 12px;
+    max-width: 12px;
+    min-height: 12px;
+    min-width: 12px;
+    width: 12px;
+    transform: scale(0.75);
+  }
   &.is-small {
     height: 16px;
     max-height: 16px;

@@ -101,6 +101,7 @@ $tag-colors: $colors !default;
   padding-right: 0.75em;
   white-space: nowrap;
   .delete {
+    @extend %delete;
     @include ltr-property('margin', 0.25rem, false);
     @include ltr-property('margin', -0.375rem);
   }
