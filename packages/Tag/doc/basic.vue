@@ -59,14 +59,41 @@
   <span class="demo-tag">
     <Tag type="danger" size="medium">label</Tag>
   </span>
+  <span class="demo-tag">
+    <Tag rounded>label</Tag>
+  </span>
+
+  <div style="margin-top: 50px; width: 200px; border: 1px solid #333;">
+    <Tags all-size="normal">
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+      <Tag>label</Tag>
+    </Tags>
+  </div>
+
+  <div style="margin-top: 50px;">
+    <TagsAddons mode="badge" left-text="npm" right-text="good" right-type="success"></TagsAddons>
+    <TagsAddons mode="blog" left-text="Alex" left-type="danger"></TagsAddons>
+  </div>
 </template>
 
 <script lang="ts">
-import Tag from '@rol-ui/tag'
+import Tag, { Tags, TagsAddons } from '@rol-ui/tag'
 
 export default {
   components: {
     Tag,
+    Tags,
+    TagsAddons,
   },
   data() {
     return {

@@ -24,19 +24,19 @@ $tag-colors: $colors !default;
   }
 
   &.are-small {
-    .rol-tag:not(.is-normal):not(.is-large):not(.is-medium) {
+    .rol-tag:not(.is-large):not(.is-medium) {
       font-size: $size-mini;
     }
   }
 
   &.are-medium {
-    .rol-tag:not(.is-normal):not(.is-large):not(.is-small) {
+    .rol-tag:not(.is-large):not(.is-small) {
       font-size: $size-normal;
     }
   }
 
   &.are-large {
-    .rol-tag:not(.is-normal):not(.is-medium):not(.is-small) {
+    .rol-tag:not(.is-medium):not(.is-small) {
       font-size: $size-medium;
     }
   }
@@ -167,22 +167,22 @@ $tag-colors: $colors !default;
       top: 50%;
       transform: translateX(-50%) translateY(-50%) rotate(45deg);
       transform-origin: center center;
-      &::before {
-        height: 1px;
-        width: 50%;
-      }
+    }
+    &::before {
+      height: 1px;
+      width: 50%;
+    }
 
-      &::after {
-        height: 50%;
-        width: 1px;
-      }
-      &:hover,
-      &:focus {
-        background-color: darken($tag-background-color, 5%);
-      }
-      &:active {
-        background-color: darken($tag-background-color, 10%);
-      }
+    &::after {
+      height: 50%;
+      width: 1px;
+    }
+    &:hover,
+    &:focus {
+      background-color: darken($tag-background-color, 5%);
+    }
+    &:active {
+      background-color: darken($tag-background-color, 10%);
     }
   }
   &.is-rounded {
