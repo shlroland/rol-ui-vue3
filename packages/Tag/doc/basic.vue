@@ -1,6 +1,6 @@
 <template>
   <span class="demo-tag">
-    <Tag>label</Tag>
+    <Tag closable>label</Tag>
   </span>
   <span class="demo-tag">
     <Tag type="dark">label</Tag>
@@ -82,7 +82,7 @@
 
   <div style="margin-top: 50px;">
     <TagsAddons mode="badge" left-text="npm" right-text="good" right-type="success"></TagsAddons>
-    <TagsAddons mode="blog" left-text="Alex" left-type="danger"></TagsAddons>
+    <TagsAddons v-show="labelVisible" mode="blog" left-text="Alex" left-type="danger" @close="labelVisible = false"></TagsAddons>
   </div>
 </template>
 
@@ -98,6 +98,7 @@ export default {
   data() {
     return {
       value1: '',
+      labelVisible: true,
     }
   },
 }

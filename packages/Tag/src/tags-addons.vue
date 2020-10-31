@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, Transition } from 'vue'
 import { RTagSize, RTagType } from './tag.vue'
 import Tags from './tags.vue'
 import Tag from './tag.vue'
@@ -24,49 +24,79 @@ export default defineComponent({
     leftType: RTagType,
     rightType: RTagType,
   },
+  emits: ['click', 'close'],
+  setup(props, ctx) {
+    const handleClose = event => {
+      event.stopPropagation()
+      ctx.emit('close', event)
+    }
+
+    const handleClick = event => {
+      ctx.emit('click', event)
+    }
+
+    return {
+      handleClose,
+      handleClick,
+    }
+  },
   render() {
-    const { mode, size, leftText, rightText, leftType, rightType } = this
+    const { mode, size, leftText, rightText, leftType, rightType, handleClose, handleClick } = this
     if (mode === 'badge') {
       return h(
         Tags,
         {
           addons: true,
           allSize: size,
+          onClick: handleClick,
         },
-        [
-          h(
-            Tag,
-            {
-              type: 'black',
-            },
-            [leftText],
-          ),
-          h(
-            Tag,
-            {
-              type: rightType,
-            },
-            [rightText],
-          ),
-        ],
+        {
+          default: () => [
+            h(
+              Tag,
+              {
+                type: 'black',
+              },
+              [leftText],
+            ),
+            h(
+              Tag,
+              {
+                type: rightType,
+              },
+              [rightText],
+            ),
+          ],
+        },
       )
     } else if (mode === 'blog') {
       return h(
-        Tags,
+        Transition,
+        { name: 'rol-zoom-in-center' },
         {
-          addons: true,
-          allSize: size,
+          default: () => [
+            h(
+              Tags,
+              {
+                addons: true,
+                allSize: size,
+                onClick: handleClick,
+              },
+              {
+                default: () => [
+                  h(
+                    Tag,
+                    {
+                      type: leftType,
+                    },
+                    [leftText],
+                  ),
+                  h(TagClose, { onClick: handleClose }),
+                ],
+              },
+            ),
+          ],
         },
-        [
-          h(
-            Tag,
-            {
-              type: leftType,
-            },
-            [leftText],
-          ),
-          h(TagClose),
-        ],
       )
     } else if (mode === 'free') {
       return h(
@@ -74,23 +104,26 @@ export default defineComponent({
         {
           addons: true,
           allSize: size,
+          onClick: handleClick,
         },
-        [
-          h(
-            Tag,
-            {
-              type: leftType,
-            },
-            [leftText],
-          ),
-          h(
-            Tag,
-            {
-              type: rightType,
-            },
-            [rightText],
-          ),
-        ],
+        {
+          default: () => [
+            h(
+              Tag,
+              {
+                type: leftType,
+              },
+              [leftText],
+            ),
+            h(
+              Tag,
+              {
+                type: rightType,
+              },
+              [rightText],
+            ),
+          ],
+        },
       )
     } else {
       console.error('rol-tags-addons:mode property must be badge or blog or free')

@@ -1,12 +1,12 @@
 <template>
-  <span v-if="!disableTransitions" :class="classes">
+  <span v-if="disableTransitions" :class="classes" @click="handleClick">
     <slot></slot>
-    <button v-if="closable" :class="deleteClasses"></button>
+    <button v-if="closable" :class="deleteClasses" @click="handleClose"></button>
   </span>
   <transition v-else name="rol-zoom-in-center">
-    <span v-if="!disableTransitions" :class="classes">
+    <span :class="classes" @click="handleClick">
       <slot></slot>
-      <button v-if="closable" :class="deleteClasses"></button>
+      <button v-if="closable" :class="deleteClasses" @click="handleClose"></button>
     </span>
   </transition>
 </template>
@@ -44,7 +44,8 @@ export default defineComponent({
     size: RTagSize,
     type: RTagType,
   },
-  setup(props) {
+  emits: ['close', 'click'],
+  setup(props, ctx) {
     const classes = computed(() => {
       const { type, light, size, rounded } = props
       return [
@@ -72,9 +73,21 @@ export default defineComponent({
       return classes
     })
 
+    // methods
+    const handleClose = event => {
+      event.stopPropagation()
+      ctx.emit('close', event)
+    }
+
+    const handleClick = event => {
+      ctx.emit('click', event)
+    }
+
     return {
       classes,
       deleteClasses,
+      handleClose,
+      handleClick,
     }
   },
 })
