@@ -1,7 +1,6 @@
 import { SetupContext } from 'vue'
 import { useSelectStates } from './useSelect'
 
-
 export type States = ReturnType<typeof useSelectStates>
 
 export type RolSelectCtx = SetupContext<
