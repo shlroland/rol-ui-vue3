@@ -1,9 +1,17 @@
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
-import { defineComponent } from 'vue'
+import { defineComponent, toRefs } from 'vue'
 import { useSelect, useSelectStates } from './useSelect'
+import Popper from '@rol-ui/popper'
+import RolInput from '@rol-ui/input'
+import RolIcon from '@rol-ui/icon'
 
 const Select = defineComponent({
   name: 'RolSelect',
+  components: {
+    Popper,
+    RolInput,
+    RolIcon,
+  },
   props: {
     name: String,
     id: String,
@@ -50,9 +58,52 @@ const Select = defineComponent({
   emits: ['remove-tag', 'clear', 'change', 'visible-change', 'focus', 'blur', UPDATE_MODELVALUE_EVENT],
   setup(props, ctx) {
     const states = useSelectStates(props)
-    const { selectSize } = useSelect(props, states, ctx)
+    const { selectSize, dropMenuVisible,selectDisabled,showClose,iconClass } = useSelect(props, states, ctx)
 
-    return { selectSize }
+    const {
+      inputWidth,
+      selected,
+      inputLength,
+      filteredOptionsCount,
+      visible,
+      softFocus,
+      selectedLabel,
+      hoverIndex,
+      query,
+      inputHovering,
+      currentPlaceholder,
+      menuVisibleOnFocus,
+      isOnComposition,
+      isSilentBlur,
+      options,
+      cachedOptions,
+      optionsCount,
+    } = toRefs(states)
+
+    return {
+      selectSize,
+      selectDisabled,
+      dropMenuVisible,
+      showClose,
+      iconClass,
+      inputWidth,
+      selected,
+      inputLength,
+      filteredOptionsCount,
+      visible,
+      softFocus,
+      selectedLabel,
+      hoverIndex,
+      query,
+      inputHovering,
+      currentPlaceholder,
+      menuVisibleOnFocus,
+      isOnComposition,
+      isSilentBlur,
+      options,
+      cachedOptions,
+      optionsCount,
+    }
   },
 })
 

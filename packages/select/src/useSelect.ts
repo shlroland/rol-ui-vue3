@@ -7,7 +7,7 @@ export const useSelectStates = (props: { multiple?: boolean }) => {
   const selectEmitter = mitt()
   return reactive({
     options: [],
-    cacheOptions: [],
+    cachedOptions: [],
     createdSelected: false,
     selected: props.multiple ? [] : ({} as any),
     inputLength: 20,
@@ -33,8 +33,26 @@ export const useSelectStates = (props: { multiple?: boolean }) => {
 
 export const useSelect = (props: InstanceType<typeof Select>['$props'], states: States, ctx: RolSelectCtx) => {
   const selectSize = computed(() => props.size || 'normal')
+  const dropMenuVisible = computed(() => states.visible)
+  const selectDisabled = computed(() => props.disabled)
+
+  const showClose = computed(() => {
+    const hasValue = props.multiple
+      ? Array.isArray(props.modelValue) && props.modelValue.length > 0
+      : props.modelValue !== undefined && props.modelValue !== null && props.modelValue !== ''
+    const criteria = props.clearable && !selectDisabled.value && states.inputHovering && hasValue
+    return criteria
+  })
+
+  const iconClass = computed(() =>
+    props.remote && props.filterable ? '' : states.visible ? 'arrow-down' : 'angle-down',
+  )
 
   return {
     selectSize,
+    dropMenuVisible,
+    selectDisabled,
+    showClose,
+    iconClass,
   }
 }

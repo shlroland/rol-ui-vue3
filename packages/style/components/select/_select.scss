@@ -45,6 +45,10 @@
       }
     }
 
+    & .rol-input__suffix-inner {
+      pointer-events: none;
+    }
+
     &.is-disabled {
       & .rol-input__inner {
         cursor: not-allowed;
