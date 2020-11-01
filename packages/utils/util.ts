@@ -1,5 +1,5 @@
 import { ComponentInternalInstance, ref, Ref } from 'vue'
-import { toRawType } from '@vue/shared'
+import { toRawType, extend } from '@vue/shared'
 import { AnyFunction } from './types'
 import { EVENT_CODE } from './aria'
 import { addClass, on } from './dom'
@@ -134,7 +134,7 @@ export const initDropdownDomEvent = (
 
   const initEvent = () => {
     on(triggerElm, 'keydown', handleTriggerKeyDown)
-    on(dropdownElm.value, 'keydown', handleTriggerKeyDown, true)
+    on(dropdownElm.value, 'keydown', handleItemKeyDown, true)
   }
 
   const initDomOperation = () => {
@@ -149,4 +149,14 @@ export const initDropdownDomEvent = (
   }
 
   initDomOperation()
+}
+
+export function toObject<T>(arr: Array<T>): Record<string, T> {
+  const res = {}
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i]) {
+      extend(res, arr[i])
+    }
+  }
+  return res
 }
