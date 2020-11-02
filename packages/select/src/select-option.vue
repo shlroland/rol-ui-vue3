@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, getCurrentInstance, reactive, toRefs } from 'vue'
 import { useOption } from './useOptions'
 
 export default defineComponent({
@@ -33,9 +33,13 @@ export default defineComponent({
       hover: false,
     })
 
-    const { currentLabel } = useOption(props, states)
+    const { currentLabel,select } = useOption(props, states)
 
     const { visible, hover } = toRefs(states)
+
+    const vm = getCurrentInstance().proxy
+
+    select.options.push(vm)
 
     return {
       currentLabel,

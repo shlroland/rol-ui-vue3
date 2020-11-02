@@ -1,5 +1,10 @@
 <template>
-  <div ref="selectWrapper" class="rol-select" :class="[selectSize ? `rol-select--${selectSize}` : '']">
+  <div
+    ref="selectWrapper"
+    class="rol-select"
+    :class="[selectSize ? `rol-select--${selectSize}` : '']"
+    @click.stop="toggleMenu"
+  >
     <Popper
       ref="popper"
       v-model:visible="dropMenuVisible"
@@ -10,12 +15,13 @@
       manual-mode
       effect="light"
       trigger="click"
+      popper-class="rol-select-popper"
       :offset="6"
     >
       <template #trigger>
         <div class="select-trigger">
           <rol-input
-            ref="referebce"
+            ref="reference"
             v-model="selectedLabel"
             type="text"
             :placeholder="currentPlaceholder"
@@ -27,6 +33,7 @@
             :validate-event="false"
             :class="{ 'is-focus': visible }"
             :tabindex="multiple && filterable ? '-1' : null"
+            @focus="handleFocus"
           >
             <template v-if="$slots.prefix" #prefix>
               <slot name="prefix"></slot>
@@ -49,10 +56,13 @@
               v-show="options.length > 0"
               ref="scrollbar"
               tag="ul"
-              wrap-class="el-select-dropdown__wrap"
-              view-class="el-select-dropdown__list"
+              wrap-class="rol-select-dropdown__wrap"
+              view-class="rol-select-dropdown__list"
               :class="{ 'is-empty': !allowCreate && query && filteredOptionsCount === 0 }"
-            ></rol-scrollbar>
+            >
+              <rol-option :value="query" :created="true" />
+              <slot></slot>
+            </rol-scrollbar>
           </rol-select-dropdown>
         </transition>
       </template>
@@ -68,6 +78,7 @@ import Popper from '@rol-ui/popper'
 import RolInput from '@rol-ui/input'
 import RolIcon from '@rol-ui/icon'
 import RolSelectDropdown from './select-dropdown.vue'
+import RolOption from './select-option.vue'
 import RolScrollbar from '@rol-ui/scrollbar'
 import { selectKey } from './token'
 
@@ -79,6 +90,7 @@ export default defineComponent({
     RolIcon,
     RolSelectDropdown,
     RolScrollbar,
+    RolOption,
   },
   props: {
     name: String,
@@ -138,6 +150,10 @@ export default defineComponent({
       handleOptionSelect,
       onOptionDestroy,
       readonly,
+      handleFocus,
+      toggleMenu,
+      reference,
+      input,
     } = useSelect(props, states, ctx)
 
     const {
@@ -186,6 +202,7 @@ export default defineComponent({
       iconClass,
       popper,
       readonly,
+      toggleMenu,
       inputWidth,
       selected,
       inputLength,
@@ -203,6 +220,10 @@ export default defineComponent({
       options,
       cachedOptions,
       optionsCount,
+      handleFocus,
+      reference,
+      input,
+      selectWrapper,
     }
   },
 })

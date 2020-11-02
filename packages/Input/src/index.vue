@@ -136,8 +136,9 @@ export default {
       default: 'text',
     },
     size: {
-      type: String as PropType<'large' | 'medium' | 'small' | 'mini' | null>,
-      validator: (val: string) => !val || ['large', 'medium', 'small', 'mini'].includes(val),
+      type: String as PropType<'large' | 'medium' | 'small' | 'mini' >,
+      default: 'nromal',
+      validator: (val: string) =>  ['large', 'medium', 'small', 'mini','normal'].includes(val),
     },
     resize: {
       type: String as PropType<'none' | 'both' | 'horizontal' | 'vertical'>,

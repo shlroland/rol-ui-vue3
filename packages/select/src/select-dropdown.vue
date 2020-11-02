@@ -17,7 +17,7 @@ export default defineComponent({
   componentName: 'RolSelectDropdown',
   setup() {
     const select = inject(selectKey)
-
+console.log(select.selectWrapper)
     const popperClass = computed(() => select.props.popperClass)
     const isMultiple = computed(() => select.props.multiple)
     const minWidth = computed(() => select.selectWrapper?.getBoundingClientRect().width + 'px')
