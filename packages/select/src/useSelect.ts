@@ -69,12 +69,27 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
 
   const dropMenuVisible = computed(() => states.visible && emptyText.value !== false)
 
+  const showNewOption = computed(() => {
+    const hasExistingOption = states.options
+      .filter(option => {
+        return !option.created
+      })
+      .some(option => {
+        return option.currentLabel === states.query
+      })
+    return props.filterable && props.allowCreate && states.query !== '' && !hasExistingOption
+  })
+
   const onOptionDestroy = () => {
     return 0
   }
 
   const handleOptionSelect = () => {
     return 0
+  }
+
+  const handleClose = () => {
+    states.visible = false
   }
 
   const handleFocus = (event: FocusEvent) => {
@@ -132,5 +147,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     toggleMenu,
     reference,
     input,
+    showNewOption,
+    handleClose,
   }
 }

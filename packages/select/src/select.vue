@@ -51,7 +51,7 @@
 
       <template #default>
         <transition name="rol-zoom-in-top">
-          <rol-select-dropdown v-show="visible" ref="popper">
+          <rol-select-dropdown v-show="visible" ref="popper" v-outSideClick="handleClose">
             <rol-scrollbar
               v-show="options.length > 0"
               ref="scrollbar"
@@ -60,7 +60,7 @@
               view-class="rol-select-dropdown__list"
               :class="{ 'is-empty': !allowCreate && query && filteredOptionsCount === 0 }"
             >
-              <rol-option :value="query" :created="true" />
+              <rol-option v-if="showNewOption" :value="query" :created="true" />
               <slot></slot>
             </rol-scrollbar>
           </rol-select-dropdown>
@@ -81,6 +81,7 @@ import RolSelectDropdown from './select-dropdown.vue'
 import RolOption from './select-option.vue'
 import RolScrollbar from '@rol-ui/scrollbar'
 import { selectKey } from './token'
+import { OutSideClick } from '@rol-ui/directives'
 
 export default defineComponent({
   name: 'RolSelect',
@@ -92,6 +93,7 @@ export default defineComponent({
     RolScrollbar,
     RolOption,
   },
+  directives: { OutSideClick },
   props: {
     name: String,
     id: String,
@@ -154,6 +156,8 @@ export default defineComponent({
       toggleMenu,
       reference,
       input,
+      showNewOption,
+      handleClose,
     } = useSelect(props, states, ctx)
 
     const {
@@ -203,6 +207,7 @@ export default defineComponent({
       popper,
       readonly,
       toggleMenu,
+      handleClose,
       inputWidth,
       selected,
       inputLength,
@@ -224,6 +229,7 @@ export default defineComponent({
       reference,
       input,
       selectWrapper,
+      showNewOption,
     }
   },
 })
