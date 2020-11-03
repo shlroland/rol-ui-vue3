@@ -158,6 +158,7 @@ export default defineComponent({
       input,
       showNewOption,
       handleClose,
+      setSelected,
     } = useSelect(props, states, ctx)
 
     const {
@@ -195,6 +196,11 @@ export default defineComponent({
         inputWidth,
         selectWrapper,
         popper,
+        selected,
+        multiple: props.multiple,
+        remote: props.remote,
+        setSelected,
+        valueKey: props.valueKey,
       }),
     )
 

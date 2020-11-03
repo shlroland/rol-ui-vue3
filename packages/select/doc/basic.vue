@@ -4,6 +4,9 @@
       <SelectOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></SelectOption>
     </Select>
   </div>
+  <div>
+    value: {{ value }}
+  </div>
 </template>
 
 <script lang="ts">

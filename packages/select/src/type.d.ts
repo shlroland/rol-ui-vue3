@@ -8,5 +8,6 @@ export type RolSelectCtx = SetupContext<
 >
 
 export interface PopperVnode extends VNode {
-  update: () => void
+  update(): void
+  doDestroy(): void
 }

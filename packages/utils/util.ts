@@ -160,3 +160,12 @@ export function toObject<T>(arr: Array<T>): Record<string, T> {
   }
   return res
 }
+
+export const getValueByPath = (obj: any, paths = ''): unknown => {
+  let ret: unknown = obj
+  paths.split('.').map(path => {
+    ret = ret?.[path]
+  })
+
+  return ret
+}

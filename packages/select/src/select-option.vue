@@ -1,5 +1,15 @@
 <template>
-  <li v-show="visible" class="rol-select-dropdown__item">
+  <li
+    v-show="visible"
+    :class="[
+      'rol-select-dropdown__item',
+      {
+        hover: hover,
+        selected: itemSelected,
+      },
+    ]"
+    @click.stop="selectOptionClick"
+  >
     <slot>
       <span>{{ currentLabel }}</span>
     </slot>
@@ -7,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, reactive, toRefs } from 'vue'
+import { defineComponent, getCurrentInstance, onBeforeUnmount, reactive, toRefs } from 'vue'
 import { useOption } from './useOptions'
 
 export default defineComponent({
@@ -33,17 +43,38 @@ export default defineComponent({
       hover: false,
     })
 
-    const { currentLabel,select } = useOption(props, states)
+    const { currentLabel, select, itemSelected } = useOption(props, states)
 
     const { visible, hover } = toRefs(states)
 
     const vm = getCurrentInstance().proxy
 
+    onBeforeUnmount(() => {
+      const { selected, multiple } = select
+      let selectedOptions = multiple ? selected : [selected]
+
+      let index = select.cachedOptions.indexOf(vm)
+      let selectedIndex = selectedOptions?.indexOf(vm)
+      //   if option is not selected, remove it from cache
+      if (index > -1 && selectedIndex < 0) {
+        select.cachedOptions.splice(index, 1)
+      }
+    })
+    select.cachedOptions.push(vm)
     select.options.push(vm)
+
+    const selectOptionClick = () => {
+      if (props.disabled !== true && states.groupDisabled !== true) {
+        select.handleOptionSelect(vm, true)
+      }
+    }
 
     return {
       currentLabel,
       visible,
+      hover,
+      itemSelected,
+      selectOptionClick,
     }
   },
 })

@@ -1,7 +1,11 @@
-import { isEdge, isIE } from '@rol-ui/utils/is$'
+import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
+import { isEdge, isIE, isObject } from '@rol-ui/utils/is$'
+import { getValueByPath } from '@rol-ui/utils/util'
 import mitt from 'mitt'
 import { computed, reactive, ref, watch } from 'vue'
 import { PopperVnode, RolSelectCtx, States } from './type'
+import isEqual from 'lodash/isEqual'
+import { isNull, isUndefined } from 'lodash'
 
 export const useSelectStates = (props: { multiple?: boolean }) => {
   const selectEmitter = mitt()
@@ -35,7 +39,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   const popper = ref<PopperVnode | null>(null)
   const selectWrapper = ref<HTMLElement | null>(null)
   const reference = ref(null)
-  const input = ref(null)
+  const input = ref<HTMLElement | null>(null)
   const selectSize = computed(() => props.size || 'normal')
   const selectDisabled = computed(() => props.disabled)
   const readonly = computed(() => !props.filterable || props.multiple || (!isIE() && !isEdge() && !states.visible))
@@ -80,12 +84,97 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     return props.filterable && props.allowCreate && states.query !== '' && !hasExistingOption
   })
 
+  const getValueIndex = (arr = [], value) => {
+    const _isObject = isObject(value)
+    if (!_isObject) {
+      return arr.indexOf(value)
+    } else {
+      const valueKey = props.valueKey
+      let index = -1
+      arr.some((item, i) => {
+        if (getValueByPath(item, valueKey) === getValueByPath(value, valueKey)) {
+          index = i
+          return true
+        }
+        return false
+      })
+      return index
+    }
+  }
+
   const onOptionDestroy = () => {
     return 0
   }
 
-  const handleOptionSelect = () => {
-    return 0
+  const getOption = value => {
+    let option
+    const _isObject = isObject(props.modelValue)
+    const _isNull = isNull(props.modelValue)
+    const _isUndefined = isUndefined(props.modelValue)
+    for (let i = states.cachedOptions.length - 1; i >= 0; i--) {
+      const cachedOption = states.cachedOptions[i]
+      const isEqual = _isObject
+        ? getValueByPath(cachedOption.value, props.valueKey) === getValueByPath(props.modelValue, props.valueKey)
+        : cachedOption.value === value
+      if (isEqual) {
+        option = {
+          value,
+          currentLabel: cachedOption.currentLabel,
+        }
+        break
+      }
+    }
+    if (option) return option
+    const label = !_isObject && !_isNull && !_isUndefined ? value : ''
+    const newOption = {
+      value: value,
+      currentLabel: label,
+    }
+    if (props.multiple) {
+      ;(newOption as any).hitState = false
+    }
+    return newOption
+  }
+
+  const setSelected = () => {
+    if (!props.multiple) {
+      const option = getOption(props.modelValue)
+      states.selectedLabel = option.currentLabel
+      states.selected = option
+      return
+    }
+
+    const result = []
+    if (Array.isArray(props.modelValue)) {
+      props.modelValue.forEach(value => {
+        result.push(getOption(value))
+      })
+    }
+    states.selected = result
+  }
+
+  const emitChange = (val: any) => {
+    if (!isEqual(props.modelValue, val)) {
+      ctx.emit('change', val)
+    }
+  }
+
+  const handleOptionSelect = (option: any, byClick) => {
+    if (props.multiple) {
+      const value = (props.modelValue || []).slice()
+      const optionIndex = getValueIndex(value, option.value)
+      if (optionIndex > -1) {
+        value.splice(optionIndex, 1)
+      } else if (props.multipleLimit <= 0 || value.length < props.multipleLimit) {
+        value.push(option.value)
+      }
+      ctx.emit(UPDATE_MODELVALUE_EVENT, value)
+      emitChange(value)
+    } else {
+      ctx.emit(UPDATE_MODELVALUE_EVENT, option.value)
+      emitChange(option.value)
+      states.visible = false
+    }
   }
 
   const handleClose = () => {
@@ -120,15 +209,33 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     }
   }
 
+  const doDestroy = () => {
+    popper.value?.doDestroy?.()
+  }
+
   watch(
     () => states.visible,
     val => {
       if (!val) {
-        console.log(11)
+        doDestroy()
+        input.value && input.value.blur()
+        states.selectedLabel = ''
+        states.query = ''
+
+        if (!props.multiple) {
+          states.selectedLabel = states.selected.currentLabel
+        }
       } else {
         popper.value?.update?.()
         ctx.emit('visible-change', val)
       }
+    },
+  )
+
+  watch(
+    () => props.modelValue,
+    (val, oldValue) => {
+      setSelected()
     },
   )
 
@@ -149,5 +256,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     input,
     showNewOption,
     handleClose,
+    setSelected,
   }
 }
