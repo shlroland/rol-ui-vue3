@@ -52,9 +52,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     return criteria
   })
 
-  const iconClass = computed(() =>
-    props.remote && props.filterable ? '' : states.visible ? 'arrow-down' : 'angle-down',
-  )
+  const iconClass = computed(() => (props.remote && props.filterable ? '' : 'angle-down'))
 
   const emptyText = computed(() => {
     if (props.loading) {
@@ -153,6 +151,19 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     states.selected = result
   }
 
+  const handleClearClick = (event: MouseEvent) => {
+    event.stopPropagation()
+    states.visible = false
+    const value = props.multiple ? [] : ''
+    ctx.emit(UPDATE_MODELVALUE_EVENT, value)
+    ctx.emit('clear')
+    emitChange(value)
+  }
+
+  // const deleteSelected = (event: MouseEvent) => {
+
+  // }
+
   const emitChange = (val: any) => {
     if (!isEqual(props.modelValue, val)) {
       ctx.emit('change', val)
@@ -221,7 +232,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
         input.value && input.value.blur()
         states.selectedLabel = ''
         states.query = ''
-
         if (!props.multiple) {
           states.selectedLabel = states.selected.currentLabel
         }
@@ -257,5 +267,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     showNewOption,
     handleClose,
     setSelected,
+    handleClearClick,
   }
 }

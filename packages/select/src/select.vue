@@ -1,6 +1,7 @@
 <template>
   <div
     ref="selectWrapper"
+    v-outSideClick="handleClose"
     class="rol-select"
     :class="[selectSize ? `rol-select--${selectSize}` : '']"
     @click.stop="toggleMenu"
@@ -34,14 +35,22 @@
             :class="{ 'is-focus': visible }"
             :tabindex="multiple && filterable ? '-1' : null"
             @focus="handleFocus"
+            @mouseenter="inputHovering = true"
+            @mouseleave="inputHovering = false"
           >
             <template v-if="$slots.prefix" #prefix>
               <slot name="prefix"></slot>
             </template>
             <template #suffix>
               <rol-icon
-                v-show="!showClose"
-                :class="['rol-select__caret', 'rol-input__icon']"
+                v-if="showClose"
+                class="rol-select__caret rol-input__icon"
+                :name="clearIcon"
+                @click="handleClearClick"
+              ></rol-icon>
+              <rol-icon
+                v-if="!showClose"
+                :class="['rol-select__caret', 'rol-input__icon', { 'is-reverse': visible }]"
                 :name="iconClass"
               ></rol-icon>
             </template>
@@ -51,7 +60,7 @@
 
       <template #default>
         <transition name="rol-zoom-in-top">
-          <rol-select-dropdown v-show="visible" ref="popper" v-outSideClick="handleClose">
+          <rol-select-dropdown v-show="visible" ref="popper">
             <rol-scrollbar
               v-show="options.length > 0"
               ref="scrollbar"
@@ -72,11 +81,11 @@
 
 <script lang="ts">
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
-import { defineComponent, provide, reactive, toRefs } from 'vue'
+import { defineComponent, PropType, provide, reactive, toRefs } from 'vue'
 import { useSelect, useSelectStates } from './useSelect'
 import Popper from '@rol-ui/popper'
 import RolInput from '@rol-ui/input'
-import RolIcon from '@rol-ui/icon'
+import RolIcon, { IconProps } from '@rol-ui/icon'
 import RolSelectDropdown from './select-dropdown.vue'
 import RolOption from './select-option.vue'
 import RolScrollbar from '@rol-ui/scrollbar'
@@ -136,6 +145,10 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    clearIcon: {
+      type: [Object, Array, String] as PropType<IconProps>,
+      default: ['far', 'times-circle'],
+    },
   },
   emits: ['remove-tag', 'clear', 'change', 'visible-change', 'focus', 'blur', UPDATE_MODELVALUE_EVENT],
   setup(props, ctx) {
@@ -159,6 +172,7 @@ export default defineComponent({
       showNewOption,
       handleClose,
       setSelected,
+      handleClearClick,
     } = useSelect(props, states, ctx)
 
     const {
@@ -236,6 +250,7 @@ export default defineComponent({
       input,
       selectWrapper,
       showNewOption,
+      handleClearClick,
     }
   },
 })

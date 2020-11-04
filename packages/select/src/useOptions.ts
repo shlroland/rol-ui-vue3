@@ -54,7 +54,6 @@ export function useOption(props, states) {
   })
 
   const isDisabled = computed(() => {
-      console.log(props , states.groupDisabled , limitReached.value)
     return props.disabled || states.groupDisabled || limitReached.value
   })
 

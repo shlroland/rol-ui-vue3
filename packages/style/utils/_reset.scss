@@ -78,3 +78,14 @@ td:not([align]),
 th:not([align]) {
   text-align: inherit;
 }
+input, input:focus{
+  outline:none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+input[type="text"], input[type="password"], textarea, select { 
+  outline: none;
+}

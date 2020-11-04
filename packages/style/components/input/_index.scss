@@ -157,6 +157,8 @@ $input-mini-height: 28px !default;
     height: $input-height;
     line-height: $input-height;
     outline: none;
+    outline-color: transparent;
+    outline-width: 0;
     padding: 0 15px;
     transition: $border-transition-base;
     width: 100%;

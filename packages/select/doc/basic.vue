@@ -8,7 +8,7 @@
     <div> value: {{ value1 }} </div>
   </div> -->
   <div class="demo-container">
-    <Select v-model="value2">
+    <Select v-model="value2" clearable>
       <SelectOption
         v-for="item in options2"
         :key="item.value"
