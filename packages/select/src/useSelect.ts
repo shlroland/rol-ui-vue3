@@ -153,16 +153,12 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
 
   const handleClearClick = (event: MouseEvent) => {
     event.stopPropagation()
-    states.visible = false
     const value = props.multiple ? [] : ''
     ctx.emit(UPDATE_MODELVALUE_EVENT, value)
     ctx.emit('clear')
     emitChange(value)
+    blur()
   }
-
-  // const deleteSelected = (event: MouseEvent) => {
-
-  // }
 
   const emitChange = (val: any) => {
     if (!isEqual(props.modelValue, val)) {
@@ -222,6 +218,11 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
 
   const doDestroy = () => {
     popper.value?.doDestroy?.()
+  }
+
+  const blur = () => {
+    states.visible = false
+    reference.value.blur()
   }
 
   watch(

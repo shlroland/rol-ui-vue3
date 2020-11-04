@@ -119,6 +119,11 @@ $input-mini-height: 28px !default;
   width: 100%;
   @include scroll-bar;
 
+  &:focus {
+    outline: none;
+    -webkit-appearance: none;
+  }
+
   & .rol-input__clear {
     color: $font-size-base;
     font-size: $input-font-size;
@@ -157,8 +162,6 @@ $input-mini-height: 28px !default;
     height: $input-height;
     line-height: $input-height;
     outline: none;
-    outline-color: transparent;
-    outline-width: 0;
     padding: 0 15px;
     transition: $border-transition-base;
     width: 100%;
