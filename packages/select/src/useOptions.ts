@@ -41,10 +41,28 @@ export function useOption(props, states) {
     }
   })
 
+  const limitReached = computed(() => {
+    if (select.props.multiple) {
+      return (
+        !itemSelected.value &&
+        (select.props.value || []).length >= select.props.multipleLimit &&
+        select.props.multipleLimit > 0
+      )
+    } else {
+      return false
+    }
+  })
+
+  const isDisabled = computed(() => {
+      console.log(props , states.groupDisabled , limitReached.value)
+    return props.disabled || states.groupDisabled || limitReached.value
+  })
+
   const select = inject(selectKey)
   return {
     currentLabel,
     select,
     itemSelected,
+    isDisabled,
   }
 }

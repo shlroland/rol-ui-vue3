@@ -6,6 +6,7 @@
       {
         hover: hover,
         selected: itemSelected,
+        'is-disabled': isDisabled,
       },
     ]"
     @click.stop="selectOptionClick"
@@ -43,7 +44,7 @@ export default defineComponent({
       hover: false,
     })
 
-    const { currentLabel, select, itemSelected } = useOption(props, states)
+    const { currentLabel, select, itemSelected, isDisabled } = useOption(props, states)
 
     const { visible, hover } = toRefs(states)
 
@@ -75,6 +76,7 @@ export default defineComponent({
       hover,
       itemSelected,
       selectOptionClick,
+      isDisabled,
     }
   },
 })
