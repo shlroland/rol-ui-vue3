@@ -8,14 +8,8 @@
     <div> value: {{ value1 }} </div>
   </div> -->
   <div class="demo-container">
-    <Select v-model="value2" clearable>
-      <SelectOption
-        v-for="item in options2"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-        :disabled="item.disabled"
-      ></SelectOption>
+    <Select v-model="value2" multiple>
+      <SelectOption v-for="item in options2" :key="item.value" :label="item.label" :value="item.value"></SelectOption>
     </Select>
     <div> value: {{ value2 }} </div>
   </div>
@@ -78,7 +72,7 @@ export default defineComponent({
           disabled: true,
         },
       ],
-      value2: '',
+      value2: [],
     }
   },
 })

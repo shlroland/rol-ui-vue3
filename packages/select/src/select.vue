@@ -21,7 +21,29 @@
     >
       <template #trigger>
         <div class="select-trigger">
+          <div
+            v-if="multiple"
+            ref="tags"
+            class="rol-select__tags"
+            :style="{ 'max-width': inputWidth - 32 + 'px', width: '100%' }"
+          >
+            <transition v-if="!collapseTags">
+              <span>
+                <rol-tag
+                  v-for="item in selected"
+                  :key="getValueKey(item)"
+                  :closable="!selectDisabled"
+                  :hit="item.hitState"
+                  :size="collapseTagSize"
+                  disable-transitions
+                >
+                  <span class="rol-select__tags-text">{{ item.currentLabel }}</span>
+                </rol-tag>
+              </span>
+            </transition>
+          </div>
           <rol-input
+            :id="id"
             ref="reference"
             v-model="selectedLabel"
             type="text"
@@ -81,7 +103,7 @@
 
 <script lang="ts">
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
-import { defineComponent, PropType, provide, reactive, toRefs } from 'vue'
+import { defineComponent, onMounted, PropType, provide, reactive, toRefs } from 'vue'
 import { useSelect, useSelectStates } from './useSelect'
 import Popper from '@rol-ui/popper'
 import RolInput from '@rol-ui/input'
@@ -89,6 +111,7 @@ import RolIcon, { IconProps } from '@rol-ui/icon'
 import RolSelectDropdown from './select-dropdown.vue'
 import RolOption from './select-option.vue'
 import RolScrollbar from '@rol-ui/scrollbar'
+import RolTag from '@rol-ui/tag'
 import { selectKey } from './token'
 import { OutSideClick } from '@rol-ui/directives'
 
@@ -101,6 +124,7 @@ export default defineComponent({
     RolSelectDropdown,
     RolScrollbar,
     RolOption,
+    RolTag,
   },
   directives: { OutSideClick },
   props: {
@@ -134,6 +158,10 @@ export default defineComponent({
     remoteMethod: Function,
     filterMethod: Function,
     multiple: Boolean,
+    multipleLimit: {
+      type: Number,
+      default: 0,
+    },
     defaultFirstOption: Boolean,
     reserveKeyword: Boolean,
     valueKey: {
@@ -173,6 +201,9 @@ export default defineComponent({
       handleClose,
       setSelected,
       handleClearClick,
+      tags,
+      getValueKey,
+      collapseTagSize,
     } = useSelect(props, states, ctx)
 
     const {
@@ -218,6 +249,15 @@ export default defineComponent({
       }),
     )
 
+    onMounted(() => {
+      const sizeMap = {
+        medium: 36,
+        small: 32,
+        mini: 28,
+      }
+    //   states.initialInputHeight = input.value.getBoundingClientRect().height || sizeMap[selectSize.value]
+    })
+
     return {
       selectSize,
       selectDisabled,
@@ -251,6 +291,9 @@ export default defineComponent({
       selectWrapper,
       showNewOption,
       handleClearClick,
+      tags,
+      getValueKey,
+      collapseTagSize,
     }
   },
 })

@@ -41,19 +41,21 @@ export default defineComponent({
     light: Boolean,
     rounded: Boolean,
     closable: Boolean,
+    hit: Boolean,
     size: RTagSize,
     type: RTagType,
   },
   emits: ['close', 'click'],
   setup(props, ctx) {
     const classes = computed(() => {
-      const { type, light, size, rounded } = props
+      const { type, light, size, rounded,hit } = props
       return [
         'rol-tag',
         type ? `is-${type}` : '',
         light ? 'is-light' : '',
         size ? `is-${size}` : '',
         rounded ? 'is-rounded' : '',
+        hit? 'is-hit' : '',
       ]
     })
 

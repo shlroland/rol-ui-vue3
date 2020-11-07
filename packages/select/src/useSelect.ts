@@ -2,7 +2,7 @@ import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
 import { isEdge, isIE, isObject } from '@rol-ui/utils/is$'
 import { getValueByPath } from '@rol-ui/utils/util'
 import mitt from 'mitt'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, nextTick, reactive, ref, RendererNode, RendererOptions, watch } from 'vue'
 import { PopperVnode, RolSelectCtx, States } from './type'
 import isEqual from 'lodash/isEqual'
 import { isNull, isUndefined } from 'lodash'
@@ -40,10 +40,11 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   const selectWrapper = ref<HTMLElement | null>(null)
   const reference = ref(null)
   const input = ref<HTMLElement | null>(null)
+  const tags = ref<HTMLElement | null>(null)
   const selectSize = computed(() => props.size || 'normal')
   const selectDisabled = computed(() => props.disabled)
   const readonly = computed(() => !props.filterable || props.multiple || (!isIE() && !isEdge() && !states.visible))
-
+  const collapseTagSize = computed(() => ['small', 'mini'].indexOf(selectSize.value > -1 ? 'mini' : 'small'))
   const showClose = computed(() => {
     const hasValue = props.multiple
       ? Array.isArray(props.modelValue) && props.modelValue.length > 0
@@ -100,6 +101,24 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     }
   }
 
+  const resetInputHeight = () => {
+    if (props.collapseTags && !props.filterabled) return
+    nextTick(() => {
+      if (!reference.value) return
+      const inputChildNodes = reference.value.$el.childNodes as NodeListOf<Element>
+      const input = [].filter.call(inputChildNodes, (item: Element) => item.tagName === 'INPUT')[0] as HTMLInputElement
+      const _tags = tags.value
+      const sizeInMap = states.initialInputHeight || 40
+      input.style.height =
+        states.selected.length === 0
+          ? sizeInMap + 'px'
+          : Math.max(_tags ? _tags.clientHeight + (_tags.clientHeight > sizeInMap ? 6 : 0) : 0, sizeInMap) + 'px'
+      if (states.visible && emptyText.value !== false) {
+        popper.value?.update?.()
+      }
+    })
+  }
+
   const onOptionDestroy = () => {
     return 0
   }
@@ -149,6 +168,17 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
       })
     }
     states.selected = result
+    nextTick(() => {
+      resetInputHeight()
+    })
+  }
+
+  const getValueKey = item => {
+    if (Object.prototype.toString.call(item.value).toLowerCase() !== '[object object]') {
+      return item.value
+    } else {
+      return getValueByPath(item.value, props.valueKey)
+    }
   }
 
   const handleClearClick = (event: MouseEvent) => {
@@ -250,6 +280,18 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     },
   )
 
+  watch(
+    () => selectDisabled.value,
+    () => {
+      nextTick(() => {
+        if (props.multiple) {
+          resetInputHeight()
+        }
+        resetInputHeight()
+      })
+    },
+  )
+
   return {
     selectSize,
     dropMenuVisible,
@@ -265,9 +307,12 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     toggleMenu,
     reference,
     input,
+    tags,
     showNewOption,
     handleClose,
     setSelected,
     handleClearClick,
+    getValueKey,
+    collapseTagSize,
   }
 }

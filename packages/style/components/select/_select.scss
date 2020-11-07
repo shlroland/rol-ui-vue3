@@ -2,17 +2,6 @@
   display: inline-block;
   position: relative;
 
-  &:focus {
-    outline: none;
-    -webkit-appearance: none;
-  }
-
-  .select-trigger {
-    &:focus {
-      outline: none;
-      -webkit-appearance: none;
-    }
-  }
   .rol-select__tags {
     > span {
       display: inline-block;

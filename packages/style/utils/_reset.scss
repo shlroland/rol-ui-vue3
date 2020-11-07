@@ -51,7 +51,9 @@ html {
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -78,14 +80,25 @@ td:not([align]),
 th:not([align]) {
   text-align: inherit;
 }
-input, input:focus{
-  outline:none !important;
+input,
+input:focus {
+  outline: none !important;
   outline-width: 0 !important;
   box-shadow: none;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
 }
 
-input[type="text"], input[type="password"], textarea, select { 
+input[type='text'],
+input[type='password'],
+textarea,
+select {
   outline: none;
+}
+
+div {
+  &:focus {
+    outline: none;
+    -webkit-appearance: none;
+  }
 }
