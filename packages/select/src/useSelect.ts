@@ -102,7 +102,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   }
 
   const resetInputHeight = () => {
-    if (props.collapseTags && !props.filterabled) return
     nextTick(() => {
       if (!reference.value) return
       const inputChildNodes = reference.value.$el.childNodes as NodeListOf<Element>
@@ -323,5 +322,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     handleClearClick,
     getValueKey,
     collapseTagSize,
+    resetInputHeight,
   }
 }

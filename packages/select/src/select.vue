@@ -27,7 +27,20 @@
             class="rol-select__tags"
             :style="{ 'max-width': inputWidth - 32 + 'px', width: '100%' }"
           >
-            <transition v-if="!collapseTags">
+            <span v-if="collapseTags && selected.length">
+              <rol-tag
+                :closable="!selectDisabled"
+                :hit="selected[0].hitState"
+                :size="collapseTagSize"
+                disable-transitions
+              >
+                <span class="rol-select__tags-text">{{ selected[0].currentLabel }}</span>
+              </rol-tag>
+              <rol-tag v-if="selected.length > 1" :closable="false" :size="collapseTagSize" disable-transitions>
+                <span class="rol-select__tags-text">+ {{ selected.length - 1 }}</span>
+              </rol-tag>
+            </span>
+            <transition v-if="!collapseTags" @after-leave="resetInputHeight">
               <span>
                 <rol-tag
                   v-for="item in selected"
@@ -184,7 +197,6 @@ export default defineComponent({
     const states = useSelectStates(props)
     const instance = getCurrentInstance() as RSelectInternalInstance
 
-
     const {
       selectSize,
       dropMenuVisible,
@@ -207,6 +219,7 @@ export default defineComponent({
       tags,
       getValueKey,
       collapseTagSize,
+      resetInputHeight,
     } = useSelect(props, states, ctx)
 
     const {
@@ -253,7 +266,6 @@ export default defineComponent({
       }),
     )
 
-
     onMounted(() => {
       const sizeMap = {
         medium: 36,
@@ -299,6 +311,7 @@ export default defineComponent({
       tags,
       getValueKey,
       collapseTagSize,
+      resetInputHeight,
     }
   },
 })
