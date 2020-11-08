@@ -15,7 +15,7 @@ import { UPDATE_VISIBLE_EVENT } from './core'
 import defaultProps, { RPopperOptions } from './core/props'
 import usePopper from './core'
 import throwError from '@rol-ui/utils/error'
-import { renderArrow, renderMask, renderPopper, renderTrigger } from './view'
+import { renderArrow, renderPopper, renderTrigger } from './view'
 import { renderBlock } from '@rol-ui/utils/vnode'
 import { OutSideClick } from '@rol-ui/directives'
 

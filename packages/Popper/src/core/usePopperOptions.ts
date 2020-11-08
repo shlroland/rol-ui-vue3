@@ -18,8 +18,8 @@ interface RUsePopperState {
 export default function (props: RUsePopperProps, state: RUsePopperState) {
   return computed(() => {
     return {
-      ...props.popperOptions,
       placement: props.placement,
+      ...props.popperOptions,
       modifiers: buildModifiers(
         {
           arrow: state.arrow.value,

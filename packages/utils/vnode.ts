@@ -1,5 +1,9 @@
-import { createBlock, openBlock, VNode, VNodeChild, VNodeTypes } from 'vue'
-import { isComment, isFragment, isTemplate } from '../Popper/src/view/mask'
+import { createBlock, Fragment, openBlock, VNode, VNodeChild, VNodeTypes } from 'vue'
+
+export const isFragment = (node: VNode) => node.type === Fragment
+export const isText = (node: VNode) => node.type === Text
+export const isComment = (node: VNode) => node.type === Comment
+export const isTemplate = (node: VNode) => node.type === 'template'
 
 export enum PatchFlags {
   TEXT = 1,
