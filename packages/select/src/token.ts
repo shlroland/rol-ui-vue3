@@ -1,5 +1,6 @@
 import { Emitter } from 'mitt'
 import { InjectionKey } from 'vue'
+import { RSelectInternalInstance } from './type'
 
 export interface SelectProvideContext {
   selectWrapper: HTMLElement
@@ -17,6 +18,7 @@ export interface SelectProvideContext {
   onOptionDestroy(i: number)
   handleOptionSelect(vm: unknown, byClick: boolean)
   props: any
+  instance: RSelectInternalInstance
 }
 
 export const selectKey: InjectionKey<SelectProvideContext> = Symbol('Select')

@@ -7,7 +7,7 @@
     </div>
     <div> value: {{ value1 }} </div>
   </div> -->
-  <div class="demo-container">
+  <div class="demo">
     <Select v-model="value2" multiple>
       <SelectOption v-for="item in options2" :key="item.value" :label="item.label" :value="item.value"></SelectOption>
     </Select>
@@ -77,3 +77,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style>
+.demo {
+  margin-bottom: 200px;
+}
+</style>

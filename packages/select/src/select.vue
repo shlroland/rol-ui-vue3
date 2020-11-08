@@ -103,7 +103,7 @@
 
 <script lang="ts">
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
-import { defineComponent, onMounted, PropType, provide, reactive, toRefs } from 'vue'
+import { defineComponent, onMounted, PropType, provide, reactive, toRefs, getCurrentInstance } from 'vue'
 import { useSelect, useSelectStates } from './useSelect'
 import Popper from '@rol-ui/popper'
 import RolInput from '@rol-ui/input'
@@ -114,6 +114,7 @@ import RolScrollbar from '@rol-ui/scrollbar'
 import RolTag from '@rol-ui/tag'
 import { selectKey } from './token'
 import { OutSideClick } from '@rol-ui/directives'
+import { RSelectInternalInstance } from './type'
 
 export default defineComponent({
   name: 'RolSelect',
@@ -181,6 +182,8 @@ export default defineComponent({
   emits: ['remove-tag', 'clear', 'change', 'visible-change', 'focus', 'blur', UPDATE_MODELVALUE_EVENT],
   setup(props, ctx) {
     const states = useSelectStates(props)
+    const instance = getCurrentInstance() as RSelectInternalInstance
+
 
     const {
       selectSize,
@@ -246,8 +249,10 @@ export default defineComponent({
         remote: props.remote,
         setSelected,
         valueKey: props.valueKey,
+        instance,
       }),
     )
+
 
     onMounted(() => {
       const sizeMap = {
@@ -255,7 +260,7 @@ export default defineComponent({
         small: 32,
         mini: 28,
       }
-    //   states.initialInputHeight = input.value.getBoundingClientRect().height || sizeMap[selectSize.value]
+      //   states.initialInputHeight = input.value.getBoundingClientRect().height || sizeMap[selectSize.value]
     })
 
     return {
