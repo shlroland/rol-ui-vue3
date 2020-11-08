@@ -1,4 +1,5 @@
-import { h, Transition, VNode, vShow, withDirectives } from 'vue'
+import { PatchFlags } from '@rol-ui/utils/vnode'
+import { createVNode, Transition, VNode, vShow, withCtx, withDirectives } from 'vue'
 import { Effect } from '../core/props'
 
 interface RRenderPopperProps {
@@ -26,16 +27,17 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
     visibility,
     onMouseEnter,
     onMouseLeave,
-    ...transitionEvents
+    onAfterEnter,
+    onAfterLeave,
   } = props
 
-  return h(
+  return createVNode(
     Transition,
-    { name, ...transitionEvents },
+    { name, 'onAfter-enter': onAfterEnter, 'onAfter-leave': onAfterLeave },
     {
-      default: () =>
+      default: withCtx(() => [
         withDirectives(
-          h(
+          createVNode(
             'div',
             {
               'aria-hidden': String(!visibility),
@@ -47,11 +49,18 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
               onMouseEnter,
               onMouseLeave,
               onClick: stop,
+              onMouseDown: stop,
+              onMouseUp: stop,
             },
             children,
+            PatchFlags.CLASS | PatchFlags.STYLE | PatchFlags.PROPS | PatchFlags.HYDRATE_EVENTS,
+            ['aria-hidden', 'onMouseenter', 'onMouseleave', 'onMousedown', 'onMouseup', 'onClick', 'id'],
           ),
           [[vShow, visibility]],
         ),
+      ]),
     },
+    PatchFlags.PROPS,
+    ['name', 'onAfter-enter', 'onAfter-leave'],
   )
 }

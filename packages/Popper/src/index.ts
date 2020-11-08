@@ -1,16 +1,29 @@
-import { defineComponent, Fragment, h, onActivated, onBeforeUnmount, onDeactivated, onMounted, Teleport } from 'vue'
+import {
+  defineComponent,
+  Fragment,
+  h,
+  onActivated,
+  onBeforeUnmount,
+  onDeactivated,
+  onMounted,
+  renderSlot,
+  Teleport,
+  toDisplayString,
+  withDirectives,
+} from 'vue'
 import { UPDATE_VISIBLE_EVENT } from './core'
 import defaultProps, { RPopperOptions } from './core/props'
 import usePopper from './core'
 import throwError from '@rol-ui/utils/error'
 import { renderArrow, renderMask, renderPopper, renderTrigger } from './view'
 import { renderBlock } from '@rol-ui/utils/vnode'
+import { OutSideClick } from '@rol-ui/directives'
 
 export default defineComponent({
   name: 'RolPopper',
   props: defaultProps,
   emits: [UPDATE_VISIBLE_EVENT, 'after-enter', 'after-leave'],
-  setup(props:RPopperOptions, ctx) {
+  setup(props: RPopperOptions, ctx) {
     if (!ctx.slots.trigger) {
       throwError('RolPopper', 'Trigger must be provided')
     }
@@ -60,11 +73,15 @@ export default defineComponent({
         onAfterLeave,
         visibility,
       },
-      [$slots.default?.() || this.content, arrow],
+      [
+        renderSlot($slots, 'default', {}, () => {
+          return [toDisplayString(this.content)]
+        }),
+        arrow,
+      ],
     )
 
-
-    const trigger = renderTrigger($slots.trigger?.(), {
+    const triggerVNode = renderTrigger($slots.trigger?.(), {
       ariaDescribedby: popperId,
       class: className,
       ref: 'triggerRef',
@@ -74,9 +91,11 @@ export default defineComponent({
       ...this.events,
     })
 
+    const trigger = this.manualMode ? triggerVNode : withDirectives(triggerVNode, [[OutSideClick, hide]])
+
     return renderBlock(Fragment, null, [
       trigger,
-      appendToBody ? h(Teleport, { to: 'body' }, renderMask(popper, { hide })) : popper,
+      appendToBody ? h(Teleport as any, { to: 'body', key: 0 }, [popper]) : renderBlock(Fragment, { key: 1 }, [popper]),
     ])
   },
 })

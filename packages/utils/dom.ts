@@ -157,3 +157,5 @@ export const isInContainer = (el: HTMLElement, container: HTMLElement): boolean 
     elRect.left < containerRect.right
   )
 }
+
+export const stopPropagation = (e: Event) => e.stopPropagation()
