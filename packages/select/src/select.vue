@@ -82,7 +82,7 @@
 
       <template #default>
         <transition name="rol-zoom-in-top">
-          <rol-select-dropdown v-show="visible" ref="popper">
+          <rol-select-dropdown v-show="visible">
             <rol-scrollbar
               v-show="options.length > 0"
               ref="scrollbar"

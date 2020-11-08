@@ -2,7 +2,7 @@ import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
 import { isEdge, isIE, isObject } from '@rol-ui/utils/is$'
 import { getValueByPath } from '@rol-ui/utils/util'
 import mitt from 'mitt'
-import { computed, nextTick, reactive, ref, RendererNode, RendererOptions, watch } from 'vue'
+import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { PopperVnode, RolSelectCtx, States } from './type'
 import isEqual from 'lodash/isEqual'
 import { isNull, isUndefined } from 'lodash'
@@ -114,6 +114,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
           ? sizeInMap + 'px'
           : Math.max(_tags ? _tags.clientHeight + (_tags.clientHeight > sizeInMap ? 6 : 0) : 0, sizeInMap) + 'px'
       if (states.visible && emptyText.value !== false) {
+        console.log(popper.value)
         popper.value?.update?.()
       }
     })

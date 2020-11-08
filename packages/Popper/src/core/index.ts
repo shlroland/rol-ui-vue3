@@ -68,13 +68,15 @@ export default function (props: RPopperOptions, { emit }: SetupContext<REmitOpti
     popperInstance.update()
   }
 
-  watch(visibility, () => {
+  function update() {
     if (popperInstance) {
       popperInstance.update()
     } else {
       initPopperInstance()
     }
-  })
+  }
+
+  watch(visibility, update)
 
   const _show = () => {
     if (props.hideAfter > 0) {
@@ -234,5 +236,6 @@ export default function (props: RPopperOptions, { emit }: SetupContext<REmitOpti
     popperRef,
     triggerRef,
     visibility,
+    update,
   }
 }
