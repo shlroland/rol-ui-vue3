@@ -27,9 +27,20 @@ export const RTagType = {
   default: '',
   validator: function (val: string): boolean {
     return (
-      ['dark', 'light', 'white', 'black', 'light', 'primary', 'link', 'info', 'success', 'warning', 'danger'].indexOf(
-        val,
-      ) !== -1
+      [
+        'dark',
+        'light',
+        'white',
+        'black',
+        'light',
+        'primary',
+        'link',
+        'info',
+        'success',
+        'warning',
+        'danger',
+        '',
+      ].indexOf(val) !== -1
     )
   },
 }
@@ -48,14 +59,14 @@ export default defineComponent({
   emits: ['close', 'click'],
   setup(props, ctx) {
     const classes = computed(() => {
-      const { type, light, size, rounded,hit } = props
+      const { type, light, size, rounded, hit } = props
       return [
         'rol-tag',
         type ? `is-${type}` : '',
         light ? 'is-light' : '',
         size ? `is-${size}` : '',
         rounded ? 'is-rounded' : '',
-        hit? 'is-hit' : '',
+        hit ? 'is-hit' : '',
       ]
     })
 

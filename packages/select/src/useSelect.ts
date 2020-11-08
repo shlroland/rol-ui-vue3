@@ -44,7 +44,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   const selectSize = computed(() => props.size || 'normal')
   const selectDisabled = computed(() => props.disabled)
   const readonly = computed(() => !props.filterable || props.multiple || (!isIE() && !isEdge() && !states.visible))
-  const collapseTagSize = computed(() => ['small', 'mini'].indexOf(selectSize.value > -1 ? 'mini' : 'small'))
+  const collapseTagSize = computed(() => (['small', 'mini'].indexOf(selectSize.value) > -1 ? 'small' : 'normal'))
   const showClose = computed(() => {
     const hasValue = props.multiple
       ? Array.isArray(props.modelValue) && props.modelValue.length > 0
@@ -276,6 +276,14 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   watch(
     () => props.modelValue,
     (val, oldValue) => {
+      if (props.multiple) {
+        resetInputHeight()
+        if ((val && val.length > 0) || (input.value && states.query !== '')) {
+          states.currentPlaceholder = ''
+        } else {
+          states.currentPlaceholder = states.cachedPlaceHolder
+        }
+      }
       setSelected()
     },
   )

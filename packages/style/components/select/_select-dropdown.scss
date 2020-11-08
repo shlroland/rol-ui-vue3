@@ -14,15 +14,6 @@
       &.hover {
         background-color: $select-option-hover-background;
       }
-
-      & .rol-icon {
-        position: absolute;
-        right: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
     }
   }
 
@@ -42,7 +33,9 @@
     line-height: $select-option-height;
     box-sizing: border-box;
     cursor: pointer;
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     @include when(disabled) {
       color: $select-option-disabled-color;
       cursor: not-allowed;
@@ -60,6 +53,14 @@
     &.selected {
       color: $select-option-selected-font-color;
       font-weight: bold;
+    }
+    & .rol-icon {
+      position: absolute;
+      right: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
   }
 }

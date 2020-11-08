@@ -13,6 +13,7 @@
   >
     <slot>
       <span>{{ currentLabel }}</span>
+      <rol-icon name="check"></rol-icon>
     </slot>
   </li>
 </template>
@@ -20,9 +21,11 @@
 <script lang="ts">
 import { defineComponent, getCurrentInstance, onBeforeUnmount, reactive, toRefs } from 'vue'
 import { useOption } from './useOptions'
+import RolIcon from '@rol-ui/icon'
 
 export default defineComponent({
   name: 'RolSelectOption',
+  components: { RolIcon },
   props: {
     value: {
       required: true,
