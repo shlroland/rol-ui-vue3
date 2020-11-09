@@ -1,12 +1,12 @@
 <template>
-  <!-- <div class="demo-container">
+  <div class="demo-container">
     <div>
-      <Select v-model="value1">
+      <Select v-model="value1" filterable>
         <SelectOption v-for="item in options1" :key="item.value" :label="item.label" :value="item.value"></SelectOption>
       </Select>
     </div>
     <div> value: {{ value1 }} </div>
-  </div> -->
+  </div>
   <!-- <div class="demo">
     <Select v-model="value2" multiple>
       <SelectOption v-for="item in options2" :key="item.value" :label="item.label" :value="item.value"></SelectOption>
@@ -20,12 +20,12 @@
     </select-option>
   </Select> -->
 
-  <Select v-model="value" placeholder="请选择">
+  <!-- <Select v-model="value" placeholder="请选择">
     <select-option-group v-for="group in options" :key="group.label" :label="group.label">
       <select-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
       </select-option>
     </select-option-group>
-  </Select>
+  </Select> -->
 </template>
 
 <script lang="ts">

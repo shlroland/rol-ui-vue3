@@ -1,6 +1,6 @@
-import { getValueByPath } from '@rol-ui/utils/util'
-import { computed, getCurrentInstance, inject } from 'vue'
-import { selectGroupKey, selectKey } from './token'
+import { escapeRegexpString, getValueByPath } from '@rol-ui/utils/util'
+import { computed, getCurrentInstance, inject, watch } from 'vue'
+import { selectEvents, selectGroupKey, selectKey } from './token'
 
 export function useOption(props, states) {
   const select = inject(selectKey)
@@ -65,6 +65,36 @@ export function useOption(props, states) {
       select.hoverIndex = select.options.indexOf(instance)
     }
   }
+
+  const queryChange = (query: string) => {
+    const regexp = new RegExp(escapeRegexpString(query), 'i')
+    states.visible = regexp.test(currentLabel.value) || props.created
+    if (!states.visible) {
+      select.filteredOptionsCount--
+    }
+  }
+
+  watch(
+    () => currentLabel.value,
+    () => {
+      if (!props.created && !select.props.remote) select.setSelected()
+    },
+  )
+
+  watch(
+    () => props.value,
+    (val, oldVal) => {
+      const { remote, valueKey } = select.props
+      if (!props.created && !remote) {
+        if (valueKey && typeof val === 'object' && typeof oldVal === 'object' && val[valueKey] === oldVal[valueKey]) {
+          return
+        }
+        select.setSelected()
+      }
+    },
+  )
+
+  select.selectEmitter.on(selectEvents.queryChange, queryChange)
 
   return {
     currentLabel,

@@ -15,3 +15,7 @@ export const isIE = function (): boolean {
 export const isEdge = function (): boolean {
   return !isServer && navigator.userAgent.indexOf('Edge') > -1
 }
+export function isKorean(text: string): boolean {
+  const reg = /([(\uAC00-\uD7AF)|(\u3130-\u318F)])+/gi
+  return reg.test(text)
+}

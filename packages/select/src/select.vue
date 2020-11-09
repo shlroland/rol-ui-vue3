@@ -72,6 +72,8 @@
             :class="{ 'is-focus': visible }"
             :tabindex="multiple && filterable ? '-1' : null"
             @focus="handleFocus"
+            @input="debouncedOnInputChange"
+            @paste="debouncedOnInputChange"
             @mouseenter="inputHovering = true"
             @mouseleave="inputHovering = false"
           >
@@ -223,6 +225,7 @@ export default defineComponent({
       collapseTagSize,
       resetInputHeight,
       deleteTag,
+      debouncedOnInputChange,
     } = useSelect(props, states, ctx)
 
     const {
@@ -316,6 +319,7 @@ export default defineComponent({
       collapseTagSize,
       resetInputHeight,
       deleteTag,
+      debouncedOnInputChange,
     }
   },
 })

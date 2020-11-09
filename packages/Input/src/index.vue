@@ -105,7 +105,7 @@ import { isObject } from '@vue/shared'
 import Icon from '@rol-ui/icon'
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
 import useAttrs from '@rol-ui/hooks/useAttrs'
-import { isServer } from '@rol-ui/utils/is$'
+import { isKorean, isServer } from '@rol-ui/utils/is$'
 import calcTextareaHeight from './calcTextareaHeight'
 
 type AutosizeProp =
@@ -354,12 +354,13 @@ export default {
     const handleCompositionUpdate = (event: CompositionEvent) => {
       const text = (event.target as HTMLInputElement).value
       const lastCharacter = text[text.length - 1] || ''
-      isComposing.value = !!lastCharacter
+       isComposing.value = !isKorean(lastCharacter)
     }
 
-    const handleCompositionEnd = () => {
+    const handleCompositionEnd = (event:InputEvent) => {
       if (isComposing.value) {
         isComposing.value = false
+        handleInput(event)
       }
     }
 

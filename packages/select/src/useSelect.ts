@@ -5,7 +5,10 @@ import mitt from 'mitt'
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { PopperVnode, RolSelectCtx, States } from './type'
 import isEqual from 'lodash/isEqual'
-import { isNull, isUndefined } from 'lodash'
+import isUndefined from 'lodash/isUndefined'
+import isNull from 'lodash/isNull'
+import lodashDebounce from 'lodash/debounce'
+import { selectEvents } from './token'
 
 export const useSelectStates = (props: { multiple?: boolean }) => {
   const selectEmitter = mitt()
@@ -52,6 +55,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     const criteria = props.clearable && !selectDisabled.value && states.inputHovering && hasValue
     return criteria
   })
+  const debounce = computed(() => (props.remote ? 300 : 0))
 
   const iconClass = computed(() => (props.remote && props.filterable ? '' : 'angle-down'))
 
@@ -82,6 +86,20 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
       })
     return props.filterable && props.allowCreate && states.query !== '' && !hasExistingOption
   })
+  const onInputChange = () => {
+    if (props.filterable && states.query !== states.selectedLabel) {
+      states.query = states.selectedLabel
+      handleQueryChange(states.query)
+    }
+  }
+
+  const debouncedOnInputChange = lodashDebounce(() => {
+    onInputChange()
+  }, debounce.value)
+
+  const debouncedQueryChange = lodashDebounce(e => {
+    handleQueryChange(e.target.value)
+  }, debounce.value)
 
   const getValueIndex = (arr = [], value) => {
     const _isObject = isObject(value)
@@ -113,7 +131,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
           ? sizeInMap + 'px'
           : Math.max(_tags ? _tags.clientHeight + (_tags.clientHeight > sizeInMap ? 6 : 0) : 0, sizeInMap) + 'px'
       if (states.visible && emptyText.value !== false) {
-        console.log(popper.value)
         popper.value?.update?.()
       }
     })
@@ -214,6 +231,55 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     }
   }
 
+  const handleQueryChange = (val: any) => {
+    if (states.previousQuery === val || states.isOnComposition) return
+    if (
+      states.previousQuery === null &&
+      (typeof props.filterMethod === 'function' || typeof props.remoteMethod === 'function')
+    ) {
+      states.previousQuery = val
+      return
+    }
+    states.previousQuery = val
+    nextTick(() => {
+      if (states.visible) popper.value?.update()
+    })
+    states.hoverIndex = -1
+    if (props.multiple && props.filterable) {
+      // nextTick(() => {
+      //   const length = input.value.length * 15 + 20
+      //   states.inputLength = props.collapseTags ? Math.min(50, length) : length
+      //   managePlaceholder()
+      //   resetInputHeight()
+      // })
+    }
+    if (props.remote && typeof props.remoteMethod === 'function') {
+      states.hoverIndex = -1
+      props.remoteMethod(val)
+    } else if (typeof props.filterMethod === 'function') {
+      props.filterMethod(val)
+      states.selectEmitter.emit(selectEvents.groupQueryChange)
+    } else {
+      states.filteredOptionsCount = states.optionsCount
+      states.selectEmitter.emit(selectEvents.queryChange, val)
+      states.selectEmitter.emit(selectEvents.groupQueryChange)
+    }
+    // if (props.multiple && props.filterable) {
+    //   nextTick(() => {
+    //     const length = input.value.length * 15 + 20
+    //     states.inputLength = props.collapseTags ? Math.min(50, length) : length
+    //     managePlaceholder()
+    //     resetInputHeight()
+    //   })
+    // }
+  }
+
+  const managePlaceholder = () => {
+    if (states.currentPlaceholder !== '') {
+      states.currentPlaceholder = input.value ? '' : states.cachedPlaceHolder
+    }
+  }
+
   const handleClose = () => {
     states.visible = false
   }
@@ -278,6 +344,12 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
         if (!props.multiple) {
           states.selectedLabel = states.selected.currentLabel
         }
+        if (states.selected) {
+          if (props.filterable) states.query = states.selectedLabel
+        }
+        if (props.filterable) {
+          states.currentPlaceholder = states.cachedPlaceHolder
+        }
       } else {
         popper.value?.update?.()
         ctx.emit('visible-change', val)
@@ -295,8 +367,15 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
         } else {
           states.currentPlaceholder = states.cachedPlaceHolder
         }
+        if (props.filterable && !props.reserveKeyword) {
+          states.query = ''
+          handleQueryChange(states.query)
+        }
       }
       setSelected()
+      if (props.filterable && !props.multiple) {
+        states.inputLength = 20
+      }
     },
   )
 
@@ -336,5 +415,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     collapseTagSize,
     resetInputHeight,
     deleteTag,
+    debouncedOnInputChange,
   }
 }

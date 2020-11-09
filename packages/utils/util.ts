@@ -24,6 +24,9 @@ export const isHTMLElement = (val: unknown) => {
   return toRawType(val).startsWith('HTML')
 }
 
+export const escapeRegexpString = (value = ''): string =>
+  String(value).replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
+
 export const entries = <T>(obj: Hash<T>): [string, T][] => {
   return Object.keys(obj).map((key: string) => [key, obj[key]])
 }

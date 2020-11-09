@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, provide, reactive, ref, toRefs } from 'vue'
-import { selectGroupKey, selectKey } from './token'
+import { selectEvents, selectGroupKey, selectKey } from './token'
 
 export default defineComponent({
   name: 'RolOptionGroup',
@@ -34,6 +34,11 @@ export default defineComponent({
     )
 
     const select = inject(selectKey)
+
+    const queryChange = () => {
+      visible.value = select?.options?.some((option: any) => option.visible === true)
+    }
+    select.selectEmitter.on(selectEvents.groupQueryChange, queryChange)
 
     return {
       visible,
