@@ -7,21 +7,35 @@
     </div>
     <div> value: {{ value1 }} </div>
   </div> -->
-  <div class="demo">
+  <!-- <div class="demo">
     <Select v-model="value2" multiple>
       <SelectOption v-for="item in options2" :key="item.value" :label="item.label" :value="item.value"></SelectOption>
     </Select>
     <div> value: {{ value2 }} </div>
-  </div>
+  </div> -->
+  <!-- <Select v-model="value" placeholder="请选择">
+    <select-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
+      <span style="float: left;">{{ item.label }}</span>
+      <span style="float: right; color: #8492a6; font-size: 13px;">{{ item.value }}</span>
+    </select-option>
+  </Select> -->
+
+  <Select v-model="value" placeholder="请选择">
+    <select-option-group v-for="group in options" :key="group.label" :label="group.label">
+      <select-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
+      </select-option>
+    </select-option-group>
+  </Select>
 </template>
 
 <script lang="ts">
-import Select, { SelectOption } from '@rol-ui/select'
+import Select, { SelectOption, SelectOptionGroup } from '@rol-ui/select'
 import { defineComponent } from 'vue'
 export default defineComponent({
   components: {
     Select,
     SelectOption,
+    SelectOptionGroup,
   },
   data() {
     return {
@@ -48,31 +62,69 @@ export default defineComponent({
         },
       ],
       value1: '',
-      options2: [
+      cities: [
         {
-          value: '选项1',
-          label: '黄金糕',
-          disabled: true,
+          value: 'Beijing',
+          label: '北京',
         },
         {
-          value: '选项2',
-          label: '双皮奶',
+          value: 'Shanghai',
+          label: '上海',
         },
         {
-          value: '选项3',
-          label: '蚵仔煎',
+          value: 'Nanjing',
+          label: '南京',
         },
         {
-          value: '选项4',
-          label: '龙须面',
+          value: 'Chengdu',
+          label: '成都',
         },
         {
-          value: '选项5',
-          label: '北京烤鸭',
-          disabled: true,
+          value: 'Shenzhen',
+          label: '深圳',
+        },
+        {
+          value: 'Guangzhou',
+          label: '广州',
         },
       ],
-      value2: [],
+      options: [
+        {
+          label: '热门城市',
+          options: [
+            {
+              value: 'Shanghai',
+              label: '上海',
+            },
+            {
+              value: 'Beijing',
+              label: '北京',
+            },
+          ],
+        },
+        {
+          label: '城市名',
+          options: [
+            {
+              value: 'Chengdu',
+              label: '成都',
+            },
+            {
+              value: 'Shenzhen',
+              label: '深圳',
+            },
+            {
+              value: 'Guangzhou',
+              label: '广州',
+            },
+            {
+              value: 'Dalian',
+              label: '大连',
+            },
+          ],
+        },
+      ],
+      value: '',
     }
   },
 })

@@ -9,6 +9,7 @@
         'is-disabled': isDisabled,
       },
     ]"
+    @mouseenter="hoverItem"
     @click.stop="selectOptionClick"
   >
     <slot>
@@ -47,7 +48,7 @@ export default defineComponent({
       hover: false,
     })
 
-    const { currentLabel, select, itemSelected, isDisabled } = useOption(props, states)
+    const { currentLabel, select, itemSelected, isDisabled, hoverItem } = useOption(props, states)
 
     const { visible, hover } = toRefs(states)
 
@@ -80,6 +81,7 @@ export default defineComponent({
       itemSelected,
       selectOptionClick,
       isDisabled,
+      hoverItem,
     }
   },
 })

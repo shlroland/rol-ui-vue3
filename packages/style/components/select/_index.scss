@@ -27,5 +27,10 @@ $select-dropdown-padding: 6px 0 !default;
 $select-dropdown-empty-padding: 10px 0 !default;
 $select-dropdown-border: solid 1px $border-light !default;
 
+$select-group-color: $text-light !default;
+$select-group-height: 30px !default;
+$select-group-font-size: 12px !default;
+
 @import './select-dropdown';
 @import './select';
+@import './select-group.scss'

@@ -1,8 +1,11 @@
 import { getValueByPath } from '@rol-ui/utils/util'
-import { computed, inject } from 'vue'
-import { selectKey } from './token'
+import { computed, getCurrentInstance, inject } from 'vue'
+import { selectGroupKey, selectKey } from './token'
 
 export function useOption(props, states) {
+  const select = inject(selectKey)
+  const selectGroup = inject(selectGroupKey, { disabled: false })
+  const instance = getCurrentInstance()
   const isObject = computed(() => {
     return Object.prototype.toString.call(props.value).toLowerCase() === '[object object]'
   })
@@ -57,11 +60,17 @@ export function useOption(props, states) {
     return props.disabled || states.groupDisabled || limitReached.value
   })
 
-  const select = inject(selectKey)
+  const hoverItem = () => {
+    if (!props.disabled && !selectGroup.disabled) {
+      select.hoverIndex = select.options.indexOf(instance)
+    }
+  }
+
   return {
     currentLabel,
     select,
     itemSelected,
     isDisabled,
+    hoverItem,
   }
 }
