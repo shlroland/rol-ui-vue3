@@ -13,7 +13,7 @@
   >
     <slot>
       <span>{{ currentLabel }}</span>
-      <rol-icon name="check"></rol-icon>
+      <rol-icon v-show="itemSelected" name="check"></rol-icon>
     </slot>
   </li>
 </template>

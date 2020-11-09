@@ -33,6 +33,7 @@
                 :hit="selected[0].hitState"
                 :size="collapseTagSize"
                 disable-transitions
+                @close="deleteTag($event, selected[0])"
               >
                 <span class="rol-select__tags-text">{{ selected[0].currentLabel }}</span>
               </rol-tag>
@@ -49,6 +50,7 @@
                   :hit="item.hitState"
                   :size="collapseTagSize"
                   disable-transitions
+                  @close="deleteTag($event, selected[0])"
                 >
                   <span class="rol-select__tags-text">{{ item.currentLabel }}</span>
                 </rol-tag>
@@ -220,6 +222,7 @@ export default defineComponent({
       getValueKey,
       collapseTagSize,
       resetInputHeight,
+      deleteTag,
     } = useSelect(props, states, ctx)
 
     const {
@@ -312,6 +315,7 @@ export default defineComponent({
       getValueKey,
       collapseTagSize,
       resetInputHeight,
+      deleteTag,
     }
   },
 })

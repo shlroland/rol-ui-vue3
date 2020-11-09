@@ -232,6 +232,18 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     }
   }
 
+  const deleteTag = (event: MouseEvent, tag: any) => {
+    const index = states.selected.indexOf(tag)
+    if (index > -1 && !selectDisabled.value) {
+      const value = props.modelValue.slice()
+      value.splice(index, 1)
+      ctx.emit(UPDATE_MODELVALUE_EVENT, value)
+      emitChange(value)
+      ctx.emit('remove-tag', tag.value)
+    }
+    event.stopPropagation()
+  }
+
   const toggleMenu = () => {
     if (props.automaticDropdown) return
     if (!selectDisabled.value) {
@@ -323,5 +335,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     getValueKey,
     collapseTagSize,
     resetInputHeight,
+    deleteTag,
   }
 }
