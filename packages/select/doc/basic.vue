@@ -29,13 +29,12 @@
 </template>
 
 <script lang="ts">
-import Select, { SelectOption, SelectOptionGroup } from '@rol-ui/select'
+import Select, { SelectOption } from '@rol-ui/select'
 import { defineComponent } from 'vue'
 export default defineComponent({
   components: {
     Select,
     SelectOption,
-    SelectOptionGroup,
   },
   data() {
     return {
