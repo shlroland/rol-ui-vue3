@@ -1,7 +1,7 @@
 <template>
   <div class="demo-container">
     <div>
-      <Select v-model="value1" filterable>
+      <Select v-model="value1" filterable multiple>
         <SelectOption v-for="item in options1" :key="item.value" :label="item.label" :value="item.value"></SelectOption>
       </Select>
     </div>

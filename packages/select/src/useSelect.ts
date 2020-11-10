@@ -1,5 +1,5 @@
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
-import { isEdge, isIE, isObject } from '@rol-ui/utils/is$'
+import { isEdge, isIE, isKorean, isObject } from '@rol-ui/utils/is$'
 import { getValueByPath } from '@rol-ui/utils/util'
 import mitt from 'mitt'
 import { computed, nextTick, reactive, ref, watch } from 'vue'
@@ -42,7 +42,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   const popper = ref<PopperVnode | null>(null)
   const selectWrapper = ref<HTMLElement | null>(null)
   const reference = ref(null)
-  const input = ref<HTMLElement | null>(null)
+  const input = ref<HTMLInputElement | null>(null)
   const tags = ref<HTMLElement | null>(null)
   const selectSize = computed(() => props.size || 'normal')
   const selectDisabled = computed(() => props.disabled)
@@ -136,8 +136,28 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     })
   }
 
+  const handleResize = () => {
+    resetInputWidth()
+    if (props.multiple) resetInputHeight()
+  }
+
+  const resetInputWidth = () => {
+    states.inputWidth = reference.value?.$el.getBoundingClientRect().width
+  }
+
   const onOptionDestroy = () => {
     return 0
+  }
+
+  const handleComposition = (event: CompositionEvent) => {
+    const text = (event.target as HTMLInputElement).value
+    if (event.type === 'compositionend') {
+      states.isOnComposition = false
+      nextTick(() => handleQueryChange(text))
+    } else {
+      const lastCharacter = text[text.length - 1] || ''
+      states.isOnComposition = !isKorean(lastCharacter)
+    }
   }
 
   const getOption = value => {
@@ -246,12 +266,13 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     })
     states.hoverIndex = -1
     if (props.multiple && props.filterable) {
-      // nextTick(() => {
-      //   const length = input.value.length * 15 + 20
-      //   states.inputLength = props.collapseTags ? Math.min(50, length) : length
-      //   managePlaceholder()
-      //   resetInputHeight()
-      // })
+      nextTick(() => {
+        const length = input.value.value.length * 15 + 20
+        console.log(input.value.value, length)
+        states.inputLength = props.collapseTags ? Math.min(50, length) : length
+        managePlaceholder()
+        resetInputHeight()
+      })
     }
     if (props.remote && typeof props.remoteMethod === 'function') {
       states.hoverIndex = -1
@@ -264,14 +285,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
       states.selectEmitter.emit(selectEvents.queryChange, val)
       states.selectEmitter.emit(selectEvents.groupQueryChange)
     }
-    // if (props.multiple && props.filterable) {
-    //   nextTick(() => {
-    //     const length = input.value.length * 15 + 20
-    //     states.inputLength = props.collapseTags ? Math.min(50, length) : length
-    //     managePlaceholder()
-    //     resetInputHeight()
-    //   })
-    // }
   }
 
   const managePlaceholder = () => {
@@ -341,6 +354,15 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
         input.value && input.value.blur()
         states.selectedLabel = ''
         states.query = ''
+        states.previousQuery = null
+        states.selectedLabel = ''
+        states.inputLength = 20
+        states.menuVisibleOnFocus = false
+        nextTick(() => {
+          if (input.value && input.value.value === '' && states.selected.length === 0) {
+            states.currentPlaceholder = states.cachedPlaceHolder
+          }
+        })
         if (!props.multiple) {
           states.selectedLabel = states.selected.currentLabel
         }
@@ -416,5 +438,8 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     resetInputHeight,
     deleteTag,
     debouncedOnInputChange,
+    debouncedQueryChange,
+    handleComposition,
+    handleResize,
   }
 }

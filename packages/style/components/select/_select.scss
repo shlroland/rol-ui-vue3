@@ -2,11 +2,11 @@
   display: inline-block;
   position: relative;
 
-  .rol-select__tags {
-    > span {
-      display: inline-block;
-    }
-  }
+  // .rol-select__tags {
+  //   > span {
+  //     display: block;
+  //   }
+  // }
   &:hover {
     .rol-input__inner {
       border-color: $select-border-color-hover;

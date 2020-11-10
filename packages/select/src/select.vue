@@ -41,21 +41,40 @@
                 <span class="rol-select__tags-text">+ {{ selected.length - 1 }}</span>
               </rol-tag>
             </span>
-            <transition v-if="!collapseTags" @after-leave="resetInputHeight">
-              <span>
-                <rol-tag
-                  v-for="item in selected"
-                  :key="getValueKey(item)"
-                  :closable="!selectDisabled"
-                  :hit="item.hitState"
-                  :size="collapseTagSize"
-                  disable-transitions
-                  @close="deleteTag($event, selected[0])"
-                >
-                  <span class="rol-select__tags-text">{{ item.currentLabel }}</span>
-                </rol-tag>
-              </span>
-            </transition>
+            <transition-group v-if="!collapseTags" @after-leave="resetInputHeight">
+              <rol-tag
+                v-for="item in selected"
+                :key="getValueKey(item)"
+                :closable="!selectDisabled"
+                :hit="item.hitState"
+                :size="collapseTagSize"
+                disable-transitions
+                @close="deleteTag($event, selected[0])"
+              >
+                <span class="rol-select__tags-text">{{ item.currentLabel }}</span>
+              </rol-tag>
+            </transition-group>
+            <input
+              v-if="filterable"
+              ref="input"
+              v-model="query"
+              type="text"
+              class="rol-select__input"
+              :class="[selectSize ? `is-${selectSize}` : '']"
+              :disabled="selectDisabled"
+              :autocomplete="autocomplete"
+              :style="{
+                'flex-grow': '1',
+                width: inputLength / (inputWidth - 32) + '%',
+                'max-width': inputWidth - 42 + 'px',
+              }"
+              @focus="handleFocus"
+              @blur="softFocus = false"
+              @input="debouncedQueryChange"
+              @compositionstart="handleComposition"
+              @compositionupdate="handleComposition"
+              @compositionend="handleComposition"
+            />
           </div>
           <rol-input
             :id="id"
@@ -74,6 +93,8 @@
             @focus="handleFocus"
             @input="debouncedOnInputChange"
             @paste="debouncedOnInputChange"
+            @keydown.esc.stop.prevent="visible = false"
+            @keydown.tab="visible = false"
             @mouseenter="inputHovering = true"
             @mouseleave="inputHovering = false"
           >
@@ -120,7 +141,17 @@
 
 <script lang="ts">
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
-import { defineComponent, onMounted, PropType, provide, reactive, toRefs, getCurrentInstance } from 'vue'
+import {
+  defineComponent,
+  onMounted,
+  PropType,
+  provide,
+  reactive,
+  toRefs,
+  getCurrentInstance,
+  nextTick,
+  onBeforeUnmount,
+} from 'vue'
 import { useSelect, useSelectStates } from './useSelect'
 import Popper from '@rol-ui/popper'
 import RolInput from '@rol-ui/input'
@@ -132,6 +163,7 @@ import RolTag from '@rol-ui/tag'
 import { selectKey } from './token'
 import { OutSideClick } from '@rol-ui/directives'
 import { RSelectInternalInstance } from './type'
+import { addResizeListener, removeResizeListener } from '@rol-ui/utils/resize-event'
 
 export default defineComponent({
   name: 'RolSelect',
@@ -180,6 +212,10 @@ export default defineComponent({
       type: Number,
       default: 0,
     },
+    placeholder: {
+      type: String,
+      default: '请选择',
+    },
     defaultFirstOption: Boolean,
     reserveKeyword: Boolean,
     valueKey: {
@@ -226,6 +262,9 @@ export default defineComponent({
       resetInputHeight,
       deleteTag,
       debouncedOnInputChange,
+      debouncedQueryChange,
+      handleComposition,
+      handleResize,
     } = useSelect(props, states, ctx)
 
     const {
@@ -273,14 +312,38 @@ export default defineComponent({
     )
 
     onMounted(() => {
-      const sizeMap = {
-        medium: 36,
-        small: 32,
-        mini: 28,
+      states.cachedPlaceHolder = currentPlaceholder.value = props.placeholder
+      if (props.multiple && Array.isArray(props.modelValue) && props.modelValue.length > 0) {
+        currentPlaceholder.value = ''
       }
-      //   states.initialInputHeight = input.value.getBoundingClientRect().height || sizeMap[selectSize.value]
+      addResizeListener(selectWrapper.value as any, handleResize)
+      if (reference.value && reference.value.$el) {
+        const sizeMap = {
+          medium: 36,
+          small: 32,
+          mini: 28,
+        }
+        const input = reference.value.$el
+        states.initialInputHeight = input.getBoundingClientRect().height || sizeMap[selectSize.value]
+      }
+      nextTick(() => {
+        if (reference.value.$el) {
+          inputWidth.value = reference.value.$el.getBoundingClientRect().width
+        }
+      })
+      setSelected()
     })
 
+    onBeforeUnmount(() => {
+      removeResizeListener(selectWrapper.value as any, handleResize)
+    })
+
+    if (props.multiple && !Array.isArray(props.modelValue)) {
+      ctx.emit(UPDATE_MODELVALUE_EVENT, [])
+    }
+    if (!props.multiple && Array.isArray(props.modelValue)) {
+      ctx.emit(UPDATE_MODELVALUE_EVENT, '')
+    }
     return {
       selectSize,
       selectDisabled,
@@ -320,6 +383,8 @@ export default defineComponent({
       resetInputHeight,
       deleteTag,
       debouncedOnInputChange,
+      debouncedQueryChange,
+      handleComposition,
     }
   },
 })
