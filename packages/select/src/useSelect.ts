@@ -365,12 +365,12 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
         })
         if (!props.multiple) {
           states.selectedLabel = states.selected.currentLabel
-        }
-        if (states.selected) {
-          if (props.filterable) states.query = states.selectedLabel
-        }
-        if (props.filterable) {
-          states.currentPlaceholder = states.cachedPlaceHolder
+          if (states.selected) {
+            if (props.filterable) states.query = states.selectedLabel
+          }
+          if (props.filterable) {
+            states.currentPlaceholder = states.cachedPlaceHolder
+          }
         }
       } else {
         popper.value?.update?.()
