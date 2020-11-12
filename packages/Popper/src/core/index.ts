@@ -1,5 +1,5 @@
 import { generateId, isBool, isHTMLElement } from '@rol-ui/utils/util'
-import { ComponentPublicInstance, computed, reactive, ref, SetupContext, watch } from 'vue'
+import { ComponentPublicInstance, computed, nextTick, reactive, ref, SetupContext, watch } from 'vue'
 import { isString, isArray } from '@vue/shared'
 import { PopperInstance, RefElement, RPopperOptions, RTriggerType } from './props'
 import { createPopper } from '@popperjs/core'
@@ -65,7 +65,7 @@ export default function (props: RPopperOptions, { emit }: SetupContext<REmitOpti
       : (triggerRef.value as ComponentPublicInstance).$el
     detachPopper()
     popperInstance = createPopper(_trigger, popperRef.value, popperOptions.value)
-    popperInstance.update()
+    nextTick(popperInstance.update)
   }
 
   function update() {

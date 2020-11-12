@@ -1,4 +1,5 @@
 import {
+  createVNode,
   defineComponent,
   Fragment,
   h,
@@ -16,7 +17,7 @@ import defaultProps, { RPopperOptions } from './core/props'
 import usePopper from './core'
 import throwError from '@rol-ui/utils/error'
 import { renderArrow, renderPopper, renderTrigger } from './view'
-import { renderBlock } from '@rol-ui/utils/vnode'
+import { PatchFlags, renderBlock } from '@rol-ui/utils/vnode'
 import { OutSideClick } from '@rol-ui/directives'
 
 export default defineComponent({
@@ -95,7 +96,16 @@ export default defineComponent({
 
     return renderBlock(Fragment, null, [
       trigger,
-      appendToBody ? h(Teleport as any, { to: 'body', key: 0 }, [popper]) : renderBlock(Fragment, { key: 1 }, [popper]),
+      createVNode(
+        Teleport as any, // Vue did not support createVNode for Teleport
+        {
+          to: 'body',
+          disabled: !appendToBody,
+        },
+        [popper],
+        PatchFlags.PROPS,
+        ['disabled'],
+      ),
     ])
   },
 })
