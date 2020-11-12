@@ -6,6 +6,8 @@ export function useOption(props, states) {
   const select = inject(selectKey)
   const selectGroup = inject(selectGroupKey, { disabled: false })
   const instance = getCurrentInstance()
+  select.optionsCount++
+  select.filteredOptionsCount++
   const isObject = computed(() => {
     return Object.prototype.toString.call(props.value).toLowerCase() === '[object object]'
   })

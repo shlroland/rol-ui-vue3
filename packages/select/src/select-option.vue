@@ -64,6 +64,7 @@ export default defineComponent({
       if (index > -1 && selectedIndex < 0) {
         select.cachedOptions.splice(index, 1)
       }
+      select.onOptionDestroy(select.options.map((item: any) => item.value).indexOf(props.value))
     })
     select.cachedOptions.push(vm)
     select.options.push(vm)

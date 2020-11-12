@@ -145,8 +145,12 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     states.inputWidth = reference.value?.$el.getBoundingClientRect().width
   }
 
-  const onOptionDestroy = () => {
-    return 0
+  const onOptionDestroy = (index: number) => {
+    if (index > -1) {
+      states.optionsCount--
+      states.filteredOptionsCount--
+      states.options.splice(index, 1)
+    }
   }
 
   const handleComposition = (event: CompositionEvent) => {
@@ -252,6 +256,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   }
 
   const handleQueryChange = (val: any) => {
+    console.log(states.previousQuery, val)
     if (states.previousQuery === val || states.isOnComposition) return
     if (
       states.previousQuery === null &&
@@ -268,7 +273,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     if (props.multiple && props.filterable) {
       nextTick(() => {
         const length = input.value.value.length * 15 + 20
-        console.log(input.value.value, length)
         states.inputLength = props.collapseTags ? Math.min(50, length) : length
         managePlaceholder()
         resetInputHeight()
@@ -374,8 +378,24 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
         }
       } else {
         popper.value?.update?.()
-        ctx.emit('visible-change', val)
+        if (props.filterable) {
+          states.query = props.remote ? '' : states.selectedLabel
+          handleQueryChange(states.query)
+          if (props.multiple) {
+            input.value.focus()
+          } else {
+            if (!props.remote) {
+              states.selectEmitter.emit(selectEvents.queryChange, '')
+              states.selectEmitter.emit(selectEvents.groupQueryChange)
+            }
+            if (states.selectedLabel) {
+              states.currentPlaceholder = states.selectedLabel
+              states.selectedLabel = ''
+            }
+          }
+        }
       }
+      ctx.emit('visible-change', val)
     },
   )
 
@@ -441,5 +461,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
     debouncedQueryChange,
     handleComposition,
     handleResize,
+    emptyText,
   }
 }

@@ -1,5 +1,5 @@
 import { PatchFlags } from '@rol-ui/utils/vnode'
-import { createVNode, Transition, VNode, vShow, withCtx, withDirectives } from 'vue'
+import { createVNode, Transition, VNode, vShow, withCtx, withDirectives,h } from 'vue'
 import { Effect } from '../core/props'
 
 interface RRenderPopperProps {
@@ -31,31 +31,33 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
     onAfterLeave,
   } = props
 
+  const VNode = createVNode(
+    'div',
+    {
+      'aria-hidden': String(!visibility),
+      class: ['rol-popper', 'is-' + effect, popperClass, pure ? 'rol-popper__pure' : ''],
+      style: popperStyle,
+      id: popperId,
+      ref: 'popperRef',
+      role: 'tooltip',
+      onMouseEnter,
+      onMouseLeave,
+      onClick: stop,
+      onMouseDown: stop,
+      onMouseUp: stop,
+    },
+    children,
+    PatchFlags.CLASS | PatchFlags.PROPS | PatchFlags.HYDRATE_EVENTS,
+    ['aria-hidden', 'onMouseenter', 'onMouseleave', 'onMousedown', 'onMouseup', 'onClick', 'id'],
+  )
+
   return createVNode(
     Transition,
     { name, 'onAfter-enter': onAfterEnter, 'onAfter-leave': onAfterLeave },
     {
       default: withCtx(() => [
         withDirectives(
-          createVNode(
-            'div',
-            {
-              'aria-hidden': String(!visibility),
-              class: ['rol-popper', 'is-' + effect, popperClass, pure ? 'rol-popper__pure' : ''],
-              style: popperStyle,
-              id: popperId,
-              ref: 'popperRef',
-              role: 'tooltip',
-              onMouseEnter,
-              onMouseLeave,
-              onClick: stop,
-              onMouseDown: stop,
-              onMouseUp: stop,
-            },
-            children,
-            PatchFlags.CLASS | PatchFlags.STYLE | PatchFlags.PROPS | PatchFlags.HYDRATE_EVENTS,
-            ['aria-hidden', 'onMouseenter', 'onMouseleave', 'onMousedown', 'onMouseup', 'onClick', 'id'],
-          ),
+          VNode,
           [[vShow, visibility]],
         ),
       ]),

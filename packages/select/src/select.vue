@@ -109,7 +109,7 @@
                 @click="handleClearClick"
               ></rol-icon>
               <rol-icon
-                v-if="!showClose"
+                v-if="!showClose && iconClass"
                 :class="['rol-select__caret', 'rol-input__icon', { 'is-reverse': visible }]"
                 :name="iconClass"
               ></rol-icon>
@@ -132,6 +132,12 @@
               <rol-option v-if="showNewOption" :value="query" :created="true" />
               <slot></slot>
             </rol-scrollbar>
+            <template v-if="emptyText && (!allowCreate || loading || (allowCreate && options.length === 0))">
+              <slot v-if="$slots.empty" name="empty"></slot>
+              <p v-else class="rol-select-dropdown__empty">
+                {{ emptyText }}
+              </p>
+            </template>
           </rol-select-dropdown>
         </transition>
       </template>
@@ -182,6 +188,7 @@ export default defineComponent({
     id: String,
     modelValue: {
       type: [Array, String, Number],
+      required: true,
     },
     autocomplete: {
       type: String,
@@ -265,6 +272,7 @@ export default defineComponent({
       debouncedQueryChange,
       handleComposition,
       handleResize,
+      emptyText,
     } = useSelect(props, states, ctx)
 
     const {
@@ -339,11 +347,13 @@ export default defineComponent({
     })
 
     if (props.multiple && !Array.isArray(props.modelValue)) {
+      console.log('created')
       ctx.emit(UPDATE_MODELVALUE_EVENT, [])
     }
     if (!props.multiple && Array.isArray(props.modelValue)) {
       ctx.emit(UPDATE_MODELVALUE_EVENT, '')
     }
+
     return {
       selectSize,
       selectDisabled,
@@ -385,6 +395,7 @@ export default defineComponent({
       debouncedOnInputChange,
       debouncedQueryChange,
       handleComposition,
+      emptyText,
     }
   },
 })
