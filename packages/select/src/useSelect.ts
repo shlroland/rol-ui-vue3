@@ -256,7 +256,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   }
 
   const handleQueryChange = (val: any) => {
-    console.log(states.previousQuery, val)
     if (states.previousQuery === val || states.isOnComposition) return
     if (
       states.previousQuery === null &&

@@ -347,7 +347,6 @@ export default defineComponent({
     })
 
     if (props.multiple && !Array.isArray(props.modelValue)) {
-      console.log('created')
       ctx.emit(UPDATE_MODELVALUE_EVENT, [])
     }
     if (!props.multiple && Array.isArray(props.modelValue)) {
