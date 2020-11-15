@@ -281,6 +281,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
       emitChange(option.value)
       states.visible = false
     }
+    states.isSilentBlur = byClick
   }
 
   const handleQueryChange = (val: any) => {
@@ -428,7 +429,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
 
   watch(
     () => props.modelValue,
-    (val, oldValue) => {
+    val => {
       if (props.multiple) {
         resetInputHeight()
         if ((val && val.length > 0) || (input.value && states.query !== '')) {
