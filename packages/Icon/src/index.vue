@@ -1,12 +1,14 @@
-<template>
-  <span class="rol-icon">
-    <component :is="node" />
-  </span>
-</template>
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref, watchEffect, h } from 'vue'
 import { classList, normalizeIconArgs, objectWithKey, convert } from './utils'
-import { parse as faParse, icon as faIcon, library } from '@fortawesome/fontawesome-svg-core'
+import {
+  parse as faParse,
+  icon as faIcon,
+  library,
+  IconLookup,
+  Transform,
+  Icon,
+} from '@fortawesome/fontawesome-svg-core'
 import type { FlipProps, IconProps, RotateProps, SizeProps } from './IconType'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -79,25 +81,43 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const { attrs } = ctx
-    const iconArgs = normalizeIconArgs(props.name)
-    const classes = objectWithKey('classes', classList(props))
-    const transform = objectWithKey(
-      'transform',
-      typeof props.transform === 'string' ? faParse.transform(props.transform) : props.transform,
-    )
-    const mask = objectWithKey('mask', normalizeIconArgs(props.mask))
-    const renderedIcon = faIcon(iconArgs, {
-      ...classes,
-      ...transform,
-      ...mask,
-      symbol: props.symbol,
-      title: props.title,
+
+    const iconArgs = ref<IconLookup>(null)
+    const classes = ref<{ classes: string[] }>(null)
+    const transform = ref<{ transform: Transform }>(null)
+    const mask = ref<IconLookup>(null)
+    const renderedIcon = ref<Icon>(null)
+    const node = ref<any>(null)
+
+    watchEffect(() => {
+      iconArgs.value = normalizeIconArgs(props.name)
+      classes.value = objectWithKey('classes', classList(props))
+      transform.value = objectWithKey(
+        'transform',
+        typeof props.transform === 'string' ? faParse.transform(props.transform) : props.transform,
+      )
+      mask.value = objectWithKey('mask', normalizeIconArgs(props.mask))
+
+      renderedIcon.value = faIcon(iconArgs.value, {
+        ...classes.value,
+        ...transform.value,
+        ...mask.value,
+        symbol: props.symbol,
+        title: props.title,
+      })
+      if (!renderedIcon.value) {
+        return console.error('Could not find one or more icon(s)', iconArgs, mask)
+      }
+
+      node.value = convert(renderedIcon.value.abstract[0], {}, attrs)()
     })
-    if (!renderedIcon) {
-      return console.error('Could not find one or more icon(s)', iconArgs, mask)
-    }
-    const abstractElement = renderedIcon.abstract[0]
-    return { node: convert(abstractElement, {}, attrs)() }
+
+    // const abstractElement = renderedIcon.abstract[0]
+    return { node }
+  },
+
+  render() {
+    return h('span', { class: 'rol-icon' }, [this.node])
   },
 })
 </script>

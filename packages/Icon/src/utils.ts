@@ -1,10 +1,5 @@
 import { h } from 'vue'
-import {
-  IconLookup,
-  IconPrefix,
-  IconName,
-  AbstractElement,
-} from '@fortawesome/fontawesome-svg-core'
+import { IconLookup, IconPrefix, IconName, AbstractElement } from '@fortawesome/fontawesome-svg-core'
 
 export type Icon = IconLookup | string[] | string
 
@@ -13,11 +8,7 @@ export function normalizeIconArgs(icon: Icon): IconLookup {
     return null
   }
 
-  if (
-    typeof icon === 'object' &&
-    (icon as IconLookup).prefix &&
-    (icon as IconLookup).iconName
-  ) {
+  if (typeof icon === 'object' && (icon as IconLookup).prefix && (icon as IconLookup).iconName) {
     return icon as IconLookup
   }
 
@@ -56,16 +47,11 @@ export function classList(props: any) {
       'fa-border': props.border,
       'fa-li': props.listItem,
       'fa-inverse': props.inverse,
-      'fa-flip-horizontal':
-        props.flip === 'horizontal' || props.flip === 'both',
+      'fa-flip-horizontal': props.flip === 'horizontal' || props.flip === 'both',
       'fa-flip-vertical': props.flip === 'vertical' || props.flip === 'both',
     }),
     defineProperty(_classes, 'fa-' + props.size, Boolean(props.size)),
-    defineProperty(
-      _classes,
-      'fa-rotate-' + props.rotation,
-      Boolean(props.rotation),
-    ),
+    defineProperty(_classes, 'fa-rotate-' + props.rotation, Boolean(props.rotation)),
     defineProperty(_classes, 'fa-pull-' + props.pull, Boolean(props.pull)),
     defineProperty(_classes, 'fa-swap-opacity', Boolean(props.swapOpacity)),
     _classes)
@@ -79,8 +65,7 @@ export function classList(props: any) {
 }
 
 export function objectWithKey(key: any, value: any) {
-  return (Array.isArray(value) && value.length > 0) ||
-    (!Array.isArray(value) && value)
+  return (Array.isArray(value) && value.length > 0) || (!Array.isArray(value) && value)
     ? defineProperty({}, key, value)
     : {}
 }
@@ -159,12 +144,7 @@ function classToObject(cls: string) {
   }, {})
 }
 
-export function convert(
-  abstractElement: AbstractElement,
-  props = {},
-  attrs = {} as any,
-) {
-
+export function convert(abstractElement: AbstractElement, props = {}, attrs = {} as any) {
   if (typeof abstractElement === 'string') {
     return abstractElement
   }
