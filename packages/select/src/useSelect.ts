@@ -1,5 +1,5 @@
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
-import { isEdge, isIE, isKorean, isObject } from '@rol-ui/utils/is$'
+import { isEdge, isIE, isKorean, isObject, isServer } from '@rol-ui/utils/is$'
 import { getValueByPath } from '@rol-ui/utils/util'
 import mitt from 'mitt'
 import { computed, nextTick, reactive, ref, watch } from 'vue'
@@ -44,6 +44,7 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   const reference = ref(null)
   const input = ref<HTMLInputElement | null>(null)
   const tags = ref<HTMLElement | null>(null)
+  const hoverOption = ref(-1)
   const selectSize = computed(() => props.size || 'normal')
   const selectDisabled = computed(() => props.disabled)
   const readonly = computed(() => !props.filterable || props.multiple || (!isIE() && !isEdge() && !states.visible))
@@ -192,6 +193,33 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
       ;(newOption as any).hitState = false
     }
     return newOption
+  }
+
+  const checkDefaultFirstOption = () => {
+    states.hoverIndex = -1
+    let hasCreated = false
+    for (let i = states.options.length - 1; i >= 0; i--) {
+      if (states.options[i].created) {
+        hasCreated = true
+        states.hoverIndex = i
+        break
+      }
+    }
+    if (hasCreated) return
+    for (let i = 0; i !== states.options.length; ++i) {
+      const option = states.options[i]
+      if (states.query) {
+        if (!option.disabled && !option.groupDisabled && option.visible) {
+          states.hoverIndex = i
+          break
+        }
+      } else {
+        if (option.itemSelected) {
+          states.hoverIndex = i
+          break
+        }
+      }
+    }
   }
 
   const setSelected = () => {
@@ -421,6 +449,19 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
   )
 
   watch(
+    () => states.hoverIndex,
+    val => {
+      if (typeof val === 'number' && val > -1) {
+        hoverOption.value = states.options[val] || {}
+      }
+      states.options.forEach(option => {
+        console.log(option)
+        option.hover = hoverOption.value === option
+      })
+    },
+  )
+
+  watch(
     () => selectDisabled.value,
     () => {
       nextTick(() => {
@@ -429,6 +470,24 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
         }
         resetInputHeight()
       })
+    },
+  )
+
+  watch(
+    () => states.options,
+    () => {
+      if (isServer) return
+      popper?.value.update()
+      if (props.multiple) {
+        resetInputHeight()
+      }
+      const inputs = selectWrapper.value.querySelectorAll('input')
+      if ([].indexOf.call(inputs, document.activeElement) === -1) {
+        setSelected()
+      }
+      if (props.defaultFirstOption && (props.filterable || props.remote) && states.filteredOptionsCount) {
+        checkDefaultFirstOption()
+      }
     },
   )
 

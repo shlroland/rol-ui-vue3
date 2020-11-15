@@ -5,7 +5,7 @@ import { selectEvents, selectGroupKey, selectKey } from './token'
 export function useOption(props, states) {
   const select = inject(selectKey)
   const selectGroup = inject(selectGroupKey, { disabled: false })
-  const instance = getCurrentInstance()
+  const instance = getCurrentInstance().proxy
   select.optionsCount++
   select.filteredOptionsCount++
   const isObject = computed(() => {
