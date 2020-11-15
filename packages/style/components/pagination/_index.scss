@@ -2,6 +2,7 @@ $pagination-font-color: $text-strong !default;
 $pagination-background-color: $white !default;
 $pagination-font-size: 13px !default;
 $pagination-border-radius: 3px !default;
+$pagination-button-color: $text !default;
 $pagination-button-width: 35.5px !default;
 $pagination-button-height: 28px !default;
 $pagination-button-disabled-color: $text-light !default;
@@ -32,9 +33,242 @@ $pagination-hover-color: $link-hover !default;
   }
 
   .rol-input__suffix {
-      right: 0;
-      transform: scale(0.8);
+    right: 0;
+    transform: scale(0.8);
+  }
+  .rol-select .rol-input {
+    width: 100px;
+    margin: 0 5px;
+
+    .rol-input__inner {
+      padding-right: 25px;
+      border-radius: $pagination-border-radius;
+    }
   }
 
-  
+  .btn-prev,
+  .btn-next {
+    background: center center no-repeat;
+    background-size: 16px;
+    background-color: $pagination-background-color;
+    cursor: pointer;
+    margin: 0;
+    color: $pagination-button-color;
+    .rol-icon {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+  .btn-prev {
+    padding-right: 12px;
+  }
+
+  .btn-next {
+    padding-left: 12px;
+  }
+  .rol-pager li.disabled {
+    color: $grey-lighter;
+    cursor: not-allowed;
+  }
+
+  @include modify(small) {
+    .btn-prev,
+    .btn-next,
+    .rol-pager li,
+    .rol-pager li.btn-quicknext,
+    .rol-pager li.btn-quickprev,
+    .rol-pager li:last-child {
+      border-color: transparent;
+      font-size: 12px;
+      line-height: 22px;
+      height: 22px;
+      min-width: 22px;
+    }
+
+    .arrow.disabled {
+      visibility: hidden;
+    }
+
+    .more::before,
+    li.more::before {
+      line-height: 24px;
+    }
+
+    span:not([class*='suffix']),
+    button {
+      height: 22px;
+      line-height: 22px;
+    }
+
+    @include e(editor) {
+      height: 22px;
+      &.rol-input .rol-input__inner {
+        height: 22px;
+      }
+    }
+  }
+
+  @include e(sizes) {
+    margin: 0 10px 0 0;
+    font-weight: normal;
+    color: $text-light;
+
+    .rol-input .rol-input__inner {
+      font-size: $pagination-font-size;
+      padding-left: 8px;
+
+      &:hover {
+        border-color: $pagination-hover-color;
+      }
+    }
+  }
+
+  @include e(total) {
+    margin-right: 10px;
+    font-weight: normal;
+    color: $text-light;
+  }
+
+  @include e(jump) {
+    margin-left: 24px;
+    font-weight: normal;
+    color: $text-light;
+
+    .rol-input__inner {
+      padding: 0 3px;
+    }
+  }
+
+  @include e(rightwrapper) {
+    float: right;
+  }
+
+  @include e(editor) {
+    line-height: 18px;
+    padding: 0 2px;
+    height: $pagination-button-height;
+    text-align: center;
+    margin: 0 2px;
+    box-sizing: border-box;
+    border-radius: $pagination-border-radius;
+
+    &.rol-input {
+      width: 5px;
+    }
+
+    &.rol-input .rol-input__inner {
+      height: $pagination-button-height;
+    }
+
+    .rol-input__inner::-webkit-inner-spin-button,
+    .rol-input__inner::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  @include when(background) {
+    .btn-prev,
+    .btn-next,
+    .rol-pager li {
+      margin: 0 5px;
+      background-color: $info-light;
+      color: $text-light;
+      min-width: 30px;
+      border-radius: 2px;
+
+      &.disabled {
+        color: $grey-lighter;
+      }
+    }
+
+    .btn-prev,
+    .btn-next {
+      padding: 0;
+
+      &:disabled {
+        color: $grey-lighter;
+      }
+    }
+    .rol-pager li:not(.disabled) {
+      &:hover {
+        color: $pagination-hover-color;
+      }
+
+      &.active {
+        background-color: $info;
+        color: $white;
+      }
+    }
+
+    &.rol-pagination--small {
+      .btn-prev,
+      .btn-next,
+      .rol-pager li {
+        margin: 0 3px;
+        min-width: 22px;
+      }
+    }
+  }
+}
+
+@include bem(pager) {
+  user-select: none;
+  list-style: none;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 0;
+  padding: 0;
+  margin: 0;
+
+  .more::before {
+    line-height: 30px;
+  }
+
+  li {
+    padding: 0 4px;
+    background: $pagination-background-color;
+    vertical-align: top;
+    display: inline-block;
+    font-size: $pagination-font-size;
+    min-width: $pagination-button-width;
+    height: $pagination-button-height;
+    line-height: $pagination-button-height;
+    cursor: pointer;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 0;
+
+    &.btn-quicknext,
+    &.btn-quickprev {
+      line-height: 28px;
+      color: $pagination-button-color;
+
+      &.disabled {
+        color: $grey-lighter;
+      }
+    }
+
+    &.btn-quickprev:hover {
+      cursor: pointer;
+    }
+
+    &.btn-quicknext:hover {
+      cursor: pointer;
+    }
+
+    &.active + li {
+      border-left: 0;
+    }
+
+    &:hover {
+      color: $pagination-hover-color;
+    }
+
+    &.active {
+      color: $pagination-hover-color;
+      cursor: default;
+    }
+  }
 }
