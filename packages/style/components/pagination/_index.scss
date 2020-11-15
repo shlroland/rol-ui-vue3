@@ -7,7 +7,7 @@ $pagination-button-width: 35.5px !default;
 $pagination-button-height: 28px !default;
 $pagination-button-disabled-color: $text-light !default;
 $pagination-button-disabled-background-color: $border !default;
-$pagination-hover-color: $link-hover !default;
+$pagination-hover-color: $link !default;
 
 @include bem(pagination) {
   white-space: nowrap;

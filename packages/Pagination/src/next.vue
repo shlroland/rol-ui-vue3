@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="btn-prev">
+  <button type="button" class="btn-next">
     <span v-if="nextText">{{ nextText }}</span>
     <Icon v-else name="chevron-right"></Icon>
   </button>

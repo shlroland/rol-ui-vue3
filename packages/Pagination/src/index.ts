@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue'
+import { computed, defineComponent, h, ref, watchEffect } from 'vue'
 import Prev from './prev.vue'
 import Next from './next.vue'
 import Pager from './pager.vue'
@@ -61,7 +61,58 @@ export default defineComponent({
     disabled: Boolean,
     hideOnSinglePage: Boolean,
   },
-  //   setup(props, { emit }) {},
+  setup(props, { emit }) {
+    const internalCurrentPage = ref(1)
+    // const userChangePageSize = ref(false)
+    const internalPageSize = ref(0)
+    const internalPageCount = computed<Nullable<number>>(() => {
+      if (typeof props.total === 'number') {
+        return Math.max(1, Math.ceil(props.total / internalPageSize.value))
+      } else if (typeof props.pageCount === 'number') {
+        return Math.max(1, props.pageCount)
+      }
+      return null
+    })
+
+    const getValidCurrentPage = (value: number | string) => {
+      if (typeof value === 'string') {
+        value = parseInt(value, 10)
+      }
+      let resetValue: number | undefined
+      const havePageCount = typeof internalPageCount.value === 'number'
+
+      if (!havePageCount) {
+        if (isNaN(value) || value < 1) resetValue = 1
+      } else {
+        if (value < 1) {
+          resetValue = 1
+        } else if (value > internalPageCount.value) {
+          resetValue = internalPageCount.value
+        }
+      }
+
+      if (resetValue === undefined && isNaN(value)) {
+        resetValue = 1
+      } else if (resetValue === 0) {
+        resetValue = 1
+      }
+
+      return resetValue === undefined ? value : resetValue
+    }
+
+    watchEffect(() => {
+      internalCurrentPage.value = getValidCurrentPage(props.currentPage)
+    })
+
+    watchEffect(() => {
+      internalPageSize.value = isNaN(props.pageSize) ? 10 : props.pageSize
+    })
+
+    return {
+      internalCurrentPage,
+      internalPageCount,
+    }
+  },
   render() {
     const layout = this.layout
 
@@ -75,7 +126,13 @@ export default defineComponent({
       prev: h(Prev),
       //   jumper: h(Jumper),
       next: h(Next),
-      pager: h(Pager),
+      pager: h(Pager, {
+        currentPage: this.internalCurrentPage,
+        pageCount: this.internalPageCount,
+        pagerCount: this.pagerCount,
+        onChange: this.handleCurrentChange,
+        disabled: this.disabled,
+      }),
     }
 
     const components = layout.split(',').map((item: string) => item.trim())
