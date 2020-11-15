@@ -16,7 +16,7 @@ $pagination-hover-color: $link-hover !default;
   font-weight: bold;
   @include clearfix;
 
-  span:not([class*='suffix']),
+  span:not([class*='suffix']):not(.rol-icon),
   button {
     display: inline-block;
     font-size: $pagination-font-size;
@@ -25,6 +25,26 @@ $pagination-hover-color: $link-hover !default;
     line-height: $pagination-button-height;
     vertical-align: top;
     box-sizing: border-box;
+  }
+
+  button {
+    border: none;
+    padding: 0 6px;
+    background: transparent;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      color: $pagination-hover-color;
+    }
+
+    &:disabled {
+      color: $pagination-button-disabled-color;
+      background-color: $pagination-button-disabled-background-color;
+      cursor: not-allowed;
+    }
   }
   .rol-input__inner {
     text-align: center;

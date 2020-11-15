@@ -1,0 +1,11 @@
+<template>
+  <ul class="rol-pager"></ul>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({})
+</script>
+
+<style></style>
