@@ -1,12 +1,12 @@
 <template>
-  <button type="button" class="btn-prev">
+  <button type="button" class="btn-prev" :disabled="internalDisabled" @click.self.prevent>
     <span v-if="prevText">{{ prevText }}</span>
     <Icon v-else name="chevron-left"></Icon>
   </button>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import Icon from '@rol-ui/icon'
 
 export default defineComponent({
@@ -24,6 +24,12 @@ export default defineComponent({
       type: String,
       default: '',
     },
+  },
+  setup(props) {
+    const internalDisabled = computed(() => props.disabled || props.currentPage <= 1)
+    return {
+      internalDisabled,
+    }
   },
 })
 </script>

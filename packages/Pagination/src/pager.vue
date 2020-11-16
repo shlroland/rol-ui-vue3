@@ -1,5 +1,5 @@
 <template>
-  <ul class="rol-pager">
+  <ul class="rol-pager" @click="onPagerClick">
     <li
       v-if="pageCount > 0"
       :class="{
@@ -10,11 +10,25 @@
     >
       1
     </li>
-    <li v-if="showPrevMore" :class="['rol-icon more btn-quickprev', { disabled }]"></li>
+    <li
+      v-if="showPrevMore"
+      :class="['more btn-quickprev', { disabled }]"
+      @mouseenter="onMouseenter('left')"
+      @mouseleave="quickprevIconClass = 'ellipsis-h'"
+    >
+      <Icon class="more quickprev" :name="quickprevIconClass"></Icon>
+    </li>
     <li v-for="pager in pagers" :key="pager" :class="{ active: currentPage === pager, disabled }" class="number">
       {{ pager }}
     </li>
-    <li v-if="showPrevMore" :class="['rol-icon more btn-quickprev', { disabled }]"></li>
+    <li
+      v-if="showNextMore"
+      :class="['more btn-quicknext', { disabled }]"
+      @mouseenter="onMouseenter('right')"
+      @mouseleave="quicknextIconClass = 'ellipsis-h'"
+    >
+      <Icon class="more quicknext" :name="quicknextIconClass"></Icon>
+    </li>
     <li v-if="pageCount > 1" :class="{ active: currentPage === pageCount, disabled }" class="number">
       {{ pageCount }}
     </li>
@@ -22,10 +36,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, watchEffect, ref } from 'vue'
+import Icon from '@rol-ui/icon'
 
 export default defineComponent({
   name: 'RolPager',
+  components: {
+    Icon,
+  },
   props: {
     currentPage: {
       type: Number,
@@ -41,14 +59,17 @@ export default defineComponent({
     },
     disabled: Boolean,
   },
+  emits: ['change'],
   setup(props, { emit }) {
+    const showPrevMore = ref(false)
+    const showNextMore = ref(false)
+    const quicknextIconClass = ref('ellipsis-h')
+    const quickprevIconClass = ref('ellipsis-h')
     const pagers = computed(() => {
       const pagerCount = props.pagerCount
       const halfPagerCount = (pagerCount - 1) / 2
       const currentPage = Number(props.currentPage)
       const pageCount = Number(props.pageCount)
-
-      console.log(props)
 
       let showPrevMore = false
       let showNextMore = false
@@ -83,8 +104,68 @@ export default defineComponent({
       return array
     })
 
+    watchEffect(() => {
+      const halfPagerCount = (props.pagerCount - 1) / 2
+
+      showPrevMore.value = false
+      showNextMore.value = false
+
+      if (props.pageCount > props.pagerCount) {
+        if (props.currentPage > props.pagerCount - halfPagerCount) {
+          showPrevMore.value = true
+        }
+        if (props.currentPage < props.pageCount - halfPagerCount) {
+          showNextMore.value = true
+        }
+      }
+    })
+
+    const onPagerClick = (event: UIEvent) => {
+      const target = event.target as HTMLOrSVGElement
+      if (target.tagName.toLowerCase() === 'ul' || props.disabled) return
+
+      let newPage = Number(target.textContent)
+
+      const pageCount = props.pageCount
+      const currentPage = props.currentPage
+      const pagerCountOffset = props.pagerCount - 2
+      if (target.className.includes('more')) {
+        if (target.className.includes('quickprev')) {
+          newPage = currentPage - pagerCountOffset
+        } else if (target.className.includes('quicknext')) {
+          newPage = currentPage + pagerCountOffset
+        }
+      }
+      if (!isNaN(newPage)) {
+        if (newPage < 1) {
+          newPage = 1
+        }
+        if (newPage > pageCount) {
+          newPage = pageCount
+        }
+      }
+      if (newPage !== currentPage) {
+        emit('change', newPage)
+      }
+    }
+
+    const onMouseenter = (direction: 'left' | 'right') => {
+      if (props.disabled) return
+      if (direction === 'left') {
+        quickprevIconClass.value = 'angle-double-left'
+      } else {
+        quicknextIconClass.value = 'angle-double-right'
+      }
+    }
+
     return {
       pagers,
+      showPrevMore,
+      showNextMore,
+      onPagerClick,
+      quicknextIconClass,
+      quickprevIconClass,
+      onMouseenter,
     }
   },
 })

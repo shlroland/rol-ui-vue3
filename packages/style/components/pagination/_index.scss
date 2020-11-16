@@ -5,8 +5,8 @@ $pagination-border-radius: 3px !default;
 $pagination-button-color: $text !default;
 $pagination-button-width: 35.5px !default;
 $pagination-button-height: 28px !default;
-$pagination-button-disabled-color: $text-light !default;
-$pagination-button-disabled-background-color: $border !default;
+$pagination-button-disabled-color: Lighten($text-light,10%) !default;
+$pagination-button-disabled-background-color: $white!default;
 $pagination-hover-color: $link !default;
 
 @include bem(pagination) {
@@ -263,10 +263,14 @@ $pagination-hover-color: $link !default;
     &.btn-quicknext,
     &.btn-quickprev {
       line-height: 28px;
+      height: 28px;
       color: $pagination-button-color;
 
       &.disabled {
         color: $grey-lighter;
+      }
+      .rol-icon {
+        display: block;
       }
     }
 

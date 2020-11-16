@@ -112,7 +112,6 @@ export default defineComponent({
       node.value = convert(renderedIcon.value.abstract[0], {}, attrs)()
     })
 
-    // const abstractElement = renderedIcon.abstract[0]
     return { node }
   },
 

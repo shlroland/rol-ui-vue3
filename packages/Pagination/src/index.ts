@@ -1,4 +1,4 @@
-import { computed, defineComponent, h, ref, watchEffect } from 'vue'
+import { computed, defineComponent, h, nextTick, ref, watchEffect } from 'vue'
 import Prev from './prev.vue'
 import Next from './next.vue'
 import Pager from './pager.vue'
@@ -61,9 +61,11 @@ export default defineComponent({
     disabled: Boolean,
     hideOnSinglePage: Boolean,
   },
+  emits: ['current-change'],
   setup(props, { emit }) {
     const internalCurrentPage = ref(1)
-    // const userChangePageSize = ref(false)
+    const lastEmittedPage = ref(-1)
+    const userChangePageSize = ref(false)
     const internalPageSize = ref(0)
     const internalPageCount = computed<Nullable<number>>(() => {
       if (typeof props.total === 'number') {
@@ -100,6 +102,22 @@ export default defineComponent({
       return resetValue === undefined ? value : resetValue
     }
 
+    const emitChange = () => {
+      nextTick(() => {
+        if (internalCurrentPage.value !== lastEmittedPage.value || userChangePageSize) {
+          emit('current-change', internalCurrentPage.value)
+          lastEmittedPage.value = internalCurrentPage.value
+          userChangePageSize.value = false
+        }
+      })
+    }
+
+    const handleCurrentChange = (val: number) => {
+      internalCurrentPage.value = getValidCurrentPage(val)
+      userChangePageSize.value = true
+      emitChange()
+    }
+
     watchEffect(() => {
       internalCurrentPage.value = getValidCurrentPage(props.currentPage)
     })
@@ -111,6 +129,7 @@ export default defineComponent({
     return {
       internalCurrentPage,
       internalPageCount,
+      handleCurrentChange,
     }
   },
   render() {
@@ -123,9 +142,17 @@ export default defineComponent({
     })
     const rootChildren = []
     const TEMPLATE_MAP = {
-      prev: h(Prev),
+      prev: h(Prev, {
+        currentPage: this.internalCurrentPage,
+        pageCount: this.internalPageCount,
+        pagerCount: this.pagerCount,
+      }),
       //   jumper: h(Jumper),
-      next: h(Next),
+      next: h(Next, {
+        currentPage: this.internalCurrentPage,
+        pageCount: this.internalPageCount,
+        pagerCount: this.pagerCount,
+      }),
       pager: h(Pager, {
         currentPage: this.internalCurrentPage,
         pageCount: this.internalPageCount,
