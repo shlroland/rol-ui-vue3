@@ -137,7 +137,7 @@ export default {
     },
     size: {
       type: String as PropType<'large' | 'medium' | 'small' | 'mini' >,
-      default: 'nromal',
+      default: 'normal',
       validator: (val: string) =>  ['large', 'medium', 'small', 'mini','normal'].includes(val),
     },
     resize: {

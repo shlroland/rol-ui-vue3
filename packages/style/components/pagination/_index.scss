@@ -174,7 +174,7 @@ $pagination-hover-color: $link !default;
     border-radius: $pagination-border-radius;
 
     &.rol-input {
-      width: 5px;
+      width: 50px;
     }
 
     &.rol-input .rol-input__inner {
@@ -193,7 +193,7 @@ $pagination-hover-color: $link !default;
     .btn-next,
     .rol-pager li {
       margin: 0 5px;
-      background-color: $info-light;
+      background-color: $light;
       color: $text-light;
       min-width: 30px;
       border-radius: 2px;

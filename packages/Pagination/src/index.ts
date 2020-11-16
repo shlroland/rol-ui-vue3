@@ -1,7 +1,11 @@
-import { computed, defineComponent, h, nextTick, ref, watchEffect } from 'vue'
+import { computed, defineComponent, h, nextTick, provide, ref, watchEffect } from 'vue'
 import Prev from './prev.vue'
 import Next from './next.vue'
 import Pager from './pager.vue'
+import Total from './total.vue'
+import Jumper from './jumper.vue'
+import Sizes from './sizes.vue'
+import { RPagination } from './pagination'
 
 export default defineComponent({
   name: 'RolPagination',
@@ -9,6 +13,9 @@ export default defineComponent({
     Prev,
     Next,
     Pager,
+    Total,
+    Jumper,
+    Sizes,
   },
   props: {
     pageSize: {
@@ -61,7 +68,7 @@ export default defineComponent({
     disabled: Boolean,
     hideOnSinglePage: Boolean,
   },
-  emits: ['current-change'],
+  emits: ['current-change', 'prev-click', 'next-click', 'update:currentPage', 'size-change'],
   setup(props, { emit }) {
     const internalCurrentPage = ref(1)
     const lastEmittedPage = ref(-1)
@@ -118,6 +125,28 @@ export default defineComponent({
       emitChange()
     }
 
+    const handleSizesChange = (val: number) => {
+      userChangePageSize.value = true
+      internalPageSize.value = val
+      emit('size-change', val)
+    }
+
+    const prev = () => {
+      if (props.disabled) return
+      const newVal = internalCurrentPage.value - 1
+      internalCurrentPage.value = getValidCurrentPage(newVal)
+      emit('prev-click', internalCurrentPage)
+      emitChange()
+    }
+
+    const next = () => {
+      if (props.disabled) return
+      const newVal = internalCurrentPage.value + 1
+      internalCurrentPage.value = getValidCurrentPage(newVal)
+      emit('next-click', internalCurrentPage)
+      emitChange()
+    }
+
     watchEffect(() => {
       internalCurrentPage.value = getValidCurrentPage(props.currentPage)
     })
@@ -126,10 +155,26 @@ export default defineComponent({
       internalPageSize.value = isNaN(props.pageSize) ? 10 : props.pageSize
     })
 
+    watchEffect(() => {
+      emit('update:currentPage', internalCurrentPage.value)
+      lastEmittedPage.value = -1
+    })
+
+    provide<RPagination>('pagination', {
+      pageCount: computed(() => props.pageCount),
+      disabled: computed(() => props.disabled),
+      currentPage: computed(() => internalCurrentPage.value),
+      changeEvent: handleCurrentChange,
+      handleSizesChange,
+    })
+
     return {
       internalCurrentPage,
       internalPageCount,
       handleCurrentChange,
+      handleSizesChange,
+      prev,
+      next,
     }
   },
   render() {
@@ -141,17 +186,21 @@ export default defineComponent({
       class: ['rol-pagination', { 'is-background': this.background, 'rol-pagination--small': this.small }],
     })
     const rootChildren = []
+    const rightWrapperRoot = h('div', { class: 'rol-pagination__rightwrapper' })
+    const rightWrapperChildren = []
     const TEMPLATE_MAP = {
       prev: h(Prev, {
         currentPage: this.internalCurrentPage,
         pageCount: this.internalPageCount,
         pagerCount: this.pagerCount,
+        onClick: this.prev,
       }),
-      //   jumper: h(Jumper),
+      jumper: h(Jumper),
       next: h(Next, {
         currentPage: this.internalCurrentPage,
         pageCount: this.internalPageCount,
         pagerCount: this.pagerCount,
+        onClick: this.next,
       }),
       pager: h(Pager, {
         currentPage: this.internalCurrentPage,
@@ -160,12 +209,35 @@ export default defineComponent({
         onChange: this.handleCurrentChange,
         disabled: this.disabled,
       }),
+      total: h(Total, { total: this.total }),
+      sizes: h(Sizes, {
+        pageSize: this.pageSize,
+        pageSizes: this.pageSizes,
+        popperClass: this.popperClass,
+        disabled: this.disabled,
+      }),
+      slot: this.$slots?.default?.() ?? null,
     }
 
     const components = layout.split(',').map((item: string) => item.trim())
 
+    let haveRightWrapper = false
+
     components.forEach((component: keyof typeof TEMPLATE_MAP | '->') => {
-      rootChildren.push(TEMPLATE_MAP[component])
+      if (component === '->') {
+        haveRightWrapper = true
+        return
+      }
+
+      if (!haveRightWrapper) {
+        rootChildren.push(TEMPLATE_MAP[component])
+      } else {
+        rightWrapperChildren.push(TEMPLATE_MAP[component])
+      }
+
+      if (haveRightWrapper) {
+        rootChildren.unshift(rightWrapperRoot)
+      }
     })
 
     return h(rootNode, {}, [rootChildren])
