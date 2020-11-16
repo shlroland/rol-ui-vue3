@@ -14,7 +14,7 @@
   >
     <slot>
       <span>{{ currentLabel }}</span>
-      <rol-icon v-show="itemSelected" name="check"></rol-icon>
+      <rol-icon v-show="itemSelected && multiple" name="check"></rol-icon>
     </slot>
   </li>
 </template>
@@ -83,6 +83,7 @@ export default defineComponent({
       selectOptionClick,
       isDisabled,
       hoverItem,
+      multiple: select.multiple,
     }
   },
 })

@@ -88,6 +88,9 @@
   &.rol-popper[data-popper-placement^='bottom'] {
     margin-top: 8px !important;
   }
+  &.rol-popper[data-popper-placement^='top'] {
+    margin-bottom: 8px !important;
+  }
   & .rol-popper__arrow {
     z-index: #{$index-top + 2};
   }
