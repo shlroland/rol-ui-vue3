@@ -181,6 +181,7 @@ export default defineComponent({
     const layout = this.layout
 
     if (!layout) return null
+    if (this.hideOnSinglePage && (!this.internalPageCount || this.internalPageCount === 1)) return null
 
     const rootNode = h('div', {
       class: ['rol-pagination', { 'is-background': this.background, 'rol-pagination--small': this.small }],

@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="demo-container">
+  <div class="demo-container">
     <span class="demonstration">页数较少时的效果</span>
     <rol-pagination layout="prev, pager, next" :total="50"> </rol-pagination>
   </div>
@@ -40,7 +40,7 @@
       :total="1000"
     >
     </rol-pagination>
-  </div> -->
+  </div>
   <div class="demo-container">
     <span class="demonstration">调整每页显示条数</span>
     <rol-pagination
@@ -54,6 +54,22 @@
     >
     </rol-pagination>
   </div>
+  <div class="demo-container">
+    <span class="demonstration">完整功能</span>
+    <rol-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="100"
+      layout="total, sizes, prev, pager, next,->, jumper"
+      :total="400"
+    >
+    </rol-pagination>
+  </div>
+  <div class="demo-container">
+    
+    </div> 
 </template>
 
 <script>
