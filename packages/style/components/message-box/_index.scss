@@ -11,7 +11,7 @@ $message-header-radius: $radius !default;
 $message-body-border-color: $border !default;
 $message-body-border-width: 0 0 0 4px !default;
 $message-body-color: $text !default;
-$message-body-padding: 1.25em 1.5em !default;
+$message-body-padding: 0.75em 1em !default;
 $message-body-radius: $radius !default;
 
 $message-body-pre-background-color: $scheme-main !default;
@@ -73,8 +73,9 @@ $message-colors: $colors !default;
     border: none;
     outline: none;
     background: transparent;
-    font-size: 0.75em;
+    font-size: 1em;
     cursor: pointer;
+    color: $text;
 
     .rol-message-box__close {
       color: $info;

@@ -6,6 +6,7 @@
 <script lang="ts">
 import Button from '@rol-ui/button'
 import MessageBox from '@rol-ui/message-box'
+import Message from '@rol-ui/meassage'
 import { defineComponent, h } from 'vue'
 
 export default defineComponent({
@@ -16,12 +17,13 @@ export default defineComponent({
 
   setup() {
     const openMsgBox = () => {
-      MessageBox({
-        title: '消息',
-        message: h('p', null, [h('span', null, '内容可以是 '), h('i', { style: 'color: teal' }, 'VNode')]),
-        showCancelButton: true,
+      MessageBox.alert('这是一段内容', '标题名称', {
         confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        callback: action => {
+          Message({
+            message: `action: ${action}`,
+          })
+        },
       })
     }
 

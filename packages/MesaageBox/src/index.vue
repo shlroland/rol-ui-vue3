@@ -1,38 +1,72 @@
 <template>
-  <div
-    v-show="visible"
-    :aria-label="title || 'dialog'"
-    class="rol-message-box__wrapper"
-    tabindex="-1"
-    role="dialog"
-    aria-modal="true"
-  >
-    <div class="rol-message-box" :class="[customClass, center && 'rol-message-box--center']">
-      <div v-if="title !== null && title !== undefined" class="rol-message-box__header">
-        <div class="rol-message__title">
-          <span>{{ title }}</span>
+  <transition name="msgbox-fade">
+    <div
+      v-show="visible"
+      :aria-label="title || 'dialog'"
+      class="rol-message-box__wrapper"
+      tabindex="-1"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="rol-message-box" :class="[customClass, center && 'rol-message-box--center']">
+        <div v-if="title !== null && title !== undefined" class="rol-message-box__header">
+          <div class="rol-message__title">
+            <span>{{ title }}</span>
+          </div>
+          <button
+            v-if="showClose"
+            type="button"
+            class="rol-message-box__headerbtn"
+            aria-label="Close"
+            @click="handleAction(distinguishCancelAndClose ? 'close' : 'cancel')"
+            @keydown.enter="handleAction(distinguishCancelAndClose ? 'close' : 'cancel')"
+          >
+            <rol-icon :name="['far', 'times-circle']"></rol-icon>
+          </button>
         </div>
-        <button v-if="showClose" type="button" class="rol-message-box__headerbtn" aria-label="Close">
-          ×
-        </button>
-      </div>
-      <div class="rol-message-box__content">
-        <div class="rol-message-box__container">
-          <div v-if="hasMessage" class="rol-message-box__message">
-            <slot>
-              <p v-if="!dangerouslyUseHTMLString">{{ message }}</p>
-              <p v-else v-html="message"></p>
-            </slot>
+        <div class="rol-message-box__content">
+          <div class="rol-message-box__container">
+            <div v-if="hasMessage" class="rol-message-box__message">
+              <slot>
+                <p v-if="!dangerouslyUseHTMLString">{{ message }}</p>
+                <p v-else v-html="message"></p>
+              </slot>
+            </div>
+          </div>
+          <div v-show="showInput" class="rol-message-box__input">
+            <rol-input ref="input" v-model="inputType" :placeholder="inputPlaceholder" />
           </div>
         </div>
-        <!-- <div v-show="showInput" class="rol-message-box__input"></div> -->
-      </div>
-      <div class="rol-message-box__btns">
-        <rol-button>{{ cancelButtonText || '取消' }}</rol-button>
-        <rol-button>{{ cancelButtonText || '确定' }}</rol-button>
+        <div class="rol-message-box__btns">
+          <rol-button
+            v-if="showCancelButton"
+            :loading="cancelButtonLoading"
+            :class="[cancelButtonClass]"
+            :round="roundButton"
+            size="small"
+            @click="handleAction('cancel')"
+            @keydown.enter="handleAction('cancel')"
+          >
+            {{ cancelButtonText || '取消' }}
+          </rol-button>
+          <rol-button
+            v-show="showConfirmButton"
+            ref="confirm"
+            :loading="confirmButtonLoading"
+            :class="[confirmButtonClasses]"
+            :round="roundButton"
+            :disabled="confirmButtonDisabled"
+            type="primary"
+            size="small"
+            @click="handleAction('confirm')"
+            @keydown.enter="handleAction('confirm')"
+          >
+            {{ cancelButtonText || '确定' }}
+          </rol-button>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -52,6 +86,8 @@ import {
 } from 'vue'
 import type { RolMessageBoxComponent } from './message-box'
 import RolButton from '@rol-ui/button'
+import RolInput from '@rol-ui/input'
+import RolIcon from '@rol-ui/icon'
 import Dialog from '@rol-ui/utils/aria-dialog'
 import { off, on } from '@rol-ui/utils/dom'
 
@@ -107,6 +143,8 @@ export default defineComponent({
   name: 'RolMsgBox',
   components: {
     RolButton,
+    RolInput,
+    RolIcon,
   },
   props: {
     openDelay: {

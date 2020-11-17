@@ -1,5 +1,5 @@
 import { ComponentInternalInstance, createVNode, isVNode, render, VNode } from 'vue'
-import { msgQueOptions, RolMessageBoxOptions } from './message-box'
+import { msgQueOptions, RolMessageBox, RolMessageBoxOptions } from './message-box'
 import MsgBoxConstructor from './index.vue'
 import { isServer } from '@rol-ui/utils/is$'
 
@@ -69,13 +69,14 @@ interface msgInstance extends ComponentInternalInstance {
       visible: boolean
       [propName: string]: any
     }
+    doClose(): void
   }
   props: {
     [propName: string]: any
   }
 }
 
-const msgQueue: msgQueueItem[] = []
+let msgQueue: msgQueueItem[] = []
 let currentMsg: msgQueueItem, instance: msgInstance
 
 const defaultCallback = (action, ctx) => {
@@ -113,7 +114,6 @@ const showNextMsg = () => {
   if (!instance) {
     initInstance()
   }
-  debugger
 
   if (instance && instance.setupInstall.state.visible) return
   if (msgQueue.length > 0) {
@@ -159,7 +159,7 @@ const showNextMsg = () => {
   }
 }
 
-const MessageBox = (options: RolMessageBoxOptions | string, callback?): Promise<any> => {
+const MessageBox: RolMessageBox = (options: RolMessageBoxOptions | string, callback?): Promise<any> => {
   if (isServer) return
   if (typeof options === 'string' || isVNode(options)) {
     options = {
@@ -188,6 +188,77 @@ const MessageBox = (options: RolMessageBoxOptions | string, callback?): Promise<
     })
     showNextMsg()
   }
+}
+
+MessageBox.alert = (message: string, title?: string | RolMessageBoxOptions, options?: RolMessageBoxOptions) => {
+  if (typeof title === 'object') {
+    options = title
+    title = ''
+  } else if (title === undefined) {
+    title = ''
+  }
+
+  return MessageBox(
+    Object.assign(
+      {
+        title: title,
+        message: message,
+        type$: 'alert',
+        closeOnPressEscape: false,
+        closeOnClickModal: false,
+      },
+      options,
+    ),
+  )
+}
+MessageBox.confirm = (message: string, title?: string | RolMessageBoxOptions, options?: RolMessageBoxOptions) => {
+  if (typeof title === 'object') {
+    options = title
+    title = ''
+  } else if (title === undefined) {
+    title = ''
+  }
+
+  return MessageBox(
+    Object.assign(
+      {
+        title: title,
+        message: message,
+        type$: 'confirm',
+        closeOnPressEscape: false,
+        closeOnClickModal: false,
+      },
+      options,
+    ),
+  )
+}
+MessageBox.prompt = (message: string, title?: string | RolMessageBoxOptions, options?: RolMessageBoxOptions) => {
+  if (typeof title === 'object') {
+    options = title
+    title = ''
+  } else if (title === undefined) {
+    title = ''
+  }
+
+  return MessageBox(
+    Object.assign(
+      {
+        title: title,
+        message: message,
+        type$: 'prompt',
+        closeOnPressEscape: false,
+        closeOnClickModal: false,
+      },
+      options,
+    ),
+  )
+}
+
+MessageBox.close = () => {
+  instance.setupInstall.doClose()
+  instance.setupInstall.state.visible = false
+  msgQueue = []
+  currentMsg = null
 }
 
 export default MessageBox

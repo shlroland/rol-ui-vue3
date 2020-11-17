@@ -131,5 +131,19 @@ export interface RolMessageBoxOptions {
   distinguishCancelAndClose?: boolean
 }
 
+export interface RolMessageBoxShortcutMethod {
+  (message: string, title: string, options?: RolMessageBoxOptions): Promise<MessageBoxData>
+  (message: string, options?: RolMessageBoxOptions): Promise<MessageBoxData>
+}
+
+export interface RolMessageBox {
+  (message: string, title?: string, type?: string): Promise<MessageBoxData>
+  (options: RolMessageBoxOptions): Promise<MessageBoxData>
+  alert: RolMessageBoxShortcutMethod
+  confirm: RolMessageBoxShortcutMethod
+  prompt: RolMessageBoxShortcutMethod
+  // setDefaults(defaults: RolMessageBoxOptions): void
+  close(): void
+}
 
 export type msgQueOptions = RolMessageBoxComponent | RolMessageBoxOptions | string
