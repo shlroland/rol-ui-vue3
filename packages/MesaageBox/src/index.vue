@@ -7,10 +7,14 @@
       tabindex="-1"
       role="dialog"
       aria-modal="true"
+      @click.self="handleWrapperClick"
     >
       <div class="rol-message-box" :class="[customClass, center && 'rol-message-box--center']">
         <div v-if="title !== null && title !== undefined" class="rol-message-box__header">
           <div class="rol-message__title">
+            <div v-if="icon && center" class="rol-message-box__status">
+              <rol-icon :name="icon" :class="`rol-icon-${type}`"></rol-icon>
+            </div>
             <span>{{ title }}</span>
           </div>
           <button
@@ -26,6 +30,9 @@
         </div>
         <div class="rol-message-box__content">
           <div class="rol-message-box__container">
+            <div v-if="icon && !center && hasMessage" class="rol-message-box__status">
+              <rol-icon :name="icon" :class="`rol-icon-${type}`"></rol-icon>
+            </div>
             <div v-if="hasMessage" class="rol-message-box__message">
               <slot>
                 <p v-if="!dangerouslyUseHTMLString">{{ message }}</p>
@@ -34,7 +41,17 @@
             </div>
           </div>
           <div v-show="showInput" class="rol-message-box__input">
-            <rol-input ref="input" v-model="inputType" :placeholder="inputPlaceholder" />
+            <rol-input
+              ref="input"
+              v-model="inputValue"
+              :type="inputType"
+              :placeholder="inputPlaceholder"
+              :class="{ invalid: validateError }"
+              @keydown.enter="handleInputEnter"
+            />
+            <div class="rol-message-box__errormsg" :style="{ visibility: !!editorErrorMessage ? 'visible' : 'hidden' }">
+              {{ editorErrorMessage }}
+            </div>
           </div>
         </div>
         <div class="rol-message-box__btns">
@@ -61,7 +78,7 @@
             @click="handleAction('confirm')"
             @keydown.enter="handleAction('confirm')"
           >
-            {{ cancelButtonText || '确定' }}
+            {{ confirmButtonText || '确定' }}
           </rol-button>
         </div>
       </div>
@@ -70,7 +87,6 @@
 </template>
 
 <script lang="ts">
-import { Instance } from '@rol-ui/utils/popup-manager'
 import usePopup from '@rol-ui/hooks/usePopup'
 import {
   computed,
@@ -110,7 +126,7 @@ const defautState: defaultStateProps = {
   iconClass: '',
   customClass: '',
   showInput: false,
-  inputValue: null,
+  inputValue: '',
   inputPlaceholder: '',
   inputType: 'text',
   inputPattern: null,
@@ -138,6 +154,13 @@ const defautState: defaultStateProps = {
 }
 
 let dialog: Dialog
+
+const TypeMap: Indexable<string> = {
+  success: ['far', 'thumbs-up'],
+  info: ['fas', 'info-circle'],
+  warning: ['fas', 'exclamation-circle'],
+  error: ['fas', 'radiation-alt'],
+}
 
 export default defineComponent({
   name: 'RolMsgBox',
@@ -208,6 +231,7 @@ export default defineComponent({
     const state = reactive({
       ...defautState,
     })
+    const icon = computed(() => state.iconClass || ((state.type && TypeMap[state.type]) ?? ''))
     const hasMessage = computed(() => !!state.message)
     const confirmButtonClasses = computed(() => `rol-button--primary ${state.confirmButtonClass}`)
 
@@ -242,6 +266,27 @@ export default defineComponent({
 
     const validate = () => {
       if (state.type$ === 'prompt') {
+        if (!state.inputValue) return
+        const inputPattern = state.inputPattern
+        if (inputPattern && !inputPattern.test(state.inputValue || '')) {
+          state.editorErrorMessage = state.inputErrorMessage || '验证错误'
+          state.validateError = true
+          return false
+        }
+        const inputValidator = state.inputValidator
+        if (typeof inputValidator === 'function') {
+          const validateResult = inputValidator(state.inputValue)
+          if (validateResult === false) {
+            state.editorErrorMessage = state.inputErrorMessage || '验证错误'
+            state.validateError = true
+            return false
+          }
+          if (typeof validateResult === 'string') {
+            state.editorErrorMessage = validateResult
+            state.validateError = true
+            return false
+          }
+        }
       }
       state.editorErrorMessage = ''
       state.validateError = false
@@ -268,9 +313,16 @@ export default defineComponent({
     }
 
     const handleWrapperClick = () => {
+      console.log(props.closeOnClickModal)
+
       if (props.closeOnClickModal) {
         handleAction(state.distinguishCancelAndClose ? 'close' : 'cancel')
       }
+    }
+
+    const getInputElement = () => {
+      const inputRefs = vm.refs.input.$refs
+      return inputRefs.input || inputRefs.textarea
     }
 
     const handleClose = () => {
@@ -296,13 +348,24 @@ export default defineComponent({
         if (val) {
           await nextTick()
           if (vm.refs.input && vm.refs.input.$el) {
-            // getInputElement().focus()
+            getInputElement().focus()
           }
         } else {
           state.editorErrorMessage = ''
           state.validateError = false
         }
       },
+    )
+
+    watch(
+      () => state.inputValue,
+      async val => {
+        await nextTick()
+        if (state.type$ === 'prompt' && val !== null) {
+          validate()
+        }
+      },
+      { immediate: true },
     )
 
     onBeforeMount(() => {
@@ -338,6 +401,7 @@ export default defineComponent({
       handleAction,
       handleClose,
       doClose,
+      icon,
     }
   },
 })

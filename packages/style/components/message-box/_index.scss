@@ -114,31 +114,28 @@ $message-colors: $colors !default;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 24px !important;
-
-    &::before {
-      // 防止图标切割
-      padding-left: 1px;
-    }
+    font-size: 1em;
+    display: flex;
+    align-items: center;
 
     + .rol-message-box__message {
       padding-left: 36px;
       padding-right: 12px;
     }
 
-    &.rol-icon-success {
+    & .rol-icon-success {
       color: $success;
     }
 
-    &.rol-icon-info {
+    & .rol-icon-info {
       color: $info;
     }
 
-    &.rol-icon-warning {
+    & .rol-icon-warning {
       color: $warning;
     }
 
-    &.rol-icon-error {
+    & .rol-icon-error {
       color: $danger;
     }
   }
