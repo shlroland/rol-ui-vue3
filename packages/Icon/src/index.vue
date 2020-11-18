@@ -116,7 +116,7 @@ export default defineComponent({
   },
 
   render() {
-    return h('span', { class: 'rol-icon' }, [this.node])
+    return h('i', { class: 'rol-icon' }, [this.node])
   },
 })
 </script>

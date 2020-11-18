@@ -1,0 +1,202 @@
+$menu-background-color: $white;
+
+$menu-item-font-size: 14px !default;
+$menu-item-color: $text !default;
+$menu-item-radius: $radius-small !default;
+$menu-item-hover-color: $text-strong !default;
+$menu-item-hover-background-color: $background !default;
+$menu-item-active-color: $link-invert !default;
+$menu-item-active-background-color: $link !default;
+
+$menu-list-border-right: 1px solid $border !default;
+
+$menu-label-color: $text-light !default;
+$menu-label-font-size: 0.75em !default;
+$menu-label-letter-spacing: 0.1em !default;
+$menu-label-spacing: 1em !default;
+
+@include bem(menu) {
+  border-right: $menu-list-border-right;
+  list-style: none;
+  position: relative;
+  margin: 0;
+  padding-left: 0;
+  background-color: $menu-background-color;
+  @include clearfix;
+
+  @include modify(collapse) {
+    width: 64px;
+
+    > .rol-menu-item,
+    > .rol-submenu > .rol-submenu__title {
+      [class^='rol-icon-'] {
+        margin: 0;
+        vertical-align: middle;
+        width: 24px;
+        text-align: center;
+      }
+      .rol-submenu__icon-arrow {
+        display: none;
+      }
+      span {
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        visibility: hidden;
+        display: inline-block;
+      }
+    }
+    > .rol-menu-item.is-active i {
+      color: inherit;
+    }
+
+    .rol-menu .rol-submenu {
+      min-width: 200px;
+    }
+
+    .rol-submenu {
+      position: relative;
+      & .rol-menu {
+        position: absolute;
+        margin-left: 5px;
+        top: 0;
+        left: 100%;
+        z-index: 10;
+        border: 1px solid $border-light;
+        border-radius: $radius-small;
+        box-shadow: $box-shadow-light;
+      }
+      &.is-opened {
+        > .rol-submenu__title .rol-submenu__icon-arrow {
+          transform: none;
+        }
+      }
+    }
+  }
+}
+
+@mixin menu-item {
+  height: 56px;
+  line-height: 56px;
+  font-size: $menu-item-font-size;
+  color: $menu-item-color;
+  padding: 0 20px;
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  box-sizing: border-box;
+  white-space: nowrap;
+
+  * {
+    vertical-align: middle;
+  }
+
+  i {
+    color: $text-light;
+  }
+
+  &:hover,
+  &:focus {
+    outline: none;
+    color: $menu-item-hover-color;
+    background-color: $menu-item-hover-background-color;
+  }
+
+  @include when(disabled) {
+    opacity: 0.25;
+    cursor: not-allowed;
+    background: none !important;
+  }
+}
+
+@include bem(menu-item) {
+  @include menu-item();
+
+  & [class^='rol-icon-'] {
+    margin-right: 5px;
+    width: 24px;
+    text-align: center;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+  @include when(active) {
+    color: $menu-item-active-color;
+    background-color: $menu-item-active-background-color;
+    i {
+      color: inherit;
+    }
+  }
+}
+
+@include bem(submenu) {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+
+  @include e(title) {
+    @include menu-item;
+    &:hover {
+      background-color: $menu-item-hover-background-color;
+    }
+  }
+  & .rol-menu {
+    border: none;
+  }
+  & .rol-menu-item {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 45px;
+    min-width: 200px;
+  }
+  @include e(icon-arrow) {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    margin-top: -7px;
+    transition: transform 0.3s;
+    font-size: 12px;
+  }
+  @include when(active) {
+    .rol-submenu__title {
+      border-bottom-color: $link;
+    }
+  }
+  @include when(opened) {
+    > .rol-submenu__title .rol-submenu__icon-arrow {
+      transform: rotateZ(180deg);
+    }
+  }
+  @include when(disabled) {
+    .rol-submenu__title,
+    .rol-menu-item {
+      opacity: 0.25;
+      cursor: not-allowed;
+      background: none !important;
+    }
+  }
+  [class^='rol-icon-'] {
+    vertical-align: middle;
+    margin-right: 5px;
+    width: 24px;
+    text-align: center;
+    font-size: 18px;
+  }
+}
+
+@include bem(menu-item-group) {
+  > ul {
+    padding: 0;
+  }
+  @include e(title) {
+    padding: 7px 0 7px 20px;
+    line-height: normal;
+    font-size: 12px;
+    color: $text-light;
+  }
+}
+
+.rol-submenu__title .rol-submenu__icon-arrow {
+  transition: 0.2s;
+  opacity: 0;
+}

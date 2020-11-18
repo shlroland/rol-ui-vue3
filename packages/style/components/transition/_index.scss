@@ -53,13 +53,12 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
 .rol-message-fade-enter-from,
 .rol-message-fade-leave-active {
   opacity: 0;
-  transform: translate(-50%,-100%) !important;
+  transform: translate(-50%, -100%) !important;
 }
-
 
 .rol-zoom-in-center-enter-active,
 .rol-zoom-in-center-leave-active {
-  transition: all .3s cubic-bezier(.55,0,.1,1);
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
 .rol-zoom-in-center-enter-from,
 .rol-zoom-in-center-leave-active {
@@ -78,4 +77,8 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
 .rol-zoom-in-top-leave-active {
   opacity: 0;
   transform: scaleY(0);
+}
+
+.rol-opacity-transition {
+  transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
