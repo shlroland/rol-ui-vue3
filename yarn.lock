@@ -3399,6 +3399,11 @@
     resolve-from "^5.0.0"
     store2 "^2.7.1"
 
+"@transloadit/prettier-bytes@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/@transloadit/prettier-bytes/-/prettier-bytes-0.0.7.tgz#cdb5399f445fdd606ed833872fa0cabdbc51686b"
+  integrity sha512-VeJbUb0wEKbcwaSlj5n+LscBl9IPgLPkHVGBkh00cztv6X4L/TJXK58LzFuBKX7/GAfiGhIwH67YTLTlzvIzBA==
+
 "@types/accepts@*":
   version "1.3.5"
   resolved "https://registry.npm.taobao.org/@types/accepts/download/@types/accepts-1.3.5.tgz#c34bec115cfc746e04fe5a059df4ce7e7b391575"
@@ -3940,6 +3945,50 @@
     "@typescript-eslint/types" "4.1.1"
     eslint-visitor-keys "^2.0.0"
 
+"@uppy/companion-client@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.npmjs.org/@uppy/companion-client/-/companion-client-1.6.1.tgz#0e2f91b606eee5b50c225faa8bda908999480aa0"
+  integrity sha512-h6wXmi1JlRCeyPrwJJ2CdSWTtkfEyt7GAPiMtomaL0BpIuStA1k2xMo5qMoCevS/XSMk77fyZfgwpw+UOAycOA==
+  dependencies:
+    "@uppy/utils" "^3.2.5"
+    namespace-emitter "^2.0.1"
+
+"@uppy/core@^1.14.0":
+  version "1.14.0"
+  resolved "https://registry.npmjs.org/@uppy/core/-/core-1.14.0.tgz#b1e35e40371d350f3131a9d24c043b40170d0c1a"
+  integrity sha512-NiDdE2pI+/2D5R1ipOG68v6iR3OhvWS93X3IS4KcKKa6vbhjxVNnhnpX4dYFRZF1TebE5ZI7t9SdJ+lrcMGubw==
+  dependencies:
+    "@transloadit/prettier-bytes" "0.0.7"
+    "@uppy/store-default" "^1.2.4"
+    "@uppy/utils" "^3.2.5"
+    cuid "^2.1.1"
+    lodash.throttle "^4.1.1"
+    mime-match "^1.0.2"
+    namespace-emitter "^2.0.1"
+    preact "8.2.9"
+
+"@uppy/store-default@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.npmjs.org/@uppy/store-default/-/store-default-1.2.4.tgz#480f50cbf23f36158557a42b7699da0cf629d368"
+  integrity sha512-d4YTq6SeH792+vG9OXGCfmCIoo4RteLJKU2mZCzMYNjCZ1yNfU/FVw1r7heTc7f2wNls56ABor2xSybk/X+wFA==
+
+"@uppy/utils@^3.2.5":
+  version "3.2.5"
+  resolved "https://registry.npmjs.org/@uppy/utils/-/utils-3.2.5.tgz#970996c6440e9589f3303c50d77e0686d0bdc8e0"
+  integrity sha512-jJv8gtxSq/eUel3uYkBCoprfmZXibGWiZL8nYEwhxabrhrqO0lEVjueZ5eNu88ZYneRTLOFndaWf3EjLxph51Q==
+  dependencies:
+    abortcontroller-polyfill "^1.4.0"
+    lodash.throttle "^4.1.1"
+
+"@uppy/xhr-upload@^1.6.6":
+  version "1.6.6"
+  resolved "https://registry.npmjs.org/@uppy/xhr-upload/-/xhr-upload-1.6.6.tgz#472bc62a69b53cb172368271fd0dbba9c649f170"
+  integrity sha512-TRwhdejSJwaCeFoZzfS2pACxvEunb+VTFD/jz7oA8khaUnXMwGAGVg1rb7Kc21offpoLWQyl+wIeiISwbrDzzQ==
+  dependencies:
+    "@uppy/companion-client" "^1.6.1"
+    "@uppy/utils" "^3.2.5"
+    cuid "^2.1.1"
+
 "@vue/babel-helper-vue-transform-on@^1.0.0-rc.2":
   version "1.0.0-rc.2"
   resolved "https://registry.npm.taobao.org/@vue/babel-helper-vue-transform-on/download/@vue/babel-helper-vue-transform-on-1.0.0-rc.2.tgz#7246341f666e7c6e65b13da420e2ce85714fbbca"
@@ -4301,6 +4350,11 @@ abbrev@1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/abbrev/download/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha1-+PLIh60Qv2f2NPAFtph/7TF5qsg=
+
+abortcontroller-polyfill@^1.4.0:
+  version "1.5.0"
+  resolved "https://registry.npmjs.org/abortcontroller-polyfill/-/abortcontroller-polyfill-1.5.0.tgz#2c562f530869abbcf88d949a2b60d1d402e87a7c"
+  integrity sha512-O6Xk757Jb4o0LMzMOMdWvxpHWrQzruYBaUruFaIOfAQRnWFxfdXYobw12jrVHGtoXk6WiiyYzc0QWN9aL62HQA==
 
 accepts@^1.3.5, accepts@~1.3.7:
   version "1.3.7"
@@ -6447,6 +6501,11 @@ csstype@^3.0.2:
   version "3.0.3"
   resolved "https://registry.npm.taobao.org/csstype/download/csstype-3.0.3.tgz?cache=0&sync_timestamp=1598348215201&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcsstype%2Fdownload%2Fcsstype-3.0.3.tgz#2b410bbeba38ba9633353aff34b05d9755d065f8"
   integrity sha1-K0ELvro4upYzNTr/NLBdl1XQZfg=
+
+cuid@^2.1.1:
+  version "2.1.8"
+  resolved "https://registry.npmjs.org/cuid/-/cuid-2.1.8.tgz#cbb88f954171e0d5747606c0139fb65c5101eac0"
+  integrity sha512-xiEMER6E7TlTPnDxrM4eRiC6TRgjNX9xzEZ5U/Se2YJKr7Mq4pJn/2XEHjl3STcSh96GmkHPcBXLES8M29wyyg==
 
 currently-unhandled@^0.4.1:
   version "0.4.1"
@@ -10577,6 +10636,11 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "^3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.uniq@4.5.0, lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.npm.taobao.org/lodash.uniq/download/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -10988,6 +11052,13 @@ mime-db@1.44.0:
   resolved "https://registry.npm.taobao.org/mime-db/download/mime-db-1.44.0.tgz#fa11c5eb0aca1334b4233cb4d52f10c5a6272f92"
   integrity sha1-+hHF6wrKEzS0Izy01S8QxaYnL5I=
 
+mime-match@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/mime-match/-/mime-match-1.0.2.tgz#3f87c31e9af1a5fd485fb9db134428b23bbb7ba8"
+  integrity sha1-P4fDHprxpf1IX7nbE0Qosju7e6g=
+  dependencies:
+    wildcard "^1.1.0"
+
 mime-types@^2.1.12, mime-types@^2.1.18, mime-types@^2.1.26, mime-types@^2.1.27, mime-types@~2.1.19, mime-types@~2.1.24:
   version "2.1.27"
   resolved "https://registry.npm.taobao.org/mime-types/download/mime-types-2.1.27.tgz#47949f98e279ea53119f5722e0f34e529bec009f"
@@ -11225,6 +11296,11 @@ mz@^2.1.0, mz@^2.5.0:
     any-promise "^1.0.0"
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
+
+namespace-emitter@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/namespace-emitter/-/namespace-emitter-2.0.1.tgz#978d51361c61313b4e6b8cf6f3853d08dfa2b17c"
+  integrity sha512-N/sMKHniSDJBjfrkbS/tpkPj4RAbvW3mr8UAzvlMHyun93XEm83IAvhWtJVHo+RHn/oO8Job5YN4b+wRjSVp5g==
 
 nan@^2.12.1:
   version "2.14.1"
@@ -12317,6 +12393,11 @@ postcss@^7.0.14, postcss@^7.0.26, postcss@^7.0.32, postcss@^7.0.5, postcss@^7.0.
     chalk "^2.4.2"
     source-map "^0.6.1"
     supports-color "^6.1.0"
+
+preact@8.2.9:
+  version "8.2.9"
+  resolved "https://registry.npmjs.org/preact/-/preact-8.2.9.tgz#813ba9dd45e5d97c5ea0d6c86d375b3be711cc40"
+  integrity sha512-ThuGXBmJS3VsT+jIP+eQufD3L8pRw/PY3FoCys6O9Pu6aF12Pn9zAJDX99TfwRAFOCEKm/P0lwiPTbqKMJp0fA==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
@@ -15575,6 +15656,11 @@ widest-line@^3.1.0:
   integrity sha1-gpIzO79my0X/DeFgOxNreuFJbso=
   dependencies:
     string-width "^4.0.0"
+
+wildcard@^1.1.0:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/wildcard/-/wildcard-1.1.2.tgz#a7020453084d8cd2efe70ba9d3696263de1710a5"
+  integrity sha1-pwIEUwhNjNLv5wup02liY94XEKU=
 
 windows-release@^3.1.0:
   version "3.3.3"

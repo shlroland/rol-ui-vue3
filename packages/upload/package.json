@@ -8,5 +8,9 @@
   },
   "devDependencies": {
     "@vue/test-utils": "^2.0.0-beta.3"
+  },
+  "dependencies": {
+    "@uppy/core": "^1.14.0",
+    "@uppy/xhr-upload": "^1.6.6"
   }
 }
