@@ -82,3 +82,11 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
 .rol-opacity-transition {
   transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
+
+.horizontal-collapse-transition {
+  transition: 0.3s width ease-in-out, 0.3s padding-left ease-in-out, 0.3s padding-right ease-in-out;
+}
+
+.collapse-transition {
+  transition: 0.3s height ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
+}

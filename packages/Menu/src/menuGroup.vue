@@ -1,7 +1,7 @@
 <template>
   <li class="rol-menu-item-group">
     <div class="rol-menu-item-group__title">
-      <template v-if="!slots.title">{{ title }}</template>
+      <template v-if="!$slots.title">{{ title }}</template>
       <slot v-else name="title"></slot>
     </div>
     <ul>

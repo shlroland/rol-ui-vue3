@@ -1,5 +1,16 @@
 <template>
+  <rol-menu-collapse-transition v-if="collapseTransition">
+    <ul
+      :key="+collapse"
+      role="menubar"
+      :style="{ backgroundColor: backgroundColor || '' }"
+      :class="['rol-menu', { 'rol-menu--collapse': collapse }]"
+    >
+      <slot></slot>
+    </ul>
+  </rol-menu-collapse-transition>
   <ul
+    v-else
     :key="+collapse"
     role="menubar"
     :style="{ backgroundColor: backgroundColor || '' }"
@@ -11,10 +22,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import RolMenuCollapseTransition from './menu-collapse-transition.vue'
 
 export default defineComponent({
   name: 'RolMenu',
-  components: 'RolMenu',
+  components: {
+    RolMenuCollapseTransition,
+  },
   props: {
     defaultActive: {
       type: String,
