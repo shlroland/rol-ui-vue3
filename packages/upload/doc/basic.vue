@@ -2,12 +2,12 @@
   <rol-upload
     class="upload-demo"
     action="https://jsonplaceholder.typicode.com/posts/"
-    :on-preview="handlePreview"
-    :on-remove="handleRemove"
-    :before-remove="beforeRemove"
     multiple
     :limit="3"
     :on-exceed="handleExceed"
+    :on-success="handleSuccess"
+    :on-error="handleError"
+    :before-upload="handleBeforeUpload"
     :file-list="fileList"
   >
     <rol-button size="small" type="primary">点击上传</rol-button>
@@ -24,21 +24,11 @@ import RolButton from '@rol-ui/button'
 export default {
   components: {
     RolUpload,
+    RolButton,
   },
   data() {
     return {
-      fileList: [
-        {
-          name: 'food.jpeg',
-          url:
-            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-        },
-        {
-          name: 'food2.jpeg',
-          url:
-            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-        },
-      ],
+      fileList: [],
     }
   },
   methods: {
@@ -55,6 +45,15 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    handleSuccess() {
+      console.log(arguments)
+    },
+    handleError() {
+      console.log(arguments)
+    },
+    handleBeforeUpload() {
+      console.log(arguments)
     },
   },
 }
