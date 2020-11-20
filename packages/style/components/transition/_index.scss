@@ -82,3 +82,13 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
 .rol-opacity-transition {
   transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
+
+.rol-list-enter-active,
+.rol-list-leave-active {
+  transition: all 1s;
+}
+.rol-list-enter-from,
+.rol-list-leave-active {
+  opacity: 0;
+  transform: translateY(-30px);
+}

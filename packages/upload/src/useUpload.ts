@@ -1,6 +1,8 @@
-import { PropType } from 'vue'
-import { ListType } from './upload'
+import { PropType, computed } from 'vue'
+import { ListType, PFileResultHandler, RolUploadFileMap, UploadPropsType, UploadStatus } from './upload'
 import { NOOP } from '@vue/shared'
+import Uppy, { UppyFile } from '@uppy/core'
+import XHRUpload from '@uppy/xhr-upload'
 
 export const uploadProps = {
   action: {
@@ -57,7 +59,7 @@ export const uploadProps = {
     default: NOOP,
   },
   onSuccess: {
-    type: Function,
+    type: Function as PFileResultHandler,
     default: NOOP,
   },
   onProgress: {
@@ -70,7 +72,7 @@ export const uploadProps = {
   },
   onExceed: {
     type: Function,
-    default:  NOOP,
+    default: NOOP,
   },
   fileList: {
     type: Array,
@@ -91,4 +93,62 @@ export const uploadProps = {
     type: Number as PropType<Nullable<number>>,
     default: null,
   },
+}
+
+export const useUpload = (options: UploadPropsType, fileMap: RolUploadFileMap) => {
+  const xhrOptions = computed(() => {
+    return {
+      endpoint: options.action,
+      withCredentials: options.withCredentials,
+    }
+  })
+
+  const uppy = Uppy({ autoProceed: options.autoUpload }).use(XHRUpload, { ...xhrOptions.value })
+
+  const addFile = (file: File) => {
+    uppy.addFile({
+      source: 'file input',
+      name: file.name,
+      type: file.type,
+      data: file,
+    })
+  }
+
+  const upload = () => {
+    uppy.upload()
+  }
+
+  uppy.on('file-added', (file: UppyFile) => {
+    console.log('Added file', file)
+    fileMap.value.set(
+      file.id,
+      Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'ready' }),
+    )
+  })
+
+  uppy.on('upload-success', (file, response) => {
+    options.onSuccess(response, file)
+  })
+  uppy.on('upload', ({ id, fileIDs }) => {
+    // data object consists of `id` with upload ID and `fileIDs` array
+    // with file IDs in current upload
+    // data: { id, fileIDs }
+    console.log(`Starting upload ${id} for files ${fileIDs}`)
+  })
+  uppy.on('upload-progress', (file, progress) => {
+    // file: { id, name, type, ... }
+    // progress: { uploader, bytesUploaded, bytesTotal }
+    console.log(file.id, progress.bytesUploaded, progress.bytesTotal)
+  })
+
+  uppy.on('complete', result => {
+    console.log('successful files:', result.successful)
+    console.log('failed files:', result.failed)
+  })
+
+  return {
+    addFile,
+    upload,
+    uppy,
+  }
 }
