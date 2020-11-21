@@ -5,7 +5,7 @@
       <rol-menu default-active="2" class="rol-menu-vertical-demo" @open="handleOpen" @close="handleClose">
         <rol-submenu index="1">
           <template #title>
-            <i class="rol-icon-location"></i>
+            <rol-icon name="compass"></rol-icon>
             <span>导航一</span>
           </template>
           <rol-menu-item-group>
@@ -23,19 +23,19 @@
         </rol-submenu>
         <rol-menu-item index="2">
           <template #title>
-            <i class="rol-icon-menu"></i>
+            <rol-icon name="bars"></rol-icon>
             <span>导航二</span>
           </template>
         </rol-menu-item>
         <rol-menu-item index="3" disabled>
           <template #title>
-            <i class="rol-icon-document"></i>
+            <rol-icon name="file-alt"></rol-icon>
             <span>导航三</span>
           </template>
         </rol-menu-item>
         <rol-menu-item index="4">
           <template #title>
-            <i class="rol-icon-setting"></i>
+            <rol-icon name="sliders-h"></rol-icon>
             <span>导航四</span>
           </template>
         </rol-menu-item>
@@ -47,6 +47,7 @@
 <script>
 import { Menu, MenuGroup, Submenu, MenuItem } from '@rol-ui/menu'
 import { Row as RolRow, RCol as RolCol } from '@rol-ui/grid'
+import RolIcon from '@rol-ui/icon'
 
 export default {
   components: {
@@ -56,6 +57,7 @@ export default {
     RolMenuItem: MenuItem,
     RolRow,
     RolCol,
+    RolIcon,
   },
 }
 </script>

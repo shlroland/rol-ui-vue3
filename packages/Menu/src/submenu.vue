@@ -1,10 +1,13 @@
 <template>
-  <li :class="['rol-submenu']" role="menuitem" aria-haspopup="true" aria-expanded="opened">
-    <div ref="verticalTitleRef" class="rol-submenu__title">
+  <li :class="['rol-submenu', opened && 'is-opened']" role="menuitem" aria-haspopup="true" aria-expanded="opened">
+    <div v-if="!isMenuPopup" ref="verticalTitleRef" class="rol-submenu__title">
       <slot name="title"></slot>
+      <span class="rol-submenu__icon-arrow">
+        <rol-icon name="angle-down"></rol-icon>
+      </span>
     </div>
-    <rol-collapse-transition>
-      <ul role="menu" class="rol-menu rol-menu--inline">
+    <rol-collapse-transition v-if="!isMenuPopup">
+      <ul v-show="opened" role="menu" class="rol-menu rol-menu--inline">
         <slot></slot>
       </ul>
     </rol-collapse-transition>
@@ -12,13 +15,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, inject, reactive, computed } from 'vue'
 import RolCollapseTransition from '@rol-ui/collapse-transition'
-// import RolPopper from '@rol-ui/popper'
+import RolIcon from '@rol-ui/icon'
+import { RootMenuProvider } from './menu'
 
 export default defineComponent({
   name: 'RolSubmenu',
-  components: { RolCollapseTransition },
+  components: { RolCollapseTransition, RolIcon },
   props: {
     index: {
       type: String,
@@ -33,6 +37,28 @@ export default defineComponent({
       default: 300,
     },
     disabled: Boolean,
+  },
+  setup(props) {
+    const { isMenuPopup, openedMenus } = inject<RootMenuProvider>('rootMenu')
+
+    const data = reactive({
+      popperJS: null,
+      timeout: null,
+      items: {},
+      submenus: {},
+      currentPlacement: '',
+      mouseInChild: false,
+      opened: false,
+    })
+
+    const opened = computed(() => {
+      return openedMenus.value.includes(props.index)
+    })
+
+    return {
+      isMenuPopup,
+      opened,
+    }
   },
 })
 </script>

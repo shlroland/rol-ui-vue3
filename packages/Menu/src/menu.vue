@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide } from 'vue'
+import { defineComponent, provide, ref } from 'vue'
 import RolMenuCollapseTransition from './menu-collapse-transition.vue'
 
 export default defineComponent({
@@ -47,8 +47,12 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const openedMenus = ref(props.defaultOpeneds && !props.collapse ? props.defaultOpeneds.slice(0) : [])
+
     provide('rootMenu', {
       props,
+      openedMenus,
+      isMenuPopup: props.collapse,
     })
   },
 })
