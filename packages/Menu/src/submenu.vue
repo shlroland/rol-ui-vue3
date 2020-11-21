@@ -3,21 +3,22 @@
     <div ref="verticalTitleRef" class="rol-submenu__title">
       <slot name="title"></slot>
     </div>
-    <ul
-      role="menu"
-      class="rol-menu rol-menu--inline"
-    >
-      <slot></slot>
-    </ul>
+    <rol-collapse-transition>
+      <ul role="menu" class="rol-menu rol-menu--inline">
+        <slot></slot>
+      </ul>
+    </rol-collapse-transition>
   </li>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import RolCollapseTransition from '@rol-ui/collapse-transition'
+// import RolPopper from '@rol-ui/popper'
 
 export default defineComponent({
   name: 'RolSubmenu',
-  componentName: 'RolSubmenu',
+  components: { RolCollapseTransition },
   props: {
     index: {
       type: String,

@@ -1,11 +1,11 @@
 <template>
   <rol-row class="tac">
-    <rol-col :span="12">
+    <rol-col :span="6">
       <h5>默认颜色</h5>
       <rol-menu default-active="2" class="rol-menu-vertical-demo" @open="handleOpen" @close="handleClose">
         <rol-submenu index="1">
-          <i class="rol-icon-location"></i>
           <template #title>
+            <i class="rol-icon-location"></i>
             <span>导航一</span>
           </template>
           <rol-menu-item-group>
@@ -22,20 +22,20 @@
           </rol-submenu>
         </rol-submenu>
         <rol-menu-item index="2">
-          <i class="rol-icon-menu"></i>
           <template #title>
+            <i class="rol-icon-menu"></i>
             <span>导航二</span>
           </template>
         </rol-menu-item>
         <rol-menu-item index="3" disabled>
-          <i class="rol-icon-document"></i>
           <template #title>
+            <i class="rol-icon-document"></i>
             <span>导航三</span>
           </template>
         </rol-menu-item>
         <rol-menu-item index="4">
-          <i class="rol-icon-setting"></i>
           <template #title>
+            <i class="rol-icon-setting"></i>
             <span>导航四</span>
           </template>
         </rol-menu-item>
