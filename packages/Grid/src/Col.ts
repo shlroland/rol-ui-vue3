@@ -84,7 +84,6 @@ export default defineComponent({
           })
         }
       })
-      console.log(cent)
       return cent
     })
 

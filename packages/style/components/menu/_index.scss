@@ -22,7 +22,6 @@ $menu-label-spacing: 1em !default;
   margin: 0;
   padding-left: 0;
   background-color: $menu-background-color;
-  text-align: left;
   @include clearfix;
 
   @include modify(collapse) {

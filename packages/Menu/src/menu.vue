@@ -23,6 +23,7 @@
 <script lang="ts">
 import { ComputedRef, defineComponent, getCurrentInstance, onMounted, provide, ref } from 'vue'
 import RolMenuCollapseTransition from './menu-collapse-transition.vue'
+import useMenuColor from './useMenuColor'
 import { emitEvent } from './useMenu'
 import mitt from 'mitt'
 
@@ -42,7 +43,7 @@ export default defineComponent({
     collapse: Boolean,
     backgroundColor: { type: String },
     textColor: { type: String },
-    activeTextColor: { type: String },
+    activeBackgroundColor: { type: String },
     collapseTransition: {
       type: Boolean,
       default: true,
@@ -56,7 +57,7 @@ export default defineComponent({
     const submenus = ref({})
     const alteredCollapse = ref(false)
     const rootMenuEmitter = mitt()
-
+    const hoverBackground = useMenuColor(props.backgroundColor)
     const handleItemClick = (item: { index: string; indexPath: ComputedRef<string[]>; route?: any }) => {
       const { index, indexPath } = item
       const hasIndex = item.index !== null
@@ -67,16 +68,16 @@ export default defineComponent({
       ctx.emit(emitEvent.SELECT, index, indexPath, item)
     }
 
-    const handleSubmenuClick = (submenu: { index: string }) => {
-      const { index } = submenu
+    const handleSubmenuClick = (submenu: { index: string; indexPath?: ComputedRef<string[]> }) => {
+      const { index, indexPath } = submenu
       let isOpened = openedMenus.value.includes(index)
 
       if (isOpened) {
         closeMenu(index)
-        ctx.emit(emitEvent.CLOSE, index)
+        ctx.emit(emitEvent.CLOSE, index, indexPath)
       } else {
         openMenu(index)
-        ctx.emit(emitEvent.OPEN, index)
+        ctx.emit(emitEvent.OPEN, index, indexPath)
       }
     }
 
@@ -86,8 +87,13 @@ export default defineComponent({
         openedMenus.value.splice(i, 1)
       }
     }
-    const openMenu = (index: string) => {
+    const openMenu = (index: string, indexPath?: ComputedRef<string[]>) => {
       if (openedMenus.value.includes(index)) return
+      if (props.uniqueOpened) {
+        openedMenus.value = openedMenus.value.filter((index: string) => {
+          return indexPath.value.indexOf(index) !== -1
+        })
+      }
       openedMenus.value.push(index)
     }
 
@@ -96,6 +102,7 @@ export default defineComponent({
       openedMenus,
       isMenuPopup: props.collapse,
       activeIndex,
+      hoverBackground,
       rootMenuEmit: rootMenuEmitter.emit,
       rootMenuOn: rootMenuEmitter.on,
     })

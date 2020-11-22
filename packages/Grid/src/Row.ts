@@ -34,7 +34,6 @@ export default defineComponent({
       }
       return cent
     })
-    console.log(props.type)
     return () =>
       h(
         props.tag,

@@ -18,7 +18,7 @@ export interface RootMenuProps {
   collapse: boolean
   backgroundColor: string
   textColor: string
-  activeTextColor: string
+  activeBackgroundColor: string
   collapseTransition: boolean
 }
 
