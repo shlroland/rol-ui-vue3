@@ -1,6 +1,11 @@
-import { ExtractPropTypes, Ref } from 'vue'
+import { ComputedRef, ExtractPropTypes, Ref } from 'vue'
 import { Emitter } from 'mitt'
 
+export interface RegisterMenuItem {
+  index: string
+  indexPath: ComputedRef<string[]>
+  active: ComputedRef<boolean>
+}
 export interface RootMenuData {
   activeIndex: string
   openedMenus: unknown[]
@@ -36,8 +41,22 @@ export interface RootMenuProvider {
   submenus: Ref<RootMenuData['submenus']>
   activeIndex: Ref<RootMenuData['activeIndex']>
   hoverBackground: Ref<string>
-  isMenuPopup: Ref<RootMenuData['isMenuPopup']>
+  isMenuPopup: boolean
   props: ExtractPropTypes<RootMenuProps>
   rootMenuEmit: Emitter['emit']
   rootMenuOn: Emitter['on']
+  methods: {
+    addMenuItem: (item: RegisterMenuItem) => void
+    removeMenuItem: (item: RegisterMenuItem) => void
+    addSubMenu: (item: RegisterMenuItem) => void
+    removeSubMenu: (item: RegisterMenuItem) => void
+    openMenu: (index: string, indexPath: Ref<string[]>) => void
+    closeMenu: (index: string) => void
+  }
+}
+
+export interface SubMenuProvider {
+  addSubMenu: (item: RegisterMenuItem) => void
+  removeSubMenu: (item: RegisterMenuItem) => void
+  handleMouseleave?: (deepDispatch: boolean) => void
 }

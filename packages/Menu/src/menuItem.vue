@@ -43,7 +43,6 @@ export default defineComponent({
     const instance = getCurrentInstance()
     const rootMenu = inject<RootMenuProvider>('rootMenu')
     const { parentMenu, paddingStyle, indexPath } = useMenu(instance, props.index)
-
     const hoverBackground = computed(() => {
       return rootMenu.hoverBackground.value
     })
@@ -82,11 +81,11 @@ export default defineComponent({
       if (!props.disabled) {
         rootMenu.rootMenuEmit(emitEvent.ITEMCLICK, {
           index: props.index,
-          indexPath,
+          indexPath:indexPath.value,
         })
         emit(emitEvent.CLICK, {
           index: props.index,
-          indexPath,
+          indexPath:indexPath.value,
         })
       }
     }

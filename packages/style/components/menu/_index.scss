@@ -29,7 +29,7 @@ $menu-label-spacing: 1em !default;
 
     > .rol-menu-item,
     > .rol-submenu > .rol-submenu__title {
-      [class^='rol-icon'] {
+      [class^='rol-icon']:not(.fa-angle-down) {
         margin: 0;
         vertical-align: middle;
         width: 24px;
@@ -152,7 +152,7 @@ $menu-label-spacing: 1em !default;
   @include e(icon-arrow) {
     position: absolute;
     right: 20px;
-    transition: transform 0.3s;
+    // transition: transform 0.3s;
     font-size: 12px;
   }
   @include when(active) {
@@ -162,7 +162,9 @@ $menu-label-spacing: 1em !default;
   }
   @include when(opened) {
     > .rol-submenu__title .rol-submenu__icon-arrow {
-      transform: rotateZ(180deg);
+      .rol-icon {
+        transform: rotate(180deg);
+      }
     }
   }
   @include when(disabled) {
@@ -179,6 +181,7 @@ $menu-label-spacing: 1em !default;
     width: 24px;
     text-align: center;
     font-size: 18px;
+    transition: transform 0.3s;
   }
 }
 
@@ -192,4 +195,9 @@ $menu-label-spacing: 1em !default;
     font-size: 12px;
     color: $text-light;
   }
+}
+
+.horizontal-collapse-transition .rol-submenu__title .rol-submenu__icon-arrow {
+  transition: 0.2s;
+  opacity: 0;
 }

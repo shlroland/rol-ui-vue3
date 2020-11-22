@@ -1,8 +1,18 @@
 <template>
   <rol-row class="tac">
     <rol-col :span="6">
-      <h5>默认颜色</h5>
-      <rol-menu default-active="2" class="rol-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+      <h5>默认颜色</h5
+      ><span>
+        <rol-button @click="changeCollapse(false)">展开</rol-button>
+        <rol-button @click="changeCollapse(true)">收起</rol-button>
+      </span>
+      <rol-menu
+        default-active="2"
+        class="rol-menu-vertical-demo"
+        @open="handleOpen"
+        @close="handleClose"
+        :collapse="isCollapse"
+      >
         <rol-submenu index="1">
           <template #title>
             <rol-icon name="compass"></rol-icon>
@@ -41,13 +51,14 @@
         </rol-menu-item>
       </rol-menu>
     </rol-col>
-    <rol-col :span="6" style="margin-left: 15px;">
+    <!-- <rol-col :span="6" style="margin-left: 15px;">
       <h5>自定义颜色</h5>
       <rol-menu
         default-active="2"
         class="rol-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
+        @select="handleSelect"
         background-color="#545c64"
         text-color="#fff"
         active-background-color="#ffdd57"
@@ -84,7 +95,7 @@
           <span slot="title">导航四</span>
         </rol-menu-item>
       </rol-menu>
-    </rol-col>
+    </rol-col> -->
   </rol-row>
 </template>
 
@@ -92,6 +103,7 @@
 import { Menu, MenuGroup, Submenu, MenuItem } from '@rol-ui/menu'
 import { Row as RolRow, RCol as RolCol } from '@rol-ui/grid'
 import RolIcon from '@rol-ui/icon'
+import RolButton from '@rol-ui/button'
 
 export default {
   components: {
@@ -102,6 +114,12 @@ export default {
     RolRow,
     RolCol,
     RolIcon,
+    RolButton,
+  },
+  data() {
+    return {
+      isCollapse: false,
+    }
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -109,6 +127,12 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath)
+    },
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath)
+    },
+    changeCollapse(flag) {
+      this.isCollapse = flag
     },
   },
 }
@@ -121,5 +145,10 @@ export default {
 
 .rol-menu-vertical-demo {
   text-align: left;
+}
+
+.rol-menu-vertical-demo:not(.rol-menu--collapse) {
+    width: 240px;
+    min-height: 400px;
 }
 </style>

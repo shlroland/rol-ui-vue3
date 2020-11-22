@@ -48,6 +48,7 @@ export function hasClass(el: HTMLElement, cls: string): boolean {
 }
 
 export function addClass(el: HTMLElement, cls: string): void {
+  if(cls==='horizontal-collapse-transition') { console.log('1111') }
   if (!el) return
   let curClass = el.className
   const classes = (cls || '').split(' ')

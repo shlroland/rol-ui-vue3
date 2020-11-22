@@ -11,8 +11,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, getCurrentInstance, inject } from 'vue'
-import { RootMenuProvider } from './menu'
+import { defineComponent, reactive, getCurrentInstance } from 'vue'
 import { useMenu } from './useMenu'
 
 export default defineComponent({

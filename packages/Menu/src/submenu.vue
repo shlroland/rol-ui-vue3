@@ -4,6 +4,9 @@
     role="menuitem"
     aria-haspopup="true"
     aria-expanded="opened"
+    @mouseenter="handleMouseenter"
+    @focus="handleMouseenter"
+    @mouseleave="handleMouseleave(false)"
   >
     <div
       v-if="!isMenuPopup"
@@ -33,12 +36,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, reactive, computed, getCurrentInstance, ref } from 'vue'
+import { defineComponent, inject, reactive, computed, getCurrentInstance, ref, onBeforeMount } from 'vue'
 import RolCollapseTransition from '@rol-ui/collapse-transition'
 import RolIcon from '@rol-ui/icon'
 import { RootMenuProvider } from './menu'
 import { emitEvent, useMenu } from './useMenu'
-import { findColorInvert } from '@rol-ui/utils/color'
+import mitt from 'mitt'
 
 export default defineComponent({
   name: 'RolSubmenu',
@@ -59,11 +62,19 @@ export default defineComponent({
     disabled: Boolean,
   },
   setup(props) {
-    const { isMenuPopup, openedMenus, props: rootProps, rootMenuEmit, hoverBackground } = inject<RootMenuProvider>(
-      'rootMenu',
-    )
+    const {
+      isMenuPopup,
+      openedMenus,
+      props: rootProps,
+      rootMenuEmit,
+      hoverBackground,
+      rootMenuOn,
+      methods: rootMethods,
+    } = inject<RootMenuProvider>('rootMenu')
     const instance = getCurrentInstance()
     const { paddingStyle, indexPath, parentMenu } = useMenu(instance, props.index)
+
+    const subMenuEmitter = mitt()
     const data = reactive({
       popperJS: null,
       timeout: null,
@@ -88,14 +99,6 @@ export default defineComponent({
     const textColor = computed(() => {
       return rootProps.textColor || ''
     })
-
-    // const activeBackgroundColor = computed(() => {
-    //   return rootProps.activeBackgroundColor || ''
-    // })
-
-    // const activeTextColor = computed(() => {
-    //   return findColorInvert(activeBackgroundColor.value)
-    // })
 
     const active = computed(() => {
       let isActive = false
@@ -123,9 +126,16 @@ export default defineComponent({
       }
     })
 
+    const addSubMenu = item => {
+      data.submenus[item.index] = item
+    }
+    const removeSubMenu = item => {
+      delete data.submenus[item.index]
+    }
+
     const handleClick = () => {
       if (rootProps.collapse || props.disabled) return
-      rootMenuEmit(emitEvent.SUBMENUCLICK, { index: props.index })
+      rootMenuEmit(emitEvent.SUBMENUCLICK, { index: props.index, indexPath: indexPath.value })
     }
 
     const handleTitleMouseenter = () => {
@@ -140,6 +150,35 @@ export default defineComponent({
       title && (title.style.backgroundColor = rootProps.backgroundColor || '')
     }
 
+    const handleMouseenter = (event: MouseEvent, showTimeout = props.showTimeout) => {
+      if (!('ActiveXObject' in window) && event.type === 'focus' && !event.relatedTarget) return
+      if (!rootProps.collapse) return
+      subMenuEmitter.emit(emitEvent.MOUSEENTERCHILD)
+      data.timeout = setTimeout(() => {
+        rootMethods.openMenu(props.index, indexPath)
+      }, showTimeout)
+    }
+
+    const handleMouseleave = (deepDispatch = false) => {
+      if (!rootProps.collapse) return
+      subMenuEmitter.emit(emitEvent.MOUSELEAVECHILD)
+      clearTimeout(data.timeout)
+      data.timeout = setTimeout(() => {
+        !data.mouseInChild && rootMethods.closeMenu(props.index)
+      }, props.hideTimeout)
+    }
+
+    onBeforeMount(() => {
+      subMenuEmitter.on(emitEvent.MOUSEENTERCHILD, () => {
+        data.mouseInChild = true
+        clearTimeout(data.timeout)
+      })
+      subMenuEmitter.on(emitEvent.MOUSELEAVECHILD, () => {
+        data.mouseInChild = false
+        clearTimeout(data.timeout)
+      })
+    })
+
     return {
       isMenuPopup,
       opened,
@@ -153,6 +192,8 @@ export default defineComponent({
       popperVnode,
       handleTitleMouseenter,
       handleTitleMouseleave,
+      handleMouseenter,
+      handleMouseleave,
     }
   },
 })

@@ -9,6 +9,8 @@ export const emitEvent = {
   CLICK: 'click',
   CLOSE: 'close',
   OPEN: 'open',
+  MOUSELEAVECHILD: 'submenu:mouse-leave-child',
+  MOUSEENTERCHILD: 'submenu:mouse-enter-child',
 }
 
 export const useMenu = (instance: ComponentInternalInstance, currentIndex?: string) => {
