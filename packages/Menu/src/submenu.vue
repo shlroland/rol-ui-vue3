@@ -1,6 +1,6 @@
 <template>
   <li :class="['rol-submenu', opened && 'is-opened']" role="menuitem" aria-haspopup="true" aria-expanded="opened">
-    <div v-if="!isMenuPopup" ref="verticalTitleRef" class="rol-submenu__title">
+    <div v-if="!isMenuPopup" ref="verticalTitleRef" class="rol-submenu__title" @click="handleClick">
       <slot name="title"></slot>
       <span class="rol-submenu__icon-arrow">
         <rol-icon name="angle-down"></rol-icon>
@@ -19,6 +19,7 @@ import { defineComponent, inject, reactive, computed } from 'vue'
 import RolCollapseTransition from '@rol-ui/collapse-transition'
 import RolIcon from '@rol-ui/icon'
 import { RootMenuProvider } from './menu'
+import { emitEvent } from './useMenu'
 
 export default defineComponent({
   name: 'RolSubmenu',
@@ -39,7 +40,7 @@ export default defineComponent({
     disabled: Boolean,
   },
   setup(props) {
-    const { isMenuPopup, openedMenus } = inject<RootMenuProvider>('rootMenu')
+    const { isMenuPopup, openedMenus, props: rootProps, rootMenuEmit } = inject<RootMenuProvider>('rootMenu')
 
     const data = reactive({
       popperJS: null,
@@ -51,13 +52,20 @@ export default defineComponent({
       opened: false,
     })
 
+
     const opened = computed(() => {
       return openedMenus.value.includes(props.index)
     })
 
+    const handleClick = () => {
+      if (rootProps.collapse || props.disabled) return
+      rootMenuEmit(emitEvent.SUBMENUCLICK, { index: props.index })
+    }
+
     return {
       isMenuPopup,
       opened,
+      handleClick,
     }
   },
 })

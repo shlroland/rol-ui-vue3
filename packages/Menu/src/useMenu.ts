@@ -4,4 +4,6 @@ export const emitEvent = {
   SUBMENUCLICK: 'submenu:submenu-click',
   SELECT: 'select',
   CLICK: 'click',
+  CLOSE: 'close',
+  OPEN: 'open',
 }

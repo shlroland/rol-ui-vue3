@@ -67,6 +67,30 @@ export default defineComponent({
       ctx.emit(emitEvent.SELECT, index, indexPath, item)
     }
 
+    const handleSubmenuClick = (submenu: { index: string }) => {
+      const { index } = submenu
+      let isOpened = openedMenus.value.includes(index)
+
+      if (isOpened) {
+        closeMenu(index)
+        ctx.emit(emitEvent.CLOSE, index)
+      } else {
+        openMenu(index)
+        ctx.emit(emitEvent.OPEN, index)
+      }
+    }
+
+    const closeMenu = (index: string) => {
+      const i = openedMenus.value.indexOf(index)
+      if (i !== -1) {
+        openedMenus.value.splice(i, 1)
+      }
+    }
+    const openMenu = (index: string) => {
+      if (openedMenus.value.includes(index)) return
+      openedMenus.value.push(index)
+    }
+
     provide('rootMenu', {
       props,
       openedMenus,
@@ -78,6 +102,7 @@ export default defineComponent({
 
     onMounted(() => {
       rootMenuEmitter.on(emitEvent.ITEMCLICK, handleItemClick)
+      rootMenuEmitter.on(emitEvent.SUBMENUCLICK, handleSubmenuClick)
     })
   },
 })
