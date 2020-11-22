@@ -21,8 +21,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, ref } from 'vue'
+import { ComputedRef, defineComponent, getCurrentInstance, onMounted, provide, ref } from 'vue'
 import RolMenuCollapseTransition from './menu-collapse-transition.vue'
+import { emitEvent } from './useMenu'
+import mitt from 'mitt'
 
 export default defineComponent({
   name: 'RolMenu',
@@ -46,13 +48,36 @@ export default defineComponent({
       default: true,
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const openedMenus = ref(props.defaultOpeneds && !props.collapse ? props.defaultOpeneds.slice(0) : [])
+    const instance = getCurrentInstance()
+    const activeIndex = ref(props.defaultActive)
+    const items = ref({})
+    const submenus = ref({})
+    const alteredCollapse = ref(false)
+    const rootMenuEmitter = mitt()
+
+    const handleItemClick = (item: { index: string; indexPath: ComputedRef<string[]>; route?: any }) => {
+      const { index, indexPath } = item
+      const hasIndex = item.index !== null
+      if (hasIndex) {
+        activeIndex.value = item.index
+      }
+
+      ctx.emit(emitEvent.SELECT, index, indexPath, item)
+    }
 
     provide('rootMenu', {
       props,
       openedMenus,
       isMenuPopup: props.collapse,
+      activeIndex,
+      rootMenuEmit: rootMenuEmitter.emit,
+      rootMenuOn: rootMenuEmitter.on,
+    })
+
+    onMounted(() => {
+      rootMenuEmitter.on(emitEvent.ITEMCLICK, handleItemClick)
     })
   },
 })

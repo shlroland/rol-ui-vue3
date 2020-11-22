@@ -1,4 +1,5 @@
 import { ExtractPropTypes, Ref } from 'vue'
+import { Emitter } from 'mitt'
 
 export interface RootMenuData {
   activeIndex: string
@@ -21,6 +22,14 @@ export interface RootMenuProps {
   collapseTransition: boolean
 }
 
+export interface RMenuItemProps {
+  index: string
+  route: string | Record<string, unknown>
+  popperClass: string
+  disabled: boolean
+  popperAppendToBody?: boolean
+}
+
 export interface RootMenuProvider {
   openedMenus: Ref<RootMenuData['openedMenus']>
   items: Ref<RootMenuData['items']>
@@ -28,7 +37,7 @@ export interface RootMenuProvider {
   activeIndex: Ref<RootMenuData['activeIndex']>
   hoverBackground: Ref<string>
   isMenuPopup: Ref<RootMenuData['isMenuPopup']>
-
   props: ExtractPropTypes<RootMenuProps>
-
+  rootMenuEmit: Emitter['emit']
+  rootMenuOn: Emitter['on']
 }
