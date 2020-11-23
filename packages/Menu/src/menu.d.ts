@@ -41,7 +41,7 @@ export interface RootMenuProvider {
   submenus: Ref<RootMenuData['submenus']>
   activeIndex: Ref<RootMenuData['activeIndex']>
   hoverBackground: Ref<string>
-  isMenuPopup: boolean
+  isMenuPopup: ComputedRef<boolean>
   props: ExtractPropTypes<RootMenuProps>
   rootMenuEmit: Emitter['emit']
   rootMenuOn: Emitter['on']

@@ -21,12 +21,12 @@
 </template>
 
 <script lang="ts">
-import { ComputedRef, defineComponent, getCurrentInstance, onMounted, provide, ref, watch } from 'vue'
+import { computed, ComputedRef, defineComponent, getCurrentInstance, onMounted, provide, ref, watch } from 'vue'
 import RolMenuCollapseTransition from './menu-collapse-transition.vue'
 import useMenuColor from './useMenuColor'
 import { emitEvent } from './useMenu'
 import mitt from 'mitt'
-import { RegisterMenuItem, RootMenuProvider } from './menu'
+import { RegisterMenuItem, RootMenuProvider, SubMenuProvider } from './menu'
 
 export default defineComponent({
   name: 'RolMenu',
@@ -59,6 +59,10 @@ export default defineComponent({
     const alteredCollapse = ref(false)
     const rootMenuEmitter = mitt()
     const hoverBackground = useMenuColor(props.backgroundColor)
+
+    const isMenuPopup = computed(() => {
+      return props.collapse
+    })
 
     const initializeMenu = () => {
       const index = activeIndex.value
@@ -155,10 +159,21 @@ export default defineComponent({
       updateActiveIndex()
     })
 
+    watch(
+      () => props.collapse,
+      (value, prev) => {
+        if (value !== prev) {
+          alteredCollapse.value = true
+        }
+        if (value) openedMenus.value = []
+        rootMenuEmitter.emit(emitEvent.TOGGLECOLLAPSE, Boolean(props.collapse))
+      },
+    )
+
     provide<RootMenuProvider>('rootMenu', {
       props,
       openedMenus,
-      isMenuPopup: props.collapse,
+      isMenuPopup,
       activeIndex,
       hoverBackground,
       rootMenuEmit: rootMenuEmitter.emit,
@@ -173,6 +188,10 @@ export default defineComponent({
         openMenu,
         closeMenu,
       },
+    })
+    provide<SubMenuProvider>(`subMenu:${instance.uid}`, {
+      addSubMenu,
+      removeSubMenu,
     })
 
     onMounted(() => {

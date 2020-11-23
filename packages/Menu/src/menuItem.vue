@@ -16,10 +16,22 @@
     @blur="onMouseLeave"
     @mouseleave="onMouseLeave"
   >
-    <!-- <template> -->
-    <slot></slot>
-    <slot name="title"></slot>
-    <!-- </template> -->
+    <rol-tooltip
+      v-if="parentMenu.type.name === 'RolMenu' && rootMenu.props.collapse && $slots.title"
+      effect="dark"
+      placement="right"
+    >
+      <template #content>
+        <slot name="title"></slot>
+      </template>
+      <div class="rol-menu-item__tooltip-content">
+        <slot></slot>
+      </div>
+    </rol-tooltip>
+    <template v-else>
+      <slot></slot>
+      <slot name="title"></slot>
+    </template>
   </li>
 </template>
 
@@ -28,9 +40,11 @@ import { computed, defineComponent, getCurrentInstance, inject } from 'vue'
 import { RMenuItemProps, RootMenuProvider } from './menu'
 import { emitEvent, useMenu } from './useMenu'
 import { findColorInvert } from '@rol-ui/utils/color'
+import RolTooltip from '@rol-ui/tooltip'
 
 export default defineComponent({
   name: 'RolMenuItem',
+  components: { RolTooltip },
   props: {
     index: {
       default: null,
@@ -39,7 +53,7 @@ export default defineComponent({
     route: [String, Object],
     disabled: Boolean,
   },
-  setup(props: RMenuItemProps, { emit, slots }) {
+  setup(props: RMenuItemProps, { emit }) {
     const instance = getCurrentInstance()
     const rootMenu = inject<RootMenuProvider>('rootMenu')
     const { parentMenu, paddingStyle, indexPath } = useMenu(instance, props.index)
@@ -81,11 +95,11 @@ export default defineComponent({
       if (!props.disabled) {
         rootMenu.rootMenuEmit(emitEvent.ITEMCLICK, {
           index: props.index,
-          indexPath:indexPath.value,
+          indexPath: indexPath.value,
         })
         emit(emitEvent.CLICK, {
           index: props.index,
-          indexPath:indexPath.value,
+          indexPath: indexPath.value,
         })
       }
     }
@@ -113,6 +127,8 @@ export default defineComponent({
       itemStyle,
       onMouseEnter,
       onMouseLeave,
+      parentMenu,
+      rootMenu,
     }
   },
 })

@@ -20,8 +20,8 @@ export default defineComponent({
           el.dataset.oldPaddingBottom = el.style.paddingBottom
 
           el.style.height = '0'
-          el.style.paddingTop = 0
-          el.style.paddingBottom = 0
+          el.style.paddingTop = '0'
+          el.style.paddingBottom = '0'
         },
         enter(el: HTMLElement) {
           el.dataset.oldOverflow = el.style.overflow
@@ -55,9 +55,9 @@ export default defineComponent({
         leave(el: HTMLElement) {
           if (el.scrollHeight !== 0) {
             addClass(el, 'collapse-transition')
-            el.style.height = 0
-            el.style.paddingTop = 0
-            el.style.paddingBottom = 0
+            el.style.height = '0'
+            el.style.paddingTop = '0'
+            el.style.paddingBottom = '0'
           }
         },
         afterLeave(el: HTMLElement) {

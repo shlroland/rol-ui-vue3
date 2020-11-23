@@ -32,20 +32,21 @@
           </rol-submenu>
         </rol-submenu>
         <rol-menu-item index="2">
+          <rol-icon name="bars"></rol-icon>
           <template #title>
-            <rol-icon name="bars"></rol-icon>
             <span>导航二</span>
           </template>
         </rol-menu-item>
         <rol-menu-item index="3" disabled>
+          <rol-icon name="file-alt"></rol-icon>
+
           <template #title>
-            <rol-icon name="file-alt"></rol-icon>
             <span>导航三</span>
           </template>
         </rol-menu-item>
         <rol-menu-item index="4">
+          <rol-icon name="sliders-h"></rol-icon>
           <template #title>
-            <rol-icon name="sliders-h"></rol-icon>
             <span>导航四</span>
           </template>
         </rol-menu-item>
@@ -148,7 +149,7 @@ export default {
 }
 
 .rol-menu-vertical-demo:not(.rol-menu--collapse) {
-    width: 240px;
-    min-height: 400px;
+  width: 240px;
+  min-height: 400px;
 }
 </style>

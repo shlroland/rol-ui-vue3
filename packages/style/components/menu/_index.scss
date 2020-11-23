@@ -73,6 +73,18 @@ $menu-label-spacing: 1em !default;
       }
     }
   }
+  @include modify(popup) {
+    z-index: 100;
+    min-width: 200px;
+    border: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    box-shadow: $box-shadow-light;
+    &-right-start {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  }
 }
 
 @mixin menu-item {
@@ -126,6 +138,16 @@ $menu-label-spacing: 1em !default;
     i {
       color: inherit;
     }
+  }
+  @include e(tooltip-content) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0 20px;
   }
 }
 
