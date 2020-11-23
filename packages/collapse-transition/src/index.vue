@@ -13,7 +13,7 @@ export default defineComponent({
   setup() {
     return {
       on: {
-        beforeEnter(el: HTMLElement) {
+        beforeEnter(el) {
           addClass(el, 'collapse-transition')
           if (!el.dataset) el.dataset = {}
           el.dataset.oldPaddingTop = el.style.paddingTop
@@ -43,7 +43,7 @@ export default defineComponent({
           el.style.height = ''
           el.style.overflow = el.dataset.oldOverflow
         },
-        beforeLeave(el: HTMLElement) {
+        beforeLeave(el) {
           if (!el.dataset) el.dataset = {}
           el.dataset.oldPaddingTop = el.style.paddingTop
           el.dataset.oldPaddingBottom = el.style.paddingBottom
