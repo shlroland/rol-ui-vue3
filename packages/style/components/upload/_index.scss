@@ -85,6 +85,12 @@
   }
 }
 @include bem(upload-list) {
+  ul,
+  li {
+    &:focus {
+      outline: none;
+    }
+  }
   margin: 0;
   padding: 0;
   list-style: none;
@@ -124,7 +130,7 @@
     .rol-icon-close {
       display: none;
       position: absolute;
-      top: 5px;
+      top: 0px;
       right: 5px;
       cursor: pointer;
       opacity: 0.75;
@@ -132,6 +138,10 @@
 
       &:hover {
         opacity: 1;
+      }
+
+      .rol-icon {
+        display: inline;
       }
     }
     & .rol-icon-close-tip {
@@ -205,6 +215,12 @@
     text-overflow: ellipsis;
     transition: color 0.3s;
     white-space: nowrap;
+
+    @include e(icon-container) {
+      .rol-icon {
+        display: inline;
+      }
+    }
 
     [class^='rol-icon'] {
       height: 100%;
