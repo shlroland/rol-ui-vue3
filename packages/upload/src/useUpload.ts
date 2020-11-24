@@ -100,6 +100,7 @@ export const useUpload = (options: UploadPropsType, fileMap: RolUploadFileMap) =
     return {
       endpoint: options.action,
       withCredentials: options.withCredentials,
+      limit: options.limit,
     }
   })
 
@@ -119,7 +120,6 @@ export const useUpload = (options: UploadPropsType, fileMap: RolUploadFileMap) =
   }
 
   uppy.on('file-added', (file: UppyFile) => {
-    console.log('Added file', file)
     fileMap.value.set(
       file.id,
       Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'ready' }),

@@ -16,13 +16,19 @@
       <slot :file="file">
         <!-- <img src="" alt=""> -->
         <a class="rol-upload-list__item-name" @click="handleClick(file)">
-          <rol-icon :name="['far','file-alt']"></rol-icon>
+          <span class="rol-upload-list__icon-container">
+            <rol-icon :name="['far','file-alt']"></rol-icon>
+          </span>
           {{ file.name }}
         </a>
         <label class="rol-upload-list__item-status-label">
-          <rol-icon class="rol-icon-upload-success" :name="iconType"></rol-icon>
+          <span class="rol-icon-upload-success">
+            <rol-icon :name="iconType"></rol-icon>
+          </span>
         </label>
-        <rol-icon v-if="!disabled" class="rol-icon-close" :name="['far','times-circle']"></rol-icon>
+        <span v-if="!disabled" class="rol-icon-close">
+          <rol-icon :name="['far','times-circle']"></rol-icon>
+        </span>
         <i v-if="!disabled" class="rol-icon-close-tip">按delete可删除</i>
       </slot>
     </li>
