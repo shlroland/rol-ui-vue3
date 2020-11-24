@@ -1,0 +1,117 @@
+$switch-on-color: $link !default;
+$switch-off-color: $border !default;
+$switch-font-size: $size-normal !default;
+$switch-core-border-radius: 10px !default;
+$switch-width: 40px !default;
+$switch-height: 20px !default;
+$switch-button-size: 16px !default;
+
+@include bem(switch) {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  line-height: $switch-height;
+  height: $switch-height;
+  vertical-align: middle;
+  @include when(disabled) {
+    & .rol-switch__core,
+    & .rol-switch__label {
+      cursor: not-allowed;
+    }
+  }
+
+  @include e(label) {
+    transition: 0.2s;
+    height: $switch-height;
+    display: inline-block;
+    font-size: $switch-font-size;
+    font-weight: 500;
+    cursor: pointer;
+    vertical-align: middle;
+    color: $text;
+    @include when(active) {
+      color: $link;
+    }
+    @include modify(left) {
+      margin-right: 10px;
+    }
+    @include modify(right) {
+      margin-left: 10px;
+    }
+    & * {
+      line-height: 1;
+      font-size: $switch-font-size;
+      display: inline-block;
+    }
+  }
+  @include e(input) {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    margin: 0;
+  }
+
+  @include e(core) {
+    margin: 0;
+    display: inline-block;
+    position: relative;
+    width: $switch-width;
+    height: $switch-height;
+    border: 1px solid $switch-off-color;
+    outline: none;
+    border-radius: $switch-core-border-radius;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+    vertical-align: middle;
+
+    .rol-switch__action {
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      border-radius: 100%;
+      transition: all 0.3s;
+      width: $switch-button-size;
+      height: $switch-button-size;
+      background-color: $white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $switch-off-color;
+    }
+  }
+  @include when(checked) {
+    .rol-switch-core {
+      border-color: $switch-on-color;
+      background-color: $switch-on-color;
+
+      .rol-switch__action {
+        left: 100%;
+        margin-left: -$switch-button-size - 1px;
+        color: $switch-on-color;
+      }
+    }
+  }
+  @include when(disabled) {
+    opacity: 0.6;
+  }
+  @include modify(wide) {
+    .rol-switch__label {
+      &.rol-switch__label--left {
+        span {
+          left: 10px;
+        }
+      }
+      &.rol-switch__label--right {
+        span {
+          right: 10px;
+        }
+      }
+    }
+  }
+  & .label-fade-enter-active,
+  & .label-fade-leave-active {
+    opacity: 0;
+  }
+}
