@@ -17,6 +17,11 @@
         </div>
       </div>
     </div>
+    <div v-else class="rol-progress-circle" :style="{ height: `${width}px`, width: `${width}px` }">
+      <svg viewBox="0 0 100 100">
+        <!-- <path class="rol-progress-circle__track" :d=""/> -->
+      </svg>
+    </div>
     <div v-if="showText && !textInside" class="rol-progress__text" :style="{ fontSize: `${progressTextSize}px` }">
       <template v-if="!status">{{ content }}</template>
       <rol-icon v-else :name="iconClass"></rol-icon>
@@ -62,10 +67,6 @@ export default defineComponent({
       type: Number,
       default: 6,
     },
-    width: {
-      type: Number,
-      default: 126,
-    },
     color: {
       type: [String, Array, Function],
       default: '',
@@ -73,6 +74,10 @@ export default defineComponent({
     format: {
       type: Function,
       default: (percentage: number): string => `${percentage}%`,
+    },
+    width: {
+      type: Number,
+      default: 126,
     },
   },
   setup(props) {
