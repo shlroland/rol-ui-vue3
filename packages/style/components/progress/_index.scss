@@ -1,0 +1,141 @@
+@include bem(progress) {
+  position: relative;
+  line-height: 1;
+
+  @include e(text) {
+    font-size: 14px;
+    color: $text;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    line-height: 1;
+
+    i {
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
+  @include modify((circle, dashboard)) {
+    display: inline-block;
+
+    .rol-progress__text {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      margin: 0;
+      transform: translate(0, -50%);
+
+      i {
+        vertical-align: middle;
+        display: inline-block;
+      }
+    }
+  }
+  @include modify(without-text) {
+    .rol-progress__text {
+      display: none;
+    }
+
+    .rol-progress-bar {
+      padding-right: 0;
+      margin-right: 0;
+      display: block;
+    }
+  }
+  @include modify(text-inside) {
+    .rol-progress-bar {
+      padding-right: 0;
+      margin-right: 0;
+    }
+  }
+
+  @include when(success) {
+    .rol-progress-bar__inner {
+      background-color: $success;
+    }
+
+    .rol-progress__text {
+      color: $success;
+    }
+  }
+
+  @include when(warning) {
+    .rol-progress-bar__inner {
+      background-color: $warning;
+    }
+
+    .rol-progress__text {
+      color: $warning;
+    }
+  }
+
+  @include when(warning) {
+    .rol-progress-bar__inner {
+      background-color: $warning;
+    }
+
+    .rol-progress__text {
+      color: $warning;
+    }
+  }
+
+  @include when(exception) {
+    .rol-progress-bar__inner {
+      background-color: $danger;
+    }
+
+    .rol-progress__text {
+      color: $danger;
+    }
+  }
+}
+
+@include bem(progress-bar) {
+  padding-right: 50px;
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  margin-right: -55px;
+  box-sizing: border-box;
+
+  @include e(outer) {
+    height: 6px;
+    border-radius: 100px;
+    background-color: $border-light;
+    overflow: hidden;
+    position: relative;
+    vertical-align: middle;
+  }
+  @include e(inner) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: $link;
+    text-align: right;
+    border-radius: 100px;
+    line-height: 1;
+    white-space: nowrap;
+    transition: width 0.6s ease;
+  }
+  @include e(innerText) {
+    display: inline-block;
+    vertical-align: middle;
+    color: $white;
+    font-size: 12px;
+    margin: 0 5px;
+  }
+}
+
+@keyframes progress {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 32px 0;
+  }
+}
