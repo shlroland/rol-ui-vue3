@@ -5,6 +5,7 @@
     role="switch"
     :aria-checked="checked"
     :aria-disabled="switchDisabled"
+    @click.prevent="switchValue"
   >
     <input
       :id="id"
@@ -35,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, nextTick, ref, watch } from 'vue'
 import { ValueType } from './switch'
 
 export default defineComponent({
@@ -97,17 +98,29 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
   },
-  setup(props) {
+  emits: ['update:modelValue', 'change', 'input'],
+  setup(props, { emit }) {
+    const input = ref<Nullable<HTMLInputElement>>(null)
+    const core = ref<Nullable<HTMLSpanElement>>(null)
     const coreWidth = ref(props.width)
     const isModelValue = ref(props.modelValue !== false)
 
+    watch(
+      () => props.modelValue,
+      () => {
+        isModelValue.value = true
+      },
+    )
+    watch(
+      () => props.value,
+      () => {
+        isModelValue.value = false
+      },
+    )
+
     const switchDisabled = computed((): boolean => {
-      return props.disabled || props.loading
+      return props.disabled
     })
     const actualValue = computed(
       (): ValueType => {
@@ -118,9 +131,40 @@ export default defineComponent({
       return isModelValue.value ? props.modelValue : props.value
     })
 
+    if (![props.activeValue, props.inactiveValue].includes(actualValue.value)) {
+      emit('update:modelValue', props.inactiveValue)
+      emit('change', props.inactiveValue)
+      emit('input', props.inactiveValue)
+    }
+
+    // const setBackgroundColor = () => {
+    //   const newColor = checked.value ? props.activeColor : props.inactiveColor
+    //   core.value.style.borderColor = newColor
+    // }
+
+    const handleChange = () => {
+      const val = checked.value ? props.inactiveValue : props.activeValue
+      emit('update:modelValue', val)
+      emit('change', val)
+      emit('input', val)
+      nextTick(() => {
+        input.value.checked = Boolean(checked.value)
+      })
+    }
+
+    const switchValue = () => {
+      !switchDisabled.value && handleChange()
+    }
+
+    // watch(checked, () => {})
+
     return {
       checked,
       switchDisabled,
+      input,
+      core,
+      coreWidth,
+      switchValue,
     }
   },
 })
