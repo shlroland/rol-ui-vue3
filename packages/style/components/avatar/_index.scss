@@ -31,6 +31,9 @@ $avatar-small-size: 28px !default;
   }
 
   @include modify(icon) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: $avatar-icon-font-size;
   }
 
