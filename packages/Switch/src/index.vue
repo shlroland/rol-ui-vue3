@@ -16,6 +16,8 @@
       :true-value="activeValue"
       :false-value="inactiveValue"
       :disabled="switchDisabled"
+      @change="handleChange"
+      @keydown.enter="switchValue"
     />
     <span
       v-if="inactiveValue || inactiveText"
@@ -36,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, watch } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue'
 import { ValueType } from './switch'
 
 export default defineComponent({
@@ -128,7 +130,7 @@ export default defineComponent({
       },
     )
     const checked = computed(() => {
-      return isModelValue.value ? props.modelValue : props.value
+      return actualValue.value === props.activeValue
     })
 
     if (![props.activeValue, props.inactiveValue].includes(actualValue.value)) {
@@ -137,10 +139,12 @@ export default defineComponent({
       emit('input', props.inactiveValue)
     }
 
-    // const setBackgroundColor = () => {
-    //   const newColor = checked.value ? props.activeColor : props.inactiveColor
-    //   core.value.style.borderColor = newColor
-    // }
+    const setBackgroundColor = () => {
+      const newColor = checked.value ? props.activeColor : props.inactiveColor
+      core.value.style.borderColor = newColor
+      core.value.style.backgroundColor = newColor
+      ;(core.value.children[0] as HTMLElement).style.color = newColor
+    }
 
     const handleChange = () => {
       const val = checked.value ? props.inactiveValue : props.activeValue
@@ -156,7 +160,21 @@ export default defineComponent({
       !switchDisabled.value && handleChange()
     }
 
-    // watch(checked, () => {})
+    watch(checked, () => {
+      input.value.checked = Boolean(checked.value)
+
+      if (props.activeColor || props.inactiveValue) {
+        setBackgroundColor()
+      }
+    })
+
+    onMounted(() => {
+      coreWidth.value = coreWidth.value || 40
+      if (props.activeValue || props.inactiveValue) {
+        setBackgroundColor()
+      }
+      input.value.checked = Boolean(checked.value)
+    })
 
     return {
       checked,
