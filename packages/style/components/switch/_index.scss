@@ -59,6 +59,7 @@ $switch-button-size: 16px !default;
     width: $switch-width;
     height: $switch-height;
     border: 1px solid $switch-off-color;
+    background-color: $switch-off-color;
     outline: none;
     border-radius: $switch-core-border-radius;
     box-sizing: border-box;
@@ -82,7 +83,7 @@ $switch-button-size: 16px !default;
     }
   }
   @include when(checked) {
-    .rol-switch-core {
+    .rol-switch__core {
       border-color: $switch-on-color;
       background-color: $switch-on-color;
 
