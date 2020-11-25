@@ -1,0 +1,54 @@
+$avatar-font-color: $white !default;
+$avatar-background-color: $background !default;
+$avatar-text-font-size: 14px !default;
+$avatar-icon-font-size: 18px !default;
+$avatar-border-radius: 4px !default;
+$avatar-large-size: 40px !default;
+$avatar-medium-size: 36px !default;
+$avatar-small-size: 28px !default;
+
+@include bem(avatar) {
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+  color: $avatar-font-color;
+  background: $avatar-background-color;
+  width: $avatar-large-size;
+  height: $avatar-large-size;
+  line-height: $avatar-large-size;
+  font-size: $avatar-text-font-size;
+
+  > img {
+    display: block;
+    height: 100%;
+  }
+  @include modify(circle) {
+    border-radius: 50%;
+  }
+  @include modify(square) {
+    border-radius: $avatar-border-radius;
+  }
+
+  @include modify(icon) {
+    font-size: $avatar-icon-font-size;
+  }
+
+  @include modify(large) {
+    width: $avatar-large-size;
+    height: $avatar-large-size;
+    line-height: $avatar-large-size;
+  }
+
+  @include modify(medium) {
+    width: $avatar-medium-size;
+    height: $avatar-medium-size;
+    line-height: $avatar-medium-size;
+  }
+
+  @include modify(small) {
+    width: $avatar-small-size;
+    height: $avatar-small-size;
+    line-height: $avatar-small-size;
+  }
+}
