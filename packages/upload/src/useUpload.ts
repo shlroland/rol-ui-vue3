@@ -1,8 +1,9 @@
 import { PropType, computed } from 'vue'
 import { ListType, PFileResultHandler, RolUploadFileMap, UploadPropsType, UploadStatus } from './upload'
 import { NOOP } from '@vue/shared'
-import Uppy, { UppyFile } from '@uppy/core'
+import Uppy, { UppyFile, UppyOptions } from '@uppy/core'
 import XHRUpload from '@uppy/xhr-upload'
+import props from '@rol-ui/popper/src/core/props'
 
 export const uploadProps = {
   action: {
@@ -31,7 +32,7 @@ export const uploadProps = {
     default: true,
   },
   accept: {
-    type: String,
+    type: [String, Array] as PropType<string | string[]>,
     default: '',
   },
   type: {
@@ -70,10 +71,6 @@ export const uploadProps = {
     type: Function,
     default: NOOP,
   },
-  onExceed: {
-    type: Function,
-    default: NOOP,
-  },
   fileList: {
     type: Array,
     default: () => {
@@ -93,27 +90,39 @@ export const uploadProps = {
     type: Number as PropType<Nullable<number>>,
     default: null,
   },
+  data: Object,
 }
 
 export const useUpload = (options: UploadPropsType, fileMap: RolUploadFileMap) => {
+  const acceptArray = computed(() => {
+    if (!options.accept) return null
+    if (typeof options.accept === 'string') {
+      return options.accept.split(',')
+    }
+    return options.accept
+  })
+
   const xhrOptions = computed(() => {
     return {
       endpoint: options.action,
       withCredentials: options.withCredentials,
       limit: options.limit,
+      headers: options.headers,
+      fieldName: options.name,
     }
   })
 
-  const uppy = Uppy({ autoProceed: options.autoUpload }).use(XHRUpload, { ...xhrOptions.value })
+  const uppyOptions = computed<UppyOptions>(() => {
+    return {
+      autoProceed: options.autoUpload,
+      restrictions: {
+        allowedFileTypes: acceptArray.value,
+      },
+      meta: options.data,
+    }
+  })
 
-  const addFile = (file: File) => {
-    uppy.addFile({
-      source: 'file input',
-      name: file.name,
-      type: file.type,
-      data: file,
-    })
-  }
+  const uppy = Uppy({ ...uppyOptions.value }).use(XHRUpload, { ...xhrOptions.value })
 
   const upload = () => {
     uppy.upload()
@@ -146,8 +155,16 @@ export const useUpload = (options: UploadPropsType, fileMap: RolUploadFileMap) =
     console.log('failed files:', result.failed)
   })
 
+  uppy.on('error', error => {
+    console.error(error.stack)
+  })
+
+  uppy.on('restriction-failed', (file, error) => {
+    console.log(file, error)
+    // do some customized logic like showing system notice to users
+  })
+
   return {
-    addFile,
     upload,
     uppy,
   }

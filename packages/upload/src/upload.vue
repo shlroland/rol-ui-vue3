@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['rol-upload',`rol-upload--${listType}`]"
+    :class="['rol-upload', `rol-upload--${listType}`]"
     tabindex="0"
     @click="handleClick"
     @keydown.self.enter.space="handleKeydown"
@@ -14,14 +14,14 @@
       type="file"
       :name="name"
       :multiple="multiple"
-      :accept="accept"
+      :accept="acceptArr"
       @change="handleChange"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import { NOOP } from '@vue/shared'
 import { ListType } from './upload'
 
@@ -36,7 +36,7 @@ export default defineComponent({
       default: 'file',
     },
     accept: {
-      type: String,
+      type: [String, Array] as PropType<string | string[]>,
       default: '',
     },
     disabled: Boolean,
@@ -53,21 +53,16 @@ export default defineComponent({
   setup(props, { emit }) {
     const inputRef = ref(null as Nullable<HTMLInputElement>)
 
+    const acceptArr = computed(() => {
+      if (Array.isArray(props.accept)) {
+        return props.accept.join(',')
+      }
+      return props.accept
+    })
+
     const handleChange = (event: InputEvent) => {
       const files = Array.from((event.target as HTMLInputElement).files)
-      files.forEach(file => {
-        try {
-          props.addFile(file)
-        } catch (err) {
-          if (err.isRestriction) {
-            // handle restrictions
-            console.warn('Restriction error:', err)
-          } else {
-            // handle other errors
-            console.error(err)
-          }
-        }
-      })
+      props.addFile(files)
       emit('change')
     }
 
@@ -87,10 +82,10 @@ export default defineComponent({
       handleKeydown,
       handleChange,
       inputRef,
+      acceptArr,
     }
   },
 })
 </script>
 
-<style>
-</style>
+<style></style>

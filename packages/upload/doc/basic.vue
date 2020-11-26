@@ -1,10 +1,12 @@
 <template>
   <rol-upload
     class="upload-demo"
-    action="https://jsonplaceholder.typicode.com/posts/"
+    action="http://localhost:6061/upload"
     multiple
-    :limit="3"
-    :on-exceed="handleExceed"
+    :accept="accept"
+    :limit="0"
+    :data="{ xxx : '221'}"
+    @exceed="handleExceed"
     :on-success="handleSuccess"
     :on-error="handleError"
     :before-upload="handleBeforeUpload"
@@ -20,6 +22,7 @@
 <script lang="ts">
 import RolUpload from '@rol-ui/upload'
 import RolButton from '@rol-ui/button'
+import message from '@rol-ui/meassage'
 
 export default {
   components: {
@@ -29,6 +32,7 @@ export default {
   data() {
     return {
       fileList: [],
+      accept: ['image/*', '.jpg', '.jpeg', '.png', '.gif'],
     }
   },
   methods: {
@@ -39,21 +43,21 @@ export default {
       console.log(file)
     },
     handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`,
+      message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.size} 个文件`,
       )
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
     },
     handleSuccess() {
-      console.log(arguments)
+      console.log('success', ...arguments)
     },
     handleError() {
-      console.log(arguments)
+      console.log('error', ...arguments)
     },
     handleBeforeUpload() {
-      console.log(arguments)
+      console.log('before', ...arguments)
     },
   },
 }

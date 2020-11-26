@@ -8,15 +8,30 @@ export default defineComponent({
   name: 'RolUpload',
   components: { Upload, UploadList },
   props: uploadProps,
-  setup(props, { slots }) {
+  emits: ['exceed'],
+  setup(props, { slots, emit }) {
     const uploadFileMap = ref(new Map<string, RolUploadFile>())
 
-    const { addFile, uppy } = useUpload(props, uploadFileMap)
+    const { uppy } = useUpload(props, uploadFileMap)
 
     const handleUploadChange = () => {
       console.log(uppy)
       console.log(uppy.getFiles())
       // post()
+    }
+
+    const addFile = (files: File[]) => {
+      if (props.limit && files.length + uploadFileMap.value.size > props.limit) {
+        emit('exceed', files, uploadFileMap.value)
+      } else {
+        files.forEach(file => {
+            uppy.addFile({
+              name: file.name,
+              type: file.type,
+              data: file,
+            })
+        })
+      }
     }
 
     const trigger = slots.trigger || slots.default
@@ -54,6 +69,7 @@ export default defineComponent({
         listType: props.listType,
         addFile,
         onChange: handleUploadChange,
+        accept: props.accept,
       },
       { default: () => trigger?.() },
     )
