@@ -5,9 +5,10 @@
     multiple
     :accept="accept"
     :limit="0"
-    :data="{ xxx : '221'}"
     @exceed="handleExceed"
-    :on-success="handleSuccess"
+    @progress="handleProgress"
+    @success="handleSuccess"
+    @fail="handleFail"
     :on-error="handleError"
     :before-upload="handleBeforeUpload"
     :file-list="fileList"
@@ -44,14 +45,20 @@ export default {
     },
     handleExceed(files, fileList) {
       message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.size} 个文件`,
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.fileList} 个文件`,
       )
+    },
+    handleProgress() {
+      // console.log('success', ...arguments)
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
     },
     handleSuccess() {
       console.log('success', ...arguments)
+    },
+    handleFail() {
+      console.log('fail', ...arguments)
     },
     handleError() {
       console.log('error', ...arguments)

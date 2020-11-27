@@ -1,9 +1,8 @@
 import { PropType, computed } from 'vue'
-import { ListType, PFileResultHandler, RolUploadFileMap, UploadPropsType, UploadStatus } from './upload'
+import { ListType, PFileResultHandler, RolUploadFile, RolUploadFileMap, UploadPropsType, UploadStatus } from './upload'
 import { NOOP } from '@vue/shared'
 import Uppy, { UppyFile, UppyOptions } from '@uppy/core'
 import XHRUpload from '@uppy/xhr-upload'
-import props from '@rol-ui/popper/src/core/props'
 
 export const uploadProps = {
   action: {
@@ -93,7 +92,7 @@ export const uploadProps = {
   data: Object,
 }
 
-export const useUpload = (options: UploadPropsType, fileMap: RolUploadFileMap) => {
+export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFileMap) => {
   const acceptArray = computed(() => {
     if (!options.accept) return null
     if (typeof options.accept === 'string') {
@@ -129,39 +128,37 @@ export const useUpload = (options: UploadPropsType, fileMap: RolUploadFileMap) =
   }
 
   uppy.on('file-added', (file: UppyFile) => {
-    fileMap.value.set(
-      file.id,
-      Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'ready' }),
-    )
+    fileMap[file.id] = Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'ready' })
   })
 
-  uppy.on('upload-success', (file, response) => {
-    options.onSuccess(response, file)
+  uppy.on('upload-progress', (file: RolUploadFile, progress) => {
+    Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'uploading' })
+    fileMap[file.id] = { ...uppy.getFile(file.id), status: 'uploading' }
+    emit('progress', progress, fileMap[file.id], uppy.getFiles())
   })
-  uppy.on('upload', ({ id, fileIDs }) => {
-    // data object consists of `id` with upload ID and `fileIDs` array
-    // with file IDs in current upload
-    // data: { id, fileIDs }
-    console.log(`Starting upload ${id} for files ${fileIDs}`)
+
+  uppy.on('upload-success', (file: RolUploadFile, response) => {
+    Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'success' })
+    fileMap[file.id] = { ...uppy.getFile(file.id), status: 'success' }
+    emit('success', response, fileMap[file.id], uppy.getFiles())
   })
-  uppy.on('upload-progress', (file, progress) => {
-    // file: { id, name, type, ... }
-    // progress: { uploader, bytesUploaded, bytesTotal }
-    console.log(file.id, progress.bytesUploaded, progress.bytesTotal)
+
+  uppy.on('upload-error', (file, error, response) => {
+    Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'fail' })
+    fileMap[file.id] = { ...uppy.getFile(file.id), status: 'fail' }
+    emit('fail', response, error, fileMap[file.id], uppy.getFiles())
   })
 
   uppy.on('complete', result => {
-    console.log('successful files:', result.successful)
-    console.log('failed files:', result.failed)
+    emit('complete', result)
   })
 
   uppy.on('error', error => {
-    console.error(error.stack)
+    emit('error', error)
   })
 
   uppy.on('restriction-failed', (file, error) => {
-    console.log(file, error)
-    // do some customized logic like showing system notice to users
+    emit('restriction-failed', error, uppy.getFiles())
   })
 
   return {

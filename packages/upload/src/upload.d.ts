@@ -20,5 +20,4 @@ export interface RolUploadFile extends UppyFile {
   status: UploadStatus
 }
 
-
-export type RolUploadFileMap = Ref<Map<string, RolUploadFile>>
+export type RolUploadFileMap = Record<string,RolUploadFile>

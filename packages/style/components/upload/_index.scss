@@ -125,6 +125,16 @@
 
     & .rol-icon-upload-success {
       color: $success;
+      & .rol-icon {
+        display: inline-block;
+      }
+    }
+
+    & .rol-icon-upload-fail {
+      color: $danger;
+      & .rol-icon {
+        display: inline-block;
+      }
     }
 
     .rol-icon-close {
@@ -147,12 +157,13 @@
     & .rol-icon-close-tip {
       display: none;
       position: absolute;
-      top: 5px;
+      top: 0;
       right: 5px;
       font-size: 12px;
       cursor: pointer;
       opacity: 1;
       color: $link;
+      @include vertical-center;
     }
 
     &:hover {
@@ -168,6 +179,38 @@
     }
 
     @include when(success) {
+      .rol-upload-list__item-status-label {
+        display: block;
+      }
+
+      .rol-upload-list__item-name:hover,
+      .rol-upload-list__item-name:focus {
+        color: $info;
+        cursor: pointer;
+      }
+      &:focus:not(:hover) {
+        /* 键盘focus */
+        .rol-icon-close-tip {
+          display: inline-block;
+        }
+      }
+
+      &:not(.focusing):focus,
+      &:active {
+        /* click时 */
+        outline-width: 0;
+        .rol-icon-close-tip {
+          display: none;
+        }
+      }
+      &:hover,
+      &:focus {
+        .rol-upload-list__item-status-label {
+          display: none;
+        }
+      }
+    }
+    @include when(fail) {
       .rol-upload-list__item-status-label {
         display: block;
       }

@@ -1,4 +1,4 @@
-import { defineComponent, h, ref, VNode } from 'vue'
+import { defineComponent, h, provide, reactive, ref, VNode } from 'vue'
 import { uploadProps, useUpload } from './useUpload'
 import Upload from './upload.vue'
 import UploadList from './upload-list.vue'
@@ -10,9 +10,13 @@ export default defineComponent({
   props: uploadProps,
   emits: ['exceed'],
   setup(props, { slots, emit }) {
-    const uploadFileMap = ref(new Map<string, RolUploadFile>())
+    const uploadFiles= reactive<Record<string,RolUploadFile>>({})
 
-    const { uppy } = useUpload(props, uploadFileMap)
+    const { uppy } = useUpload(props, emit, uploadFiles)
+
+    provide('rootUpload', {
+      uploadFiles,
+    })
 
     const handleUploadChange = () => {
       console.log(uppy)
@@ -21,15 +25,15 @@ export default defineComponent({
     }
 
     const addFile = (files: File[]) => {
-      if (props.limit && files.length + uploadFileMap.value.size > props.limit) {
-        emit('exceed', files, uploadFileMap.value)
+      if (props.limit && files.length + Object.keys(uploadFiles).length > props.limit) {
+        emit('exceed', files, uppy.getFiles())
       } else {
         files.forEach(file => {
-            uppy.addFile({
-              name: file.name,
-              type: file.type,
-              data: file,
-            })
+          uppy.addFile({
+            name: file.name,
+            type: file.type,
+            data: file,
+          })
         })
       }
     }
@@ -42,7 +46,6 @@ export default defineComponent({
         {
           disabled: props.disabled,
           listType: props.listType,
-          files: uploadFileMap.value,
         },
         {
           file: (props: { file: File }) => {
