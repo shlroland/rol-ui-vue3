@@ -1,9 +1,8 @@
 import { PropType, computed } from 'vue'
 import { ListType, PFileResultHandler, RolUploadFile, RolUploadFileMap, UploadPropsType, UploadStatus } from './upload'
 import { NOOP } from '@vue/shared'
-import Uppy, { UppyFile, UppyOptions } from '@uppy/core'
+import Uppy, { Restrictions, UppyFile, UppyOptions } from '@uppy/core'
 import XHRUpload from '@uppy/xhr-upload'
-import props from '@rol-ui/popper/src/core/props'
 
 export const uploadProps = {
   action: {
@@ -41,7 +40,7 @@ export const uploadProps = {
   },
   beforeUpload: {
     type: Function,
-    default: NOOP,
+    default: () => true,
   },
   beforeRemove: {
     type: Function,
@@ -90,6 +89,10 @@ export const uploadProps = {
     type: Number as PropType<Nullable<number>>,
     default: null,
   },
+  restrictions: {
+    type: Object as PropType<Restrictions>,
+    default: () => null,
+  },
   data: Object,
 }
 
@@ -133,6 +136,7 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
       autoProceed: options.autoUpload,
       restrictions: {
         allowedFileTypes: acceptArray.value,
+        ...options.restrictions,
       },
       meta: options.data,
       onBeforeUpload: handleBeforeUpload,
@@ -142,10 +146,12 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
   const uppy = Uppy({ ...uppyOptions.value }).use(XHRUpload, { ...xhrOptions.value })
 
   uppy.on('file-added', (file: UppyFile) => {
+    console.log(uppy.getFiles())
     fileMap[file.id] = Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'ready' })
   })
 
   uppy.on('upload-progress', (file: RolUploadFile, progress) => {
+    console.log('progress')
     Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'uploading' })
     fileMap[file.id] = { ...uppy.getFile(file.id), status: 'uploading' }
     emit('progress', progress, fileMap[file.id], uppy.getFiles())

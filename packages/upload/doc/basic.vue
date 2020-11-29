@@ -1,5 +1,5 @@
 <template>
-  <rol-upload
+  <!-- <rol-upload
     class="upload-demo"
     action="http://localhost:6061/upload"
     multiple
@@ -17,23 +17,41 @@
     <template #tip>
       <div class="rol-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </template>
+  </rol-upload> -->
+  <rol-upload
+    class="avatar-uploader"
+    action="http://localhost:6061/upload"
+    :show-file-list="false"
+    @success="handleAvatarSuccess"
+    :file-list="fileList"
+    multiple
+    :accept="accept"
+    :limit="0"
+  >
+    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+    <div v-else class="avatar-uploader-icon">
+      <rol-icon name="plus"></rol-icon>
+    </div>
   </rol-upload>
 </template>
 
 <script lang="ts">
 import RolUpload from '@rol-ui/upload'
 import RolButton from '@rol-ui/button'
+import RolIcon from '@rol-ui/icon'
 import message from '@rol-ui/meassage'
 
 export default {
   components: {
     RolUpload,
     RolButton,
+    RolIcon,
   },
   data() {
     return {
       fileList: [],
       accept: ['image/*', '.jpg', '.jpeg', '.png', '.gif'],
+      imageUrl: '',
     }
   },
   methods: {
@@ -69,6 +87,11 @@ export default {
     handleBeforeRemove() {
       return false
     },
+    handleAvatarSuccess(res, file) {
+      // console.log(file)
+      this.imageUrl = URL.createObjectURL(file.data)
+      console.log(URL.createObjectURL(file.data))
+    },
   },
 }
 </script>
@@ -76,5 +99,29 @@ export default {
 <style>
 .upload-demo {
   width: 360px;
+}
+
+.avatar-uploader .rol-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .rol-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
