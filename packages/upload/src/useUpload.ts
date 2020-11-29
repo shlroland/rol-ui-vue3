@@ -105,8 +105,9 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
     return options.accept
   })
 
-  const handleConvertBlobUrl = (file: File | Blob) => {
-    return URL.createObjectURL(file)
+  const handleConvertBlobUrl = (file: UppyFile<{ url: string }>) => {
+    if (file.meta.url) return file.meta.url
+    return URL.createObjectURL(file.data)
   }
 
   const handleBeforeUpload = (files: any) => {
@@ -149,10 +150,10 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
 
   const uppy = Uppy({ ...uppyOptions.value }).use(XHRUpload, { ...xhrOptions.value })
 
-  uppy.on('file-added', (file: UppyFile) => {
+  uppy.on('file-added', (file: UppyFile<{url:string}>) => {
     fileMap[file.id] = Object.assign<UppyFile, { status: UploadStatus; url: string }>(file, {
       status: 'ready',
-      url: handleConvertBlobUrl(file.data),
+      url: handleConvertBlobUrl(file),
     })
   })
 

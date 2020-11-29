@@ -49,7 +49,7 @@
     @success="handleSuccess"
     @fail="handleFail"
     @error="handleError"
-    :file-list="fileList"
+    v-model:file-list="fileList"
     list-type="picture"
   >
     <rol-button size="small" type="primary">点击上传</rol-button>

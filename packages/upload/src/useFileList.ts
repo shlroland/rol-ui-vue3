@@ -11,6 +11,9 @@ export const useFileList = (uppy: Uppy, fileList: any[]) => {
           name: item.name ?? 'image.jpg',
           type: blob.type,
           data: blob,
+          meta: {
+            url: item.url,
+          },
         })
       })
   }

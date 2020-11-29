@@ -10,7 +10,7 @@ export default defineComponent({
   name: 'RolUpload',
   components: { Upload, UploadList },
   props: uploadProps,
-  emits: ['exceed', 'error', 'preview'],
+  emits: ['exceed', 'error', 'preview', 'update:fileList'],
   setup(props, { slots, emit }) {
     const uploadFiles = reactive<Record<string, RolUploadFile>>({})
 
@@ -72,6 +72,10 @@ export default defineComponent({
         }
       },
     )
+
+    watch(uploadFiles, () => {
+      emit('update:fileList', uppy.getFiles())
+    })
 
     provide('uploader', { accept: props.accept })
 
