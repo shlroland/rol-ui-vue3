@@ -4,6 +4,7 @@ import Upload from './upload.vue'
 import UploadList from './upload-list.vue'
 import { ListType, RolUploadFile } from './upload'
 import { NOOP } from '@vue/shared'
+import { useFileList } from './useFileList'
 
 export default defineComponent({
   name: 'RolUpload',
@@ -14,6 +15,7 @@ export default defineComponent({
     const uploadFiles = reactive<Record<string, RolUploadFile>>({})
 
     const { uppy } = useUpload(props, emit, uploadFiles)
+    useFileList(uppy, props.fileList, uploadFiles)
 
     const addFile = (files: File[]) => {
       if (props.limit && files.length + Object.keys(uploadFiles).length > props.limit) {

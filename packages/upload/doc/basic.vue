@@ -41,11 +41,14 @@
   >
      <rol-icon name="plus"></rol-icon>
   </rol-upload> -->
-  <!-- <rol-upload
+  <rol-upload
     class="upload-demo"
     action="http://localhost:6061/upload"
-    :on-preview="handlePreview"
-    :on-remove="handleRemove"
+    @exceed="handleExceed"
+    @progress="handleProgress"
+    @success="handleSuccess"
+    @fail="handleFail"
+    @error="handleError"
     :file-list="fileList"
     list-type="picture"
   >
@@ -53,13 +56,13 @@
     <template #tip>
       <div class="rol-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </template>
-  </rol-upload> -->
+  </rol-upload>
   <!-- <rol-upload class="upload-demo" drag action="http://localhost:6061/upload" multiple>
     <div class="rol-icon-upload"><rol-icon name="upload"></rol-icon></div>
     <div class="rol-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     <div class="rol-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
   </rol-upload> -->
-
+  <!-- 
   <rol-upload
     class="upload-demo"
     ref="upload"
@@ -76,7 +79,7 @@
     <template #tip>
       <div class="rol-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </template>
-  </rol-upload>
+  </rol-upload> -->
 </template>
 
 <script lang="ts">
@@ -93,7 +96,18 @@ export default {
   },
   data() {
     return {
-      fileList: [],
+      fileList: [
+        {
+          name: 'food.jpeg',
+          url:
+            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+        },
+        {
+          name: 'food2.jpeg',
+          url:
+            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+        },
+      ],
       accept: ['image/*', '.jpg', '.jpeg', '.png', '.gif'],
       imageUrl: '',
     }
