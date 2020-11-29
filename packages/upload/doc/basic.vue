@@ -43,7 +43,7 @@
   </rol-upload> -->
   <rol-upload
     class="upload-demo"
-    action="http://localhost:6061/upload"
+    :action="actionUrl"
     @exceed="handleExceed"
     @progress="handleProgress"
     @success="handleSuccess"
@@ -96,6 +96,7 @@ export default {
   },
   data() {
     return {
+      actionUrl: 'http://localhost:6061/upload',
       fileList: [
         {
           name: 'food.jpeg',
@@ -111,6 +112,11 @@ export default {
       accept: ['image/*', '.jpg', '.jpeg', '.png', '.gif'],
       imageUrl: '',
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.actionUrl = 'https://jsonplaceholder.typicode.com/posts'
+    }, 1000)
   },
   methods: {
     handleRemove(file, fileList) {

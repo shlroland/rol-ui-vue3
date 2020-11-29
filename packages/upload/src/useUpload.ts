@@ -1,4 +1,4 @@
-import { PropType, computed } from 'vue'
+import { PropType, computed, watch, onBeforeUnmount } from 'vue'
 import { ListType, PFileResultHandler, RolUploadFile, RolUploadFileMap, UploadPropsType, UploadStatus } from './upload'
 import { NOOP } from '@vue/shared'
 import Uppy, { Restrictions, UppyFile, UppyOptions } from '@uppy/core'
@@ -150,7 +150,7 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
 
   const uppy = Uppy({ ...uppyOptions.value }).use(XHRUpload, { ...xhrOptions.value })
 
-  uppy.on('file-added', (file: UppyFile<{url:string}>) => {
+  uppy.on('file-added', (file: UppyFile<{ url: string }>) => {
     fileMap[file.id] = Object.assign<UppyFile, { status: UploadStatus; url: string }>(file, {
       status: 'ready',
       url: handleConvertBlobUrl(file),
@@ -158,7 +158,6 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
   })
 
   uppy.on('upload-progress', (file: RolUploadFile, progress) => {
-    console.log('progress')
     Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'uploading' })
     fileMap[file.id] = { ...uppy.getFile(file.id), status: 'uploading' }
     emit('progress', progress, fileMap[file.id], uppy.getFiles())
@@ -186,6 +185,18 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
 
   uppy.on('restriction-failed', (file, error) => {
     emit('restriction-failed', error, uppy.getFiles())
+  })
+
+  watch(xhrOptions, newval => {
+    uppy.getPlugin('XHRUpload').setOptions(newval)
+  })
+
+  watch(uppyOptions, newVal => {
+    uppy.setOptions(newVal)
+  })
+
+  onBeforeUnmount(() => {
+    uppy.close()
   })
 
   return {
