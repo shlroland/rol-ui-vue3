@@ -1,8 +1,9 @@
-import { defineComponent, h, provide, reactive, ref, VNode } from 'vue'
+import { defineComponent, h, reactive, VNode } from 'vue'
 import { uploadProps, useUpload } from './useUpload'
 import Upload from './upload.vue'
 import UploadList from './upload-list.vue'
 import { RolUploadFile } from './upload'
+import { NOOP } from '@vue/shared'
 
 export default defineComponent({
   name: 'RolUpload',
@@ -10,19 +11,15 @@ export default defineComponent({
   props: uploadProps,
   emits: ['exceed'],
   setup(props, { slots, emit }) {
-    const uploadFiles= reactive<Record<string,RolUploadFile>>({})
+    const uploadFiles = reactive<Record<string, RolUploadFile>>({})
 
     const { uppy } = useUpload(props, emit, uploadFiles)
 
-    provide('rootUpload', {
-      uploadFiles,
-    })
-
-    const handleUploadChange = () => {
-      console.log(uppy)
-      console.log(uppy.getFiles())
-      // post()
-    }
+    // const handleUploadChange = () => {
+    //   console.log(uppy)
+    //   console.log(uppy.getFiles())
+    //   // post()
+    // }
 
     const addFile = (files: File[]) => {
       if (props.limit && files.length + Object.keys(uploadFiles).length > props.limit) {
@@ -38,6 +35,27 @@ export default defineComponent({
       }
     }
 
+    const removeFile = (file: RolUploadFile) => {
+      const doRemove = () => {
+        delete uploadFiles[file.id]
+        uppy.removeFile(file.id)
+      }
+      if (!props.beforeRemove) {
+        doRemove()
+      } else if (typeof props.beforeRemove === 'function') {
+        const before = props.beforeRemove(file, uppy.getFiles())
+        if (before instanceof Promise) {
+          before
+            .then(() => {
+              doRemove()
+            })
+            .catch(NOOP)
+        } else if (before !== false) {
+          doRemove()
+        }
+      }
+    }
+
     const trigger = slots.trigger || slots.default
     let uploadList: VNode
     if (props.showFileList) {
@@ -46,6 +64,8 @@ export default defineComponent({
         {
           disabled: props.disabled,
           listType: props.listType,
+          files: uploadFiles,
+          onRemove: removeFile,
         },
         {
           file: (props: { file: File }) => {
@@ -71,7 +91,6 @@ export default defineComponent({
         disabled: props.disabled,
         listType: props.listType,
         addFile,
-        onChange: handleUploadChange,
         accept: props.accept,
       },
       { default: () => trigger?.() },

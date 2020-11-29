@@ -3,6 +3,7 @@ import { ListType, PFileResultHandler, RolUploadFile, RolUploadFileMap, UploadPr
 import { NOOP } from '@vue/shared'
 import Uppy, { UppyFile, UppyOptions } from '@uppy/core'
 import XHRUpload from '@uppy/xhr-upload'
+import props from '@rol-ui/popper/src/core/props'
 
 export const uploadProps = {
   action: {
@@ -101,6 +102,22 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
     return options.accept
   })
 
+  const handleBeforeUpload = (files: any) => {
+    if (!options.beforeUpload) return true
+    const before = options.beforeUpload(files)
+    if (before instanceof Promise) {
+      before
+        .then(() => {
+          return true
+        })
+        .catch(() => {
+          return false
+        })
+    } else {
+      return !!before
+    }
+  }
+
   const xhrOptions = computed(() => {
     return {
       endpoint: options.action,
@@ -118,14 +135,11 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
         allowedFileTypes: acceptArray.value,
       },
       meta: options.data,
+      onBeforeUpload: handleBeforeUpload,
     }
   })
 
   const uppy = Uppy({ ...uppyOptions.value }).use(XHRUpload, { ...xhrOptions.value })
-
-  const upload = () => {
-    uppy.upload()
-  }
 
   uppy.on('file-added', (file: UppyFile) => {
     fileMap[file.id] = Object.assign<UppyFile, { status: UploadStatus }>(file, { status: 'ready' })
@@ -162,7 +176,6 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
   })
 
   return {
-    upload,
     uppy,
   }
 }

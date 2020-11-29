@@ -5,7 +5,7 @@
     name="rol-list"
   >
     <li
-      v-for="file in uploadFiles"
+      v-for="file in files"
       :key="file.id"
       :class="['rol-upload-list__item', `is-${file.status}`, focusing ? 'focusing' : '']"
       tabindex="0"
@@ -30,7 +30,7 @@
           </span>
         </label>
         <span v-if="!disabled" class="rol-icon-close">
-          <rol-icon :name="['far', 'times-circle']"></rol-icon>
+          <rol-icon :name="['far', 'times-circle']" @click="handleRemove(file)"></rol-icon>
         </span>
         <i v-if="!disabled" class="rol-icon-close-tip">按delete可删除</i>
       </slot>
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import RolIcon from '@rol-ui/icon'
 import { ListType, RolUploadFile } from './upload'
 
@@ -48,10 +48,10 @@ export default defineComponent({
     RolIcon,
   },
   props: {
-    // files: {
-    //   type: Map as PropType<Map<string, RolUploadFile>>,
-    //   default: () => new Map(),
-    // },
+    files: {
+      type: Object as PropType<Record<string, RolUploadFile>>,
+      default: () => ({}),
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -61,18 +61,17 @@ export default defineComponent({
       default: 'text',
     },
   },
-  setup(props) {
+  emits: ['remove'],
+  setup(props, { emit }) {
     const focusing = ref(false)
 
-    const { uploadFiles } = inject('rootUpload')
-
-    watch(
-      uploadFiles,
-      newVal => {
-        console.log(newVal)
-      },
-      { deep: true },
-    )
+    // watch(
+    //   uploadFiles,
+    //   newVal => {
+    //     console.log(newVal)
+    //   },
+    //   { deep: true },
+    // )
 
     const onFileClicked = (e: Event) => {
       ;(e.target as HTMLElement).focus()
@@ -94,8 +93,12 @@ export default defineComponent({
       }
     }
 
-    const handleClick = () => {
-      console.log(1)
+    const handleClick = file => {
+      console.log(file)
+    }
+
+    const handleRemove = (file: RolUploadFile) => {
+      emit('remove', file)
     }
 
     return {
@@ -103,7 +106,7 @@ export default defineComponent({
       onFileClicked,
       handleClick,
       iconType,
-      uploadFiles,
+      handleRemove,
     }
   },
 })

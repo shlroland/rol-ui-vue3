@@ -9,7 +9,7 @@
     @progress="handleProgress"
     @success="handleSuccess"
     @fail="handleFail"
-    :on-error="handleError"
+    @error="handleError"
     :before-upload="handleBeforeUpload"
     :file-list="fileList"
   >
@@ -64,7 +64,10 @@ export default {
       console.log('error', ...arguments)
     },
     handleBeforeUpload() {
-      console.log('before', ...arguments)
+      return true
+    },
+    handleBeforeRemove() {
+      return false
     },
   },
 }

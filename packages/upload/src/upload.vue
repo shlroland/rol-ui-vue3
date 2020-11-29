@@ -45,7 +45,7 @@ export default defineComponent({
       default: 'text',
     },
     addFile: {
-      type: Function as PropType<(file: File) => void>,
+      type: Function as PropType<(files: File[]) => void>,
       default: NOOP,
     },
   },
@@ -63,7 +63,6 @@ export default defineComponent({
     const handleChange = (event: InputEvent) => {
       const files = Array.from((event.target as HTMLInputElement).files)
       props.addFile(files)
-      emit('change')
     }
 
     const handleClick = () => {
