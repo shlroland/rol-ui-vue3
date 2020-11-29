@@ -442,7 +442,8 @@
         }
       }
 
-      &.is-success {
+      &.is-success,
+      &.is-fail {
         .rol-upload-list__item-name {
           line-height: 70px;
           margin-top: 0;
@@ -501,6 +502,10 @@
 
     .rol-upload-list__item.is-fail .rol-upload-list__item-status-label {
       background: $white;
+    }
+
+    .rol-upload-list__item .rol-icon-close-tip {
+      height: auto;
     }
 
     .rol-progress {
