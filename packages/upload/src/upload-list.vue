@@ -33,6 +33,12 @@
           <rol-icon :name="['far', 'times-circle']" @click="handleRemove(file)"></rol-icon>
         </span>
         <i v-if="!disabled" class="rol-icon-close-tip">按delete可删除</i>
+        <rol-progress
+          v-if="file.status === 'uploading'"
+          :type="listType === 'picture-card' ? 'circle' : 'line'"
+          :stroke-width="listType === 'picture-card' ? 6 : 2"
+          :percentage="parsePercentage(file)"
+        ></rol-progress>
       </slot>
     </li>
   </transition-group>
@@ -41,11 +47,13 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import RolIcon from '@rol-ui/icon'
+import RolProgress from '@rol-ui/progress'
 import { ListType, RolUploadFile } from './upload'
 
 export default defineComponent({
   components: {
     RolIcon,
+    RolProgress,
   },
   props: {
     files: {
@@ -72,6 +80,10 @@ export default defineComponent({
     //   },
     //   { deep: true },
     // )
+
+    const parsePercentage = (file: RolUploadFile) => {
+      return Math.floor((file.progress.bytesUploaded / file.progress.bytesTotal) * 100)
+    }
 
     const onFileClicked = (e: Event) => {
       ;(e.target as HTMLElement).focus()
@@ -107,6 +119,7 @@ export default defineComponent({
       handleClick,
       iconType,
       handleRemove,
+      parsePercentage,
     }
   },
 })
