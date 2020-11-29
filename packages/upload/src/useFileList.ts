@@ -21,7 +21,7 @@ export const useFileList = (uppy: Uppy, fileList: any[]) => {
   ).then(() => {
     uppy.getFiles().forEach(file => {
       uppy.setFileState(file.id, {
-        status: 'upload',
+        status: 'success',
         progress: { uploadComplete: true, uploadStarted: false },
       })
     })

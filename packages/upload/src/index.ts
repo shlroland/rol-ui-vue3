@@ -1,4 +1,4 @@
-import { defineComponent, h, provide, reactive, VNode, watch } from 'vue'
+import { defineComponent, h, onBeforeUnmount, provide, reactive, VNode, watch } from 'vue'
 import { uploadProps, useUpload } from './useUpload'
 import Upload from './upload.vue'
 import UploadList from './upload-list.vue'
@@ -15,7 +15,7 @@ export default defineComponent({
     const uploadFiles = reactive<Record<string, RolUploadFile>>({})
 
     const { uppy } = useUpload(props, emit, uploadFiles)
-    useFileList(uppy, props.fileList, uploadFiles)
+    useFileList(uppy, props.fileList)
 
     const addFile = (files: File[]) => {
       if (props.limit && files.length + Object.keys(uploadFiles).length > props.limit) {
@@ -74,6 +74,14 @@ export default defineComponent({
     )
 
     provide('uploader', { accept: props.accept })
+
+    onBeforeUnmount(() => {
+      Object.values(uploadFiles).forEach(file => {
+        if (file.url && file.url.indexOf('blob:') === 0) {
+          URL.revokeObjectURL(file.url)
+        }
+      })
+    })
 
     const trigger = slots.trigger || slots.default
     let uploadList: VNode
