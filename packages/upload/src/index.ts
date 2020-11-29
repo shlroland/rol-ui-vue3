@@ -123,6 +123,7 @@ export default defineComponent({
         props.listType !== 'picture-card' ? uploadList : null,
       ]),
       uppy,
+      submit: uppy.upload,
     }
   },
   render() {

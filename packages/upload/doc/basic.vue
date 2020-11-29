@@ -54,10 +54,28 @@
       <div class="rol-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </template>
   </rol-upload> -->
-  <rol-upload class="upload-demo" drag action="http://localhost:6061/upload" multiple>
+  <!-- <rol-upload class="upload-demo" drag action="http://localhost:6061/upload" multiple>
     <div class="rol-icon-upload"><rol-icon name="upload"></rol-icon></div>
     <div class="rol-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     <div class="rol-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+  </rol-upload> -->
+
+  <rol-upload
+    class="upload-demo"
+    ref="upload"
+    action="http://localhost:6061/upload"
+    @preview="handlePreview"
+    @remove="handleRemove"
+    :file-list="fileList"
+    :auto-upload="false"
+  >
+    <template #trigger>
+      <rol-button size="small" type="primary">选取文件</rol-button>
+    </template>
+    <rol-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</rol-button>
+    <template #tip>
+      <div class="rol-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </template>
   </rol-upload>
 </template>
 
@@ -122,6 +140,9 @@ export default {
       // this.dialogImageUrl = file.url
       // this.dialogVisible = true
       console.log(file.url)
+    },
+    submitUpload() {
+      this.$refs.upload.submit()
     },
   },
 }
