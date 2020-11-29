@@ -18,6 +18,7 @@ export type PFileResultHandler<T = any> = PropType<FileResultHandler<T>>
 
 export interface RolUploadFile extends UppyFile {
   status: UploadStatus
+  url?: string
 }
 
-export type RolUploadFileMap = Record<string,RolUploadFile>
+export type RolUploadFileMap = Record<string, RolUploadFile>

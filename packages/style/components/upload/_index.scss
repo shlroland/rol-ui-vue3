@@ -124,7 +124,7 @@
     }
 
     & .rol-icon-upload-success {
-      color: $success;
+      color: $green;
       & .rol-icon {
         display: inline-block;
       }
@@ -338,7 +338,7 @@
       top: -6px;
       width: 40px;
       height: 24px;
-      background: $green;
+      
       text-align: center;
       transform: rotate(45deg);
       box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
@@ -346,9 +346,19 @@
       i {
         font-size: 12px;
         margin-top: 11px;
-        transform: rotate(-45deg);
+        transform: rotate(-45deg) translate(5px, -2px);
+        color: $white;
       }
     }
+
+    .rol-upload-list__item.is-success .rol-upload-list__item-status-label {
+      background: $green;
+    }
+
+    .rol-upload-list__item.is-fail .rol-upload-list__item-status-label {
+      background: $white;
+    }
+
     .rol-upload-list__item-actions {
       position: absolute;
       width: 100%;

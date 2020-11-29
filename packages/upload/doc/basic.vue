@@ -18,7 +18,7 @@
       <div class="rol-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </template>
   </rol-upload> -->
-  <rol-upload
+  <!-- <rol-upload
     class="avatar-uploader"
     action="http://localhost:6061/upload"
     :show-file-list="false"
@@ -32,6 +32,14 @@
     <div v-else class="avatar-uploader-icon">
       <rol-icon name="plus"></rol-icon>
     </div>
+  </rol-upload> -->
+  <rol-upload
+    action="http://localhost:6061/upload"
+    list-type="picture-card"
+    @preview="handlePictureCardPreview"
+    @remove="handleRemove"
+  >
+     <rol-icon name="plus"></rol-icon>
   </rol-upload>
 </template>
 
@@ -91,6 +99,11 @@ export default {
       // console.log(file)
       this.imageUrl = URL.createObjectURL(file.data)
       console.log(URL.createObjectURL(file.data))
+    },
+    handlePictureCardPreview(file) {
+      // this.dialogImageUrl = file.url
+      // this.dialogVisible = true
+      console.log(file.url)
     },
   },
 }

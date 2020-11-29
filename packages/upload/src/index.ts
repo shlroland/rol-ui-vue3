@@ -1,25 +1,19 @@
-import { defineComponent, h, reactive, VNode } from 'vue'
+import { defineComponent, h, reactive, VNode, watch } from 'vue'
 import { uploadProps, useUpload } from './useUpload'
 import Upload from './upload.vue'
 import UploadList from './upload-list.vue'
-import { RolUploadFile } from './upload'
+import { ListType, RolUploadFile } from './upload'
 import { NOOP } from '@vue/shared'
 
 export default defineComponent({
   name: 'RolUpload',
   components: { Upload, UploadList },
   props: uploadProps,
-  emits: ['exceed'],
+  emits: ['exceed', 'error', 'preview'],
   setup(props, { slots, emit }) {
     const uploadFiles = reactive<Record<string, RolUploadFile>>({})
 
     const { uppy } = useUpload(props, emit, uploadFiles)
-
-    // const handleUploadChange = () => {
-    //   console.log(uppy)
-    //   console.log(uppy.getFiles())
-    //   // post()
-    // }
 
     const addFile = (files: File[]) => {
       if (props.limit && files.length + Object.keys(uploadFiles).length > props.limit) {
@@ -56,6 +50,27 @@ export default defineComponent({
       }
     }
 
+    const handlePreview = (file: RolUploadFile) => {
+      emit('preview', file)
+    }
+
+    watch(
+      () => props.listType,
+      (val: ListType) => {
+        if (val === 'picture-card' || val === 'picture') {
+          for (const prop in uploadFiles) {
+            if (!uploadFiles[prop].url && uploadFiles[prop].data) {
+              try {
+                uploadFiles[prop].url = URL.createObjectURL(uploadFiles[prop].data)
+              } catch (err) {
+                emit('error', err)
+              }
+            }
+          }
+        }
+      },
+    )
+
     const trigger = slots.trigger || slots.default
     let uploadList: VNode
     if (props.showFileList) {
@@ -66,6 +81,7 @@ export default defineComponent({
           listType: props.listType,
           files: uploadFiles,
           onRemove: removeFile,
+          handlePreview,
         },
         {
           file: (props: { file: File }) => {

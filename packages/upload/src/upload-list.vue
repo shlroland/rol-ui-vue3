@@ -1,7 +1,7 @@
 <template>
   <transition-group
     tag="ul"
-    :class="['rol-upload-list', 'rool-upload-list--' + listType, { 'is-disabled': disabled }]"
+    :class="['rol-upload-list', 'rol-upload-list--' + listType, { 'is-disabled': disabled }]"
     name="rol-list"
   >
     <li
@@ -9,12 +9,18 @@
       :key="file.id"
       :class="['rol-upload-list__item', `is-${file.status}`, focusing ? 'focusing' : '']"
       tabindex="0"
+      @keydown.delete="!disabled && handleRemove($event, file)"
       @focus="focusing = true"
       @blur="focusing = false"
       @click="onFileClicked"
     >
       <slot :file="file">
-        <!-- <img src="" alt=""> -->
+        <img
+          v-if="file.status !== 'uploading' && ['picture-card', 'picture'].includes(listType)"
+          class="rol-upload-list__item-thumbnail"
+          :src="file.url"
+          alt=""
+        />
         <a class="rol-upload-list__item-name" @click="handleClick(file)">
           <span class="rol-upload-list__icon-container">
             <rol-icon :name="['far', 'file-alt']"></rol-icon>
@@ -34,11 +40,18 @@
         </span>
         <i v-if="!disabled" class="rol-icon-close-tip">按delete可删除</i>
         <rol-progress
-          v-if="file.status === 'uploading'"
-          :type="listType === 'picture-card' ? 'circle' : 'line'"
-          :stroke-width="listType === 'picture-card' ? 6 : 2"
+          v-if="file.status === 'uploading' && listType === 'text'"
+          :stroke-width="2"
           :percentage="parsePercentage(file)"
         ></rol-progress>
+        <span v-if="listType === 'picture-card'" class="rol-upload-list__item-actions" @click="handlePreview(file)">
+          <span class="rol-upload-list__item-preview">
+            <rol-icon name="search-plus"></rol-icon>
+          </span>
+          <span v-if="!disabled" class="rol-upload-list__item-delete" @click="handleRemove(file)">
+            <rol-icon :name="['far', 'trash-alt']"></rol-icon>
+          </span>
+        </span>
       </slot>
     </li>
   </transition-group>
@@ -49,6 +62,7 @@ import { defineComponent, PropType, ref } from 'vue'
 import RolIcon from '@rol-ui/icon'
 import RolProgress from '@rol-ui/progress'
 import { ListType, RolUploadFile } from './upload'
+import { NOOP } from '@vue/shared'
 
 export default defineComponent({
   components: {
@@ -68,18 +82,14 @@ export default defineComponent({
       type: String as PropType<ListType>,
       default: 'text',
     },
+    handlePreview: {
+      type: Function as PropType<(file: RolUploadFile) => void>,
+      default: () => NOOP,
+    },
   },
   emits: ['remove'],
   setup(props, { emit }) {
     const focusing = ref(false)
-
-    // watch(
-    //   uploadFiles,
-    //   newVal => {
-    //     console.log(newVal)
-    //   },
-    //   { deep: true },
-    // )
 
     const parsePercentage = (file: RolUploadFile) => {
       return Math.floor((file.progress.bytesUploaded / file.progress.bytesTotal) * 100)
@@ -106,7 +116,7 @@ export default defineComponent({
     }
 
     const handleClick = file => {
-      console.log(file)
+      props.handlePreview(file)
     }
 
     const handleRemove = (file: RolUploadFile) => {
