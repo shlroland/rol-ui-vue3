@@ -9,7 +9,7 @@
       :key="file.id"
       :class="['rol-upload-list__item', `is-${file.status}`, focusing ? 'focusing' : '']"
       tabindex="0"
-      @keydown.delete="!disabled && handleRemove($event, file)"
+      @keydown.delete="!disabled && handleRemove(file)"
       @focus="focusing = true"
       @blur="focusing = false"
       @click="onFileClicked"
@@ -38,7 +38,7 @@
         <span v-if="!disabled" class="rol-icon-close">
           <rol-icon :name="['far', 'times-circle']" @click="handleRemove(file)"></rol-icon>
         </span>
-        <i v-if="!disabled" class="rol-icon-close-tip">按delete可删除</i>
+        <i v-if="!disabled && listType === 'text'" class="rol-icon-close-tip">按delete可删除</i>
         <rol-progress
           v-if="file.status === 'uploading' && listType === 'text'"
           :stroke-width="2"

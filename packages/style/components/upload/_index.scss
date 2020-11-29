@@ -338,7 +338,7 @@
       top: -6px;
       width: 40px;
       height: 24px;
-      
+
       text-align: center;
       transform: rotate(45deg);
       box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
@@ -346,7 +346,7 @@
       i {
         font-size: 12px;
         margin-top: 11px;
-        transform: rotate(-45deg) translate(5px, -2px);
+        transform: rotate(-45deg) translate(3px, -2px);
         color: $white;
       }
     }
@@ -461,6 +461,7 @@
       z-index: 1;
       margin-left: -80px;
       background-color: $white;
+      float: left;
     }
 
     .rol-upload-list__item-name {
@@ -482,16 +483,24 @@
       top: -7px;
       width: 46px;
       height: 26px;
-      background: $green;
       text-align: center;
       transform: rotate(45deg);
       box-shadow: 0 1px 1px #ccc;
 
       i {
         font-size: 12px;
-        margin-top: 12px;
-        transform: rotate(-45deg);
+        margin-top: 11px;
+        transform: rotate(-45deg) translate(3px, -2px);
+        color: $white;
       }
+    }
+
+    .rol-upload-list__item.is-success .rol-upload-list__item-status-label {
+      background: $green;
+    }
+
+    .rol-upload-list__item.is-fail .rol-upload-list__item-status-label {
+      background: $white;
     }
 
     .rol-progress {

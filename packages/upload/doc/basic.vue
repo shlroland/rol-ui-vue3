@@ -33,13 +33,26 @@
       <rol-icon name="plus"></rol-icon>
     </div>
   </rol-upload> -->
-  <rol-upload
+  <!-- <rol-upload
     action="http://localhost:6061/upload"
     list-type="picture-card"
     @preview="handlePictureCardPreview"
     @remove="handleRemove"
   >
      <rol-icon name="plus"></rol-icon>
+  </rol-upload> -->
+  <rol-upload
+    class="upload-demo"
+    action="http://localhost:6061/upload"
+    :on-preview="handlePreview"
+    :on-remove="handleRemove"
+    :file-list="fileList"
+    list-type="picture"
+  >
+    <rol-button size="small" type="primary">点击上传</rol-button>
+    <template #tip>
+      <div class="rol-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </template>
   </rol-upload>
 </template>
 
