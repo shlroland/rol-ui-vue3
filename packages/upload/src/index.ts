@@ -1,4 +1,4 @@
-import { defineComponent, h, reactive, VNode, watch } from 'vue'
+import { defineComponent, h, provide, reactive, VNode, watch } from 'vue'
 import { uploadProps, useUpload } from './useUpload'
 import Upload from './upload.vue'
 import UploadList from './upload-list.vue'
@@ -71,6 +71,8 @@ export default defineComponent({
       },
     )
 
+    provide('uploader', { accept: props.accept })
+
     const trigger = slots.trigger || slots.default
     let uploadList: VNode
     if (props.showFileList) {
@@ -108,16 +110,22 @@ export default defineComponent({
         listType: props.listType,
         addFile,
         accept: props.accept,
+        drag: props.drag,
       },
       { default: () => trigger?.() },
     )
 
-    return () =>
-      h('div', [
+    return {
+      component: h('div', [
         props.listType === 'picture-card' ? uploadList : null,
         slots.trigger ? [uploadComponent, slots.default()] : uploadComponent,
         slots.tip?.(),
         props.listType !== 'picture-card' ? uploadList : null,
-      ])
+      ]),
+      uppy,
+    }
+  },
+  render() {
+    return this.component
   },
 })

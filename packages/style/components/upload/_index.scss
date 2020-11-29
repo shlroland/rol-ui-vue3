@@ -80,7 +80,7 @@
     border-color: $link;
   }
   @include when(dragover) {
-    background-color: $dark;
+    background-color: $link-light;
     border: 2px dashed $link;
   }
 }
@@ -642,3 +642,4 @@
     z-index: 1;
   }
 }
+

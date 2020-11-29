@@ -41,7 +41,7 @@
   >
      <rol-icon name="plus"></rol-icon>
   </rol-upload> -->
-  <rol-upload
+  <!-- <rol-upload
     class="upload-demo"
     action="http://localhost:6061/upload"
     :on-preview="handlePreview"
@@ -53,6 +53,11 @@
     <template #tip>
       <div class="rol-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </template>
+  </rol-upload> -->
+  <rol-upload class="upload-demo" drag action="http://localhost:6061/upload" multiple>
+    <div class="rol-icon-upload"><rol-icon name="upload"></rol-icon></div>
+    <div class="rol-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+    <div class="rol-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
   </rol-upload>
 </template>
 

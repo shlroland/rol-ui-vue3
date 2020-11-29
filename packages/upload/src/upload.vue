@@ -5,9 +5,14 @@
     @click="handleClick"
     @keydown.self.enter.space="handleKeydown"
   >
-    <!-- <template> -->
-    <slot></slot>
-    <!-- </template> -->
+    <template v-if="drag">
+      <upload-dragger :disabled="disabled" @file="addFile">
+        <slot></slot>
+      </upload-dragger>
+    </template>
+    <template v-else>
+      <slot></slot>
+    </template>
     <input
       ref="inputRef"
       class="rol-upload__input"
@@ -24,8 +29,10 @@
 import { computed, defineComponent, PropType, ref } from 'vue'
 import { NOOP } from '@vue/shared'
 import { ListType } from './upload'
+import UploadDragger from './upload-dargger.vue'
 
 export default defineComponent({
+  components: { UploadDragger },
   props: {
     multiple: {
       type: Boolean,
@@ -48,9 +55,13 @@ export default defineComponent({
       type: Function as PropType<(files: File[]) => void>,
       default: NOOP,
     },
+    drag: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['change'],
-  setup(props, { emit }) {
+  setup(props) {
     const inputRef = ref(null as Nullable<HTMLInputElement>)
 
     const acceptArr = computed(() => {
