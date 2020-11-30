@@ -1,0 +1,105 @@
+@include bem(time-spinner) {
+  &.has-seconds {
+    .rol-time-spinner__wrapper {
+      width: 33.3%;
+    }
+  }
+
+  @include e(wrapper) {
+    max-height: 190px;
+    overflow: auto;
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+    position: relative;
+
+    & .rol-scrollbar__wrap:not(.rol-scrollbar__wrap--hidden-default) {
+      padding-bottom: 15px;
+    }
+
+    @include when(arrow) {
+      box-sizing: border-box;
+      text-align: center;
+      overflow: hidden;
+
+      .rol-time-spinner__list {
+        transform: translateY(-32px);
+      }
+
+      .rol-time-spinner__item:hover:not(.disabled):not(.active) {
+        background: $white;
+        cursor: default;
+      }
+    }
+  }
+
+  @include e(arrow) {
+    font-size: 12px;
+    color: $text-light;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 2000;
+    text-align: center;
+    height: 30px;
+    ine-height: 30px;
+    cursor: pointer;
+
+    &:hover {
+      color: $link;
+    }
+    &.rol-icon-arrow-up {
+      top: 10px;
+    }
+    &.rol-icon-arrow-down {
+      bottom: 10px;
+    }
+  }
+
+  @include e(input) {
+    &.rol-input {
+      width: 70%;
+
+      .rol-input__inner {
+        padding: 0;
+        text-align: center;
+      }
+    }
+  }
+  @include e(list) {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+
+    &::after,
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 80px;
+    }
+  }
+
+  @include e(item) {
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    color: $text-light;
+
+    &:hover:not(.disabled):not(.active) {
+      background: $white;
+      cursor: pointer;
+    }
+
+    &.active:not(.disabled) {
+      color: $text;
+      font-weight: bold;
+    }
+
+    &.disabled {
+      color: $grey-lightest;
+      cursor: not-allowed;
+    }
+  }
+}
