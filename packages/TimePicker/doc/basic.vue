@@ -1,5 +1,7 @@
 <template>
-  <div> <RolTimePicker></RolTimePicker> </div>
+  <div>
+    <rol-time-picker v-model="value1" placeholder="任意时间点"></rol-time-picker>
+  </div>
 </template>
 
 <script>
@@ -7,6 +9,11 @@ import RolTimePicker from '@rol-ui/time-picker'
 export default {
   components: {
     RolTimePicker,
+  },
+  data() {
+    return {
+      value1: new Date(2016, 9, 10, 18, 40),
+    }
   },
 }
 </script>

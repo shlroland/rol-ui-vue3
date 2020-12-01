@@ -20,9 +20,10 @@
         :disabled="pickerDisabled"
         :placeholder="placeholder"
         :readonly="!editable || readonly || isDatesPicker || type === 'week'"
+        @focus="handleFocus"
       >
         <template #prefix>
-          <span class="rol-input__icon">
+          <span class="rol-input__icon" @focus="handleFocus">
             <rol-icon :name="triggerClass"></rol-icon>
           </span>
         </template>
@@ -43,6 +44,7 @@
           disabled ? 'is-disabled' : '',
           pickerVisible ? 'is-active' : '',
         ]"
+        @focus="handleFocus"
       >
         <span class="rol-input__icon rol-range__icon">
           <rol-icon :name="triggerClass"></rol-icon>
@@ -55,6 +57,7 @@
           :value="displayValue && displayValue[0]"
           :disabled="disabled"
           :readonly="!editable || readonly"
+          @focus="handleFocus"
         />
         <slot name="range-separator">
           <span class="rol-range-separator">{{ rangeSeparator }}</span>
@@ -66,8 +69,9 @@
           :value="displayValue && displayValue[1]"
           :disabled="disabled"
           :readonly="!editable || readonly"
+          @focus="handleFocus"
         />
-        <span class="rol-input__icon rol-range__close-icon">
+        <span v-show="showClose" class="rol-input__icon rol-range__close-icon">
           <rol-icon :name="clearIcon"></rol-icon>
         </span>
       </div>
@@ -194,14 +198,15 @@ export default defineComponent({
       default: true,
     },
   },
-  setup(props) {
+  emits: ['focus'],
+  setup(props, ctx) {
     const pickerVisible = ref(false)
+    const showClose = ref(false)
     const refConatiner = ref(null)
     const valueOpen = ref(null)
 
     const isRangeInput = computed(() => {
-      console.log(typeof props.type)
-      return props.type.indexOf('time') > -1
+      return props.type.indexOf('range') > -1
     })
 
     const displayValue = computed(() => {
@@ -225,7 +230,14 @@ export default defineComponent({
     })
 
     const onClickOutside = () => {
-      //1111
+      if (!pickerVisible.value) return
+      pickerVisible.value = false
+    }
+
+    const handleFocus = (event: Event) => {
+      if (props.readonly || props.disabled) return
+      pickerVisible.value = true
+      ctx.emit('focus', event)
     }
 
     return {
@@ -237,6 +249,8 @@ export default defineComponent({
       isDatesPicker,
       triggerClass,
       parseValue,
+      showClose,
+      handleFocus,
     }
   },
 })

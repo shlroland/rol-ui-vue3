@@ -6,8 +6,20 @@
     }
     &.is-light[role='tooltip'] {
       border: solid 1px $datepicker-border-color;
-      .rol-popper__arrow::before {
-        border: solid 1px $datepicker-border-color;
+
+      &[data-popper-placement^='top'] {
+        .rol-popper__arrow::before {
+          border: solid 1px $datepicker-border-color;
+          border-top-color: transparent;
+          border-left-color: transparent;
+        }
+      }
+      &[data-popper-placement^='bottom'] {
+        .rol-popper__arrow::before {
+          border: solid 1px $datepicker-border-color;
+          border-bottom-color: transparent;
+          border-right-color: transparent;
+        }
       }
     }
   }
@@ -21,6 +33,13 @@
   &.rol-input,
   &.rol-input__inner {
     width: 350px;
+  }
+
+  .rol-input__prefix,
+  .rol-input__suffix {
+    .rol-icon {
+      display: block;
+    }
   }
 
   @include modify(monthrange) {
