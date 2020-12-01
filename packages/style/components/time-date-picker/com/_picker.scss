@@ -13,4 +13,184 @@
   }
 }
 
-// @include bem(date)
+@include bem(date-editor) {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+
+  &.rol-input,
+  &.rol-input__inner {
+    width: 350px;
+  }
+
+  @include modify(monthrange) {
+    &.rol-input,
+    &.rol-input__inner {
+      width: 300px;
+    }
+  }
+  @include modify((daterange, timerange)) {
+    &.rol-input,
+    &.rol-input__inner {
+      width: 350px;
+    }
+  }
+  @include modify(datetimerange) {
+    &.rol-input,
+    &.rol-input__inner {
+      width: 400px;
+    }
+  }
+  @include modify(dates) {
+    .rol-input__inner {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .rol-icon-circle-close {
+    cursor: pointer;
+  }
+
+  .rol-range__icon {
+    font-size: 14px;
+    margin-left: -5px;
+    color: $text-light;
+    float: left;
+    line-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rol-range-input {
+    appearance: none;
+    border: none;
+    outline: none;
+    display: inline-block;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 42%;
+    text-align: center;
+    font-size: $font-size-base;
+    color: $text-light;
+
+    &::placeholder {
+      color: $text-lighter;
+    }
+  }
+  .rol-range-separator {
+    display: inline-block;
+    height: 100%;
+    padding: 0 5px;
+    margin: 0;
+    text-align: center;
+    line-height: 32px;
+    font-size: 14px;
+    width: 5%;
+    color: $text-light;
+  }
+  .rol-range__close-icon {
+    font-size: 14px;
+    color: $text-lighter;
+    width: 25px;
+    display: inline-block;
+    float: right;
+    line-height: 32px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@include bem(range-editor) {
+  &.rol-input__inner {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+  }
+  .rol-range-input {
+    line-height: 1;
+  }
+
+  @include when(active) {
+    border-color: $link;
+
+    &:hover {
+      border-color: $link;
+    }
+  }
+  @include modify(medium) {
+    &.rol-input__inner {
+      height: $input-medium-height;
+    }
+    .rol-range-separator {
+      line-height: 28px;
+      font-size: $input-medium-font-size;
+    }
+    .rol-range-input {
+      font-size: $input-medium-font-size;
+    }
+    .rol-range__icon,
+    .rol-range__close-icon {
+      line-height: 28px;
+    }
+  }
+  @include modify(small) {
+    &.rol-input__inner {
+      height: $input-small-height;
+    }
+    .rol-range-separator {
+      line-height: 28px;
+      font-size: $input-small-font-size;
+    }
+    .rol-range-input {
+      font-size: $input-small-font-size;
+    }
+    .rol-range__icon,
+    .rol-range__close-icon {
+      line-height: 24px;
+    }
+  }
+  @include modify(mini) {
+    &.rol-input__inner {
+      height: $input-mini-height;
+    }
+    .rol-range-separator {
+      line-height: 28px;
+      font-size: $input-mini-font-size;
+    }
+    .rol-range-input {
+      font-size: $input-mini-font-size;
+    }
+    .rol-range__icon,
+    .rol-range__close-icon {
+      line-height: 20px;
+    }
+  }
+
+  @include when(disabled) {
+    background-color: $input-disabled-fill;
+    border-color: $input-disabled-border;
+    color: $input-disabled-color;
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus {
+      border-color: $input-disabled-border;
+    }
+
+    input {
+      background-color: $input-disabled-fill;
+      color: $input-disabled-color;
+      cursor: not-allowed;
+      &::placeholder {
+        color: $input-disabled-placeholder-color;
+      }
+    }
+    .rol-range-separator {
+      color: $input-disabled-color;
+    }
+  }
+}
