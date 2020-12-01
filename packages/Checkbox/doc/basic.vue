@@ -1,6 +1,6 @@
 <template>
   <div class="demo-container">
-    <rol-checkbox v-model="checked">备选项</rol-checkbox>
+    <rol-checkbox v-model="checked" @change="handleChange">备选项</rol-checkbox>
   </div>
   <div class="demo-container"></div>
   <div class="demo-contaier"></div>
@@ -16,6 +16,11 @@ export default {
   data(){
     return {
       checked: true
+    }
+  },
+  methods: {
+    handleChange(value,event){
+      console.log(value,event)
     }
   }
 }
