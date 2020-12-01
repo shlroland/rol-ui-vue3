@@ -20,15 +20,19 @@
     >
       <span class="rol-checkbox__inner"></span>
       <input
-        v-if="trueLbael || falseLabel"
+        v-if="trueLabel || falseLabel"
         :id="id"
         v-model="model"
         class="rol-checkbox__original"
         type="checkbox"
+        :aria-hidden="indeterminate ? 'true' : 'false'"
         :disabled="isDisabled"
         :true-value="trueLabel"
         :false-value="falseLabel"
         :name="name"
+        @change="handleChange"
+        @focus="focus = true"
+        @blur="focus = false"
       />
       <input
         v-else
@@ -40,6 +44,9 @@
         :disabled="isDisabled"
         :value="label"
         :name="name"
+        @change="handleChange"
+        @focus="focus = true"
+        @blur="focus = false"
       />
     </span>
     <span v-if="$slots.default || label" class="rol-checkbox__label">
@@ -96,7 +103,7 @@ export default defineComponent({
   },
   emits: [UPDATE_MODELVALUE_EVENT, 'change'],
   setup(props) {
-    const { focus, isChecked, checkboxSize, model, isDisabled } = useCheckbox(props)
+    const { focus, isChecked, checkboxSize, model, isDisabled, handleChange } = useCheckbox(props)
     const instance = getCurrentInstance()
 
     onMounted(() => {
@@ -109,6 +116,7 @@ export default defineComponent({
       checkboxSize,
       model,
       isDisabled,
+      handleChange,
     }
   },
 })

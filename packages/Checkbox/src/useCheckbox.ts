@@ -97,10 +97,27 @@ const useDisabled = (
   }
 }
 
+const useEvent = (props: RCheckboxProps, { isLimitExceeded }: PartialReturnType<typeof useModel>) => {
+  const { emit } = getCurrentInstance()
+
+  const handleChange = (event: InputEvent) => {
+    if (isLimitExceeded.value) return
+    const target = event.target as HTMLInputElement
+    const value = target.checked ? props.trueLabel ?? true : props.falseLabel ?? false
+
+    emit('change', value, event)
+  }
+
+  return {
+    handleChange,
+  }
+}
+
 export const useCheckbox = (props: RCheckboxProps) => {
   const { model, isLimitExceeded } = useModel(props)
   const { focus, size, isChecked, checkboxSize } = useCheckboxStatus(props, { model })
   const { isDisabled } = useDisabled(props, { model, isChecked })
+  const { handleChange } = useEvent(props, { isLimitExceeded })
 
   return {
     model,
@@ -110,5 +127,6 @@ export const useCheckbox = (props: RCheckboxProps) => {
     size,
     checkboxSize,
     isDisabled,
+    handleChange,
   }
 }
