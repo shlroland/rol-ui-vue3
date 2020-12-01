@@ -5,7 +5,7 @@ $radio-input-height: 14px !default;
 $radio-input-width: 14px !default;
 $radio-input-border-radius: $radius-rounded !default;
 $radio-input-background-color: $white !default;
-$radio-input-border: 1px solid $text !default;
+$radio-input-border: 1px solid $text-light !default;
 $radio-input-border-color: $border !default;
 $radio-icon-color: $white !default;
 $radio-disabled-input-border-color: $border-light !default;
@@ -50,14 +50,14 @@ $radio-button-disabled-checked-fill: $grey-lighter !default;
   outline: none;
   font-size: $font-size-base;
   margin-right: 30px;
-  @include user-select(none);
+  @include unselectable;
 
   @include when(bordered) {
     padding: $radio-bordered-padding;
     border-radius: $radius;
     border: 1px solid $text;
     box-sizing: border-box;
-    height: $--radio-bordered-height;
+    height: $radio-bordered-height;
 
     &.is-checked {
       border-color: $link;
@@ -149,7 +149,7 @@ $radio-button-disabled-checked-fill: $grey-lighter !default;
         }
       }
       & + span.rol-radio__label {
-        color: $--color-text-placeholder;
+        color: $text-light;
         cursor: not-allowed;
       }
     }
