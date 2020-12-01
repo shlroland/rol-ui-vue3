@@ -52,6 +52,7 @@ const useCheckboxStatus = (props: RCheckboxProps, { model }: PartialReturnType<t
   const size = computed<string | undefined>(() => checkboxGroup?.checkboxGroupSize?.value)
   const isChecked = computed(() => {
     const value = model.value
+    console.log(value)
     if (Object.prototype.toString.call(value) === '[object Boolean]') {
       return value
     } else if (Array.isArray(value)) {
@@ -104,7 +105,6 @@ const useEvent = (props: RCheckboxProps, { isLimitExceeded }: PartialReturnType<
     if (isLimitExceeded.value) return
     const target = event.target as HTMLInputElement
     const value = target.checked ? props.trueLabel ?? true : props.falseLabel ?? false
-
     emit('change', value, event)
   }
 

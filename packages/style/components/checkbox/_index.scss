@@ -255,7 +255,25 @@ $checkbox-button-checked-border-color: $link !default;
   }
 }
 
-// @include bem(checkbox-button) {
+@include bem(checkbox-button) {
+  &.rol-button:focus:not(:active),
+  &.rol-button.is-focused:not(:active) {
+    box-shadow: none;
+  }
+  @include e(original) {
+    opacity: 0;
+    outline: none;
+    position: absolute;
+    margin: 0;
+    z-index: -1;
+  }
+  &.is-checked {
+    color: $white;
+    background-color: $link;
+    border-color: $link;
+    box-shadow: -1px 0 0 0 $grey-lighter;
+  }
+}
 //   position: relative;
 //   display: inline-block;
 //   @include e(inner) {
