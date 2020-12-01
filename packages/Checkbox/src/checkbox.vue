@@ -103,7 +103,15 @@ export default defineComponent({
   },
   emits: [UPDATE_MODELVALUE_EVENT, 'change'],
   setup(props) {
-    const { focus, isChecked, checkboxSize, model, isDisabled, handleChange } = useCheckbox(props)
+    const {
+      focus,
+      isChecked,
+      checkboxSize,
+      model,
+      isDisabled,
+      handleChange,
+      isLimitExceeded,
+    } = useCheckbox(props)
     const instance = getCurrentInstance()
 
     onMounted(() => {
@@ -117,6 +125,7 @@ export default defineComponent({
       model,
       isDisabled,
       handleChange,
+      isLimitExceeded,
     }
   },
 })

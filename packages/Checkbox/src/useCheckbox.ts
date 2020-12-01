@@ -1,6 +1,6 @@
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
 import { PartialReturnType } from '@rol-ui/utils/types'
-import { computed, getCurrentInstance, inject, ref } from 'vue'
+import { computed, getCurrentInstance, inject, ref, watch } from 'vue'
 import { RCheckboxGroupInstance, RCheckboxProps } from './checkbox'
 
 export const useCheckboxGroup = () => {
@@ -88,7 +88,7 @@ const useDisabled = (
   })
   const isDisabled = computed(() => {
     const disabled = props.disabled
-    return isGroup.value ? checkboxGroup.disabled?.value || disabled : disabled
+    return isGroup.value ? checkboxGroup.disabled?.value || disabled || isLimitDisabled.value : disabled
   })
 
   return {
@@ -113,11 +113,24 @@ const useEvent = (props: RCheckboxProps, { isLimitExceeded }: PartialReturnType<
   }
 }
 
+const setStoreValue = (props: RCheckboxProps, { model }: PartialReturnType<typeof useModel>) => {
+  const addToStore = () => {
+    if (Array.isArray(model.value) && !model.value.includes(props.label)) {
+      model.value.push(props.label)
+    } else {
+      model.value = props.trueLabel || true
+    }
+  }
+  props.checked && addToStore()
+}
+
 export const useCheckbox = (props: RCheckboxProps) => {
   const { model, isLimitExceeded } = useModel(props)
   const { focus, size, isChecked, checkboxSize } = useCheckboxStatus(props, { model })
   const { isDisabled } = useDisabled(props, { model, isChecked })
   const { handleChange } = useEvent(props, { isLimitExceeded })
+
+  setStoreValue(props, { model })
 
   return {
     model,
