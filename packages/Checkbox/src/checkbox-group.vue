@@ -1,5 +1,5 @@
 <template>
-  <div class="rol-checkbox-group" role="group" aria-label="checkbox-group">
+  <div class="rol-checkbox-group rol-buttons has-addons" role="group" aria-label="checkbox-group">
     <slot></slot>
   </div>
 </template>
