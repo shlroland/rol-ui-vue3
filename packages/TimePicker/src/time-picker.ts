@@ -16,7 +16,6 @@ export default defineComponent({
   setup(props) {
     const type = props.isRange ? 'timerange' : 'time'
     const panel = props.isRange ? TimeRangePanel : TimePickPanel
-    console.log(panel)
     return () =>
       h(
         Picker,

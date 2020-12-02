@@ -12,12 +12,13 @@
       <rol-input
         v-if="!isRangeInput"
         ref="refContainer"
+        v-clickoutside="onClickOutside"
         class="rol-date-editor"
         :class="'rol-date-editor--' + type"
         :model-value="displayValue"
         :name="name"
         :size="size"
-        :disabled="pickerDisabled"
+        :disabled="disabled"
         :placeholder="placeholder"
         :readonly="!editable || readonly || isDatesPicker || type === 'week'"
         @focus="handleFocus"
@@ -79,7 +80,7 @@
     <template #default>
       <slot
         :visible="pickerVisible"
-        :parse-value="parsedValue"
+        :parsed-value="parsedValue"
         :format="format"
         :type="type"
         :default-value="defaultValue"
@@ -90,11 +91,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, PropType, provide, ref } from 'vue'
 import { OutSideClick } from '@rol-ui/directives'
 import RolPopper from '@rol-ui/popper'
 import RolInput from '@rol-ui/input'
 import RolIcon from '@rol-ui/icon'
+import { PICKER_BASE_PROVIDER } from './constant'
+import { PickerOptions } from '../../time-picker-type'
+import dayjs from 'dayjs'
 
 export default defineComponent({
   name: 'Picker',
@@ -204,6 +208,11 @@ export default defineComponent({
     const showClose = ref(false)
     const refConatiner = ref(null)
     const valueOpen = ref(null)
+    const pickerOptions = ref({} as PickerOptions)
+
+    const valueIsEmpty = computed(() => {
+      return !props.modelValue || (Array.isArray(props.modelValue) && !props.modelValue.length)
+    })
 
     const isRangeInput = computed(() => {
       return props.type.indexOf('range') > -1
@@ -221,8 +230,23 @@ export default defineComponent({
       return props.type.indexOf('time') !== -1
     })
 
-    const parseValue = computed(() => {
-      return ''
+    const parsedValue = computed(() => {
+      let result
+      if (valueIsEmpty.value) {
+        if (pickerOptions.value.getDefaultValue) {
+          result = pickerOptions.value.getDefaultValue()
+        }
+      } else {
+        if (Array.isArray(props.modelValue)) {
+          result = props.modelValue.map(_ => dayjs(_))
+        } else {
+          result = dayjs(props.modelValue as Date)
+        }
+      }
+      if (pickerOptions.value.getRangeAvaliableTime) {
+        result = pickerOptions.value.getRangeAvaliableTime(result)
+      }
+      return result
     })
 
     const triggerClass = computed(() => {
@@ -240,6 +264,8 @@ export default defineComponent({
       ctx.emit('focus', event)
     }
 
+    provide(PICKER_BASE_PROVIDER, { props })
+
     return {
       pickerVisible,
       isRangeInput,
@@ -248,7 +274,7 @@ export default defineComponent({
       displayValue,
       isDatesPicker,
       triggerClass,
-      parseValue,
+      parsedValue,
       showClose,
       handleFocus,
     }

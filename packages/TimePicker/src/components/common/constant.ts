@@ -10,3 +10,5 @@ export const DEFAULT_FORMATS_DATEPICKER = {
   daterange: DEFAULT_FORMATS_DATE,
   datetimerange: `${DEFAULT_FORMATS_DATE} ${DEFAULT_FORMATS_TIME}`,
 }
+
+export const PICKER_BASE_PROVIDER = 'pickerBaseProvider'
