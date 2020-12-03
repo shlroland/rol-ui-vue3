@@ -57,6 +57,7 @@ $border-light-hover: $grey-light !default;
 $text: $grey-dark !default;
 $text-invert: findColorInvert($text) !default;
 $text-light: $grey !default;
+$text-lighter: $grey-light !default;
 $text-strong: $grey-darker !default;
 
 // Code colors
@@ -97,11 +98,11 @@ $size-large: $size-4 !default;
 $custom-colors: null !default;
 $custom-shades: null !default;
 
-$box-shadow-base: 0 2px 4px Rgba($black-bis,0.12), 0 0 6px Rgba($black-bis,0.04) !default;
+$box-shadow-base: 0 2px 4px Rgba($black-bis, 0.12), 0 0 6px Rgba($black-bis, 0.04) !default;
 // boxShadow|1|Shadow|1
-$box-shadow-dark: 0 2px 4px Rgba($black-bis,0.12), 0 0 6px Rgba($black-bis,0.12) !default;
+$box-shadow-dark: 0 2px 4px Rgba($black-bis, 0.12), 0 0 6px Rgba($black-bis, 0.12) !default;
 /// boxShadow|1|Shadow|1
-$box-shadow-light: 0 2px 12px 0 Rgba($black-bis,0.1) !default;
+$box-shadow-light: 0 2px 12px 0 Rgba($black-bis, 0.1) !default;
 
 $colors: mergeColorMaps(
   (
@@ -126,7 +127,6 @@ $colors: mergeColorMaps(
       $primary-invert,
       $primary-light,
       $primary-dark,
-      
     ),
     'link': (
       $link,

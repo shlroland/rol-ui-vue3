@@ -13,7 +13,7 @@ $radio-disabled-input-fill: $background !default;
 $radio-disabled-icon-color: $background !default;
 $radio-disabled-checked-input-border-color: $border-light !default;
 $radio-disabled-checked-input-fill: $background !default;
-$radio-disabled-checked-icon-color: $text !default;
+$radio-disabled-checked-icon-color: $text-light !default;
 $radio-checked-font-color: $link !default;
 $radio-checked-input-border-color: $link !default;
 $radio-checked-input-background-color: $white !default;
@@ -149,7 +149,7 @@ $radio-button-disabled-checked-fill: $grey-lighter !default;
         }
       }
       & + span.rol-radio__label {
-        color: $text-light;
+        color: $text-lighter;
         cursor: not-allowed;
       }
     }

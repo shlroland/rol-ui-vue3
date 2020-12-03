@@ -1,7 +1,7 @@
 import { computed, inject, InjectionKey, ref } from 'vue'
 import { RadioGroupContext, RUseRadioAttrsState, RUseRadioAttrsProps } from './radio'
 
-const radioGroupKey: InjectionKey<RadioGroupContext> = 'RadioGroup' as any
+export const radioGroupKey = 'RadioGroup' as any
 
 export const useRadio = () => {
   const radioGroup = inject(radioGroupKey, {} as RadioGroupContext)
