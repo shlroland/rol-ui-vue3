@@ -9,7 +9,7 @@
     :aria-disabled="isDisabled"
     @click.stop="handleClick"
   >
-    <slot></slot>
+    <slot>{{ label }}</slot>
     <input
       v-if="trueLabel || falseLabel"
       ref="input"

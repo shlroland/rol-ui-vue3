@@ -39,6 +39,11 @@ $button-static-border-color: $border !default;
 
 $button-colors: $colors !default;
 
+@mixin button-mini {
+  border-radius: $radius-small;
+  font-size: $size-mini;
+}
+
 @mixin button-small {
   border-radius: $radius-small;
   font-size: $size-small;
@@ -286,6 +291,9 @@ $button-colors: $colors !default;
         }
       }
     }
+  }
+  &.is-mini {
+    @include button-mini;
   }
   &.is-small {
     @include button-small;

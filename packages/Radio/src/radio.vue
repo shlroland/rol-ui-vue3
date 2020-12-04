@@ -1,7 +1,7 @@
 <template>
   <label
     :class="['rol-radio',{
-      [`el-radio--${radioSize || ''}`]: border && radioSize,
+      [`rol-radio--${radioSize || ''}`]: border && radioSize,
       'is-disabled': isDisabled,
       'is-focus': focus,
       'is-bordered': border,

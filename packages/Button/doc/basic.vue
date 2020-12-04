@@ -1,5 +1,5 @@
 <template>
-  <Button>按钮</Button>
+  <Button size="small">按钮</Button>
   <Button type="primary" icon="search">搜索</Button>
 </template>
 

@@ -55,7 +55,7 @@ $radio-button-disabled-checked-fill: $grey-lighter !default;
   @include when(bordered) {
     padding: $radio-bordered-padding;
     border-radius: $radius;
-    border: 1px solid $text;
+    border: 1px solid $text-light;
     box-sizing: border-box;
     height: $radio-bordered-height;
 
@@ -219,5 +219,29 @@ $radio-button-disabled-checked-fill: $grey-lighter !default;
   @include e(label) {
     font-size: $radio-font-size;
     padding-left: 10px;
+  }
+}
+
+@include bem(radio-group) {
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+  font-size: 0;
+}
+
+@include bem(radio-button) {
+  @include e(orig-radio) {
+    opacity: 0;
+    outline: none;
+    position: absolute;
+    margin: 0;
+    z-index: -1;
+  }
+
+  &.is-active {
+    color: $white;
+    background-color: $link;
+    border-color: $link;
+    box-shadow: -1px 0 0 0 $grey-lighter;
   }
 }

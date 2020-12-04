@@ -1,5 +1,10 @@
 <template>
-  <div ref="radioGroup" class="rol-raido-group" role="radiogroup" @keydown="handleKeydown">
+  <div
+    ref="radioGroup"
+    class="rol-raido-group rol-buttons has-addons"
+    role="radiogroup"
+    @keydown="handleKeydown"
+  >
     <slot></slot>
   </div>
 </template>

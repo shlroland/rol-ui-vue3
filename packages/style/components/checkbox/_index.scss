@@ -274,38 +274,4 @@ $checkbox-button-checked-border-color: $link !default;
     box-shadow: -1px 0 0 0 $grey-lighter;
   }
 }
-//   position: relative;
-//   display: inline-block;
-//   @include e(inner) {
-//     display: inline-block;
-//     line-height: 1;
-//     font-weight: $checkbox-font-weight;
-//     white-space: nowrap;
-//     vertical-align: middle;
-//     cursor: pointer;
-//     background-color: $white;
-//     border: $border;
-//     border-left: 0;
-//     color: $text;
-//     -webkit-appearance: none;
-//     text-align: center;
-//     box-sizing: border-box;
-//     outline: none;
-//     margin: 0;
-//     position: relative;
-//     transition: $all-transition;
-//     @include user-select(none);
 
-//     &:hover {
-//       color: $link;
-//     }
-
-//     & [class*='rol-icon-'] {
-//       line-height: 0.9;
-
-//       & + span {
-//         margin-left: 5px;
-//       }
-//     }
-//   }
-// }
