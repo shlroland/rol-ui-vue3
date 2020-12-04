@@ -20,7 +20,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { Dayjs } from 'dayjs'
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'PanelTimeRange',

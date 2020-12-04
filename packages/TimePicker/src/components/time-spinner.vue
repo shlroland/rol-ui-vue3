@@ -3,6 +3,7 @@
     <rol-scrollbar
       v-for="item in spinnerItems"
       :key="item"
+      :ref="getRefId(item)"
       class="rol-time-spinner__wrapper"
       wrap-style="max-height: inherit;"
       view-class="rol-time-spinner__list"
@@ -15,12 +16,12 @@
         class="rol-time-spinner__item"
         :class="{ active: key === timePartsMap[item].value, disabled }"
       >
-        <template v-if="item === 'hours'">
+        <template
+          v-if="item === 'hours'"
+        >
           {{ ('0' + (amPmMode ? key % 12 || 12 : key)).slice(-2) }}{{ getAmPmFlag(key) }}
         </template>
-        <template v-else>
-          {{ ('0' + key).slice(-2) }}
-        </template>
+        <template v-else>{{ ('0' + key).slice(-2) }}</template>
       </li>
     </rol-scrollbar>
   </div>
@@ -65,8 +66,8 @@ export default defineComponent({
       type: Function,
     },
   },
-  setup(props) {
-    const curentScrollbar = ref(null)
+  setup(props, { emit }) {
+    const currentScrollbar = ref(null)
     const listHoursRef: Ref<Nullable<HTMLElement>> = ref(null)
     const listMinutesRef: Ref<Nullable<HTMLElement>> = ref(null)
     const listSecondsRef: Ref<Nullable<HTMLElement>> = ref(null)
@@ -128,11 +129,33 @@ export default defineComponent({
       return content
     }
 
+    const getRefId = (item: string) => {
+      return `list${item.charAt(0).toUpperCase() + item.slice(1)}Ref`
+    }
+
+    const emitSelectRange = (type: string) => {
+      if (type === 'hours') {
+        emit('select-range', 0, 2)
+      } else if (type === 'minutes') {
+        emit('select-range', 3, 5)
+      } else if (type === 'seconds') {
+        emit('select-range', 6, 8)
+      }
+      currentScrollbar.value = type
+    }
+
+    const adjustSpinner = (type,value) => {
+      if (props.arrowControl) return
+      const el = listRefsMap[type]
+      if(el.value){}
+    }
+
     return {
       timePartsMap,
       listMap,
       spinnerItems,
       getAmPmFlag,
+      getRefId,
     }
   },
 })
