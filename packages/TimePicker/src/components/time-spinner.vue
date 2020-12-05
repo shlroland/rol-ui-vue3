@@ -15,11 +15,9 @@
         :key="key"
         class="rol-time-spinner__item"
         :class="{ active: key === timePartsMap[item].value, disabled }"
-        @click="handleClick(item,{ value: key,disabled })"
+        @click="handleClick(item, { value: key, disabled })"
       >
-        <template
-          v-if="item === 'hours'"
-        >
+        <template v-if="item === 'hours'">
           {{ ('0' + (amPmMode ? key % 12 || 12 : key)).slice(-2) }}{{ getAmPmFlag(key) }}
         </template>
         <template v-else>{{ ('0' + key).slice(-2) }}</template>
@@ -29,7 +27,16 @@
 </template>
 
 <script lang="ts">
-import { ComponentPublicInstance, computed, defineComponent, getCurrentInstance, Ref, ref, VNode } from 'vue'
+import {
+  ComponentPublicInstance,
+  computed,
+  defineComponent,
+  nextTick,
+  onMounted,
+  Ref,
+  ref,
+  VNode,
+} from 'vue'
 import RolScrollbar from '@rol-ui/scrollbar'
 import { Dayjs } from 'dayjs'
 import { getTimeLists } from './useTimePicker'
@@ -67,6 +74,7 @@ export default defineComponent({
       type: Function,
     },
   },
+  emits: ['change', 'select-range'],
   setup(props, { emit }) {
     const currentScrollbar = ref(null)
     const listHoursRef: Ref<Nullable<VNode>> = ref(null)
@@ -121,9 +129,13 @@ export default defineComponent({
       seconds: secondsList,
     }))
 
-    const typeItemHeight = type => {
+    const typeItemHeight = (type: string) => {
       const el = listRefsMap[type]
       return el.value.$el.querySelector('li').offsetHeight
+    }
+
+    const scrollBarHeight = (type: string) => {
+      return listRefsMap[type].value.$el.offsetHeight
     }
 
     const getAmPmFlag = (hour: number) => {
@@ -153,10 +165,19 @@ export default defineComponent({
     const adjustSpinner = (type: string, value) => {
       if (props.arrowControl) return
       const el = listRefsMap[type] as Ref<ComponentPublicInstance>
-      console.log(listRefsMap[type])
       if (el.value) {
         el.value.$el.querySelector('.rol-scrollbar__wrap').scrollTop = Math.max(0, value * typeItemHeight(type))
       }
+    }
+
+    const adjustCurrentSpinner = (type: string) => {
+      adjustSpinner(type, timePartsMap.value[type].value)
+    }
+
+    const adjustSpinners = () => {
+      adjustCurrentSpinner('hours')
+      adjustCurrentSpinner('minutes')
+      adjustCurrentSpinner('seconds')
     }
 
     const modifyDateField = (type, value) => {
@@ -176,12 +197,20 @@ export default defineComponent({
       }
     }
 
-    const handleClick = (type, { value, disabled }) => {
+    const handleClick = (type:string, { value, disabled }) => {
       if (!disabled) {
         modifyDateField(type, value)
         adjustSpinner(type, value)
+        emitSelectRange(type)
       }
     }
+
+    onMounted(() => {
+      nextTick(() => {
+        // !props.arrowControl && bin
+        adjustSpinners()
+      })
+    })
 
     return {
       timePartsMap,

@@ -1,5 +1,3 @@
-import { method } from 'lodash'
-
 const makeList = (total, method, methodFunc) => {
   const arr = []
   const disabledArr = method && (methodFunc() as number[])
@@ -8,6 +6,10 @@ const makeList = (total, method, methodFunc) => {
   }
 
   return arr
+}
+
+const makeAvaliableArr = list => {
+  return list.map((_, index) => (!_ ? index : _)).filter(_ => _ !== true)
 }
 
 export const getTimeLists = (disabledHours, disabledMinutes, disabledSeconds) => {
@@ -25,5 +27,23 @@ export const getTimeLists = (disabledHours, disabledMinutes, disabledSeconds) =>
     getHoursList,
     getMinutesList,
     getSecondsList,
+  }
+}
+
+export const getAvaliableArrs = (disabledHours, disabledMinutes, disabledSeconds) => {
+  const { getHoursList, getMinutesList, getSecondsList } = getTimeLists(disabledHours, disabledMinutes, disabledSeconds)
+  const getAvaliableHours = (role, compare?) => {
+    return makeAvaliableArr(getHoursList(role, compare))
+  }
+  const getAvaliableMinutes = (hour, role, compare?) => {
+    return makeAvaliableArr(getMinutesList(hour, role, compare))
+  }
+  const getAvaliableSeconds = (hour, minute, role, compare?) => {
+    return makeAvaliableArr(getSecondsList(hour, minute, role, compare))
+  }
+  return {
+    getAvaliableHours,
+    getAvaliableMinutes,
+    getAvaliableSeconds,
   }
 }

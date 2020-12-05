@@ -85,6 +85,7 @@
         :default-value="defaultValue"
         :getPoppperRef="getPoppperRef"
         v-bind="$attrs"
+        @pick="onPick"
       ></slot>
     </template>
   </rol-popper>
@@ -98,7 +99,34 @@ import RolInput from '@rol-ui/input'
 import RolIcon from '@rol-ui/icon'
 import { PICKER_BASE_PROVIDER } from './constant'
 import { PickerOptions } from '../../time-picker-type'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
+
+const dateEquals = (a, b) => {
+  const aIsDate = a instanceof Date
+  const bIsDate = b instanceof Date
+  if (aIsDate && bIsDate) {
+    return a.getTime() === b.getTime()
+  }
+  if (!aIsDate && !bIsDate) {
+    return a === b
+  }
+  return false
+}
+
+const valueEquals = (a, b) => {
+  const aIsArray = a instanceof Array
+  const bIsArray = b instanceof Array
+  if (aIsArray && bIsArray) {
+    if (a.length !== b.length) {
+      return false
+    }
+    return a.every((item, index) => dateEquals(item, b[index]))
+  }
+  if (!aIsArray && !bIsArray) {
+    return dateEquals(a, b)
+  }
+  return false
+}
 
 export default defineComponent({
   name: 'Picker',
@@ -202,14 +230,15 @@ export default defineComponent({
       default: true,
     },
   },
-  emits: ['focus'],
+  emits: ['focus', 'update:modelValue', 'change'],
   setup(props, ctx) {
     const pickerVisible = ref(false)
     const showClose = ref(false)
     const refConatiner = ref(null)
-    const valueOpen = ref(null)
+    const valueOnOpen = ref(null)
     const pickerOptions = ref({} as PickerOptions)
     const popperRef = ref(null)
+    const userInput = ref(null)
 
     const getPoppperRef = value => {
       popperRef.value = value
@@ -269,6 +298,31 @@ export default defineComponent({
       ctx.emit('focus', event)
     }
 
+    const emitInput = val => {
+      if (!valueEquals(props.modelValue, val)) {
+        ctx.emit('update:modelValue', val)
+      }
+    }
+
+    const emitChange = val => {
+      if (!valueEquals(val, valueOnOpen.value)) {
+        ctx.emit('change', val)
+      }
+    }
+
+    const onPick = (date: Dayjs, visible = false) => {
+      pickerVisible.value = visible
+      let result
+      if (Array.isArray(date)) {
+        result = date.map(_ => _.toDate())
+      } else {
+        result = date ? date.toDate() : date
+      }
+      userInput.value = null
+      emitInput(result)
+      emitChange(result)
+    }
+
     provide(PICKER_BASE_PROVIDER, { props })
 
     return {
@@ -284,6 +338,7 @@ export default defineComponent({
       handleFocus,
       getPoppperRef,
       popperRef,
+      onPick,
     }
   },
 })
