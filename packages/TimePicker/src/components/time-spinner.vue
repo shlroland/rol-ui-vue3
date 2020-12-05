@@ -15,6 +15,7 @@
         :key="key"
         class="rol-time-spinner__item"
         :class="{ active: key === timePartsMap[item].value, disabled }"
+        @click="handleClick(item,{ value: key,disabled })"
       >
         <template
           v-if="item === 'hours'"
@@ -28,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Ref, ref } from 'vue'
+import { ComponentPublicInstance, computed, defineComponent, getCurrentInstance, Ref, ref, VNode } from 'vue'
 import RolScrollbar from '@rol-ui/scrollbar'
 import { Dayjs } from 'dayjs'
 import { getTimeLists } from './useTimePicker'
@@ -68,9 +69,9 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const currentScrollbar = ref(null)
-    const listHoursRef: Ref<Nullable<HTMLElement>> = ref(null)
-    const listMinutesRef: Ref<Nullable<HTMLElement>> = ref(null)
-    const listSecondsRef: Ref<Nullable<HTMLElement>> = ref(null)
+    const listHoursRef: Ref<Nullable<VNode>> = ref(null)
+    const listMinutesRef: Ref<Nullable<VNode>> = ref(null)
+    const listSecondsRef: Ref<Nullable<VNode>> = ref(null)
     const listRefsMap = {
       hours: listHoursRef,
       minutes: listMinutesRef,
@@ -88,7 +89,7 @@ export default defineComponent({
       return props.showSeconds ? arr : arr.slice(0, 2)
     })
     const hours = computed(() => {
-      props.spinnerDate.hour()
+      return props.spinnerDate.hour()
     })
     const minutes = computed(() => {
       return props.spinnerDate.minute()
@@ -120,6 +121,11 @@ export default defineComponent({
       seconds: secondsList,
     }))
 
+    const typeItemHeight = type => {
+      const el = listRefsMap[type]
+      return el.value.$el.querySelector('li').offsetHeight
+    }
+
     const getAmPmFlag = (hour: number) => {
       let shouldShowAmPm = !!props.amPmMode
       if (!shouldShowAmPm) return ''
@@ -144,10 +150,37 @@ export default defineComponent({
       currentScrollbar.value = type
     }
 
-    const adjustSpinner = (type,value) => {
+    const adjustSpinner = (type: string, value) => {
       if (props.arrowControl) return
-      const el = listRefsMap[type]
-      if(el.value){}
+      const el = listRefsMap[type] as Ref<ComponentPublicInstance>
+      console.log(type, value)
+      if (el.value) {
+        el.value.$el.querySelector('.rol-scrollbar__wrap').scrollTop = Math.max(0, value * typeItemHeight(type))
+      }
+    }
+
+    const modifyDateField = (type, value) => {
+      const list = listMap.value[type].value
+      const isDisabled = list[value]
+      if (isDisabled) return
+      switch (type) {
+        case 'hours':
+          emit('change', props.spinnerDate.hour(value).minute(minutes.value).second(seconds.value))
+          break
+        case 'minutes':
+          emit('change', props.spinnerDate.hour(hours.value).minute(value).second(seconds.value))
+          break
+        case 'seconds':
+          emit('change', props.spinnerDate.hour(hours.value).minute(minutes.value).second(value))
+          break
+      }
+    }
+
+    const handleClick = (type, { value, disabled }) => {
+      if (!disabled) {
+        modifyDateField(type, value)
+        adjustSpinner(type, value)
+      }
     }
 
     return {
@@ -156,6 +189,7 @@ export default defineComponent({
       spinnerItems,
       getAmPmFlag,
       getRefId,
+      handleClick,
     }
   },
 })

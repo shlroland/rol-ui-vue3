@@ -1,6 +1,6 @@
 <template>
   <transition name="rol-zoom-in-top">
-    <div v-if="visible" class="rol-time-panel">
+    <div v-if="visible" ref="popperRef" class="rol-time-panel">
       <div class="rol-time-panel__content" :class="{ 'has-seconds': showSeconds }">
         <time-spinner
           ref="spinner"
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType } from 'vue'
+import { computed, defineComponent, inject, onMounted, PropType, ref, watch } from 'vue'
 import Dayjs from 'dayjs'
 import TimeSpinner from './time-spinner.vue'
 import { PICKER_BASE_PROVIDER } from './common/constant'
@@ -39,14 +39,18 @@ export default defineComponent({
     //   type: String,
     // },
     parsedValue: {
-      type: [Object, String] ,
+      type: [Object, String],
     },
     format: {
       type: String,
       default: '',
     },
+    getPoppperRef: {
+      type: Function,
+    },
   },
   setup(props) {
+    const popperRef = ref<HTMLElement>(null)
     const { arrowControl, disabledHours, disabledMinutes, disabledSeconds, defaultValue } = inject(
       PICKER_BASE_PROVIDER,
     ) as any
@@ -61,6 +65,10 @@ export default defineComponent({
       return ''
     })
 
+    watch(popperRef, () => {
+      props.getPoppperRef(popperRef.value)
+    })
+
     return {
       arrowControl,
       disabledHours,
@@ -69,6 +77,7 @@ export default defineComponent({
       defaultValue,
       showSeconds,
       amPmMode,
+      popperRef,
     }
   },
 })

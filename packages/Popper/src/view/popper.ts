@@ -1,5 +1,5 @@
 import { PatchFlags } from '@rol-ui/utils/vnode'
-import { createVNode, Transition, VNode, vShow, withCtx, withDirectives,h } from 'vue'
+import { createVNode, Transition, VNode, vShow, withCtx, withDirectives, h, Ref } from 'vue'
 import { Effect } from '../core/props'
 
 interface RRenderPopperProps {
@@ -8,7 +8,8 @@ interface RRenderPopperProps {
   popperClass: string
   popperStyle?: string | CSSStyleDeclaration
   popperId: string
-  pure: boolean
+  pure?: boolean
+  popperRef?: Ref<HTMLElement>
   visibility: boolean
   onMouseEnter: () => void
   onMouseLeave: () => void
@@ -24,6 +25,7 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
     popperStyle,
     pure,
     popperId,
+    popperRef,
     visibility,
     onMouseEnter,
     onMouseLeave,
@@ -38,7 +40,7 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
       class: ['rol-popper', 'is-' + effect, popperClass, pure ? 'rol-popper__pure' : ''],
       style: popperStyle,
       id: popperId,
-      ref: 'popperRef',
+      ref: popperRef ?? 'popperRef',
       role: 'tooltip',
       onMouseEnter,
       onMouseLeave,
@@ -55,12 +57,7 @@ export default function renderPopper(props: RRenderPopperProps, children: VNode[
     Transition,
     { name, 'onAfter-enter': onAfterEnter, 'onAfter-leave': onAfterLeave },
     {
-      default: withCtx(() => [
-        withDirectives(
-          VNode,
-          [[vShow, visibility]],
-        ),
-      ]),
+      default: withCtx(() => [withDirectives(VNode, [[vShow, visibility]])]),
     },
     PatchFlags.PROPS,
     ['name', 'onAfter-enter', 'onAfter-leave'],

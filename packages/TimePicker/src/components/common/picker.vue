@@ -1,6 +1,5 @@
 <template>
   <rol-popper
-    ref="popper"
     v-model:visible="pickerVisible"
     manual-mode
     effect="light"
@@ -84,6 +83,7 @@
         :format="format"
         :type="type"
         :default-value="defaultValue"
+        :getPoppperRef="getPoppperRef"
         v-bind="$attrs"
       ></slot>
     </template>
@@ -209,6 +209,11 @@ export default defineComponent({
     const refConatiner = ref(null)
     const valueOpen = ref(null)
     const pickerOptions = ref({} as PickerOptions)
+    const popperRef = ref(null)
+
+    const getPoppperRef = value => {
+      popperRef.value = value
+    }
 
     const valueIsEmpty = computed(() => {
       return !props.modelValue || (Array.isArray(props.modelValue) && !props.modelValue.length)
@@ -277,6 +282,8 @@ export default defineComponent({
       parsedValue,
       showClose,
       handleFocus,
+      getPoppperRef,
+      popperRef,
     }
   },
 })
