@@ -153,7 +153,7 @@ export default defineComponent({
     const adjustSpinner = (type: string, value) => {
       if (props.arrowControl) return
       const el = listRefsMap[type] as Ref<ComponentPublicInstance>
-      console.log(type, value)
+      console.log(listRefsMap[type])
       if (el.value) {
         el.value.$el.querySelector('.rol-scrollbar__wrap').scrollTop = Math.max(0, value * typeItemHeight(type))
       }
@@ -190,6 +190,10 @@ export default defineComponent({
       getAmPmFlag,
       getRefId,
       handleClick,
+      listHoursRef,
+      listMinutesRef,
+      listSecondsRef,
+      listRefsMap,
     }
   },
 })

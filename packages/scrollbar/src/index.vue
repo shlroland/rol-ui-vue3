@@ -6,7 +6,12 @@
       :style="style"
       @scroll="handleScroll"
     >
-      <component :is="tag" ref="resize" :class="['rol-scrollbar__view', viewClass]" :style="viewStyle">
+      <component
+        :is="tag"
+        ref="resize"
+        :class="['rol-scrollbar__view', viewClass]"
+        :style="viewStyle"
+      >
         <slot></slot>
       </component>
     </div>
