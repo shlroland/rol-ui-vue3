@@ -29,7 +29,7 @@
       
     }
     .rol-time-spinner__item:hover:not(.disabled):not(.active) {
-      background: transparent;
+      background: $background;
       cursor: default;
     }
   }

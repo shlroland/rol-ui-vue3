@@ -9,6 +9,7 @@
       view-class="rol-time-spinner__list"
       noresize
       tag="ul"
+      @mousemove="adjustCurrentSpinner(item)"
     >
       <li
         v-for="(disabled, key) in listMap[item].value"
@@ -32,14 +33,17 @@ import {
   computed,
   defineComponent,
   nextTick,
+  onBeforeUnmount,
   onMounted,
   Ref,
   ref,
-  VNode,
+  watch,
 } from 'vue'
 import RolScrollbar from '@rol-ui/scrollbar'
 import { Dayjs } from 'dayjs'
 import { getTimeLists } from './useTimePicker'
+import { off, on } from '@rol-ui/utils/dom'
+import { rafThrottle } from '@rol-ui/utils/util'
 
 export default defineComponent({
   name: 'TimeSpinner',
@@ -77,9 +81,9 @@ export default defineComponent({
   emits: ['change', 'select-range'],
   setup(props, { emit }) {
     const currentScrollbar = ref(null)
-    const listHoursRef: Ref<Nullable<VNode>> = ref(null)
-    const listMinutesRef: Ref<Nullable<VNode>> = ref(null)
-    const listSecondsRef: Ref<Nullable<VNode>> = ref(null)
+    const listHoursRef: Ref<Nullable<ComponentPublicInstance>> = ref(null)
+    const listMinutesRef: Ref<Nullable<ComponentPublicInstance>> = ref(null)
+    const listSecondsRef: Ref<Nullable<ComponentPublicInstance>> = ref(null)
     const listRefsMap = {
       hours: listHoursRef,
       minutes: listMinutesRef,
@@ -166,7 +170,9 @@ export default defineComponent({
       if (props.arrowControl) return
       const el = listRefsMap[type] as Ref<ComponentPublicInstance>
       if (el.value) {
-        el.value.$el.querySelector('.rol-scrollbar__wrap').scrollTop = Math.max(0, value * typeItemHeight(type))
+        const dom = el.value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement
+        const scrollTop = value * typeItemHeight(type)
+        dom.scrollTop = Math.max(0, scrollTop)
       }
     }
 
@@ -197,7 +203,7 @@ export default defineComponent({
       }
     }
 
-    const handleClick = (type:string, { value, disabled }) => {
+    const handleClick = (type: string, { value, disabled }) => {
       if (!disabled) {
         modifyDateField(type, value)
         adjustSpinner(type, value)
@@ -205,12 +211,60 @@ export default defineComponent({
       }
     }
 
+    const handleScroll = rafThrottle((type: string) => {
+      const value = Math.min(
+        Math.round(
+          (listRefsMap[type].value.$el.querySelector('.rol-scrollbar__wrap').scrollTop -
+            (scrollBarHeight(type) * 0.5 - 10) / typeItemHeight(type) +
+            3) /
+            typeItemHeight(type),
+        ),
+        type === 'hours' ? 23 : 59,
+      )
+      modifyDateField(type, value)
+    })
+
+    const bindScrollEvent = () => {
+      const hoursScroll = () => handleScroll('hours')
+      const minutesScroll = () => handleScroll('minutes')
+      const secondsScroll = () => handleScroll('seconds')
+
+      on(listRefsMap['hours'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement, 'scroll', hoursScroll)
+      on(listRefsMap['minutes'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement, 'scroll', minutesScroll)
+      on(listRefsMap['seconds'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement, 'scroll', secondsScroll)
+
+      return () => {
+        off(listRefsMap['hours'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement, 'scroll', hoursScroll)
+        off(
+          listRefsMap['minutes'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement,
+          'scroll',
+          minutesScroll,
+        )
+        off(
+          listRefsMap['seconds'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement,
+          'scroll',
+          secondsScroll,
+        )
+      }
+    }
+
+    const unbindScrollEvent = ref(null)
+
     onMounted(() => {
       nextTick(() => {
-        // !props.arrowControl && bin
+        if (!props.arrowControl) {
+          unbindScrollEvent.value = bindScrollEvent()
+        }
         adjustSpinners()
+        if (props.role === 'start') emitSelectRange('hours')
       })
     })
+
+    onBeforeUnmount(() => {
+      unbindScrollEvent.value && unbindScrollEvent.value?.()
+    })
+
+    watch(() => props.spinnerDate, adjustSpinners)
 
     return {
       timePartsMap,
@@ -223,6 +277,8 @@ export default defineComponent({
       listMinutesRef,
       listSecondsRef,
       listRefsMap,
+      adjustCurrentSpinner,
+      emitSelectRange,
     }
   },
 })
