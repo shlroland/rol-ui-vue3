@@ -51,7 +51,7 @@ export default defineComponent({
       type: Function,
     },
   },
-emits: ['pick'],
+  emits: ['pick'],
   setup(props, { emit }) {
     const popperRef = ref<HTMLElement>(null)
     const { arrowControl, disabledHours, disabledMinutes, disabledSeconds, defaultValue } = inject(
@@ -109,8 +109,14 @@ emits: ['pick'],
       return result
     }
 
-    watch(popperRef, () => {
-      props.getPoppperRef(popperRef.value)
+    const comVisible = computed(() => {
+      return props.visible
+    })
+
+    watch([popperRef, comVisible], () => {
+      if (popperRef.value) {
+        props.getPoppperRef(popperRef.value)
+      }
     })
 
     return {

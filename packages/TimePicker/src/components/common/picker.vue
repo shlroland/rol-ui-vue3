@@ -323,7 +323,7 @@ export default defineComponent({
       emitChange(result)
     }
 
-    provide(PICKER_BASE_PROVIDER, { props })
+    provide(PICKER_BASE_PROVIDER, props)
 
     return {
       pickerVisible,

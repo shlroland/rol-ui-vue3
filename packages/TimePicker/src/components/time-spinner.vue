@@ -1,54 +1,79 @@
 <template>
   <div class="rol-time-spinner" :class="{ 'has-seconds': showSeconds }">
-    <rol-scrollbar
-      v-for="item in spinnerItems"
-      :key="item"
-      :ref="getRefId(item)"
-      class="rol-time-spinner__wrapper"
-      wrap-style="max-height: inherit;"
-      view-class="rol-time-spinner__list"
-      noresize
-      tag="ul"
-      @mousemove="adjustCurrentSpinner(item)"
-    >
-      <li
-        v-for="(disabled, key) in listMap[item].value"
-        :key="key"
-        class="rol-time-spinner__item"
-        :class="{ active: key === timePartsMap[item].value, disabled }"
-        @click="handleClick(item, { value: key, disabled })"
+    <template v-if="!arrowControl">
+      <rol-scrollbar
+        v-for="item in spinnerItems"
+        :key="item"
+        :ref="getRefId(item)"
+        class="rol-time-spinner__wrapper"
+        wrap-style="max-height: inherit;"
+        view-class="rol-time-spinner__list"
+        noresize
+        tag="ul"
+        @mousemove="adjustCurrentSpinner(item)"
       >
-        <template v-if="item === 'hours'">
-          {{ ('0' + (amPmMode ? key % 12 || 12 : key)).slice(-2) }}{{ getAmPmFlag(key) }}
-        </template>
-        <template v-else>{{ ('0' + key).slice(-2) }}</template>
-      </li>
-    </rol-scrollbar>
+        <li
+          v-for="(disabled, key) in listMap[item].value"
+          :key="key"
+          class="rol-time-spinner__item"
+          :class="{ active: key === timePartsMap[item].value, disabled }"
+          @click="handleClick(item, { value: key, disabled })"
+        >
+          <template v-if="item === 'hours'">
+            {{ ('0' + (amPmMode ? key % 12 || 12 : key)).slice(-2) }}{{ getAmPmFlag(key) }}
+          </template>
+          <template v-else>{{ ('0' + key).slice(-2) }}</template>
+        </li>
+      </rol-scrollbar>
+    </template>
+    <template v-if="arrowControl">
+      <div
+        v-for="item in spinnerItems"
+        :key="item"
+        class="rol-time-spinner__wrapper is-arrow"
+        @mouseenter="emitSelectRange(item)"
+      >
+        <span v-repeat-click="onDecreaseClick" class="rol-time-spinner__arrow rol-icon-arrow-up">
+          <rol-icon name="angle-up"></rol-icon>
+        </span>
+        <span v-repeat-click="onIncreaseClick" class="rol-time-spinner__arrow rol-icon-arrow-down">
+          <rol-icon name="angle-down"></rol-icon>
+        </span>
+        <ul class="rol-time-spinner__list">
+          <li
+            v-for="(time, key) in arrowListMap[item].value"
+            :key="key"
+            :class="[
+              'rol-time-spinner__item',
+              { active: time === timePartsMap[item].value, disabled: listMap[item].value[time] },
+            ]"
+          >
+            {{ time === undefined ? '' : ('0' + (amPmMode ? time % 12 || 12 : time)).slice(-2) + getAmPmFlag(time) }}
+          </li>
+        </ul>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  ComponentPublicInstance,
-  computed,
-  defineComponent,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  Ref,
-  ref,
-  watch,
-} from 'vue'
+import { ComponentPublicInstance, computed, defineComponent, nextTick, onMounted, Ref, ref, watch } from 'vue'
 import RolScrollbar from '@rol-ui/scrollbar'
 import { Dayjs } from 'dayjs'
 import { getTimeLists } from './useTimePicker'
-import { off, on } from '@rol-ui/utils/dom'
+import { on } from '@rol-ui/utils/dom'
 import { rafThrottle } from '@rol-ui/utils/util'
+import RolIcon from '@rol-ui/icon'
+import { RepeatClick } from '@rol-ui/directives'
 
 export default defineComponent({
   name: 'TimeSpinner',
   components: {
     RolScrollbar,
+    RolIcon,
+  },
+  directives: {
+    repeatClick: RepeatClick,
   },
   props: {
     role: {
@@ -120,6 +145,27 @@ export default defineComponent({
     const secondsList = computed(() => {
       return getSecondsList(hours.value, minutes.value, props.role)
     })
+
+    const arrowHourList = computed(() => {
+      const hour = hours.value
+      return [hour > 0 ? hour - 1 : undefined, hour, hour < 23 ? hour + 1 : undefined]
+    })
+
+    const arrowMinuteList = computed(() => {
+      const minute = minutes.value
+      return [minute > 0 ? minute - 1 : undefined, minute, minute < 59 ? minute + 1 : undefined]
+    })
+
+    const arrowSecondList = computed(() => {
+      const second = seconds.value
+      return [second > 0 ? second - 1 : undefined, second, second < 59 ? second + 1 : undefined]
+    })
+
+    const arrowListMap = computed(() => ({
+      hours: arrowHourList,
+      minutes: arrowMinuteList,
+      seconds: arrowSecondList,
+    }))
 
     const timePartsMap = computed(() => ({
       hours,
@@ -232,36 +278,39 @@ export default defineComponent({
       on(listRefsMap['hours'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement, 'scroll', hoursScroll)
       on(listRefsMap['minutes'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement, 'scroll', minutesScroll)
       on(listRefsMap['seconds'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement, 'scroll', secondsScroll)
-
-      return () => {
-        off(listRefsMap['hours'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement, 'scroll', hoursScroll)
-        off(
-          listRefsMap['minutes'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement,
-          'scroll',
-          minutesScroll,
-        )
-        off(
-          listRefsMap['seconds'].value.$el.querySelector('.rol-scrollbar__wrap') as HTMLElement,
-          'scroll',
-          secondsScroll,
-        )
-      }
     }
 
-    const unbindScrollEvent = ref(null)
+    const onIncreaseClick = () => {
+      scrollDown(1)
+    }
+
+    const onDecreaseClick = () => {
+      scrollDown(-1)
+    }
+
+    const scrollDown = (step: number) => {
+      if (!currentScrollbar.value) {
+        emitSelectRange('hours')
+      }
+
+      const label = currentScrollbar.value
+      let now = timePartsMap.value[label].value
+      const total = currentScrollbar.value === 'hours' ? 24 : 60
+      now = (now + step + total) % total
+
+      modifyDateField(label, now)
+      adjustSpinner(label, now)
+      nextTick(() => emitSelectRange(currentScrollbar.value))
+    }
 
     onMounted(() => {
       nextTick(() => {
         if (!props.arrowControl) {
-          unbindScrollEvent.value = bindScrollEvent()
+          bindScrollEvent()
         }
         adjustSpinners()
         if (props.role === 'start') emitSelectRange('hours')
       })
-    })
-
-    onBeforeUnmount(() => {
-      unbindScrollEvent.value && unbindScrollEvent.value?.()
     })
 
     watch(() => props.spinnerDate, adjustSpinners)
@@ -279,6 +328,9 @@ export default defineComponent({
       listRefsMap,
       adjustCurrentSpinner,
       emitSelectRange,
+      arrowListMap,
+      onIncreaseClick,
+      onDecreaseClick,
     }
   },
 })

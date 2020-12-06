@@ -5,7 +5,6 @@ export default {
   beforeMount(el, binding) {
     let interval = null
     let startTime
-
     const handler = () => binding.value && binding.value()
     const clear = () => {
       if (Date.now() - startTime < 100) {

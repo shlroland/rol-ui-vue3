@@ -1,6 +1,7 @@
 <template>
   <div>
     <rol-time-picker v-model="value1" placeholder="任意时间点"></rol-time-picker>
+    <rol-time-picker v-model="value2" placeholder="任意时间点" arrow-control></rol-time-picker>
   </div>
 </template>
 
@@ -13,6 +14,7 @@ export default {
   data() {
     return {
       value1: new Date(2016, 9, 10, 18, 40),
+      value2: new Date(2016, 9, 10, 18, 40),
     }
   },
 }

@@ -1,4 +1,6 @@
 @include bem(time-spinner) {
+  width: 100%;
+  white-space: nowrap;
   &.has-seconds {
     .rol-time-spinner__wrapper {
       width: 33.3%;
@@ -43,7 +45,7 @@
     z-index: 2000;
     text-align: center;
     height: 30px;
-    ine-height: 30px;
+    line-height: 30px;
     cursor: pointer;
 
     &:hover {
@@ -83,8 +85,8 @@
   }
 
   @include e(item) {
-    height: 32px;
-    line-height: 32px;
+    height: 36px;
+    line-height: 36px;
     font-size: 12px;
     color: $text-light;
 
