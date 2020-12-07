@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "storybook": "node_modules/.bin/start-storybook -p 6006",
-    "test": "./node_modules/.bin/jest",
+    "test:global": "./node_modules/.bin/jest",
+    "test:single":"node ./scripts/test-single",
     "commit": "git-cz"
   },
   "dependencies": {
@@ -62,7 +63,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push-todo-open": "npm run test",
+      "pre-push-todo-open": "yarn test:global",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
