@@ -16,7 +16,9 @@
     "build:lib": "cross-env LIBMODE=core webpack --config ./build/webpack.config.js",
     "build:type": "node build/gen-type.js",
     "gen:version": "node build/gen-version.js",
-    "docs:dev": "vite"
+    "docs:dev": "vite",
+    "test:global": "./node_modules/.bin/jest",
+    "test:single":"node ./scripts/test-single"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -110,7 +112,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push-todo-open": "npm run test",
+      "pre-push-todo-open": "yarn test:global",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
