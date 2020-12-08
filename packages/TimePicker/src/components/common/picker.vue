@@ -86,6 +86,8 @@
         :getPoppperRef="getPoppperRef"
         v-bind="$attrs"
         @pick="onPick"
+        @set-picker-option="onSetPickerOption"
+        @mousedown.stop
       ></slot>
     </template>
   </rol-popper>
@@ -253,6 +255,21 @@ export default defineComponent({
     })
 
     const displayValue = computed(() => {
+      if (!pickerOptions.value.panelReady) return
+      if (!isTimeLikePicker.value && valueIsEmpty.value) return
+      if (!pickerVisible.value && valueIsEmpty.value) return
+      const formattedValue = formatDayjsToString(parsedValue.value)
+      if (Array.isArray(userInput.value)) {
+        return [
+          userInput.value[0] || (formattedValue && formattedValue[0]) || '',
+          userInput.value[1] || (formattedValue && formattedValue[1]) || '',
+        ]
+      } else if (userInput.value !== null) {
+        return userInput.value
+      }
+      if (formattedValue) {
+        return isDatesPicker.value ? (formattedValue as Array<string>).join(', ') : formattedValue
+      }
       return ''
     })
 
@@ -286,6 +303,17 @@ export default defineComponent({
     const triggerClass = computed(() => {
       return props.prefixIcon || (isTimeLikePicker.value ? ['far', 'clock'] : ['far', 'calendar-alt'])
     })
+
+    const formatDayjsToString = value => {
+      if (!value) {
+        return null
+      }
+      return pickerOptions.value.formatToString(value)
+    }
+
+    const isValidValue = value => {
+      return pickerOptions.value.isValidValue(value)
+    }
 
     const onClickOutside = () => {
       if (!pickerVisible.value) return
@@ -323,6 +351,11 @@ export default defineComponent({
       emitChange(result)
     }
 
+    const onSetPickerOption = e => {
+      pickerOptions.value[e[0]] = e[1]
+      pickerOptions.value.panelReady = true
+    }
+
     provide(PICKER_BASE_PROVIDER, props)
 
     return {
@@ -339,6 +372,7 @@ export default defineComponent({
       getPoppperRef,
       popperRef,
       onPick,
+      onSetPickerOption,
     }
   },
 })

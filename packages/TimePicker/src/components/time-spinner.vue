@@ -103,7 +103,7 @@ export default defineComponent({
       type: Function,
     },
   },
-  emits: ['change', 'select-range'],
+  emits: ['change', 'select-range', 'set-option'],
   setup(props, { emit }) {
     const currentScrollbar = ref(null)
     const listHoursRef: Ref<Nullable<ComponentPublicInstance>> = ref(null)
@@ -302,6 +302,9 @@ export default defineComponent({
       adjustSpinner(label, now)
       nextTick(() => emitSelectRange(currentScrollbar.value))
     }
+
+    emit('set-option', [`${props.role}_scrollDown`, scrollDown])
+    emit('set-option', [`${props.role}_emitSelectRange`, emitSelectRange])
 
     onMounted(() => {
       nextTick(() => {

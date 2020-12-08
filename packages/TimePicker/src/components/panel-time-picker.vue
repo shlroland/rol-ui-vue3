@@ -1,22 +1,25 @@
 <template>
-  <transition name="rol-zoom-in-top">
-    <div v-if="visible" ref="popperRef" class="rol-time-panel">
+  <transition :name="transitionName">
+    <div v-if="actualVisible || visible" ref="popperRef" class="rol-time-panel">
       <div class="rol-time-panel__content" :class="{ 'has-seconds': showSeconds }">
         <time-spinner
           ref="spinner"
           :role="datetimeRole || 'start'"
           :arrow-control="arrowControl"
+          :show-seconds="showSeconds"
           :am-pm-mode="amPmMode"
           :spinner-date="parsedValue"
           :disabled-hours="disabledHours"
           :disabled-minutes="disabledMinutes"
           :disabled-seconds="disabledSeconds"
           @change="handleChange"
+          @set-option="onSetOption"
+          @select-range="setSelectionRange"
         ></time-spinner>
       </div>
       <div class="rol-time-panel__footer">
-        <button class="rol-time-panel__btn cancel">取消</button>
-        <button class="rol-time-panel__btn confirm">确认</button>
+        <button class="rol-time-panel__btn cancel" @click="handleCancel">取消</button>
+        <button class="rol-time-panel__btn confirm" @click="() => handleConfirm(false)">确认</button>
       </div>
     </div>
   </transition>
@@ -24,10 +27,11 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, ref, watch } from 'vue'
-import type { Dayjs } from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import TimeSpinner from './time-spinner.vue'
 import { PICKER_BASE_PROVIDER } from './common/constant'
 import { getAvaliableArrs } from './useTimePicker'
+import { EVENT_CODE } from '@rol-ui/utils/aria'
 
 export default defineComponent({
   name: 'PanelTimePicker',
@@ -36,6 +40,10 @@ export default defineComponent({
     visible: {
       type: Boolean,
       default: false,
+    },
+    actualVisible: {
+      type: Boolean,
+      default: undefined,
     },
     datetimeRole: {
       type: String,
@@ -51,9 +59,11 @@ export default defineComponent({
       type: Function,
     },
   },
-  emits: ['pick'],
+  emits: ['pick', 'sselect-change', 'set-picker-option'],
   setup(props, { emit }) {
     const popperRef = ref<HTMLElement>(null)
+    const oldValue = ref(props.parsedValue)
+    const selectionRange = ref([0, 2])
     const { arrowControl, disabledHours, disabledMinutes, disabledSeconds, defaultValue } = inject(
       PICKER_BASE_PROVIDER,
     ) as any
@@ -74,12 +84,25 @@ export default defineComponent({
       return ''
     })
 
+    const transitionName = computed(() => {
+      return props.actualVisible === undefined ? 'rol-zoom-in-top' : ''
+    })
+
     const handleChange = (date: Dayjs) => {
       if (!props.visible) {
         return
       }
       const result = getRangeAvaliableTime(date).millisecond(0)
       emit('pick', result, true)
+    }
+
+    const handleCancel = () => {
+      emit('pick', oldValue.value, false)
+    }
+
+    const handleConfirm = (visible = false, first?) => {
+      if (first) return
+      emit('pick', props.parsedValue, visible)
     }
 
     const getRangeAvaliableTime = (date: Dayjs) => {
@@ -109,10 +132,71 @@ export default defineComponent({
       return result
     }
 
+    const timePickeOptions = {} as any
+
+    const onSetOption = e => {
+      timePickeOptions[e[0]] = e[1]
+    }
+    const setSelectionRange = (start, end) => {
+      emit('sselect-change', start, end)
+    }
+
+    const changeSelectRange = step => {
+      const list = [0, 3].concat(showSeconds.value ? [6] : [])
+      const mapping = ['hours', 'minutes'].concat(showSeconds.value ? ['seconds'] : [])
+      const index = list.indexOf(selectionRange.value[0])
+      const next = (index + step + list.length) % list.length
+      timePickeOptions['start_emitSelectRange'](mapping[next])
+    }
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      const code = event.code
+
+      if (code === EVENT_CODE.left || code === EVENT_CODE.right) {
+        const step = code === EVENT_CODE.left ? -1 : 1
+        changeSelectRange(step)
+        event.preventDefault()
+        return
+      }
+
+      if (code === EVENT_CODE.up || code === EVENT_CODE.down) {
+        const step = code === EVENT_CODE.up ? -1 : 1
+        timePickeOptions['min_scrollDown'](step)
+        event.preventDefault()
+        return
+      }
+    }
+
+    const parseUserInput = value => {
+      if (!value) return null
+      return dayjs(value, props.format)
+    }
+
+    const formatToString = value => {
+      if (!value) return null
+      return value.format(props.format)
+    }
+
+    const getDefaultValue = () => {
+      return dayjs(defaultValue)
+    }
+
+    const isValidValue = date => {
+      const parsedDate = dayjs(date)
+      const result = getRangeAvaliableTime(parsedDate)
+      return parsedDate.isSame(result)
+    }
+
+    emit('set-picker-option', ['isValidValue', isValidValue])
+    emit('set-picker-option', ['formatToString', formatToString])
+    emit('set-picker-option', ['parseUserInput', parseUserInput])
+    emit('set-picker-option', ['handleKeydown', handleKeydown])
+    emit('set-picker-option', ['getRangeAvaliableTime', getRangeAvaliableTime])
+    emit('set-picker-option', ['getDefaultValue', getDefaultValue])
+
     const comVisible = computed(() => {
       return props.visible
     })
-
     watch([popperRef, comVisible], () => {
       if (popperRef.value) {
         props.getPoppperRef(popperRef.value)
@@ -129,6 +213,11 @@ export default defineComponent({
       amPmMode,
       popperRef,
       handleChange,
+      onSetOption,
+      setSelectionRange,
+      transitionName,
+      handleCancel,
+      handleConfirm,
     }
   },
 })
