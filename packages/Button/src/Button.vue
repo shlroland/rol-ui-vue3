@@ -15,9 +15,10 @@
         'is-active': active,
         'is-static': isStatic,
         'is-selected': selected,
+        'is-light': light
       },
     ]"
-    :disabled="disabled"
+    :disabled="disabled || loading"
     :autofocus="autofocus"
     :type="nativeType"
   >
