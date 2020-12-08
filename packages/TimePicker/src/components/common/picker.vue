@@ -6,6 +6,9 @@
     trigger="click"
     popper-class="rol-picker__popper"
     :stop-popper-mouse-event="false"
+    append-to-body
+    @before-enter="pickerActualVisible = true"
+    @after-leave="pickerActualVisible = false"
   >
     <template #trigger>
       <rol-input
@@ -20,6 +23,8 @@
         :disabled="disabled"
         :placeholder="placeholder"
         :readonly="!editable || readonly || isDatesPicker || type === 'week'"
+        @input="onUserInput"
+        @change="handleChange"
         @focus="handleFocus"
       >
         <template #prefix>
@@ -102,6 +107,9 @@ import RolIcon from '@rol-ui/icon'
 import { PICKER_BASE_PROVIDER } from './constant'
 import { PickerOptions } from '../../time-picker-type'
 import dayjs, { Dayjs } from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+
+dayjs.extend(customParseFormat)
 
 const dateEquals = (a, b) => {
   const aIsDate = a instanceof Date
@@ -304,6 +312,11 @@ export default defineComponent({
       return props.prefixIcon || (isTimeLikePicker.value ? ['far', 'clock'] : ['far', 'calendar-alt'])
     })
 
+    const parseUserInputToDayjs = value => {
+      if (!value) return null
+      return pickerOptions.value.parseUserInput(value)
+    }
+
     const formatDayjsToString = value => {
       if (!value) {
         return null
@@ -318,12 +331,6 @@ export default defineComponent({
     const onClickOutside = () => {
       if (!pickerVisible.value) return
       pickerVisible.value = false
-    }
-
-    const handleFocus = (event: Event) => {
-      if (props.readonly || props.disabled) return
-      pickerVisible.value = true
-      ctx.emit('focus', event)
     }
 
     const emitInput = val => {
@@ -356,6 +363,34 @@ export default defineComponent({
       pickerOptions.value.panelReady = true
     }
 
+    const onUserInput = e => {
+      userInput.value = e
+    }
+
+    const handleFocus = (event: Event) => {
+      if (props.readonly || props.disabled) return
+      pickerVisible.value = true
+      ctx.emit('focus', event)
+    }
+
+    const handleChange = () => {
+      if (userInput.value) {
+        const value = parseUserInputToDayjs(displayValue.value) as Dayjs
+        if (value) {
+          if (isValidValue(value)) {
+            emitInput(value.toDate())
+            userInput.value = null
+          }
+        }
+      }
+
+      if (userInput.value === '') {
+        emitInput(null)
+        emitChange(null)
+        userInput.value = null
+      }
+    }
+
     provide(PICKER_BASE_PROVIDER, props)
 
     return {
@@ -373,6 +408,8 @@ export default defineComponent({
       popperRef,
       onPick,
       onSetPickerOption,
+      onUserInput,
+      handleChange,
     }
   },
 })
