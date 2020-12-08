@@ -29,14 +29,14 @@ export default defineComponent({
       type: String as IButtonGroupPosition,
       default: '',
       validator: (val: string) => {
-        return ['center', 'right'].includes(val)
+        return ['center', 'right', ''].includes(val)
       },
     },
     groupSize: {
       type: String as IButtonGroupSize,
-      default: '',
+      default: 'normal',
       validator: (val: string) => {
-        return ['small', 'medium', 'large'].includes(val)
+        return ['small', 'medium', 'large', 'normal'].includes(val)
       },
     },
   },
@@ -44,9 +44,7 @@ export default defineComponent({
     let defaults = slots.default()
     defaults = defaults.filter(tag => {
       if (tag.type !== Button) {
-        console.warn(
-          'The children of ButtonGroup must be Button Component,Please delete all elements except Button',
-        )
+        console.warn('The children of ButtonGroup must be Button Component,Please delete all elements except Button')
       } else {
         return true
       }
