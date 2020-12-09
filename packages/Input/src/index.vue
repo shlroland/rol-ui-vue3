@@ -40,6 +40,7 @@
         @change="handleChange"
         @focus="handleFocus"
         @blur="handleBlur"
+        @keydown="handleKeydown"
       />
       <span v-if="$slots.prefix || prefixIcon" class="rol-input__prefix">
         <slot name="prefix"></slot>
@@ -91,6 +92,7 @@
       @focus="handleFocus"
       @blur="handleBlur"
       @change="handleChange"
+      @keydown="handleKeydown"
     ></textarea>
     <span
       v-if="isWordLimitVisible && type === 'textarea'"
@@ -194,7 +196,7 @@ export default {
       default: true,
     },
   },
-  emits: ['mouseenter', 'mouseleave', 'input', 'change', 'blur', 'focus', 'clear', UPDATE_MODELVALUE_EVENT],
+  emits: ['mouseenter', 'mouseleave', 'input', 'change', 'blur', 'focus', 'clear', UPDATE_MODELVALUE_EVENT,'keydown'],
   setup(props, ctx) {
     const instance = getCurrentInstance()
     const attrs = useAttrs(true)
@@ -337,6 +339,10 @@ export default {
       // }
     }
 
+    const handleKeydown = event => {
+      ctx.emit('keydown', event)
+    }
+
     const onMouseLeave = e => {
       hovering.value = false
       ctx.emit('mouseleave', e)
@@ -437,6 +443,7 @@ export default {
       blur,
       handlePasswordVisible,
       clear,
+      handleKeydown,
     }
   },
 }

@@ -26,6 +26,7 @@
         @input="onUserInput"
         @change="handleChange"
         @focus="handleFocus"
+        @keydown="handleKeydown"
       >
         <template #prefix>
           <span class="rol-input__icon" @focus="handleFocus">
@@ -49,7 +50,8 @@
           disabled ? 'is-disabled' : '',
           pickerVisible ? 'is-active' : '',
         ]"
-        @focus="handleFocus"
+        @click="handleFocus"
+        @keydown="handleKeydown"
       >
         <span class="rol-input__icon rol-range__icon">
           <rol-icon :name="triggerClass"></rol-icon>
@@ -108,6 +110,7 @@ import { PICKER_BASE_PROVIDER } from './constant'
 import { PickerOptions } from '../../time-picker-type'
 import dayjs, { Dayjs } from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { EVENT_CODE } from '@rol-ui/utils/aria'
 
 dayjs.extend(customParseFormat)
 
@@ -249,6 +252,7 @@ export default defineComponent({
     const pickerOptions = ref({} as PickerOptions)
     const popperRef = ref(null)
     const userInput = ref(null)
+    const refContainer = ref(null)
 
     const getPoppperRef = value => {
       popperRef.value = value
@@ -308,6 +312,14 @@ export default defineComponent({
       return result
     })
 
+    const refInput = computed(()=>{
+      if (refContainer.value) {
+        const _r:HTMLElement = isRangeInput.value ? refContainer.value : refContainer.value.$el
+        return [].slice.call(_r.querySelectorAll('input'))
+      }
+      return []
+    })
+
     const triggerClass = computed(() => {
       return props.prefixIcon || (isTimeLikePicker.value ? ['far', 'clock'] : ['far', 'calendar-alt'])
     })
@@ -331,6 +343,10 @@ export default defineComponent({
     const onClickOutside = () => {
       if (!pickerVisible.value) return
       pickerVisible.value = false
+    }
+
+    const blurInput = () => {
+      refInput.value.forEach(input => input.blur())
     }
 
     const emitInput = val => {
@@ -391,6 +407,50 @@ export default defineComponent({
       }
     }
 
+    const handleKeydown = (event:KeyboardEvent) => {
+      const code = event.code
+  console.log(event)
+      if (code === EVENT_CODE.esc) {
+        pickerVisible.value = false
+        event.stopPropagation()
+        return
+      }
+
+      if (code === EVENT_CODE.tab) {
+        if (!isRangeInput.value) {
+          handleChange()
+          pickerVisible.value = false
+          event.stopPropagation()
+        } else {
+          setTimeout(()=>{
+            if (refInput.value.indexOf(document.activeElement) === -1) {
+              pickerVisible.value = false
+              blurInput()
+            }
+          },10)
+        }
+        return
+      }
+
+      if (code === EVENT_CODE.enter) {
+        if (userInput.value === '' || isValidValue(parseUserInputToDayjs(displayValue.value))) {
+          handleChange()
+          pickerVisible.value = false
+        }
+        event.stopPropagation()
+        return
+      }
+
+      if (userInput.value) {
+        event.stopPropagation()
+        return
+      }
+
+      if (pickerOptions.value.handleKeydown) {
+        pickerOptions.value.handleKeydown(event)
+      }
+    }
+
     provide(PICKER_BASE_PROVIDER, props)
 
     return {
@@ -410,6 +470,8 @@ export default defineComponent({
       onSetPickerOption,
       onUserInput,
       handleChange,
+      refContainer,
+      handleKeydown,
     }
   },
 })
