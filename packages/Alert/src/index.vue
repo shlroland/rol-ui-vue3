@@ -34,7 +34,6 @@ export default defineComponent({
       default: '',
     },
     center: Boolean,
-    blod: Boolean,
     light: Boolean,
     closable: {
       type: Boolean,
