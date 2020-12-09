@@ -10,6 +10,7 @@
         view-class="rol-time-spinner__list"
         noresize
         tag="ul"
+        @mouseenter="emitSelectRange(item)"
         @mousemove="adjustCurrentSpinner(item)"
       >
         <li

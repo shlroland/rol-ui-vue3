@@ -27,6 +27,8 @@
         @change="handleChange"
         @focus="handleFocus"
         @keydown="handleKeydown"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
       >
         <template #prefix>
           <span class="rol-input__icon" @focus="handleFocus">
@@ -34,7 +36,7 @@
           </span>
         </template>
         <template #suffix>
-          <span class="rol-input__icon">
+          <span v-show="showClose" class="rol-input__icon rol-icon-circle-close" @click="onClearIconClick">
             <rol-icon :name="['far', 'times-circle']"></rol-icon>
           </span>
         </template>
@@ -52,6 +54,8 @@
         ]"
         @click="handleFocus"
         @keydown="handleKeydown"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
       >
         <span class="rol-input__icon rol-range__icon">
           <rol-icon :name="triggerClass"></rol-icon>
@@ -78,7 +82,7 @@
           :readonly="!editable || readonly"
           @focus="handleFocus"
         />
-        <span v-show="showClose" class="rol-input__icon rol-range__close-icon">
+        <span v-show="showClose" class="rol-input__icon rol-range__close-icon" @click="onClearIconClick">
           <rol-icon :name="clearIcon"></rol-icon>
         </span>
       </div>
@@ -94,6 +98,7 @@
         v-bind="$attrs"
         @pick="onPick"
         @set-picker-option="onSetPickerOption"
+        @select-range="setSelectionRange"
         @mousedown.stop
       ></slot>
     </template>
@@ -313,6 +318,8 @@ export default defineComponent({
     })
 
     const refInput = computed(()=>{
+      // console.log(refContainer)
+      // todo: fix: cannt take effec
       if (refContainer.value) {
         const _r:HTMLElement = isRangeInput.value ? refContainer.value : refContainer.value.$el
         return [].slice.call(_r.querySelectorAll('input'))
@@ -340,9 +347,31 @@ export default defineComponent({
       return pickerOptions.value.isValidValue(value)
     }
 
+    const onMouseEnter = () => {
+       if (props.readonly || props.disabled) return
+      if (!valueIsEmpty.value && props.clearable) {
+        showClose.value = true
+      }
+    }
+
+    const onMouseLeave = () => {
+      showClose.value = false
+    }
+
     const onClickOutside = () => {
       if (!pickerVisible.value) return
       pickerVisible.value = false
+    }
+
+    const onClearIconClick = event => {
+       if (props.readonly || props.disabled) return
+       if (showClose.value) {
+         event.stopPropagation()
+         emitInput(null)
+        emitChange(null)
+        showClose.value = false
+        pickerVisible.value = false
+       }
     }
 
     const blurInput = () => {
@@ -379,6 +408,18 @@ export default defineComponent({
       pickerOptions.value.panelReady = true
     }
 
+    const setSelectionRange = (start,end,pos) => {
+      const inputs = refInput.value as HTMLInputElement[]
+      if (!inputs.length) return
+      if (!pos || pos === 'min') {
+        inputs[0].setSelectionRange(start, end)
+        inputs[0].focus()
+      } else if (pos === 'max') {
+        inputs[1].setSelectionRange(start, end)
+        inputs[1].focus()
+      }
+    }
+
     const onUserInput = e => {
       userInput.value = e
     }
@@ -409,7 +450,7 @@ export default defineComponent({
 
     const handleKeydown = (event:KeyboardEvent) => {
       const code = event.code
-  console.log(event)
+
       if (code === EVENT_CODE.esc) {
         pickerVisible.value = false
         event.stopPropagation()
@@ -472,6 +513,10 @@ export default defineComponent({
       handleChange,
       refContainer,
       handleKeydown,
+      setSelectionRange,
+      onMouseEnter,
+      onMouseLeave,
+      onClearIconClick,
     }
   },
 })

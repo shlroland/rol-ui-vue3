@@ -4,7 +4,7 @@
       <div class="rol-time-panel__content" :class="{ 'has-seconds': showSeconds }">
         <time-spinner
           ref="spinner"
-          :role="datetimeRole || 'start'"
+          :role="datetimeRole"
           :arrow-control="arrowControl"
           :show-seconds="showSeconds"
           :am-pm-mode="amPmMode"
@@ -47,6 +47,7 @@ export default defineComponent({
     },
     datetimeRole: {
       type: String,
+      default: 'start',
     },
     parsedValue: {
       type: [Object, String],
@@ -59,7 +60,7 @@ export default defineComponent({
       type: Function,
     },
   },
-  emits: ['pick', 'sselect-change', 'set-picker-option'],
+  emits: ['pick', 'select-range', 'set-picker-option'],
   setup(props, { emit }) {
     const popperRef = ref<HTMLElement>(null)
     const oldValue = ref(props.parsedValue)
@@ -138,7 +139,8 @@ export default defineComponent({
       timePickeOptions[e[0]] = e[1]
     }
     const setSelectionRange = (start, end) => {
-      emit('sselect-change', start, end)
+      emit('select-range', start, end)
+      selectionRange.value = [start,end]
     }
 
     const changeSelectRange = step => {
@@ -161,7 +163,9 @@ export default defineComponent({
 
       if (code === EVENT_CODE.up || code === EVENT_CODE.down) {
         const step = code === EVENT_CODE.up ? -1 : 1
-        timePickeOptions['min_scrollDown'](step)
+        const name = `${props.datetimeRole}_scrollDown`
+        console.log(timePickeOptions,name)
+        timePickeOptions[name](step)
         event.preventDefault()
         return
       }
