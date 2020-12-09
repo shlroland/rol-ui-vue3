@@ -73,8 +73,9 @@
 
   .rol-range__icon {
     font-size: 14px;
+    width: 14px;
     margin-left: -5px;
-    color: $text-light;
+    color: $input-icon-color;
     float: left;
     line-height: 32px;
     display: inline-flex;
@@ -90,7 +91,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    width: 42%;
+    width: 44%;
     text-align: center;
     font-size: $font-size-base;
     color: $text-light;
@@ -112,8 +113,8 @@
   }
   .rol-range__close-icon {
     font-size: 14px;
-    color: $text-lighter;
-    width: 25px;
+    color: $input-icon-color;
+    width: 14px;
     display: inline-block;
     float: right;
     line-height: 32px;
