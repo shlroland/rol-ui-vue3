@@ -69,6 +69,8 @@
           :disabled="disabled"
           :readonly="!editable || readonly"
           @focus="handleFocus"
+          @input="handleStartInput"
+          @change="handleStartChange"
         />
         <slot name="range-separator">
           <span class="rol-range-separator">{{ rangeSeparator }}</span>
@@ -81,6 +83,8 @@
           :disabled="disabled"
           :readonly="!editable || readonly"
           @focus="handleFocus"
+          @input="handleEndInput"
+          @change="handleEndChange"
         />
         <span v-show="showClose" class="rol-input__icon rol-range__close-icon" @click="onClearIconClick">
           <rol-icon :name="clearIcon"></rol-icon>
@@ -94,7 +98,7 @@
         :format="format"
         :type="type"
         :default-value="defaultValue"
-        :getPoppperRef="getPoppperRef"
+        :getPopperRef="getPopperRef"
         v-bind="$attrs"
         @pick="onPick"
         @set-picker-option="onSetPickerOption"
@@ -252,14 +256,13 @@ export default defineComponent({
   setup(props, ctx) {
     const pickerVisible = ref(false)
     const showClose = ref(false)
-    const refConatiner = ref(null)
+    const refContainer = ref(null)
     const valueOnOpen = ref(null)
     const pickerOptions = ref({} as PickerOptions)
     const popperRef = ref(null)
     const userInput = ref(null)
-    const refContainer = ref(null)
 
-    const getPoppperRef = value => {
+    const getPopperRef = value => {
       popperRef.value = value
     }
 
@@ -317,11 +320,11 @@ export default defineComponent({
       return result
     })
 
-    const refInput = computed(()=>{
+    const refInput = computed(() => {
       // console.log(refContainer)
       // todo: fix: cannt take effec
       if (refContainer.value) {
-        const _r:HTMLElement = isRangeInput.value ? refContainer.value : refContainer.value.$el
+        const _r: HTMLElement = isRangeInput.value ? refContainer.value : refContainer.value.$el
         return [].slice.call(_r.querySelectorAll('input'))
       }
       return []
@@ -348,7 +351,7 @@ export default defineComponent({
     }
 
     const onMouseEnter = () => {
-       if (props.readonly || props.disabled) return
+      if (props.readonly || props.disabled) return
       if (!valueIsEmpty.value && props.clearable) {
         showClose.value = true
       }
@@ -364,14 +367,14 @@ export default defineComponent({
     }
 
     const onClearIconClick = event => {
-       if (props.readonly || props.disabled) return
-       if (showClose.value) {
-         event.stopPropagation()
-         emitInput(null)
+      if (props.readonly || props.disabled) return
+      if (showClose.value) {
+        event.stopPropagation()
+        emitInput(null)
         emitChange(null)
         showClose.value = false
         pickerVisible.value = false
-       }
+      }
     }
 
     const blurInput = () => {
@@ -408,7 +411,7 @@ export default defineComponent({
       pickerOptions.value.panelReady = true
     }
 
-    const setSelectionRange = (start,end,pos) => {
+    const setSelectionRange = (start, end, pos) => {
       const inputs = refInput.value as HTMLInputElement[]
       if (!inputs.length) return
       if (!pos || pos === 'min') {
@@ -435,7 +438,11 @@ export default defineComponent({
         const value = parseUserInputToDayjs(displayValue.value) as Dayjs
         if (value) {
           if (isValidValue(value)) {
-            emitInput(value.toDate())
+            if (isRangeInput.value) {
+              emitInput(value.map(item => item.toDate()))
+            } else {
+              emitInput(value.toDate())
+            }
             userInput.value = null
           }
         }
@@ -448,7 +455,31 @@ export default defineComponent({
       }
     }
 
-    const handleKeydown = (event:KeyboardEvent) => {
+    const handleStartChange = () => {
+      const value = parseUserInputToDayjs(userInput.value && userInput.value[0])
+      if (value) {
+        userInput.value = [formatDayjsToString(value), displayValue.value[1]]
+        const newValue = [value, parsedValue.value && parsedValue.value[1]]
+        if (isValidValue(newValue)) {
+          emitInput(newValue)
+          userInput.value = null
+        }
+      }
+    }
+
+    const handleEndChange = () => {
+      const value = parseUserInputToDayjs(userInput.value && userInput.value[1])
+      if (value) {
+        userInput.value = [displayValue.value[0], formatDayjsToString(value)]
+        const newValue = [parsedValue.value && parsedValue.value[0], value]
+        if (isValidValue(newValue)) {
+          emitInput(newValue)
+          userInput.value = null
+        }
+      }
+    }
+
+    const handleKeydown = (event: KeyboardEvent) => {
       const code = event.code
 
       if (code === EVENT_CODE.esc) {
@@ -463,12 +494,12 @@ export default defineComponent({
           pickerVisible.value = false
           event.stopPropagation()
         } else {
-          setTimeout(()=>{
+          setTimeout(() => {
             if (refInput.value.indexOf(document.activeElement) === -1) {
               pickerVisible.value = false
               blurInput()
             }
-          },10)
+          }, 10)
         }
         return
       }
@@ -492,20 +523,35 @@ export default defineComponent({
       }
     }
 
+    const handleStartInput = (event: InputEvent) => {
+      if (userInput.value) {
+        userInput.value = [event.target.value, userInput.value[1]]
+      } else {
+        userInput.value = [event.target.value, null]
+      }
+    }
+
+    const handleEndInput = (event: InputEvent) => {
+      if (userInput.value) {
+        userInput.value = [userInput.value[0], event.target.value]
+      } else {
+        userInput.value = [null, event.target.value]
+      }
+    }
+
     provide(PICKER_BASE_PROVIDER, props)
 
     return {
       pickerVisible,
       isRangeInput,
       onClickOutside,
-      refConatiner,
       displayValue,
       isDatesPicker,
       triggerClass,
       parsedValue,
       showClose,
       handleFocus,
-      getPoppperRef,
+      getPopperRef,
       popperRef,
       onPick,
       onSetPickerOption,
@@ -517,6 +563,10 @@ export default defineComponent({
       onMouseEnter,
       onMouseLeave,
       onClearIconClick,
+      handleStartInput,
+      handleEndInput,
+      handleStartChange,
+      handleEndChange,
     }
   },
 })

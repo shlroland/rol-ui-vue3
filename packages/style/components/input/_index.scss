@@ -1,6 +1,6 @@
 $input-font-size: $font-size-base !default;
 /// color||Color|0
-$input-font-color: $grey-darker !default;
+$input-font-color: $text !default;
 /// height||Other|4
 $input-width: 140px !default;
 /// height||Other|4
@@ -382,4 +382,4 @@ $input-mini-height: 28px !default;
     width: 0;
     height: 0;
   }
-  
+

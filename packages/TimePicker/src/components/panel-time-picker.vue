@@ -56,7 +56,7 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    getPoppperRef: {
+    getPopperRef: {
       type: Function,
     },
   },
@@ -203,7 +203,7 @@ export default defineComponent({
     })
     watch([popperRef, comVisible], () => {
       if (popperRef.value) {
-        props.getPoppperRef(popperRef.value)
+        props.getPopperRef(popperRef.value)
       }
     })
 
