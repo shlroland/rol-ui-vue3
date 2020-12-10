@@ -1,0 +1,41 @@
+@include bem(date-picker) {
+  width: 322px;
+  &.has-sidebar.has-time {
+    width: 434px;
+  }
+  &.has-sidebar {
+    width: 438px;
+  }
+  &.has-time .rol-picker-panel__body-wrapper {
+    position: relative;
+  }
+  .rol-picker-panel__content {
+    width: 292px;
+  }
+
+  table {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  @include e(editor-wrap) {
+    position: relative;
+    display: table-cell;
+    padding: 0 5px;
+  }
+  @include e(time-header) {
+    position: relative;
+    border-bottom: 1px solid $datepicker-inner-border-color;
+    font-size: 12px;
+    padding: 8px 5px 5px 5px;
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  @include e(header) {
+    margin: 12px;
+    text-align: center;
+
+
+  }
+}
