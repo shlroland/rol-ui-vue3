@@ -36,6 +36,52 @@
     margin: 12px;
     text-align: center;
 
+    @include modify(bordered) {
+      margin-bottom: 0;
+      padding-bottom: 12px;
+      border-bottom: solid 1px $border-light;
 
+      & + .rol-picker-panel__content {
+        margin-top: 0;
+      }
+    }
+  }
+
+  @include e(header-label) {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0 50px;
+    line-height: 22px;
+    text-align: center;
+    cursor: pointer;
+    color: $text;
+    &:hover {
+      color: $datepicker-hover-font-color;
+    }
+    &.active {
+      color: $datepicker-active-color;
+    }
+  }
+
+  @include e(prev-btn) {
+    float: left;
+  }
+
+  @include e(next-btn) {
+    float: right;
+  }
+
+  @include e(time-wrap) {
+    padding: 10px;
+    text-align: center;
+  }
+  @include e(time-label) {
+    float: left;
+    cursor: pointer;
+    line-height: 30px;
+    margin-left: 10px;
+  }
+  .rol-time-panel {
+    position: absolute;
   }
 }
