@@ -29,7 +29,7 @@
 import { computed, defineComponent, inject, ref, watch } from 'vue'
 import dayjs, { Dayjs } from 'dayjs'
 import TimeSpinner from './time-spinner.vue'
-import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/timeConstant'
+import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import { getAvaliableArrs } from './useTimePicker'
 import { EVENT_CODE } from '@rol-ui/utils/aria'
 

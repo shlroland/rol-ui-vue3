@@ -1,4 +1,4 @@
-import { DEFAULT_FORMATS_DATE, DEFAULT_FORMATS_DATEPICKER } from '@rol-ui/utils/timeConstant'
+import { DEFAULT_FORMATS_DATE, DEFAULT_FORMATS_DATEPICKER } from '@rol-ui/utils/time-constant'
 import { CommonPicker } from '@rol-ui/time-picker'
 import { defineComponent, h } from 'vue'
 

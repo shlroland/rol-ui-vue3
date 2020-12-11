@@ -27,7 +27,7 @@
 <script lang="ts">
 import { computed, defineComponent, inject } from 'vue'
 import RolInput from '@rol-ui/input'
-import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/timeConstant'
+import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import dayjs, { Dayjs } from 'dayjs'
 
 export default defineComponent({
@@ -53,19 +53,19 @@ export default defineComponent({
     },
   },
   setup(props) {
-    // const { shortcuts, disabledDate, cellClassName, defaultTime, defaultValue, arrowControl } = inject(
-    //   PICKER_BASE_PROVIDER,
-    // ) as any
+    const { shortcuts, disabledDate, cellClassName, defaultTime, defaultValue, arrowControl } = inject(
+      PICKER_BASE_PROVIDER,
+    ) as any
 
-    // const userInputDate = ref(null)
-    // const innerDate = ref(dayjs())
-    // const hasShortcuts = computed(() => false)
-    // const showTime = computed(() => props.type === 'datetime' || props.type === 'datetimerange')
-    // const visibleDate = computed(() => {
-    //   if (userInputDate.value) return userInputDate.value
-    //   if (!props.parsedValue && !defaultValue) return
-    //   return ((props.parsedValue || innerDate.value) as Dayjs)
-    // })
+    const userInputDate = ref(null)
+    const innerDate = ref(dayjs())
+    const hasShortcuts = computed(() => false)
+    const showTime = computed(() => props.type === 'datetime' || props.type === 'datetimerange')
+    const visibleDate = computed(() => {
+      if (userInputDate.value) return userInputDate.value
+      if (!props.parsedValue && !defaultValue) return
+      return ((props.parsedValue || innerDate.value) as Dayjs)
+    })
 
     return {
       hasShortcuts,
