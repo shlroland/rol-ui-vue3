@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue'
-import { DEFAULT_FORMATS_TIME } from './components/common/constant'
+import { DEFAULT_FORMATS_TIME } from '@rol-ui/utils/timeConstant'
 import Picker from './components/common/picker.vue'
 import TimePickPanel from './components/panel-time-picker.vue'
 import TimeRangePanel from './components/panel-time-range.vue'

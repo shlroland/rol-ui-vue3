@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { PICKER_BASE_PROVIDER } from '@rol-ui/time-picker/src/components/common/constant'
+import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/timeConstant'
 import dayjs, { Dayjs } from 'dayjs'
 import { computed, defineComponent, inject, PropType, ref } from 'vue'
 import TimeSpinner from './time-spinner.vue'

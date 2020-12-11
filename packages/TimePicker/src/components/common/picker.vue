@@ -115,7 +115,7 @@ import { OutSideClick } from '@rol-ui/directives'
 import RolPopper from '@rol-ui/popper'
 import RolInput from '@rol-ui/input'
 import RolIcon from '@rol-ui/icon'
-import { PICKER_BASE_PROVIDER } from './constant'
+import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/timeConstant'
 import { PickerOptions } from '../../time-picker-type'
 import dayjs, { Dayjs } from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -435,13 +435,13 @@ export default defineComponent({
 
     const handleChange = () => {
       if (userInput.value) {
-        const value = parseUserInputToDayjs(displayValue.value) as Dayjs
+        const value = parseUserInputToDayjs(displayValue.value) as Dayjs | Dayjs[]
         if (value) {
           if (isValidValue(value)) {
             if (isRangeInput.value) {
-              emitInput(value.map(item => item.toDate()))
+              emitInput((value as Dayjs[]).map(item => item.toDate()))
             } else {
-              emitInput(value.toDate())
+              emitInput((value as Dayjs).toDate())
             }
             userInput.value = null
           }
@@ -525,17 +525,17 @@ export default defineComponent({
 
     const handleStartInput = (event: InputEvent) => {
       if (userInput.value) {
-        userInput.value = [event.target.value, userInput.value[1]]
+        userInput.value = [(event.target as HTMLInputElement).value, userInput.value[1]]
       } else {
-        userInput.value = [event.target.value, null]
+        userInput.value = [(event.target as HTMLInputElement).value, null]
       }
     }
 
     const handleEndInput = (event: InputEvent) => {
       if (userInput.value) {
-        userInput.value = [userInput.value[0], event.target.value]
+        userInput.value = [userInput.value[0], (event.target as HTMLInputElement).value]
       } else {
-        userInput.value = [null, event.target.value]
+        userInput.value = [null, (event.target as HTMLInputElement).value]
       }
     }
 
