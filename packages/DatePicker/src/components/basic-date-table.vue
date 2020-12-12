@@ -5,13 +5,30 @@
         <th v-if="showWeekNumber">{{ '周次' }}</th>
         <th v-for="(week, key) in WEEKS" :key="key">{{ WEEKLIST[week] }}</th>
       </tr>
-      <!--      <tr v-for="(row, key) in rows"></tr>-->
+      <tr
+        v-for="(row, key) in rows"
+        :key="key"
+        :class="[
+          'rol-date-table__row',
+          {
+            current: isWeekActive(row[1]),
+          },
+        ]"
+      >
+        <td v-for="(cell, key_) in row" :key="key_">
+          <div>
+            <span>
+              {{ cell.text }}
+            </span>
+          </div>
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
 
 <script lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, PropType, reactive, ref, onMounted } from 'vue'
 import type { Dayjs } from 'dayjs'
 import { coerceTruthyValueToArray } from '@rol-ui/utils/util'
 import dayjs from 'dayjs'
@@ -65,7 +82,7 @@ export default {
   },
   emits: ['changerange', 'pick', 'select'],
   setup(props) {
-    const firstDayOfWeek = (props.date as Dayjs).$locale().weekStart || 7
+    const firstDayOfWeek = (props.date as Dayjs).localeData().firstDayOfWeek() || 7
     const WEEKS_CONSTANT = (props.date as Dayjs)
       .locale('en')
       .localeData()
@@ -89,13 +106,11 @@ export default {
       return firstDayOfWeek > 3 ? 7 - firstDayOfWeek : -firstDayOfWeek
     })
 
-    console.log(startDate.value.format(), (props.date as Dayjs).$locale())
-
     const rows = computed(() => {
       const startOfMonth = (props.date as Dayjs).startOf('month')
       const startOfMonthDay = startOfMonth.day() || 7
       const dateCountOfMonth = startOfMonth.daysInMonth()
-      const dateCountOfLastMonth = startOfMonth.subtract(1, 'month')
+      const dateCountOfLastMonth = startOfMonth.subtract(1, 'month').daysInMonth()
 
       const offset = offsetDay.value
       const _rows = tableRows.value
@@ -143,13 +158,72 @@ export default {
           if (isToday) {
             cell.type = 'today'
           }
+          if (i >= 0 && i <= 1) {
+            const numberOfDaysFromPreviousMonth =
+              startOfMonthDay + offset < 0 ? 7 + startOfMonthDay + offset : startOfMonthDay + offset
+
+            if (j + i * 7 >= numberOfDaysFromPreviousMonth) {
+              cell.text = count++
+            } else {
+              cell.text = dateCountOfLastMonth - (numberOfDaysFromPreviousMonth - (j % 7)) + 1 + i * 7
+              cell.type = 'prev-month'
+            }
+          } else {
+            if (count <= dateCountOfMonth) {
+              cell.text = count++
+            } else {
+              cell.text = count++ - dateCountOfMonth
+              cell.type = 'next-month'
+            }
+          }
+          const cellDate = calTime.toDate()
+          cell.selected = selectedDate.find(_ => _.valueOf() === calTime.valueOf())
+          cell.disabled = props.disabledDate && props.disabledDate(cellDate)
+          cell.customClass = props.cellClassName && props.cellClassName(cellDate)
+          row[props.showWeekNumber ? j + 1 : j] = cell
+        }
+
+        if (props.selectionMode === 'week') {
+          const start = props.showWeekNumber ? 1 : 0
+          const end = props.showWeekNumber ? 7 : 6
+          const isActive = isWeekActive(row[start + 1])
+          row[start].inRange = isActive
+          row[start].start = isActive
+          row[end].inRange = isActive
+          row[end].end = isActive
         }
       }
+      return _rows
+    })
+
+    const isWeekActive = cell => {
+      if (props.selectionMode !== 'week') return false
+      let newDate = props.date.startOf('day')
+      if (cell.type === 'prev-month') {
+        newDate = newDate.subtract(1, 'month')
+      }
+      if (cell.type === 'next-month') {
+        newDate = newDate.add(1, 'month')
+      }
+      newDate = newDate.date(parseInt(cell.text, 10))
+
+      if (props.parsedValue && !Array.isArray(props.parsedValue)) {
+        const dayOffset = (props.parsedValue.day() - firstDayOfWeek + 7) % 7
+        const weekDate = props.parsedValue.subtract(dayOffset, 'day')
+        return weekDate.isSame(newDate, 'day')
+      }
+      return false
+    }
+
+    onMounted(() => {
+      console.log(rows.value)
     })
 
     return {
       WEEKS,
       WEEKLIST,
+      rows,
+      isWeekActive,
     }
   },
 }
