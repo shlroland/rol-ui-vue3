@@ -1,5 +1,9 @@
 <template>
-  <table :class="['rol-date-table', { 'is-week-mode': selectionMode === 'week' }]">
+  <table
+    :class="['rol-date-table', { 'is-week-mode': selectionMode === 'week' }]"
+    @click="handleClick"
+    @mousemove="handleMouseMove"
+  >
     <tbody>
       <tr>
         <th v-if="showWeekNumber">{{ '周次' }}</th>
@@ -15,7 +19,7 @@
           },
         ]"
       >
-        <td v-for="(cell, key_) in row" :key="key_">
+        <td v-for="(cell, key_) in row" :key="key_" :class="getCellClasses(cell)">
           <div>
             <span>
               {{ cell.text }}
@@ -28,10 +32,11 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, reactive, ref, onMounted } from 'vue'
+import { computed, PropType, reactive, ref, defineComponent } from 'vue'
 import type { Dayjs } from 'dayjs'
 import { coerceTruthyValueToArray } from '@rol-ui/utils/util'
 import dayjs from 'dayjs'
+import type { DatePickerTableCell } from '../date-picker-types'
 
 const weeks = {
   sun: '日',
@@ -43,7 +48,7 @@ const weeks = {
   sat: '六',
 }
 
-export default {
+export default defineComponent({
   name: 'BasicDateTable',
   props: {
     date: {
@@ -81,7 +86,7 @@ export default {
     },
   },
   emits: ['changerange', 'pick', 'select'],
-  setup(props) {
+  setup(props, { emit }) {
     const firstDayOfWeek = (props.date as Dayjs).localeData().firstDayOfWeek() || 7
     const WEEKS_CONSTANT = (props.date as Dayjs)
       .locale('en')
@@ -106,7 +111,7 @@ export default {
       return firstDayOfWeek > 3 ? 7 - firstDayOfWeek : -firstDayOfWeek
     })
 
-    const rows = computed(() => {
+    const rows = computed<DatePickerTableCell[][]>(() => {
       const startOfMonth = (props.date as Dayjs).startOf('month')
       const startOfMonthDay = startOfMonth.day() || 7
       const dateCountOfMonth = startOfMonth.daysInMonth()
@@ -132,7 +137,7 @@ export default {
           }
         }
         for (let j = 0; j < 7; j++) {
-          let cell = row[props.showWeekNumber ? j + 1 : j]
+          let cell = row[props.showWeekNumber ? j + 1 : j] as DatePickerTableCell
           if (!cell) {
             cell = {
               row: i,
@@ -196,7 +201,7 @@ export default {
       return _rows
     })
 
-    const isWeekActive = cell => {
+    const isWeekActive = (cell: DatePickerTableCell) => {
       if (props.selectionMode !== 'week') return false
       let newDate = props.date.startOf('day')
       if (cell.type === 'prev-month') {
@@ -205,7 +210,7 @@ export default {
       if (cell.type === 'next-month') {
         newDate = newDate.add(1, 'month')
       }
-      newDate = newDate.date(parseInt(cell.text, 10))
+      newDate = newDate.date(parseInt(cell.text as string, 10))
 
       if (props.parsedValue && !Array.isArray(props.parsedValue)) {
         const dayOffset = (props.parsedValue.day() - firstDayOfWeek + 7) % 7
@@ -215,18 +220,148 @@ export default {
       return false
     }
 
-    onMounted(() => {
-      console.log(rows.value)
-    })
+    const cellMatchesDate = (cell: DatePickerTableCell, date: Dayjs) => {
+      if (!date) return false
+      return dayjs(date).isSame(props.date.date(Number(cell.text)), 'day')
+    }
+
+    const getDateOfCell = (row: number, column: number) => {
+      const offsetFromStart = row * 7 + (column - (props.showWeekNumber ? 1 : 0)) - offsetDay.value
+      return startDate.value.add(offsetFromStart, 'day') as Dayjs
+    }
+
+    const getCellClasses = (cell: DatePickerTableCell) => {
+      let classes = []
+      if ((cell.type === 'normal' || cell.type === 'today') && !cell.disabled) {
+        classes.push('available')
+        if (cell.type === 'today') {
+          classes.push('today')
+        }
+      } else {
+        classes.push(cell.type)
+      }
+
+      if (
+        props.selectionMode === 'day' &&
+        (cell.type === 'normal' || cell.type === 'today') &&
+        cellMatchesDate(cell, props.parsedValue as Dayjs)
+      ) {
+        classes.push('current')
+      }
+      if (cell.inRange && (cell.type === 'normal' || cell.type === 'today' || props.selectionMode === 'week')) {
+        classes.push('in-range')
+
+        if (cell.start) {
+          classes.push('start-date')
+        }
+
+        if (cell.end) {
+          classes.push('end-date')
+        }
+      }
+      if (cell.disabled) {
+        classes.push('disabled')
+      }
+
+      if (cell.selected) {
+        classes.push('selected')
+      }
+
+      if (cell.customClass) {
+        classes.push(cell.customClass)
+      }
+
+      return classes.join(' ')
+    }
+
+    const handleClick = (event: MouseEvent) => {
+      let target = event.target as HTMLTableDataCellElement
+      if (target.tagName === 'SPAN') {
+        target = target.parentNode.parentNode as HTMLTableDataCellElement
+      }
+
+      if (target.tagName === 'DIV') {
+        target = target.parentNode as HTMLTableDataCellElement
+      }
+
+      if (target.tagName !== 'TD') return
+
+      const row = (target.parentNode as HTMLTableRowElement).rowIndex - 1
+      const column = props.selectionMode === 'week' ? 1 : target.cellIndex
+      const cell = rows.value[row][column]
+
+      if (cell.disabled || cell.type === 'week') return
+
+      const newDate = getDateOfCell(row, column)
+
+      if (props.selectionMode === 'range') {
+        if (!props.rangeState.selecting) {
+          emit('pick', { minDate: newDate, maxDate: null })
+          emit('select', true)
+        } else {
+          if (newDate >= props.minDate) {
+            emit('pick', { minDate: props.minDate, maxDate: newDate })
+          } else {
+            emit('pick', { minDate: newDate, maxDate: props.minDate })
+          }
+          emit('select', false)
+        }
+      } else if (props.selectionMode === 'day') {
+        emit('pick', newDate)
+      } else if (props.selectionMode === 'week') {
+        const weekNumber = newDate.week()
+        const value = newDate.year() + 'w' + weekNumber
+        emit('pick', {
+          year: newDate.year(),
+          week: weekNumber,
+          value: value,
+          date: newDate,
+        })
+      } else if (props.selectionMode === 'dates') {
+        const newValue = cell.selected
+          ? coerceTruthyValueToArray(props.parsedValue).filter(_ => _.valueOf() !== newDate.valueOf())
+          : coerceTruthyValueToArray(props.parsedValue).concat([newDate])
+        emit('pick', newValue)
+      }
+    }
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!props.rangeState.selecting) return
+      let target = event.target as HTMLTableDataCellElement
+      if (target.tagName === 'SPAN') {
+        target = target.parentNode.parentNode as HTMLTableDataCellElement
+      }
+
+      if (target.tagName === 'DIV') {
+        target = target.parentNode as HTMLTableDataCellElement
+      }
+
+      if (target.tagName !== 'TD') return
+      const row = (target.parentNode as HTMLTableRowElement).rowIndex - 1
+      const column = props.selectionMode === 'week' ? 1 : target.cellIndex
+
+      if (rows.value[row][column].disabled) return
+      if (row !== lastRow.value || column !== lastColumn.value) {
+        lastRow.value = row
+        lastColumn.value = column
+        emit('changerange', {
+          selecting: true,
+          endDate: getDateOfCell(row, column),
+        })
+      }
+    }
 
     return {
       WEEKS,
       WEEKLIST,
       rows,
       isWeekActive,
+      getCellClasses,
+      handleClick,
+      handleMouseMove,
     }
   },
-}
+})
 </script>
 
 <style lang="scss" scoped></style>

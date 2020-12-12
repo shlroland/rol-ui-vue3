@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="popperRef"
     :class="[
       'rol-picker-panel rol-date-picker',
       {
@@ -97,7 +98,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, ref } from 'vue'
+import { computed, defineComponent, inject, PropType, ref, onMounted } from 'vue'
 import RolInput from '@rol-ui/input'
 import RolButton from '@rol-ui/button'
 import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
@@ -128,12 +129,15 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    getPopperRef: {
+      type: Function,
+    },
   },
   setup(props) {
     const { shortcuts, disabledDate, cellClassName, defaultTime, defaultValue, arrowControl } = inject(
       PICKER_BASE_PROVIDER,
     ) as any
-
+    const popperRef = ref<HTMLElement>(null)
     const userInputDate = ref(null)
     const userInputTime = ref(null)
     const innerDate = ref(dayjs())
@@ -186,6 +190,10 @@ export default defineComponent({
       userInputTime.value = val
     }
 
+    onMounted(() => {
+      props.getPopperRef(popperRef.value)
+    })
+
     return {
       hasShortcuts,
       showTime,
@@ -203,6 +211,7 @@ export default defineComponent({
       cellClassName,
       defaultTime,
       arrowControl,
+      popperRef,
       handleInputDate,
       handleInputTime,
     }
