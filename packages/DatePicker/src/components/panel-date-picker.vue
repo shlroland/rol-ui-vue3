@@ -75,7 +75,14 @@
             class="rol-picker-panel__icon-btn rol-date-picker__next-btn"
           ></button>
         </div>
-        <div class="rol-picker-panel__content"></div>
+        <div class="rol-picker-panel__content">
+          <date-table
+            v-if="currentView === 'date'"
+            :selection-mode="selectionMode"
+            :date="innerDate"
+            :parsed-value="parsedValue"
+          ></date-table>
+        </div>
       </div>
     </div>
     <div v-show="footerVisible && currentView === 'date'" class="rol-picker-panel__footer">
@@ -96,12 +103,14 @@ import RolButton from '@rol-ui/button'
 import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import dayjs, { Dayjs } from 'dayjs'
 import { extractDateFormat, extractTimeFormat } from '@rol-ui/utils/time-utils'
+import DateTable from './basic-date-table.vue'
 
 export default defineComponent({
   name: 'PanelDatePicker',
   components: {
     RolInput,
     RolButton,
+    DateTable,
   },
   props: {
     visible: {
@@ -188,6 +197,12 @@ export default defineComponent({
       yearLabel,
       selectionMode,
       footerVisible,
+      innerDate,
+      shortcuts,
+      disabledDate,
+      cellClassName,
+      defaultTime,
+      arrowControl,
       handleInputDate,
       handleInputTime,
     }

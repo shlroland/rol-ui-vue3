@@ -1,6 +1,8 @@
 @include bem(date-table) {
   font-size: 12px;
   user-select: none;
+  border-spacing: 0;
+  border-collapse: collapse;
   @include when(week-mode) {
     .rol-date-table__row {
       &.hover {
