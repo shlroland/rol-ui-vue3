@@ -81,13 +81,16 @@ export default {
     })
 
     const startDate = computed(() => {
-      const startDayofMonth = props.date.startOf('month')
-      return startDayofMonth.subtract(startDayOfMonth.day() || 7, 'day')
+      const startDayOfMonth = props.date.startOf('month')
+      return startDayOfMonth.subtract(startDayOfMonth.day() || 7, 'day')
     })
 
     const offsetDay = computed(() => {
       return firstDayOfWeek > 3 ? 7 - firstDayOfWeek : -firstDayOfWeek
     })
+
+    console.log(startDate.value.format(), (props.date as Dayjs).$locale())
+
     const rows = computed(() => {
       const startOfMonth = (props.date as Dayjs).startOf('month')
       const startOfMonthDay = startOfMonth.day() || 7
@@ -96,6 +99,7 @@ export default {
 
       const offset = offsetDay.value
       const _rows = tableRows.value
+
       let count = 1
 
       const selectedDate: Dayjs[] = props.selectionMode === 'dates' ? coerceTruthyValueToArray(props.parsedValue) : []
@@ -112,9 +116,34 @@ export default {
             }
           }
         }
-        // for (let j = 0;j < 7;j++) {
-        //
-        // }
+        for (let j = 0; j < 7; j++) {
+          let cell = row[props.showWeekNumber ? j + 1 : j]
+          if (!cell) {
+            cell = {
+              row: i,
+              column: j,
+              type: 'normal',
+              inRange: false,
+              start: false,
+              end: false,
+            }
+          }
+          const index = i * 7 + j
+          const calTime = startDate.value.add(index - offset, 'day')
+          cell.type = 'normal'
+          const calEndDate = props.rangeState.endDate || props.maxDate || (props.rangeState.selecting && props.minDate)
+          cell.inRange =
+            props.minDate &&
+            calTime.isSameOrAfter(props.minDate, 'day') &&
+            calTime &&
+            calTime.isSameOrAfter(calEndDate, 'day')
+          cell.start = props.minDate && calTime.isSame(props.minDate, 'day')
+          const isToday = calTime.isSame(calRow, 'day')
+
+          if (isToday) {
+            cell.type = 'today'
+          }
+        }
       }
     })
 
