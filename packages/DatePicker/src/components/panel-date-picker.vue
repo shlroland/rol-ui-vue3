@@ -12,7 +12,15 @@
     <div class="rol-picker-panel__body-wrapper">
       <slot name="sidebar" class="rol-picker-panel__sidebar"></slot>
       <div v-if="hasShortcuts" class="rol-picker-panel__sidebar">
-        <!-- <button ></button> -->
+        <button
+          v-for="(shortcut, key) in shortcuts"
+          :key="key"
+          type="button"
+          class="rol-picker-panel__shortcut"
+          @click="handleShortcutClick(shortcut)"
+        >
+          {{ shortcut.text }}
+        </button>
       </div>
       <div class="rol-picker-panel__body">
         <div v-if="showTime" class="rol-date-picker__time-header">
@@ -42,11 +50,7 @@
             },
           ]"
         >
-          <button
-            type="button"
-            :aria-label="'前一年'"
-            class="rol-picker-panel__icon-btn rol-date-picker__prev-btn"
-          >
+          <button type="button" :aria-label="'前一年'" class="rol-picker-panel__icon-btn rol-date-picker__prev-btn">
             <rol-icon name="angle-double-left"></rol-icon>
           </button>
           <button
@@ -68,11 +72,7 @@
               },
             ]"
           >{{ MONTHLIST['month' + (month + 1)] }}</span>
-          <button
-            type="button"
-            :aria-label="'后一年'"
-            class="rol-picker-panel__icon-btn rol-date-picker__next-btn"
-          >
+          <button type="button" :aria-label="'后一年'" class="rol-picker-panel__icon-btn rol-date-picker__next-btn">
             <rol-icon name="angle-double-right"></rol-icon>
           </button>
           <button
@@ -90,6 +90,8 @@
             :selection-mode="selectionMode"
             :date="innerDate"
             :parsed-value="parsedValue"
+            :disabled-date="disabledDate"
+            @pick="handleDatePicker"
           ></date-table>
         </div>
       </div>
@@ -110,7 +112,7 @@ import { computed, defineComponent, inject, PropType, ref, onMounted, reactive }
 import RolInput from '@rol-ui/input'
 import RolButton from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
-import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
+import { PICKER_BASE_PROVIDER, timeWithRange } from '@rol-ui/utils/time-constant'
 import dayjs, { Dayjs } from 'dayjs'
 import { extractDateFormat, extractTimeFormat } from '@rol-ui/utils/time-utils'
 import DateTable from './basic-date-table.vue'
@@ -158,7 +160,8 @@ export default defineComponent({
       type: Function,
     },
   },
-  setup(props) {
+  emits: ['pick', 'set-picker-option'],
+  setup(props, ctx) {
     const { shortcuts, disabledDate, cellClassName, defaultTime, defaultValue, arrowControl } = inject(
       PICKER_BASE_PROVIDER,
     ) as any
@@ -168,6 +171,7 @@ export default defineComponent({
     const innerDate = ref(dayjs())
     const currentView = ref('date')
     const MONTHLIST = reactive(months)
+    const selectableRange = ref([])
 
     const month = computed(() => {
       return innerDate.value.month()
@@ -176,7 +180,7 @@ export default defineComponent({
       return innerDate.value.year()
     })
 
-    const hasShortcuts = computed(() => false)
+    const hasShortcuts = computed(() => !!shortcuts.length)
 
     const showTime = computed(() => props.type === 'datetime' || props.type === 'datetimerange')
 
@@ -223,6 +227,10 @@ export default defineComponent({
       return showTime.value || selectionMode.value === 'dates'
     })
 
+    const checkDateWithRange = (date: Dayjs) => {
+      return selectableRange.value.length > 0 ? timeWithRange(date, selectableRange.value, props.format) : true
+    }
+
     const handleInputDate = val => {
       userInputDate.value = val
     }
@@ -231,9 +239,86 @@ export default defineComponent({
       userInputTime.value = val
     }
 
+    const formatEmit = (emitDayjs: Dayjs) => {
+      if (showTime.value) return emitDayjs.millisecond()
+      if (defaultTime) {
+        const defaultTimeD = dayjs(defaultTime)
+        return defaultTimeD.year(emitDayjs.year()).month(emitDayjs.month()).date(emitDayjs.date())
+      }
+      return emitDayjs.startOf('day')
+    }
+
+    const pickEmit = (value, ...args) => {
+      if (!value) {
+        ctx.emit('pick', value, ...args)
+      } else if (Array.isArray(value)) {
+        const dates = value.map(formatEmit)
+        ctx.emit('pick', dates, ...args)
+      } else {
+        ctx.emit('pick', formatEmit(value), ...args)
+      }
+      userInputDate.value = null
+      userInputTime.value = null
+    }
+
+    const handleDatePicker = (value: Dayjs) => {
+      if (selectionMode.value === 'day') {
+        let newDate = props.parsedValue
+          ? (props.parsedValue as Dayjs).year(value.year()).month(value.month()).date(value.date())
+          : value
+        if (!checkDateWithRange(newDate)) {
+          newDate = (selectableRange.value[0][0] as Dayjs).year(value.year()).month(value.month()).date(value.date())
+        }
+        innerDate.value = newDate
+        pickEmit(newDate, showTime.value)
+      } else if (selectionMode.value === 'week') {
+        pickEmit(value.date)
+      } else if (selectionMode.value === 'dates') {
+        pickEmit(value, true) // set false to keep panel open
+      }
+    }
+
+    const handleShortcutClick = shortcut => {
+      if (shortcut.value) {
+        pickEmit(dayjs(shortcut.value))
+        return
+      }
+      if (shortcut.onClick) {
+        shortcut.onClick(ctx)
+      }
+    }
+
+    const isValidValue = (date: Dayjs) => {
+      return date.isValid() && (disabledDate ? !disabledDate(date.toDate()) : true)
+    }
+
+    const formatToString = value => {
+      if (selectionMode.value === 'dates') {
+        return value.map(_ => _.format(props.format))
+      }
+      return value.format(props.format)
+    }
+
+    const parseUserInput = value => {
+      return dayjs(value, props.format)
+    }
+
+    const getDefaultValue = () => {
+      return dayjs(defaultValue)
+    }
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      console.log(event)
+    }
+
     onMounted(() => {
       props.getPopperRef(popperRef.value)
     })
+
+    ctx.emit('set-picker-option', ['isValidValue', isValidValue])
+    ctx.emit('set-picker-option', ['formatToString', formatToString])
+    ctx.emit('set-picker-option', ['parseUserInput', parseUserInput])
+    ctx.emit('set-picker-option', ['handleKeydown', handleKeydown])
 
     return {
       hasShortcuts,
@@ -257,6 +342,8 @@ export default defineComponent({
       month,
       handleInputDate,
       handleInputTime,
+      handleDatePicker,
+      handleShortcutClick,
     }
   },
 })

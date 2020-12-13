@@ -279,6 +279,7 @@ export default defineComponent({
       if (!isTimeLikePicker.value && valueIsEmpty.value) return
       if (!pickerVisible.value && valueIsEmpty.value) return
       const formattedValue = formatDayjsToString(parsedValue.value)
+
       if (Array.isArray(userInput.value)) {
         return [
           userInput.value[0] || (formattedValue && formattedValue[0]) || '',
