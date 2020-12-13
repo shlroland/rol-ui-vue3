@@ -114,7 +114,7 @@
       <rol-button v-show="selectionMode !== 'dates'" size="small" type="text" class="rol-picker-panel__link-btn">
         此刻
       </rol-button>
-      <rol-button size="small" class="rol-picker-panel__link-btn">
+      <rol-button size="small" class="rol-picker-panel__link-btn" @click="onConfirm">
         确定
       </rol-button>
     </div>
@@ -340,6 +340,21 @@ export default defineComponent({
       return dayjs(value, props.format)
     }
 
+    const onConfirm = () => {
+      if (selectionMode.value === 'dates') {
+        pickEmit(props.parsedValue)
+      } else {
+        let result = props.parsedValue as Dayjs
+        if (!result) {
+          const defaultTimeD = dayjs(defaultTime)
+          const defaultValueD = getDefaultValue()
+          result = defaultTimeD.year(defaultValueD.year()).month(defaultValueD.month()).date(defaultValueD.date())
+        }
+        innerDate.value = result
+        pickEmit(result)
+      }
+    }
+
     const getDefaultValue = () => {
       return dayjs(defaultValue)
     }
@@ -397,6 +412,7 @@ export default defineComponent({
       handleMonthPick,
       handleYearPick,
       handleShortcutClick,
+      onConfirm,
     }
   },
 })
