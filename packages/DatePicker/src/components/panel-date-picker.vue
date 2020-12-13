@@ -46,13 +46,17 @@
             type="button"
             :aria-label="'前一年'"
             class="rol-picker-panel__icon-btn rol-date-picker__prev-btn"
-          ></button>
+          >
+            <rol-icon name="angle-double-left"></rol-icon>
+          </button>
           <button
             v-show="currentView === 'date'"
             type="button"
             :aria-label="'上个月'"
             class="rol-picker-panel__icon-btn rol-date-picker__prev-btn"
-          ></button>
+          >
+            <rol-icon name="angle-left"></rol-icon>
+          </button>
           <span role="button" class="rol-date-picker__header-label">{{ yearLabel }}</span>
           <span
             v-show="currentView === 'date'"
@@ -63,18 +67,22 @@
                 active: currentView === 'month',
               },
             ]"
-          ></span>
+          >{{ MONTHLIST['month' + (month + 1)] }}</span>
           <button
             type="button"
             :aria-label="'后一年'"
             class="rol-picker-panel__icon-btn rol-date-picker__next-btn"
-          ></button>
+          >
+            <rol-icon name="angle-double-right"></rol-icon>
+          </button>
           <button
             v-show="currentView === 'date'"
             type="button"
             :aria-label="'下个月'"
             class="rol-picker-panel__icon-btn rol-date-picker__next-btn"
-          ></button>
+          >
+            <rol-icon name="angle-right"></rol-icon>
+          </button>
         </div>
         <div class="rol-picker-panel__content">
           <date-table
@@ -98,19 +106,36 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, ref, onMounted } from 'vue'
+import { computed, defineComponent, inject, PropType, ref, onMounted, reactive } from 'vue'
 import RolInput from '@rol-ui/input'
 import RolButton from '@rol-ui/button'
+import RolIcon from '@rol-ui/icon'
 import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import dayjs, { Dayjs } from 'dayjs'
 import { extractDateFormat, extractTimeFormat } from '@rol-ui/utils/time-utils'
 import DateTable from './basic-date-table.vue'
+
+const months = {
+  month1: '1 月',
+  month2: '2 月',
+  month3: '3 月',
+  month4: '4 月',
+  month5: '5 月',
+  month6: '6 月',
+  month7: '7 月',
+  month8: '8 月',
+  month9: '9 月',
+  month10: '10 月',
+  month11: '11 月',
+  month12: '12 月',
+}
 
 export default defineComponent({
   name: 'PanelDatePicker',
   components: {
     RolInput,
     RolButton,
+    RolIcon,
     DateTable,
   },
   props: {
@@ -142,6 +167,14 @@ export default defineComponent({
     const userInputTime = ref(null)
     const innerDate = ref(dayjs())
     const currentView = ref('date')
+    const MONTHLIST = reactive(months)
+
+    const month = computed(() => {
+      return innerDate.value.month()
+    })
+    const year = computed(() => {
+      return innerDate.value.year()
+    })
 
     const hasShortcuts = computed(() => false)
 
@@ -155,7 +188,15 @@ export default defineComponent({
     })
 
     const yearLabel = computed(() => {
-      return ''
+      const yearTranslation = '年'
+      if (currentView.value === 'year') {
+        const startYear = Math.floor(year.value / 10) * 10
+        if (yearTranslation) {
+          return startYear + ' ' + yearTranslation + ' - ' + (startYear + 9) + ' ' + yearTranslation
+        }
+        return startYear + ' - ' + (startYear + 9)
+      }
+      return year.value + ' ' + yearTranslation
     })
 
     const dateFormat = computed(() => {
@@ -212,6 +253,8 @@ export default defineComponent({
       defaultTime,
       arrowControl,
       popperRef,
+      MONTHLIST,
+      month,
       handleInputDate,
       handleInputTime,
     }
