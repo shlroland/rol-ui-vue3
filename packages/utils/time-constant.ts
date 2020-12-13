@@ -48,3 +48,9 @@ export const datesInMonth = (year, month) => {
   const numOfDays = firstDay.daysInMonth()
   return rangeArr(numOfDays).map(n => firstDay.add(n, 'day').toDate())
 }
+
+export const datesInYear = (year: number) => {
+  const firstDay = dayjs().startOf('year')
+  const numOfDays = dayjs(year).isLeapYear() ? 366 : 365
+  return rangeArr(numOfDays).map(n => firstDay.add(n, 'day').toDate())
+}

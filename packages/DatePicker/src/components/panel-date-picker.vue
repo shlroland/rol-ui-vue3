@@ -100,6 +100,13 @@
             :disabled-date="disabledDate"
             @pick="handleMonthPick"
           ></month-table>
+          <year-table
+            v-if="currentView === 'year'"
+            :date="innerDate"
+            :disabled-date="disabledDate"
+            :parsed-value="parsedValue"
+            @pick="handleYearPick"
+          ></year-table>
         </div>
       </div>
     </div>
@@ -124,6 +131,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import { extractDateFormat, extractTimeFormat } from '@rol-ui/utils/time-utils'
 import DateTable from './basic-date-table.vue'
 import MonthTable from './basic-month-table.vue'
+import YearTable from './basic-year-table.vue'
 
 const months = {
   month1: '1 月',
@@ -148,6 +156,7 @@ export default defineComponent({
     RolIcon,
     DateTable,
     MonthTable,
+    YearTable,
   },
   props: {
     visible: {
@@ -296,6 +305,16 @@ export default defineComponent({
       }
     }
 
+    const handleYearPick = (year: number) => {
+      if (selectionMode.value === 'year') {
+        innerDate.value = innerDate.value.startOf('year').year(year)
+        pickEmit(innerDate.value)
+      } else {
+        innerDate.value = innerDate.value.year(year)
+        currentView.value = 'month'
+      }
+    }
+
     const handleShortcutClick = shortcut => {
       if (shortcut.value) {
         pickEmit(dayjs(shortcut.value))
@@ -376,6 +395,7 @@ export default defineComponent({
       handleInputTime,
       handleDatePicker,
       handleMonthPick,
+      handleYearPick,
       handleShortcutClick,
     }
   },
