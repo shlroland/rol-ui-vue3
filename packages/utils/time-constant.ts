@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs'
+import { rangeArr } from './time-utils'
 
 export const DEFAULT_FORMATS_TIME = 'HH:mm:ss'
 export const DEFAULT_FORMATS_DATE = 'YYYY-MM-DD'
@@ -40,4 +41,10 @@ export const limitTimeRange = (date: Dayjs | string | Date, ranges: Dayjs[][], f
 export const timeWithRange = (date: Dayjs | string | Date, ranges: Dayjs[][], format = 'HH:mm:ss') => {
   const limitedDate = limitTimeRange(date, ranges, format)
   return limitedDate.isSame(date)
+}
+
+export const datesInMonth = (year, month) => {
+  const firstDay = dayjs().startOf('month').month(month).year(year)
+  const numOfDays = firstDay.daysInMonth()
+  return rangeArr(numOfDays).map(n => firstDay.add(n, 'day').toDate())
 }

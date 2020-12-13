@@ -93,6 +93,13 @@
             :disabled-date="disabledDate"
             @pick="handleDatePicker"
           ></date-table>
+          <month-table
+            v-if="currentView === 'month'"
+            :date="innerDate"
+            :parsed-value="parsedValue"
+            :disabled-date="disabledDate"
+            @pick="handleMonthPick"
+          ></month-table>
         </div>
       </div>
     </div>
@@ -108,7 +115,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, ref, onMounted, reactive } from 'vue'
+import { computed, defineComponent, inject, PropType, ref, onMounted, reactive, watch } from 'vue'
 import RolInput from '@rol-ui/input'
 import RolButton from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
@@ -116,6 +123,7 @@ import { PICKER_BASE_PROVIDER, timeWithRange } from '@rol-ui/utils/time-constant
 import dayjs, { Dayjs } from 'dayjs'
 import { extractDateFormat, extractTimeFormat } from '@rol-ui/utils/time-utils'
 import DateTable from './basic-date-table.vue'
+import MonthTable from './basic-month-table.vue'
 
 const months = {
   month1: '1 月',
@@ -139,6 +147,7 @@ export default defineComponent({
     RolButton,
     RolIcon,
     DateTable,
+    MonthTable,
   },
   props: {
     visible: {
@@ -278,6 +287,15 @@ export default defineComponent({
       }
     }
 
+    const handleMonthPick = (month: number) => {
+      innerDate.value = innerDate.value.startOf('month').month(month)
+      if (selectionMode.value === 'month') {
+        pickEmit(innerDate.value)
+      } else {
+        currentView.value = 'date'
+      }
+    }
+
     const handleShortcutClick = shortcut => {
       if (shortcut.value) {
         pickEmit(dayjs(shortcut.value))
@@ -320,6 +338,20 @@ export default defineComponent({
     ctx.emit('set-picker-option', ['parseUserInput', parseUserInput])
     ctx.emit('set-picker-option', ['handleKeydown', handleKeydown])
 
+    watch(
+      () => selectionMode.value,
+      (val: string) => {
+        if (['month', 'year'].includes(val)) {
+          currentView.value = val
+          return
+        }
+        currentView.value = 'date'
+      },
+      {
+        immediate: true,
+      },
+    )
+
     return {
       hasShortcuts,
       showTime,
@@ -343,6 +375,7 @@ export default defineComponent({
       handleInputDate,
       handleInputTime,
       handleDatePicker,
+      handleMonthPick,
       handleShortcutClick,
     }
   },
