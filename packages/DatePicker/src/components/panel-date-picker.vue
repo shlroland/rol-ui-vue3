@@ -50,7 +50,12 @@
             },
           ]"
         >
-          <button type="button" :aria-label="'前一年'" class="rol-picker-panel__icon-btn rol-date-picker__prev-btn">
+          <button
+            type="button"
+            :aria-label="'前一年'"
+            class="rol-picker-panel__icon-btn rol-date-picker__prev-btn"
+            @click="prevYear"
+          >
             <rol-icon name="angle-double-left"></rol-icon>
           </button>
           <button
@@ -58,6 +63,7 @@
             type="button"
             :aria-label="'上个月'"
             class="rol-picker-panel__icon-btn rol-date-picker__prev-btn"
+            @click="prevMonth"
           >
             <rol-icon name="angle-left"></rol-icon>
           </button>
@@ -72,7 +78,12 @@
               },
             ]"
           >{{ MONTHLIST['month' + (month + 1)] }}</span>
-          <button type="button" :aria-label="'后一年'" class="rol-picker-panel__icon-btn rol-date-picker__next-btn">
+          <button
+            type="button"
+            :aria-label="'后一年'"
+            class="rol-picker-panel__icon-btn rol-date-picker__next-btn"
+            @click="nextYear"
+          >
             <rol-icon name="angle-double-right"></rol-icon>
           </button>
           <button
@@ -80,6 +91,7 @@
             type="button"
             :aria-label="'下个月'"
             class="rol-picker-panel__icon-btn rol-date-picker__next-btn"
+            @click="nextMonth"
           >
             <rol-icon name="angle-right"></rol-icon>
           </button>
@@ -359,6 +371,30 @@ export default defineComponent({
       return dayjs(defaultValue)
     }
 
+    const prevMonth = () => {
+      innerDate.value = innerDate.value.subtract(1, 'month')
+    }
+
+    const nextMonth = () => {
+      innerDate.value = innerDate.value.add(1, 'month')
+    }
+
+    const prevYear = () => {
+      if (currentView.value === 'year') {
+        innerDate.value = innerDate.value.subtract(10, 'year')
+      } else {
+        innerDate.value = innerDate.value.subtract(1, 'year')
+      }
+    }
+
+    const nextYear = () => {
+      if (currentView.value === 'year') {
+        innerDate.value = innerDate.value.add(10, 'year')
+      } else {
+        innerDate.value = innerDate.value.add(1, 'year')
+      }
+    }
+
     const handleKeydown = (event: KeyboardEvent) => {
       console.log(event)
     }
@@ -413,6 +449,10 @@ export default defineComponent({
       handleYearPick,
       handleShortcutClick,
       onConfirm,
+      prevYear,
+      nextYear,
+      prevMonth,
+      nextMonth,
     }
   },
 })

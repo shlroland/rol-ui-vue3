@@ -1,15 +1,15 @@
 <template>
-<!--  <div class="demo-container">-->
-<!--    <rol-date-picker v-model="value1" type="date" placeholder="选择日期"></rol-date-picker>-->
-<!--    <rol-date-picker-->
-<!--      v-model="value2"-->
-<!--      type="date"-->
-<!--      placeholder="选择日期"-->
-<!--      :disabled-date="disabledDate"-->
-<!--      :shortcuts="shortcuts"-->
-<!--    >-->
-<!--    </rol-date-picker>-->
-<!--  </div>-->
+  <div class="demo-container">
+    <rol-date-picker v-model="value1" type="date" placeholder="选择日期"></rol-date-picker>
+    <rol-date-picker
+      v-model="value2"
+      type="date"
+      placeholder="选择日期"
+      :disabled-date="disabledDate"
+      :shortcuts="shortcuts"
+    >
+    </rol-date-picker>
+  </div>
   <div class="demo-container demo-date-picker">
     <div class="container">
       <div class="block">
