@@ -138,27 +138,12 @@ import { computed, defineComponent, inject, PropType, ref, onMounted, reactive, 
 import RolInput from '@rol-ui/input'
 import RolButton from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
-import { PICKER_BASE_PROVIDER, timeWithRange } from '@rol-ui/utils/time-constant'
+import { PICKER_BASE_PROVIDER, months } from '@rol-ui/utils/time-constant'
 import dayjs, { Dayjs } from 'dayjs'
-import { extractDateFormat, extractTimeFormat } from '@rol-ui/utils/time-utils'
+import { extractDateFormat, extractTimeFormat, timeWithRange } from '@rol-ui/utils/time-utils'
 import DateTable from './basic-date-table.vue'
 import MonthTable from './basic-month-table.vue'
 import YearTable from './basic-year-table.vue'
-
-const months = {
-  month1: '1 月',
-  month2: '2 月',
-  month3: '3 月',
-  month4: '4 月',
-  month5: '5 月',
-  month6: '6 月',
-  month7: '7 月',
-  month8: '8 月',
-  month9: '9 月',
-  month10: '10 月',
-  month11: '11 月',
-  month12: '12 月',
-}
 
 export default defineComponent({
   name: 'PanelDatePicker',

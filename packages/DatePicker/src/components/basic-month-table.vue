@@ -16,7 +16,7 @@
 import { computed, defineComponent, PropType, reactive, ref } from 'vue'
 import dayjs, { Dayjs } from 'dayjs'
 import { DatePickerTableCell } from '../date-picker-types'
-import { datesInMonth } from '@rol-ui/utils/time-constant'
+import { datesInMonth } from '@rol-ui/utils/time-utils'
 import { coerceTruthyValueToArray } from '@rol-ui/utils/util'
 import { hasClass } from '@rol-ui/utils/dom'
 

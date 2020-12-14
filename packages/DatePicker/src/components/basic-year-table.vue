@@ -47,7 +47,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 import { defineComponent, PropType, computed } from 'vue'
 import { hasClass } from '@rol-ui/utils/dom'
-import { datesInYear } from '@rol-ui/utils/time-constant'
+import { datesInYear } from '@rol-ui/utils/time-utils'
 import { coerceTruthyValueToArray } from '@rol-ui/utils/util'
 
 export default defineComponent({

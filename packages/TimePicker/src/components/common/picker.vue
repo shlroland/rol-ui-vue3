@@ -79,6 +79,7 @@
           class="rol-range-input"
           autocomplete="off"
           :name="name && name[1]"
+          :placeholder="endPlaceholder"
           :value="displayValue && displayValue[1]"
           :disabled="disabled"
           :readonly="!editable || readonly"
