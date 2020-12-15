@@ -2,6 +2,7 @@ import { DEFAULT_FORMATS_DATE, DEFAULT_FORMATS_DATEPICKER } from '@rol-ui/utils/
 import { CommonPicker } from '@rol-ui/time-picker'
 import { defineComponent, h } from 'vue'
 import DatePickerPanel from './components/panel-date-picker.vue'
+import DateRangePicker from './components/panel-date-range.vue'
 import dayjs from 'dayjs'
 import localeData from 'dayjs/plugin/localeData'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
@@ -18,8 +19,11 @@ dayjs.extend(weekYear)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
 
-const getPanel = (type:string) =>{
-    return DatePickerPanel
+const getPanel = (type: string) => {
+  if (type === 'daterange' || type === 'datetimerange') {
+      return DateRangePicker
+  }
+  return DatePickerPanel
 }
 
 export default defineComponent({
@@ -33,12 +37,16 @@ export default defineComponent({
   setup(props) {
     const format = DEFAULT_FORMATS_DATEPICKER[props.type] || DEFAULT_FORMATS_DATE
     return () =>
-      h(CommonPicker, {
-        format,
-        type: props.type,
-        ...props,
-      },{
+      h(
+        CommonPicker,
+        {
+          format,
+          type: props.type,
+          ...props,
+        },
+        {
           default: scopedProps => h(getPanel(props.type), scopedProps),
-      })
+        },
+      )
   },
 })

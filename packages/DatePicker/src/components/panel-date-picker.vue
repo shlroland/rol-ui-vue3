@@ -126,7 +126,7 @@
       <rol-button v-show="selectionMode !== 'dates'" size="small" type="text" class="rol-picker-panel__link-btn">
         此刻
       </rol-button>
-      <rol-button size="small" class="rol-picker-panel__link-btn" @click="onConfirm">
+      <rol-button size="small" light class="rol-picker-panel__link-btn" @click="onConfirm">
         确定
       </rol-button>
     </div>
