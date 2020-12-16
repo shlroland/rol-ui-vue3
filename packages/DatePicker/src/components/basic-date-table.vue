@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, reactive, ref, defineComponent, watch } from 'vue'
+import { computed, PropType, reactive, ref, defineComponent } from 'vue'
 import type { Dayjs } from 'dayjs'
 import { coerceTruthyValueToArray } from '@rol-ui/utils/util'
 import dayjs from 'dayjs'
@@ -153,7 +153,6 @@ export default defineComponent({
           cell.type = 'normal'
           const calEndDate = props.rangeState.endDate || props.maxDate || (props.rangeState.selecting && props.minDate)
 
-          // console.log(calTime, calTime.isSame(props.minDate, 'day'))
           if (calEndDate >= props.minDate) {
             cell.inRange =
               props.minDate &&
@@ -266,7 +265,6 @@ export default defineComponent({
         classes.push('in-range')
 
         if (cell.start) {
-          console.log(cell)
           classes.push('start-date')
         }
 
@@ -366,9 +364,6 @@ export default defineComponent({
       }
     }
 
-    watch(rows, newVal => {
-      // console.log(newVal)
-    })
 
     return {
       WEEKS,

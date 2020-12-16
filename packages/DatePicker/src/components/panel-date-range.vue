@@ -330,6 +330,10 @@ export default defineComponent({
     watch(
       () => props.parsedValue,
       newVal => {
+        if (!newVal) {
+          minDate.value = null
+          maxDate.value = null
+        }
         if (newVal && newVal.length === 2) {
           minDate.value = newVal[0]
           maxDate.value = newVal[1]
