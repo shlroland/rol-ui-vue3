@@ -11,7 +11,13 @@
     <div class="rol-picker-panel__body-wrapper">
       <slot name="sidebar" class="rol-picker-panel__sidebar"></slot>
       <div v-if="hasShortcuts" class="rol-picker-panel__sidebar">
-        <button v-for="(shortcut, key) in shortcuts" :key="key" type="button" class="rol-picker-panel__shortcut">
+        <button
+          v-for="(shortcut, key) in shortcuts"
+          :key="key"
+          type="button"
+          class="rol-picker-panel__shortcut"
+          @click="handleShortcutClick(shortcut)"
+        >
           {{ shortcut.text }}
         </button>
       </div>
@@ -311,7 +317,6 @@ export default defineComponent({
     const handleRangPick = (val, close = true) => {
       const _minDate = formatEmit(val.minDate, 0)
       const _maxDate = formatEmit(val.maxDate, 1)
-      console.log(_minDate, _maxDate)
       if (maxDate.value === _maxDate && minDate.value === _minDate) return
       maxDate.value = _maxDate
       minDate.value = _minDate
@@ -323,6 +328,16 @@ export default defineComponent({
     const handleConfirm = (visible = false) => {
       if (isValidValue([minDate.value, maxDate.value])) {
         ctx.emit('pick', [minDate.value, maxDate.value], visible)
+      }
+    }
+
+    const handleShortcutClick = shortcut => {
+      if (shortcut.value) {
+        ctx.emit('pick', [dayjs(shortcut.value[0]), dayjs(shortcut.value[1])])
+        return
+      }
+      if (shortcut.onClick) {
+        shortcut.onClick(ctx)
       }
     }
 
@@ -409,6 +424,7 @@ export default defineComponent({
       handleChangeRange,
       handleRangPick,
       onSelect,
+      handleShortcutClick,
     }
   },
 })
