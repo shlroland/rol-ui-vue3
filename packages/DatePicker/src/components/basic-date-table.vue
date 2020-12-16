@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, reactive, ref, defineComponent } from 'vue'
+import { computed, PropType, reactive, ref, defineComponent, watch } from 'vue'
 import type { Dayjs } from 'dayjs'
 import { coerceTruthyValueToArray } from '@rol-ui/utils/util'
 import dayjs from 'dayjs'
@@ -152,12 +152,26 @@ export default defineComponent({
           const calTime = startDate.value.add(index - offset, 'day')
           cell.type = 'normal'
           const calEndDate = props.rangeState.endDate || props.maxDate || (props.rangeState.selecting && props.minDate)
-          cell.inRange =
-            props.minDate &&
-            calTime.isSameOrAfter(props.minDate, 'day') &&
-            calTime &&
-            calTime.isSameOrAfter(calEndDate, 'day')
-          cell.start = props.minDate && calTime.isSame(props.minDate, 'day')
+
+          // console.log(calTime, calTime.isSame(props.minDate, 'day'))
+          if (calEndDate >= props.minDate) {
+            cell.inRange =
+              props.minDate &&
+              calTime.isSameOrAfter(props.minDate, 'day') &&
+              calTime &&
+              calTime.isSameOrBefore(calEndDate, 'day')
+            cell.start = props.minDate && calTime.isSame(props.minDate, 'day')
+            cell.end = calEndDate && calTime.isSame(calEndDate, 'day')
+          } else {
+            cell.inRange =
+                props.minDate &&
+                calTime.isSameOrAfter(calEndDate, 'day') &&
+                calTime &&
+                calTime.isSameOrBefore(props.minDate, 'day')
+            cell.end = props.minDate && calTime.isSame(props.minDate, 'day')
+            cell.start = calEndDate && calTime.isSame(calEndDate, 'day')
+          }
+
           const isToday = calTime.isSame(calRow, 'day')
 
           if (isToday) {
@@ -252,6 +266,7 @@ export default defineComponent({
         classes.push('in-range')
 
         if (cell.start) {
+          console.log(cell)
           classes.push('start-date')
         }
 
@@ -351,10 +366,16 @@ export default defineComponent({
       }
     }
 
+    watch(rows, newVal => {
+      // console.log(newVal)
+    })
+
     return {
       WEEKS,
       WEEKLIST,
       rows,
+      startDate,
+      offsetDay,
       isWeekActive,
       getCellClasses,
       handleClick,

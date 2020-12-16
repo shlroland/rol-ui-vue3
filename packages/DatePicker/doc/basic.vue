@@ -2,11 +2,11 @@
   <div class="demo-container">
     <rol-date-picker v-model="value1" type="date" placeholder="选择日期"></rol-date-picker>
     <rol-date-picker
-        v-model="value2"
-        type="date"
-        placeholder="选择日期"
-        :disabled-date="disabledDate"
-        :shortcuts="shortcuts"
+      v-model="value2"
+      type="date"
+      placeholder="选择日期"
+      :disabled-date="disabledDate"
+      :shortcuts="shortcuts"
     >
     </rol-date-picker>
   </div>
@@ -37,11 +37,12 @@
       <div class="block">
         <span class="demonstration">默认</span>
         <rol-date-picker
-            v-model="valuer1"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
+          v-model="valuer1"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        >
         </rol-date-picker>
       </div>
     </div>
@@ -50,6 +51,7 @@
 
 <script>
 import RolDatePicker from '@rol-ui/date-picker'
+import dayjs from 'dayjs'
 
 export default {
   name: 'basic',
@@ -64,7 +66,7 @@ export default {
       valuet2: '',
       valuet3: '',
       valuet4: '',
-      valuer1: '',
+      valuer1: [dayjs(), dayjs().add(1, 'month')],
       valuer2: '',
       disabledDate(time) {
         return time.getTime() > Date.now()

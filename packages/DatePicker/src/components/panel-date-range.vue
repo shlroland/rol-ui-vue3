@@ -57,6 +57,9 @@
             :range-state="rangeState"
             :disabled-date="disabledDate"
             :cell-class-name="cellClassName"
+            @changerange="handleChangeRange"
+            @pick="handleRangPick"
+            @select="onSelect"
           ></date-table>
         </div>
         <div class="rol-picker-panel__content rol-date-range-picker__content is-right">
@@ -105,6 +108,9 @@
             :range-state="rangeState"
             :disabled-date="disabledDate"
             :cell-class-name="cellClassName"
+            @changerange="handleChangeRange"
+            @pick="handleRangPick"
+            @select="onSelect"
           ></date-table>
         </div>
       </div>
@@ -117,7 +123,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, ref } from 'vue'
+import { computed, defineComponent, inject, PropType, ref, watch } from 'vue'
 import dayjs, { Dayjs } from 'dayjs'
 import { OutSideClick } from '@rol-ui/directives'
 import { months, PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
@@ -143,8 +149,9 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const { shortcuts, disabledDate, cellClassName, defaultTime, defaultValue, arrowControl } = inject(
+  emits: ['set-picker-option', 'pick'],
+  setup(props, ctx) {
+    const { shortcuts, disabledDate, cellClassName, defaultTime, defaultValue, arrowControl, format } = inject(
       PICKER_BASE_PROVIDER,
     ) as any
 
@@ -259,6 +266,95 @@ export default defineComponent({
       rightDate.value = rightDate.value.subtract(1, 'month')
     }
 
+    const formatToString = (value: Dayjs[]) => {
+      return value.map(_ => _.format(format))
+    }
+
+    const getDefaultValue = () => {
+      let start
+      if (Array.isArray(defaultValue)) {
+        const left = dayjs(defaultValue[0])
+        let right = dayjs(defaultValue[1])
+        if (!props.unlinkPanels) {
+          right = left.add(1, 'month')
+        }
+        return [left, right]
+      } else if (defaultValue) {
+        start = dayjs(defaultValue)
+      } else {
+        start = dayjs()
+      }
+      return [start, start.add(1, 'month')]
+    }
+
+    const formatEmit = (emitDayjs: Dayjs, index?) => {
+      if (!emitDayjs) return
+      if (defaultTime) {
+        const defaultTimeD = dayjs(defaultTime[index] || defaultTime)
+        return defaultTimeD.year(emitDayjs.year()).month(emitDayjs.month()).date(emitDayjs.date())
+      }
+      return emitDayjs
+    }
+
+    const onSelect = selecting => {
+      rangeState.value.selecting = selecting
+      if (!selecting) {
+        rangeState.value.endDate = null
+      }
+    }
+
+    const handleChangeRange = val => {
+      rangeState.value = val
+    }
+
+    const handleRangPick = (val, close = true) => {
+      const _minDate = formatEmit(val.minDate, 0)
+      const _maxDate = formatEmit(val.maxDate, 1)
+      console.log(_minDate, _maxDate)
+      if (maxDate.value === _maxDate && minDate.value === _minDate) return
+      maxDate.value = _maxDate
+      minDate.value = _minDate
+
+      if (!close || showTime.value) return
+      handleConfirm()
+    }
+
+    const handleConfirm = (visible = false) => {
+      if (isValidValue([minDate.value, maxDate.value])) {
+        ctx.emit('pick', [minDate.value, maxDate.value], visible)
+      }
+    }
+
+    ctx.emit('set-picker-option', ['formatToString', formatToString])
+
+    watch(
+      () => props.parsedValue,
+      newVal => {
+        if (newVal && newVal.length === 2) {
+          minDate.value = newVal[0]
+          maxDate.value = newVal[1]
+          leftDate.value = minDate.value
+          if (props.unlinkPanels && maxDate.value) {
+            const minDateYear = minDate.value.year()
+            const minDateMonth = minDate.value.month()
+            const maxDateYear = maxDate.value.year()
+            const maxDateMonth = maxDate.value.month()
+            rightDate.value =
+              minDateYear === maxDateYear && minDateMonth === maxDateMonth
+                ? maxDate.value.add(1, 'month')
+                : maxDate.value
+          } else {
+            rightDate.value = leftDate.value.add(1, 'month')
+          }
+        } else {
+          const defaultArr = getDefaultValue()
+          leftDate.value = defaultArr[0]
+          rightDate.value = defaultArr[1]
+        }
+      },
+      { immediate: true },
+    )
+
     return {
       shortcuts,
       disabledDate,
@@ -290,6 +386,9 @@ export default defineComponent({
       leftNextMonth,
       rightPrevYear,
       rightPrevMonth,
+      handleChangeRange,
+      handleRangPick,
+      onSelect,
     }
   },
 })

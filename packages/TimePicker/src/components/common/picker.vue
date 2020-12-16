@@ -399,7 +399,13 @@ export default defineComponent({
       pickerVisible.value = visible
       let result
       if (Array.isArray(date)) {
-        result = date.map(_ => _.toDate())
+        result = date.map(_ => {
+          if (dayjs.isDayjs(_)) {
+            return _.toDate()
+          } else {
+            return _
+          }
+        })
       } else {
         result = date ? date.toDate() : date
       }
