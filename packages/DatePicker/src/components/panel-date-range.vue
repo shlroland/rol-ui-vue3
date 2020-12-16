@@ -148,6 +148,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    visible: Boolean,
   },
   emits: ['set-picker-option', 'pick'],
   setup(props, ctx) {
@@ -357,6 +358,21 @@ export default defineComponent({
         }
       },
       { immediate: true },
+    )
+
+    watch(
+      () => props.visible,
+      newVal => {
+        if (!newVal && minDate.value && !maxDate.value) {
+          const startDate = props.parsedValue[0] ?? dayjs(props.parsedValue[0])
+          const endDate = props.parsedValue[1] ?? dayjs(props.parsedValue[1])
+
+          rangeState.value.selecting = false
+          rangeState.value.endDate = minDate.value = maxDate.value = dayjs(props.parsedValue[1])
+          minDate.value = startDate
+          maxDate.value = endDate
+        }
+      },
     )
 
     return {

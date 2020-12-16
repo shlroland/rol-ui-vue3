@@ -66,7 +66,7 @@ export default {
       valuet2: '',
       valuet3: '',
       valuet4: '',
-      valuer1: [dayjs(), dayjs().add(1, 'month')],
+      valuer1: ['2018-01-01', '2018-02-11'],
       valuer2: '',
       disabledDate(time) {
         return time.getTime() > Date.now()
