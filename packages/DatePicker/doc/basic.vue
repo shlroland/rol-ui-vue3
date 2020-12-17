@@ -48,14 +48,28 @@
       <div class="block">
         <span class="demonstration">带快捷选项</span>
         <rol-date-picker
-            v-model="valuer2"
-            type="daterange"
-            align="right"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :shortcuts="shortcuts2"
+          v-model="valuer2"
+          type="daterange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :shortcuts="shortcuts2"
+        >
+        </rol-date-picker>
+      </div>
+    </div>
+  </div>
+  <div class="demo-container demo-date-picker">
+    <div class="container">
+      <div class="block">
+        <rol-date-picker
+          v-model="valuem1"
+          type="monthrange"
+          range-separator="至"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份"
         >
         </rol-date-picker>
       </div>
@@ -82,6 +96,7 @@ export default {
       valuet4: '',
       valuer1: ['2018-01-01', '2018-02-11'],
       valuer2: '',
+      valuem1: '',
       disabledDate(time) {
         return time.getTime() > Date.now()
       },
@@ -107,31 +122,35 @@ export default {
           })(),
         },
       ],
-      shortcuts2: [{
-        text: '最近一周',
-        value: (() => {
-          const end = new Date()
-          const start = new Date()
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-          return [start, end]
-        })(),
-      }, {
-        text: '最近一个月',
-        value: (() => {
-          const end = new Date()
-          const start = new Date()
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-          return [start, end]
-        })(),
-      }, {
-        text: '最近三个月',
-        value: (() => {
-          const end = new Date()
-          const start = new Date()
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-          return [start, end]
-        })(),
-      }],
+      shortcuts2: [
+        {
+          text: '最近一周',
+          value: (() => {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            return [start, end]
+          })(),
+        },
+        {
+          text: '最近一个月',
+          value: (() => {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            return [start, end]
+          })(),
+        },
+        {
+          text: '最近三个月',
+          value: (() => {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            return [start, end]
+          })(),
+        },
+      ],
     }
   },
 }

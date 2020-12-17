@@ -3,6 +3,7 @@ import { CommonPicker } from '@rol-ui/time-picker'
 import { defineComponent, h } from 'vue'
 import DatePickerPanel from './components/panel-date-picker.vue'
 import DateRangePicker from './components/panel-date-range.vue'
+import MonthRangePickPanel from './components/panel-month-range.vue'
 import dayjs from 'dayjs'
 import localeData from 'dayjs/plugin/localeData'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
@@ -21,7 +22,9 @@ dayjs.extend(isSameOrBefore)
 
 const getPanel = (type: string) => {
   if (type === 'daterange' || type === 'datetimerange') {
-      return DateRangePicker
+    return DateRangePicker
+  } else if (type === 'monthrange') {
+    return MonthRangePickPanel
   }
   return DatePickerPanel
 }
