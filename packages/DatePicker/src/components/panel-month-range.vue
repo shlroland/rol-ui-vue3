@@ -10,14 +10,19 @@
       <div class="rol-picker-panel__body">
         <div class="rol-picker-panel__content rol-date-range-picker__content is-left">
           <div class="rol-date-range-picker__header">
-            <button type="button" class="rol-date-picker__icon arrow-left"></button>
+            <button type="button" class="rol-picker-panel__icon-btn arrow-left" @click="leftPrevYear">
+              <rol-icon name="angle-double-left"></rol-icon>
+            </button>
             <button
               v-if="unlinkPanels"
               type="button"
               :disabled="!enableYearArrow"
               :class="{ 'is-disabled': !enableYearArrow }"
-              class="rol-date-picker__icon arrow-right"
-            ></button>
+              class="rol-date-picker__icon-btn arrow-right"
+              @click="leftNextYear"
+            >
+              <rol-icon name="angle-double-right"></rol-icon>
+            </button>
             <div>{{ leftLabel }}</div>
           </div>
           <month-table
@@ -37,8 +42,13 @@
               :disabled="!enableYearArrow"
               :class="{ 'is-disabled': !enableYearArrow }"
               class="rol-picker-panel__icon-btn arrow-left"
-            ></button>
-            <button type="button" class="rol-picker-panel__icon-btn arrow-right"></button>
+              @click="rightPrevYear"
+            >
+              <rol-icon name="angle-double-left"></rol-icon>
+            </button>
+            <button type="button" class="rol-picker-panel__icon-btn arrow-right" @click="rightNextYear">
+              <rol-icon name="angle-double-right"></rol-icon>
+            </button>
             <div>{{ rightLabel }}</div>
           </div>
           <month-table
@@ -60,10 +70,11 @@ import dayjs, { Dayjs } from 'dayjs'
 import { computed, defineComponent, inject, PropType, ref } from 'vue'
 import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import MonthTable from './basic-month-table.vue'
+import RolIcon from '@rol-ui/icon'
 
 export default defineComponent({
   name: 'PanelMonthRange',
-  components: { MonthTable },
+  components: { MonthTable, RolIcon },
   props: {
     unlinkPanels: Boolean,
     parsedValue: {
@@ -104,6 +115,28 @@ export default defineComponent({
       return props.unlinkPanels && rightYear.value > leftYear.value + 1
     })
 
+    const leftPrevYear = () => {
+      leftDate.value = leftDate.value.subtract(1, 'year')
+      if (!props.unlinkPanels) {
+        rightDate.value = rightDate.value.subtract(1, 'year')
+      }
+    }
+
+    const rightNextYear = () => {
+      rightDate.value = rightDate.value.add(1, 'year')
+      if (!props.unlinkPanels) {
+        leftDate.value = leftDate.value.add(1, 'year')
+      }
+    }
+
+    const leftNextYear = () => {
+      leftDate.value = leftDate.value.add(1, 'year')
+    }
+
+    const rightPrevYear = () => {
+      rightDate.value = leftDate.value.subtract(1, 'year')
+    }
+
     return {
       leftDate,
       rightDate,
@@ -120,6 +153,10 @@ export default defineComponent({
       minDate,
       maxDate,
       rangeState,
+      leftPrevYear,
+      rightNextYear,
+      leftNextYear,
+      rightPrevYear,
     }
   },
 })
