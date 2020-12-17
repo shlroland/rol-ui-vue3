@@ -383,7 +383,7 @@ export default defineComponent({
           const endDate = props.parsedValue[1] ?? dayjs(props.parsedValue[1])
 
           rangeState.value.selecting = false
-          rangeState.value.endDate = minDate.value = maxDate.value = dayjs(props.parsedValue[1])
+          rangeState.value.endDate = null
           minDate.value = startDate
           maxDate.value = endDate
         }

@@ -1,75 +1,108 @@
 <template>
-  <div class="demo-container">
-    <rol-date-picker v-model="value1" type="date" placeholder="选择日期"></rol-date-picker>
-    <rol-date-picker
-      v-model="value2"
-      type="date"
-      placeholder="选择日期"
-      :disabled-date="disabledDate"
-      :shortcuts="shortcuts"
-    >
-    </rol-date-picker>
-  </div>
+  <!--  <div class="demo-container">-->
+  <!--    <rol-date-picker v-model="value1" type="date" placeholder="选择日期"></rol-date-picker>-->
+  <!--    <rol-date-picker-->
+  <!--      v-model="value2"-->
+  <!--      type="date"-->
+  <!--      placeholder="选择日期"-->
+  <!--      :disabled-date="disabledDate"-->
+  <!--      :shortcuts="shortcuts"-->
+  <!--    >-->
+  <!--    </rol-date-picker>-->
+  <!--  </div>-->
+  <!--  <div class="demo-container demo-date-picker">-->
+  <!--    <div class="container">-->
+  <!--      <div class="block">-->
+  <!--        <span class="demonstration">周</span>-->
+  <!--        <rol-date-picker v-model="valuet1" type="week" format="gggg 第 ww 周" placeholder="选择周"></rol-date-picker>-->
+  <!--      </div>-->
+  <!--      <div class="block">-->
+  <!--        <span class="demonstration">月</span>-->
+  <!--        <rol-date-picker v-model="valuet2" type="month" placeholder="选择月"></rol-date-picker>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <div class="container">-->
+  <!--      <div class="block">-->
+  <!--        <span class="demonstration">年</span>-->
+  <!--        <rol-date-picker v-model="valuet3" type="year" placeholder="选择年"></rol-date-picker>-->
+  <!--      </div>-->
+  <!--      <div class="block">-->
+  <!--        <span class="demonstration">多个日期</span>-->
+  <!--        <rol-date-picker type="dates" v-model="valuet4" placeholder="选择一个或多个日期"></rol-date-picker>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--  <div class="demo-container demo-date-picker">-->
+  <!--    <div class="container">-->
+  <!--      <div class="block">-->
+  <!--        <span class="demonstration">默认</span>-->
+  <!--        <rol-date-picker-->
+  <!--          v-model="valuer1"-->
+  <!--          type="daterange"-->
+  <!--          range-separator="至"-->
+  <!--          start-placeholder="开始日期"-->
+  <!--          end-placeholder="结束日期"-->
+  <!--        >-->
+  <!--        </rol-date-picker>-->
+  <!--      </div>-->
+  <!--      <div class="block">-->
+  <!--        <span class="demonstration">带快捷选项</span>-->
+  <!--        <rol-date-picker-->
+  <!--          v-model="valuer2"-->
+  <!--          type="daterange"-->
+  <!--          align="right"-->
+  <!--          unlink-panels-->
+  <!--          range-separator="至"-->
+  <!--          start-placeholder="开始日期"-->
+  <!--          end-placeholder="结束日期"-->
+  <!--          :shortcuts="shortcuts2"-->
+  <!--        >-->
+  <!--        </rol-date-picker>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--  <div class="demo-container demo-date-picker">-->
+  <!--    <div class="container">-->
+  <!--      <div class="block">-->
+  <!--        <rol-date-picker-->
+  <!--          v-model="valuem1"-->
+  <!--          type="monthrange"-->
+  <!--          range-separator="至"-->
+  <!--          start-placeholder="开始月份"-->
+  <!--          end-placeholder="结束月份"-->
+  <!--        >-->
+  <!--        </rol-date-picker>-->
+  <!--      </div>-->
+  <!--      <div class="block">-->
+  <!--        <span class="demonstration">带快捷选项</span>-->
+  <!--        <rol-date-picker-->
+  <!--          v-model="valuem2"-->
+  <!--          type="monthrange"-->
+  <!--          align="right"-->
+  <!--          unlink-panels-->
+  <!--          range-separator="至"-->
+  <!--          start-placeholder="开始月份"-->
+  <!--          end-placeholder="结束月份"-->
+  <!--          :shortcuts="shortcuts3"-->
+  <!--        >-->
+  <!--        </rol-date-picker>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
   <div class="demo-container demo-date-picker">
     <div class="container">
       <div class="block">
-        <span class="demonstration">周</span>
-        <rol-date-picker v-model="valuet1" type="week" format="gggg 第 ww 周" placeholder="选择周"></rol-date-picker>
-      </div>
-      <div class="block">
-        <span class="demonstration">月</span>
-        <rol-date-picker v-model="valuet2" type="month" placeholder="选择月"></rol-date-picker>
-      </div>
-    </div>
-    <div class="container">
-      <div class="block">
-        <span class="demonstration">年</span>
-        <rol-date-picker v-model="valuet3" type="year" placeholder="选择年"></rol-date-picker>
-      </div>
-      <div class="block">
-        <span class="demonstration">多个日期</span>
-        <rol-date-picker type="dates" v-model="valuet4" placeholder="选择一个或多个日期"></rol-date-picker>
-      </div>
-    </div>
-  </div>
-  <div class="demo-container demo-date-picker">
-    <div class="container">
-      <div class="block">
-        <span class="demonstration">默认</span>
-        <rol-date-picker
-          v-model="valuer1"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        >
+        <rol-date-picker v-model="value1" type="date" placeholder="Pick a date" :default-value="new Date(2010, 9, 1)">
         </rol-date-picker>
       </div>
       <div class="block">
-        <span class="demonstration">带快捷选项</span>
         <rol-date-picker
-          v-model="valuer2"
+          v-model="value2"
           type="daterange"
           align="right"
-          unlink-panels
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :shortcuts="shortcuts2"
-        >
-        </rol-date-picker>
-      </div>
-    </div>
-  </div>
-  <div class="demo-container demo-date-picker">
-    <div class="container">
-      <div class="block">
-        <rol-date-picker
-          v-model="valuem1"
-          type="monthrange"
-          range-separator="至"
-          start-placeholder="开始月份"
-          end-placeholder="结束月份"
+          start-placeholder="Start Date"
+          end-placeholder="End Date"
+          :default-value="[new Date(2010, 9, 1), new Date(2010, 10, 1)]"
         >
         </rol-date-picker>
       </div>
@@ -96,7 +129,8 @@ export default {
       valuet4: '',
       valuer1: ['2018-01-01', '2018-02-11'],
       valuer2: '',
-      valuem1: '',
+      valuem1: ['2018-01-01', '2018-11-11'],
+      valuem2: ['2018-01-01', '2018-11-11'],
       disabledDate(time) {
         return time.getTime() > Date.now()
       },
@@ -147,6 +181,29 @@ export default {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            return [start, end]
+          })(),
+        },
+      ],
+      shortcuts3: [
+        {
+          text: '本月',
+          value: [new Date(), new Date()],
+        },
+        {
+          text: '今年至今',
+          value: (() => {
+            const end = new Date()
+            const start = new Date(new Date().getFullYear(), 0)
+            return [start, end]
+          })(),
+        },
+        {
+          text: '最近六个月',
+          value: (() => {
+            const end = new Date()
+            const start = new Date()
+            start.setMonth(start.getMonth() - 6)
             return [start, end]
           })(),
         },

@@ -1,5 +1,5 @@
 <template>
-  <table class="rol-month-table" @click="handleMonthTableClick">
+  <table class="rol-month-table" @click="handleMonthTableClick" @mousemove="handleMouseMove">
     <tbody>
       <tr v-for="(row, key) in rows" :key="key">
         <td v-for="(cell, key_) in row" :key="key_" :class="getCellStyle(cell)">
@@ -65,7 +65,7 @@ export default defineComponent({
       }),
     },
   },
-  emits: ['pick', 'select'],
+  emits: ['pick', 'select', 'changerange'],
   setup(props, ctx) {
     const months = ref(
       props.date
@@ -101,13 +101,31 @@ export default defineComponent({
           const index = i * 4 + j
           const calTime = props.date.startOf('year').month(index)
           const calEndDate = props.rangeState.endDate || props.maxDate || (props.rangeState.selecting && props.minDate)
-          cell.inRange =
-            props.minDate &&
-            calTime.isSameOrAfter(props.minDate, 'month') &&
-            calEndDate &&
-            calTime.isSameOrBefore(calEndDate, 'month')
-          cell.start = props.minDate && calTime.isSame(props.minDate, 'month')
-          cell.end = calEndDate && calTime.isSame(calEndDate, 'month')
+          // cell.inRange =
+          //   props.minDate &&
+          //   calTime.isSameOrAfter(props.minDate, 'month') &&
+          //   calEndDate &&
+          //   calTime.isSameOrBefore(calEndDate, 'month')
+          // cell.start = props.minDate && calTime.isSame(props.minDate, 'month')
+          // cell.end = calEndDate && calTime.isSame(calEndDate, 'month')
+
+          if (calEndDate >= props.minDate) {
+            cell.inRange =
+              props.minDate &&
+              calTime.isSameOrAfter(props.minDate, 'month') &&
+              calTime &&
+              calTime.isSameOrBefore(calEndDate, 'month')
+            cell.start = props.minDate && calTime.isSame(props.minDate, 'month')
+            cell.end = calEndDate && calTime.isSame(calEndDate, 'month')
+          } else {
+            cell.inRange =
+              props.minDate &&
+              calTime.isSameOrAfter(calEndDate, 'month') &&
+              calTime &&
+              calTime.isSameOrBefore(props.minDate, 'month')
+            cell.end = props.minDate && calTime.isSame(props.minDate, 'month')
+            cell.start = calEndDate && calTime.isSame(calEndDate, 'month')
+          }
           const isToday = now.isSame(calTime)
 
           if (isToday) {
@@ -181,12 +199,40 @@ export default defineComponent({
       }
     }
 
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!props.rangeState.selecting) return
+      let target = event.target as HTMLTableDataCellElement
+      if (target.tagName === 'SPAN') {
+        target = target.parentNode.parentNode as HTMLTableDataCellElement
+      }
+
+      if (target.tagName === 'DIV') {
+        target = target.parentNode as HTMLTableDataCellElement
+      }
+
+      if (target.tagName !== 'TD') return
+
+      const row = (target.parentNode as HTMLTableRowElement).rowIndex
+      const column = target.cellIndex
+
+      if (rows.value[row][column].disabled) return
+      if (row !== lastRow.value || column !== lastColumn.value) {
+        lastRow.value = row
+        lastColumn.value = column
+        ctx.emit('changerange', {
+          selecting: true,
+          endDate: props.date.startOf('year').month(row * 4 + column),
+        })
+      }
+    }
+
     return {
       rows,
       MONTHSLIST,
       months,
       getCellStyle,
       handleMonthTableClick,
+      handleMouseMove,
     }
   },
 })

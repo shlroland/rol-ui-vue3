@@ -407,6 +407,22 @@ export default defineComponent({
       },
     )
 
+    watch(
+      () => props.parsedValue,
+      newVal => {
+        if (newVal) {
+          if (selectionMode.value === 'dates') return
+          if (Array.isArray(newVal)) return
+          innerDate.value = newVal
+        } else {
+          innerDate.value = getDefaultValue()
+        }
+      },
+      {
+        immediate: true,
+      },
+    )
+
     return {
       hasShortcuts,
       showTime,
