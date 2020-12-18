@@ -31,6 +31,8 @@
                 :disabled="rangeState.selecting"
                 :placeholder="'开始日期'"
                 :model-value="minVisibleDate"
+                @input="val => handleDateInput(val, 'min')"
+                @change="val => handleDateChange(val, 'min')"
               ></rol-input>
             </span>
             <span class="rol-date-range-picker__time-picker-wrap">
@@ -40,6 +42,9 @@
                 :disabled="rangeState.selecting"
                 :placeholder="'开始时间'"
                 :model-value="minVisibleTime"
+                @focus="minTimePickerVisible = true"
+                @input="val => handleTimeInput(val, 'min')"
+                @change="val => handleTimeChange(val, 'min')"
               ></rol-input>
               <time-pick-panel
                 :visible="minTimePickerVisible"
@@ -58,6 +63,8 @@
                 :placeholder="'结束日期'"
                 :readonly="!minDate"
                 :model-value="maxVisibleDate"
+                @input="val => handleDateInput(val, 'min')"
+                @change="val => handleDateChange(val, 'min')"
               ></rol-input>
             </span>
             <span v-clickoutside="handleMaxTimeClose" class="rol-date-range-picker__time-picker-wrap">
@@ -68,6 +75,9 @@
                 :placeholder="'结束时间'"
                 :model-value="maxVisibleTime"
                 :readonly="!minDate"
+                @focus="minDate && (maxTimePickerVisible = true)"
+                @input="val => handleTimeInput(val, 'max')"
+                @change="val => handleTimeChange(val, 'max')"
               ></rol-input>
               <time-pick-panel
                 datetime-role="end"
@@ -452,6 +462,79 @@ export default defineComponent({
       }
     }
 
+    const handleDateInput = (value, type) => {
+      dateUserInput.value[type] = value
+      const parsedValued = dayjs(value, dateFormat.value)
+
+      if (parsedValued.isValid()) {
+        if (disabledDate && disabledDate(parsedValued.toDate())) return
+        if (type === 'min') {
+          leftDate.value = parsedValued
+          minDate.value = (minDate.value || leftDate.value)
+            .year(parsedValued.year())
+            .month(parsedValued.month())
+            .date(parsedValued.date())
+          if (!props.unlinkPanels) {
+            rightDate.value = parsedValued.add(1, 'month')
+            maxDate.value = minDate.value.add(1, 'month')
+          }
+        } else {
+          rightDate.value = parsedValued
+          maxDate.value = (maxDate.value || rightDate.value)
+            .year(parsedValued.year())
+            .month(parsedValued.month())
+            .date(parsedValued.date())
+          if (!props.unlinkPanels) {
+            leftDate.value = parsedValued.subtract(1, 'month')
+            minDate.value = maxDate.value.subtract(1, 'month')
+          }
+        }
+      }
+    }
+
+    const handleDateChange = (value, type) => {
+      dateUserInput.value[type] = null
+    }
+
+    const handleTimeInput = (value, type) => {
+      timeUserInput.value[type] = value
+      const parsedValued = dayjs(value, timeFormat.value)
+
+      if (parsedValued.isValid()) {
+        if (type === 'min') {
+          minTimePickerVisible.value = true
+          minDate.value = (minDate.value || leftDate.value)
+            .hour(parsedValued.hour())
+            .minute(parsedValued.minute())
+            .second(parsedValued.second())
+          if (!maxDate.value || maxDate.value.isBefore(minDate.value)) {
+            maxDate.value = minDate.value
+          }
+        } else {
+          maxTimePickerVisible.value = true
+          maxDate.value = (maxDate.value || rightDate.value)
+            .hour(parsedValued.hour())
+            .minute(parsedValued.minute())
+            .second(parsedValued.second())
+          rightDate.value = maxDate.value
+          if (maxDate.value && maxDate.value.isBefore(minDate.value)) {
+            minDate.value = maxDate.value
+          }
+        }
+      }
+    }
+
+    const handleTimeChange = (value, type) => {
+      timeUserInput.value[type] = null
+      if (type === 'min') {
+        leftDate.value = minDate.value
+        minTimePickerVisible.value = false
+      } else {
+        rightDate.value = maxDate.value
+        maxTimePickerVisible.value = false
+      }
+    }
+
     ctx.emit('set-picker-option', ['formatToString', formatToString])
 
     watch(
@@ -546,6 +629,10 @@ export default defineComponent({
       handleShortcutClick,
       handleMinTimeClose,
       handleMaxTimeClose,
+      handleDateInput,
+      handleDateChange,
+      handleTimeInput,
+      handleTimeChange,
     }
   },
 })
