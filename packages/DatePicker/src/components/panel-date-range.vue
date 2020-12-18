@@ -51,6 +51,7 @@
                 :format="timeFormat"
                 datetime-role="start"
                 :parsed-value="leftDate"
+                @pick="handleMinTimePick"
               ></time-pick-panel>
             </span>
           </span>
@@ -84,6 +85,7 @@
                 :visible="maxTimePickerVisible"
                 :format="timeFormat"
                 :parsed-value="rightDate"
+                @pick="handleMaxTimePick"
               ></time-pick-panel>
             </span>
           </span>
@@ -185,8 +187,16 @@
       </div>
     </div>
     <div v-if="showTime" class="rol-picker-panel__footer">
-      <rol-button size="small" type="text" class="rol-picker-panel__link-btn">清空</rol-button>
-      <rol-button size="small" light class="rol-picker-panel__link-btn" :disabled="btnDisabled">确定</rol-button>
+      <rol-button size="small" type="text" class="rol-picker-panel__link-btn" @click="handleClear">清空</rol-button>
+      <rol-button
+        size="small"
+        light
+        class="rol-picker-panel__link-btn"
+        :disabled="btnDisabled"
+        @click="handleConfirm(false)"
+      >
+        确定
+      </rol-button>
     </div>
   </div>
 </template>
@@ -195,7 +205,7 @@
 import { computed, defineComponent, inject, PropType, ref, watch } from 'vue'
 import dayjs, { Dayjs } from 'dayjs'
 import { OutSideClick } from '@rol-ui/directives'
-import { months, PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
+import { DEFAULT_FORMATS_TIME, months, PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import DateTable from './basic-date-table.vue'
 import RolButton from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
@@ -418,7 +428,13 @@ export default defineComponent({
     const formatEmit = (emitDayjs: Dayjs, index?) => {
       if (!emitDayjs) return
       if (defaultTime) {
-        const defaultTimeD = dayjs(defaultTime[index] || defaultTime)
+        let defaultTime_
+        if (Array.isArray(defaultTime)) {
+          defaultTime_ = defaultTime[index] || defaultTime[0]
+        } else {
+          defaultTime_ = defaultTime
+        }
+        const defaultTimeD = dayjs(defaultTime_, DEFAULT_FORMATS_TIME)
         return defaultTimeD.year(emitDayjs.year()).month(emitDayjs.month()).date(emitDayjs.date())
       }
       return emitDayjs
@@ -444,6 +460,14 @@ export default defineComponent({
 
       if (!close || showTime.value) return
       handleConfirm()
+    }
+
+    const handleClear = () => {
+      minDate.value = null
+      maxDate.value = null
+      leftDate.value = getDefaultValue()[0]
+      rightDate.value = leftDate.value.add(1, 'month')
+      ctx.emit('pick', null)
     }
 
     const handleConfirm = (visible = false) => {
@@ -532,6 +556,42 @@ export default defineComponent({
       } else {
         rightDate.value = maxDate.value
         maxTimePickerVisible.value = false
+      }
+    }
+
+    const handleMinTimePick = (value, visible, first) => {
+      if (timeUserInput.value.min) return
+      if (value) {
+        leftDate.value = value
+        minDate.value = (minDate.value || leftDate.value)
+          .hour(value.hour())
+          .minute(value.minute())
+          .second(value.second())
+      }
+      if (!first) {
+        minTimePickerVisible.value = visible
+      }
+      if (!maxDate.value || maxDate.value.isBefore(minDate.value)) {
+        maxDate.value = minDate.value
+      }
+    }
+
+    const handleMaxTimePick = (value, visible, first) => {
+      if (timeUserInput.value.max) return
+      if (value) {
+        rightDate.value = value
+        maxDate.value = (maxDate.value || rightDate.value)
+          .hour(value.hour())
+          .minute(value.minute())
+          .second(value.second())
+      }
+
+      if (!first) {
+        maxTimePickerVisible.value = visible
+      }
+
+      if (maxDate.value && maxDate.value.isBefore(minDate.value)) {
+        minDate.value = maxDate.value
       }
     }
 
@@ -633,6 +693,10 @@ export default defineComponent({
       handleDateChange,
       handleTimeInput,
       handleTimeChange,
+      handleClear,
+      handleConfirm,
+      handleMinTimePick,
+      handleMaxTimePick,
     }
   },
 })
