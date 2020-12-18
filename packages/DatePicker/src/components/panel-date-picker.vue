@@ -30,15 +30,25 @@
               :model-value="visibleDate"
               size="small"
               @input="handleInputDate"
+              @change="handleVisibleDateChange"
             ></rol-input>
           </span>
-          <span class="rol-date-picker__editor-wrap">
+          <span v-clickoutside="handleTimePickClose" class="rol-date-picker__editor-wrap">
             <rol-input
               :placeholder="'选择时间'"
               :model-value="visibleTime"
               size="small"
               @input="handleInputTime"
+              @focus="onTimePickerInputFocus"
+              @change="handleVisibleTimeChange"
             ></rol-input>
+            <time-pick-panel
+              :visible="timePickerVisible"
+              :format="timeFormat"
+              :time-arrow-control="arrowControl"
+              :parsed-value="innerDate"
+              @pick="handleTimePick"
+            ></time-pick-panel>
           </span>
         </div>
         <div
@@ -123,7 +133,13 @@
       </div>
     </div>
     <div v-show="footerVisible && currentView === 'date'" class="rol-picker-panel__footer">
-      <rol-button v-show="selectionMode !== 'dates'" size="small" type="text" class="rol-picker-panel__link-btn">
+      <rol-button
+        v-show="selectionMode !== 'dates'"
+        size="small"
+        type="text"
+        class="rol-picker-panel__link-btn"
+        @click="changeToNow"
+      >
         此刻
       </rol-button>
       <rol-button size="small" light class="rol-picker-panel__link-btn" @click="onConfirm">
@@ -138,12 +154,14 @@ import { computed, defineComponent, inject, PropType, ref, onMounted, reactive, 
 import RolInput from '@rol-ui/input'
 import RolButton from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
-import { PICKER_BASE_PROVIDER, months } from '@rol-ui/utils/time-constant'
+import { TimePickPanel } from '@rol-ui/time-picker'
+import { PICKER_BASE_PROVIDER, months, DEFAULT_FORMATS_TIME } from '@rol-ui/utils/time-constant'
 import dayjs, { Dayjs } from 'dayjs'
 import { extractDateFormat, extractTimeFormat, timeWithRange } from '@rol-ui/utils/time-utils'
 import DateTable from './basic-date-table.vue'
 import MonthTable from './basic-month-table.vue'
 import YearTable from './basic-year-table.vue'
+import { OutSideClick } from '@rol-ui/directives'
 
 export default defineComponent({
   name: 'PanelDatePicker',
@@ -154,7 +172,9 @@ export default defineComponent({
     DateTable,
     MonthTable,
     YearTable,
+    TimePickPanel,
   },
+  directives: { clickoutside: OutSideClick },
   props: {
     visible: {
       type: Boolean,
@@ -255,11 +275,15 @@ export default defineComponent({
     }
 
     const formatEmit = (emitDayjs: Dayjs) => {
-      if (showTime.value) return emitDayjs.millisecond()
-      if (defaultTime) {
-        const defaultTimeD = dayjs(defaultTime)
-        return defaultTimeD.year(emitDayjs.year()).month(emitDayjs.month()).date(emitDayjs.date())
+      if (showTime.value) {
+        if (defaultTime) {
+          const defaultTimeD = dayjs(defaultTime, DEFAULT_FORMATS_TIME)
+          return defaultTimeD.year(emitDayjs.year()).month(emitDayjs.month()).date(emitDayjs.date())
+        } else {
+          return emitDayjs.millisecond(0)
+        }
       }
+
       return emitDayjs.startOf('day')
     }
 
@@ -343,7 +367,7 @@ export default defineComponent({
       } else {
         let result = props.parsedValue as Dayjs
         if (!result) {
-          const defaultTimeD = dayjs(defaultTime)
+          const defaultTimeD = dayjs(defaultTime, DEFAULT_FORMATS_TIME)
           const defaultValueD = getDefaultValue()
           result = defaultTimeD.year(defaultValueD.year()).month(defaultValueD.month()).date(defaultValueD.date())
         }
@@ -377,6 +401,58 @@ export default defineComponent({
         innerDate.value = innerDate.value.add(10, 'year')
       } else {
         innerDate.value = innerDate.value.add(1, 'year')
+      }
+    }
+
+    const changeToNow = () => {
+      const now = dayjs()
+      // const nowDate = now.date()
+      if ((!disabledDate || !disabledDate(now)) && checkDateWithRange(now)) {
+        innerDate.value = dayjs()
+        pickEmit(innerDate.value)
+      }
+    }
+
+    const handleVisibleDateChange = value => {
+      const newDate = dayjs(value, dateFormat.value)
+      if (newDate.isValid()) {
+        if (disabledDate && disabledDate(newDate.toDate())) return
+        innerDate.value = newDate
+          .hour(innerDate.value.hour())
+          .minute(innerDate.value.minute())
+          .second(innerDate.value.second())
+        userInputDate.value = null
+        pickEmit(innerDate.value, true)
+      }
+    }
+
+    const handleVisibleTimeChange = value => {
+      const newDate = dayjs(value, timeFormat.value)
+      if (newDate.isValid()) {
+        if (disabledDate && disabledDate(newDate.toDate())) return
+        innerDate.value = newDate
+          .hour(innerDate.value.hour())
+          .minute(innerDate.value.minute())
+          .second(innerDate.value.second())
+        userInputDate.value = null
+        pickEmit(innerDate.value, true)
+      }
+    }
+    const timePickerVisible = ref(false)
+    const onTimePickerInputFocus = () => {
+      timePickerVisible.value = true
+    }
+    const handleTimePickClose = () => {
+      timePickerVisible.value = false
+    }
+    const handleTimePick = (value, visible, first) => {
+      const newDate = props.parsedValue
+        ? (props.parsedValue as Dayjs).hour(value.hour()).minute(value.minute()).second(value.second())
+        : value
+      innerDate.value = newDate
+      pickEmit(innerDate.value, true)
+      if (!first) {
+        timePickerVisible.value = visible
       }
     }
 
@@ -443,6 +519,7 @@ export default defineComponent({
       popperRef,
       MONTHLIST,
       month,
+      timePickerVisible,
       handleInputDate,
       handleInputTime,
       handleDatePicker,
@@ -454,6 +531,13 @@ export default defineComponent({
       nextYear,
       prevMonth,
       nextMonth,
+      changeToNow,
+      handleVisibleDateChange,
+      handleVisibleTimeChange,
+      onTimePickerInputFocus,
+      handleTimePickClose,
+      timeFormat,
+      handleTimePick,
     }
   },
 })

@@ -201,11 +201,11 @@ export default defineComponent({
     const comVisible = computed(() => {
       return props.visible
     })
-    watch([popperRef, comVisible], () => {
-      if (popperRef.value) {
-        props.getPopperRef(popperRef.value)
-      }
-    })
+    // watch([popperRef, comVisible], () => {
+    //   if (popperRef.value) {
+    //     props.getPopperRef(popperRef.value)
+    //   }
+    // })
 
     return {
       arrowControl,

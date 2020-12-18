@@ -407,6 +407,7 @@ export default defineComponent({
           }
         })
       } else {
+
         result = date ? date.toDate() : date
       }
       userInput.value = null
