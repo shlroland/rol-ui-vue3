@@ -133,10 +133,10 @@ export default defineComponent({
       return result
     }
 
-    const timePickeOptions = {} as any
+    const timePickerOptions = {} as any
 
     const onSetOption = e => {
-      timePickeOptions[e[0]] = e[1]
+      timePickerOptions[e[0]] = e[1]
     }
     const setSelectionRange = (start, end) => {
       emit('select-range', start, end)
@@ -148,7 +148,7 @@ export default defineComponent({
       const mapping = ['hours', 'minutes'].concat(showSeconds.value ? ['seconds'] : [])
       const index = list.indexOf(selectionRange.value[0])
       const next = (index + step + list.length) % list.length
-      timePickeOptions['start_emitSelectRange'](mapping[next])
+      timePickerOptions['start_emitSelectRange'](mapping[next])
     }
 
     const handleKeydown = (event: KeyboardEvent) => {
@@ -164,8 +164,7 @@ export default defineComponent({
       if (code === EVENT_CODE.up || code === EVENT_CODE.down) {
         const step = code === EVENT_CODE.up ? -1 : 1
         const name = `${props.datetimeRole}_scrollDown`
-        console.log(timePickeOptions,name)
-        timePickeOptions[name](step)
+        timePickerOptions[name](step)
         event.preventDefault()
         return
       }

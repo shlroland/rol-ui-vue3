@@ -12,7 +12,7 @@
           type="datetime"
           placeholder="选择日期时间"
           align="right"
-          :shortcuts="shortcuts"
+          :shortcuts="shortcuts1"
         >
         </rol-date-picker>
       </div>
@@ -23,6 +23,32 @@
             type="datetime"
             placeholder="选择日期时间"
             default-time="12:00:00">
+        </rol-date-picker>
+      </div>
+    </div>
+  </div>
+  <div class="demo-container demo-date-picker">
+    <div class="container">
+      <div class="block">
+        <span class="demonstration">默认</span>
+        <rol-date-picker
+            v-model="valuer1"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+        </rol-date-picker>
+      </div>
+      <div class="block">
+        <span class="demonstration">带快捷选项</span>
+        <rol-date-picker
+            v-model="valuer2"
+            type="datetimerange"
+            :shortcuts="shortcuts2"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            align="right">
         </rol-date-picker>
       </div>
     </div>
@@ -42,7 +68,9 @@ export default {
       value1: '',
       value2: '',
       value3: '',
-      shortcuts: [
+      valuer1: '',
+      valuer2: '',
+      shortcuts1: [
         {
           text: '今天',
           value: new Date(),
@@ -64,6 +92,31 @@ export default {
           })(),
         },
       ],
+      shortcuts2: [{
+        text: '最近一周',
+        value: (() => {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+          return [start, end]
+        })()
+      }, {
+        text: '最近一个月',
+        value: (() => {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+          return [start, end]
+        })()
+      }, {
+        text: '最近三个月',
+        value: (() => {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+          return [start, end]
+        })()
+      }],
     }
   },
 }

@@ -23,7 +23,60 @@
       </div>
       <div class="rol-picker-panel__body">
         <div v-if="showTime" class="rol-date-range-picker__time-header">
-          <span></span>
+          <span class="rol-date-range-picker__editors-wrap">
+            <span class="rol-date-range-picker__time-picker-wrap">
+              <rol-input
+                class="rol-date-range-picker__editor"
+                size="small"
+                :disabled="rangeState.selecting"
+                :placeholder="'开始日期'"
+                :model-value="minVisibleDate"
+              ></rol-input>
+            </span>
+            <span class="rol-date-range-picker__time-picker-wrap">
+              <rol-input
+                class="rol-date-range-picker__editor"
+                size="small"
+                :disabled="rangeState.selecting"
+                :placeholder="'开始时间'"
+                :model-value="minVisibleTime"
+              ></rol-input>
+              <time-pick-panel
+                :visible="minTimePickerVisible"
+                :format="timeFormat"
+                datetime-role="start"
+                :parsed-value="leftDate"
+              ></time-pick-panel>
+            </span>
+          </span>
+          <span class="rol-date-range-picker__editors-wrap is-right">
+            <span class="rol-date-range-picker__time-picker-wrap">
+              <rol-input
+                size="small"
+                class="rol-date-range-picker__editor"
+                :disabled="rangeState.selecting"
+                :placeholder="'结束日期'"
+                :readonly="!minDate"
+                :model-value="maxVisibleDate"
+              ></rol-input>
+            </span>
+            <span v-clickoutside="handleMaxTimeClose" class="rol-date-range-picker__time-picker-wrap">
+              <rol-input
+                size="small"
+                class="rol-date-range-picker__editor"
+                :disabled="rangeState.selecting"
+                :placeholder="'结束时间'"
+                :model-value="maxVisibleTime"
+                :readonly="!minDate"
+              ></rol-input>
+              <time-pick-panel
+                datetime-role="end"
+                :visible="maxTimePickerVisible"
+                :format="timeFormat"
+                :parsed-value="rightDate"
+              ></time-pick-panel>
+            </span>
+          </span>
         </div>
         <div class="rol-picker-panel__content rol-date-range-picker__content is-left">
           <div class="rol-date-range-picker__header">
@@ -136,6 +189,9 @@ import { months, PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import DateTable from './basic-date-table.vue'
 import RolButton from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
+import RolInput from '@rol-ui/input'
+import { TimePickPanel } from '@rol-ui/time-picker'
+import { extractDateFormat, extractTimeFormat } from '@rol-ui/utils/time-utils'
 
 export default defineComponent({
   name: 'PanelDateRange',
@@ -143,6 +199,8 @@ export default defineComponent({
     DateTable,
     RolButton,
     RolIcon,
+    RolInput,
+    TimePickPanel,
   },
   directives: { clickoutside: OutSideClick },
   props: {
@@ -171,8 +229,61 @@ export default defineComponent({
       selecting: false,
     })
 
+    const dateUserInput = ref({
+      min: null,
+      max: null,
+    })
+    const timeUserInput = ref({
+      min: null,
+      max: null,
+    })
+
     const showTime = computed(() => props.type === 'datetime' || props.type === 'datetimerange')
     const hasShortcuts = computed(() => !!shortcuts.length)
+
+    const dateFormat = computed(() => {
+      return extractDateFormat(format)
+    })
+
+    const timeFormat = computed(() => {
+      return extractTimeFormat(format)
+    })
+
+    const minVisibleDate = computed(() => {
+      if (dateUserInput.value.min !== null) return dateUserInput.value.min
+      if (minDate.value) return minDate.value.format(dateFormat.value)
+      return ''
+    })
+
+    const maxVisibleDate = computed(() => {
+      if (dateUserInput.value.max !== null) return dateUserInput.value.max
+      if (maxDate.value || minDate.value) return (maxDate.value || minDate.value).format(dateFormat.value)
+      return ''
+    })
+
+    const minVisibleTime = computed(() => {
+      if (timeUserInput.value.min !== null) return timeUserInput.value.min
+      if (minDate.value) return minDate.value.format(timeFormat.value)
+      return ''
+    })
+
+    const maxVisibleTime = computed(() => {
+      if (timeUserInput.value.max !== null) return timeUserInput.value.max
+      if (maxDate.value || minDate.value) return (maxDate.value || minDate.value).format(timeFormat.value)
+      return ''
+    })
+
+    const minTimePickerVisible = ref(false)
+    const maxTimePickerVisible = ref(false)
+
+    const handleMinTimeClose = () => {
+      minTimePickerVisible.value = false
+    }
+
+    const handleMaxTimeClose = () => {
+      maxTimePickerVisible.value = false
+    }
+
     const leftLabel = computed(() => {
       return leftDate.value.year() + ' ' + '年' + months['month' + (leftDate.value.month() + 1)]
     })
@@ -413,6 +524,14 @@ export default defineComponent({
       enableYearArrow,
       enableMonthArrow,
       btnDisabled,
+      minVisibleDate,
+      maxVisibleDate,
+      minVisibleTime,
+      maxVisibleTime,
+      minTimePickerVisible,
+      maxTimePickerVisible,
+      dateFormat,
+      timeFormat,
       leftPrevYear,
       leftPrevMonth,
       rightNextYear,
@@ -425,6 +544,8 @@ export default defineComponent({
       handleRangPick,
       onSelect,
       handleShortcutClick,
+      handleMinTimeClose,
+      handleMaxTimeClose,
     }
   },
 })
