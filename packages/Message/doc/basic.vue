@@ -9,7 +9,7 @@
 
 <script>
 import { Button } from '@rol-ui/button'
-import Message from '@rol-ui/meassage'
+import Message from '@rol-ui/message'
 export default {
   components: {
     // NotificationIns,

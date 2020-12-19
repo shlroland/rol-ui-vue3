@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Button } from '@rol-ui/button'
 import MessageBox from '@rol-ui/message-box'
-import Message from '@rol-ui/meassage'
+import Message from '@rol-ui/message'
 import { defineComponent, h } from 'vue'
 
 export default defineComponent({

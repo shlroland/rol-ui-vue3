@@ -1,11 +1,17 @@
-const $ELEMENT: Record<string, unknown> = {}
+export interface InstallOptions {
+  size: string
+  zIndex: number
+  locale?: any
+}
+
+const $ROLUI: Record<string, unknown> = {}
 
 const setConfig = (key: string, value: unknown): void => {
-  $ELEMENT[key] = value
+  $ROLUI[key] = value
 }
 
 const getConfig = (key: string): unknown => {
-  return $ELEMENT[key]
+  return $ROLUI[key]
 }
 
 export { getConfig, setConfig }

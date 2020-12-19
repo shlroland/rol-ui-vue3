@@ -86,7 +86,7 @@
 import RolUpload from '@rol-ui/upload'
 import { Button as RolButton } from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
-import message from '@rol-ui/meassage'
+import message from '@rol-ui/message'
 
 export default {
   components: {
