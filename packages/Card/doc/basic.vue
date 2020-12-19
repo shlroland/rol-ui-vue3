@@ -42,8 +42,8 @@
 
 <script>
 import Card from '@rol-ui/card'
-import Button from '@rol-ui/button'
-import { RCol, Row } from '@rol-ui/grid'
+import { Button } from '@rol-ui/button'
+import { Col as RCol, Row } from '@rol-ui/grid'
 export default {
   components: {
     Card,

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Button, { ButtonGroup } from '@rol-ui/button'
+import { Button, ButtonGroup } from '@rol-ui/button'
 
 export default {
   components: {

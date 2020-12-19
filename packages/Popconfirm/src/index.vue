@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Popover from '@rol-ui/popover'
-import Button, { RButtonType } from '@rol-ui/button'
+import { Button, RButtonType } from '@rol-ui/button'
 import Icon from '@rol-ui/icon'
 import { PropType, reactive, toRefs } from 'vue'
 import { IconProps } from '@rol-ui/icon'

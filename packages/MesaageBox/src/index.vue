@@ -101,7 +101,7 @@ import {
   watch,
 } from 'vue'
 import type { RolMessageBoxComponent } from './message-box'
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 import RolInput from '@rol-ui/input'
 import RolIcon from '@rol-ui/icon'
 import Dialog from '@rol-ui/utils/aria-dialog'

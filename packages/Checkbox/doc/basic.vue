@@ -53,21 +53,18 @@
   </div>-->
   <div class="demo-container">
     <rol-checkbox-group v-model="checkedCities">
-      <rol-checkbox-button v-for="city in cities" :label="city" :key="city">{{city}}</rol-checkbox-button>
+      <rol-checkbox-button v-for="city in cities" :label="city" :key="city">{{ city }}</rol-checkbox-button>
     </rol-checkbox-group>
     <!-- <div style="margin-top: 20px">
       <rol-checkbox-group v-model="checkboxGroup2" size="medium">
         <rol-checkbox-button v-for="city in cities" :label="city" :key="city">{{city}}</rol-checkbox-button>
       </rol-checkbox-group>
     </div>-->
-    <div style="margin-top: 20px">
+    <div style="margin-top: 20px;">
       <rol-checkbox-group v-model="checkboxGroup3" size="small">
-        <rol-checkbox-button
-          v-for="city in cities"
-          :label="city"
-          :disabled="city === '北京'"
-          :key="city"
-        >{{city}}</rol-checkbox-button>
+        <rol-checkbox-button v-for="city in cities" :label="city" :disabled="city === '北京'" :key="city">{{
+          city
+        }}</rol-checkbox-button>
       </rol-checkbox-group>
     </div>
   </div>
@@ -80,7 +77,7 @@ import {
   CheckboxGroup as RolCheckboxGroup,
   CheckboxButton as RolCheckboxButton,
 } from '@rol-ui/checkbox'
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 
 const cityOptions = ['上海', '北京', '广州', '深圳']
 export default {

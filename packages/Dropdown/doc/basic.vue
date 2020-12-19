@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import Dropdown, { DropdownMenu, DropdownItem } from '@rol-ui/dropdown'
+import { Dropdown, DropdownMenu, DropdownItem } from '@rol-ui/dropdown'
 // import Button, { ButtonGroup } from '@rol-ui/button'
 export default {
   components: {

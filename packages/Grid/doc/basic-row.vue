@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { Row, RCol } from '@rol-ui/grid'
+import { Row, Col as RCol } from '@rol-ui/grid'
 export default {
   components: {
     Row,

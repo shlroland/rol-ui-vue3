@@ -152,7 +152,7 @@
 <script lang="ts">
 import { computed, defineComponent, inject, PropType, ref, onMounted, reactive, watch } from 'vue'
 import RolInput from '@rol-ui/input'
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
 import { TimePickPanel } from '@rol-ui/time-picker'
 import { PICKER_BASE_PROVIDER, months, DEFAULT_FORMATS_TIME } from '@rol-ui/utils/time-constant'

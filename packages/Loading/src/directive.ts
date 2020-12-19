@@ -95,12 +95,15 @@ const loadingDirective: ObjectDirective = {
       toggleLoading(el, binding)
     }
   },
-}
-
-export default {
-  install(app: App) {
-    app.directive('loading', loadingDirective)
+  unmounted(el) {
+    el?.instance?.close()
   },
 }
 
-export const directive = loadingDirective
+// export default {
+//   install(app: App) {
+//     app.directive('loading', loadingDirective)
+//   },
+// }
+
+export default loadingDirective

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Button from '@rol-ui/button'
+import { Button } from '@rol-ui/button'
 import Message from '@rol-ui/meassage'
 export default {
   components: {

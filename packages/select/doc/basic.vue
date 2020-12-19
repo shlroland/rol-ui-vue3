@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import Select, { SelectOption } from '@rol-ui/select'
+import { Select, SelectOption } from '@rol-ui/select'
 import { defineComponent } from 'vue'
 export default defineComponent({
   components: {

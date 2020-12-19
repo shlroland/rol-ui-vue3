@@ -1,6 +1,6 @@
 <template>
   <rol-button
-    :class="['rol-checkbox-button',{ 'is-checked': isChecked },]"
+    :class="['rol-checkbox-button', { 'is-checked': isChecked }]"
     :size="size"
     :disabled="disabled"
     :style="isChecked ? activeStyle : null"
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
 import { computed, defineComponent, ref } from 'vue'
 import { useCheckbox, useCheckboxGroup } from './useCheckbox'
@@ -112,5 +112,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
+<style></style>

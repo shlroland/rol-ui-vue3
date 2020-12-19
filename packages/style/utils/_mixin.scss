@@ -142,7 +142,7 @@ $B: null;
 
 // BEM
 @mixin bem($block) {
-  $B: $namespace + '-' + $block ;
+  $B: $namespace + '-' + $block !global;
 
   .#{$B} {
     @content;

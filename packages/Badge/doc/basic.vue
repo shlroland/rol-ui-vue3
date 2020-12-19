@@ -34,10 +34,10 @@
 
 <script>
 import RolBadge from '@rol-ui/badge'
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 
 export default {
-    components: {RolBadge,RolButton}
+  components: { RolBadge, RolButton },
 }
 </script>
 

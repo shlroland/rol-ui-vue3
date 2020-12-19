@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Tabs, { TabPane } from '@rol-ui/tabs'
+import { Tabs, TabPane } from '@rol-ui/tabs'
 // import Icon from '@rol-ui/icon'
 export default {
   components: {
@@ -55,7 +55,7 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .demo-container {
   margin-bottom: 40px;
 }

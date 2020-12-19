@@ -102,9 +102,9 @@
 
 <script>
 import { Menu, MenuGroup, Submenu, MenuItem } from '@rol-ui/menu'
-import { Row as RolRow, RCol as RolCol } from '@rol-ui/grid'
+import { Row as RolRow, Col as RolCol } from '@rol-ui/grid'
 import RolIcon from '@rol-ui/icon'
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 
 export default {
   components: {

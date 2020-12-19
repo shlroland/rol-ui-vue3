@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Row as RolRow, RCol } from '@rol-ui/grid'
+import { Row as RolRow, Col as RCol } from '@rol-ui/grid'
 import RolAvatar from '@rol-ui/avatar'
 
 export default defineComponent({

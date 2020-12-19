@@ -15,7 +15,7 @@ import {
   watch,
 } from 'vue'
 import RolPopper from '@rol-ui/popper'
-import RolButton, { RButtonSize } from '@rol-ui/button'
+import { Button as RolButton, RButtonSize } from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
 import { addClass, on, removeClass } from '@rol-ui/utils/dom'
 

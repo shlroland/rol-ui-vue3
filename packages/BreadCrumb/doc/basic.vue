@@ -45,8 +45,8 @@
 </template>
 
 <script lang="ts">
-import { Breadcrumb, BreadcrumbItem } from '@rol-ui/breadcrumb'
-// import Icon from '@rol-ui/icon'
+import { Breadcrumb, BreadcrumbItem } from '../index'
+
 export default {
   components: {
     Breadcrumb,

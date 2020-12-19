@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import RolProgress from '@rol-ui/progress'
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 
 export default {
   components: {

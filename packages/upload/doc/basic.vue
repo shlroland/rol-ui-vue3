@@ -84,7 +84,7 @@
 
 <script lang="ts">
 import RolUpload from '@rol-ui/upload'
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
 import message from '@rol-ui/meassage'
 

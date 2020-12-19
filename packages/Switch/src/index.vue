@@ -21,7 +21,7 @@
     />
     <span
       v-if="inactiveValue || inactiveText"
-      :class="['rol-switch__label','rol-switch__label--left',!checked ? 'is-active': '']"
+      :class="['rol-switch__label', 'rol-switch__label--left', !checked ? 'is-active' : '']"
     >
       <span v-if="inactiveText" :aria-hidden="checked">{{ inactiveText }}</span>
     </span>
@@ -30,7 +30,7 @@
     </span>
     <span
       v-if="activeIconClass || activeText"
-      :class="['rol-switch__label','rol-switch__label--right',checked ? 'is-active': '']"
+      :class="['rol-switch__label', 'rol-switch__label--right', checked ? 'is-active' : '']"
     >
       <span v-if="!activeIconClass && activeText" :aria-hidden="!checked">{{ activeText }}</span>
     </span>
@@ -160,15 +160,13 @@ export default defineComponent({
       !switchDisabled.value && handleChange()
     }
 
-    watch(checked, () => {
-      input.value.checked = Boolean(checked.value)
-
-      if (props.activeColor || props.inactiveValue) {
-        setBackgroundColor()
-      }
-    })
-
     onMounted(() => {
+      watch(checked, () => {
+        input.value.checked = Boolean(checked.value)
+        if (props.activeColor || props.inactiveValue) {
+          setBackgroundColor()
+        }
+      })
       coreWidth.value = coreWidth.value || 40
       if (props.activeValue || props.inactiveValue) {
         setBackgroundColor()
@@ -188,5 +186,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
+<style></style>

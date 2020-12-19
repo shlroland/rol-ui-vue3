@@ -11,7 +11,7 @@
 
 <script>
 import Popconfirm from '@rol-ui/popconfirm'
-import Button from '@rol-ui/button'
+import { Button } from '@rol-ui/button'
 
 export default {
   components: {

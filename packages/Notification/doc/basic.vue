@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Button from '@rol-ui/button'
+import { Button } from '@rol-ui/button'
 import Notification from '@rol-ui/notification'
 export default {
   components: {

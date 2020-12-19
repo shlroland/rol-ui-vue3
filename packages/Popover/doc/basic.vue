@@ -16,7 +16,7 @@
 
 <script>
 import Popover from '@rol-ui/popover'
-import Button from '@rol-ui/button'
+import { Button } from '@rol-ui/button'
 
 export default {
   components: {

@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, ref, watch, computed } from 'vue'
-import RolSelect, { SelectOption as RolSelectOption } from '@rol-ui/select'
+import { Select as RolSelect, SelectOption as RolSelectOption } from '@rol-ui/select'
 import isEqual from 'lodash/isEqual'
 
 export default defineComponent({

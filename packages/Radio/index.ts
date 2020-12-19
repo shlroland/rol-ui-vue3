@@ -1,3 +1,16 @@
-export { default as Radio } from './src/radio.vue'
-export { default as RadioGroup } from './src/radio-group.vue'
-export { default as RadioButton } from './src/radio-button.vue'
+import Radio from './src/radio.vue'
+import RadioGroup from './src/radio-group.vue'
+import RadioButton from './src/radio-button.vue'
+import { App } from 'vue'
+
+Radio.install = (app: App): void => {
+  app.component(Radio.name, Radio)
+}
+RadioGroup.install = (app: App): void => {
+  app.component(RadioGroup.name, RadioGroup)
+}
+RadioButton.install = (app: App): void => {
+  app.component(RadioButton.name, RadioButton)
+}
+
+export { Radio, RadioGroup, RadioButton }

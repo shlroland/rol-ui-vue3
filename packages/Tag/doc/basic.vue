@@ -82,12 +82,18 @@
 
   <div style="margin-top: 50px;">
     <TagsAddons mode="badge" left-text="npm" right-text="good" right-type="success"></TagsAddons>
-    <TagsAddons v-show="labelVisible" mode="blog" left-text="Alex" left-type="danger" @close="labelVisible = false"></TagsAddons>
+    <TagsAddons
+      v-show="labelVisible"
+      mode="blog"
+      left-text="Alex"
+      left-type="danger"
+      @close="labelVisible = false"
+    ></TagsAddons>
   </div>
 </template>
 
 <script lang="ts">
-import Tag, { Tags, TagsAddons } from '@rol-ui/tag'
+import { Tag, Tags, TagsAddons } from '@rol-ui/tag'
 
 export default {
   components: {

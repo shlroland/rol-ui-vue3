@@ -1,6 +1,6 @@
 <template>
   <rol-button
-    :class="['rol-radio-button',{ 'is-active': value === label }]"
+    :class="['rol-radio-button', { 'is-active': value === label }]"
     :style="value === label ? activeStyle : null"
     role="radio"
     :size="size"
@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import RolButton from '@rol-ui/button'
+import { Button as RolButton } from '@rol-ui/button'
 import { useRadio } from '@rol-ui/radio/src/useRadio'
 import { useRadioAttrs } from '@rol-ui/radio/src/useRadio'
 
@@ -98,5 +98,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
+<style></style>

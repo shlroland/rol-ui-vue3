@@ -828,7 +828,7 @@ $B: null;
 
 // BEM
 @mixin bem($block) {
-  $B: $namespace + '-' + $block ;
+  $B: $namespace + '-' + $block !global;
 
   .#{$B} {
     @content;
@@ -4147,90 +4147,8 @@ $message-colors: $colors;
   }
 }
 
-$alert-background: $background !default;
-$alert-padding: $size-8 $size-6 !default;
-$alert-border-radius: 4px !default;
-$alert-title-font-size: $font-size-small !default;
-$alert-description-font-size: $font-size-extra-small !default;
-$alert-colors: $colors;
-@include bem(alert) {
-  width: 100%;
-  padding: $alert-padding;
-  margin: 0;
-  box-sizing: border-box;
-  border-radius: $alert-border-radius;
-  position: relative;
-  background-color: $alert-background;
-  overflow: hidden;
-  opacity: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: opacity 0.2s;
-  @include when(center) {
-    justify-content: center;
-  }
-
-  @each $name, $pair in $alert-colors {
-    $color: nth($pair, 1);
-    $color-invert: nth($pair, 2);
-    @include modify(#{$name}) {
-      background-color: $color;
-      color: $color-invert;
-      .rol-alert__description {
-        color: $color-invert;
-      }
-      // If light and dark colors are provided
-      @if length($pair) >= 4 {
-        $color-light: nth($pair, 3);
-        $color-dark: nth($pair, 4);
-        &.is-light {
-          background-color: $color-light;
-          color: $color-dark;
-          .rol-alert__description {
-            color: $color-dark;
-          }
-        }
-      }
-    }
-  }
-
-  @include e(content) {
-    display:table-cell;
-    padding: 0 $size-8
-  }
-
-  @include e(title) {
-    font-size: $alert-title-font-size;
-    line-height: 1.1;
-    align-items: center;
-    justify-content: center;
-    @include when(bold) {
-      font-weight: bold;
-    }
-  }
-
-  & .rol-alert__description {
-    font-size: $alert-description-font-size;
-    margin: 5px 0 0 0;
-  }
-
-  @include e(closebtn) {
-    @extend %delete;
-    font-size: $font-size-extra-small;
-    opacity: 1;
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    cursor: pointer;
-  }
-}
-
-.rol-alert-fade-enter-from,
-.rol-alert-fade-leave-active {
-  opacity: 0;
-}
-
+/*** IMPORTED FILE NOT FOUND ***/
+@import './components/alert';/*** --- ***/
 $loading-spinner-size: 42px !default;
 $loading-fullscreen-spinner-size: 50px !default;
 

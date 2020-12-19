@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import Button from '@rol-ui/Button'
+import { Button } from '@rol-ui/Button'
 
 export default {
   components: {

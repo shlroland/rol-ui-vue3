@@ -9,7 +9,7 @@
 
 <script>
 import Tooltip from '@rol-ui/tooltip'
-import Button from '@rol-ui/button'
+import { Button } from '@rol-ui/button'
 
 export default {
   components: {
