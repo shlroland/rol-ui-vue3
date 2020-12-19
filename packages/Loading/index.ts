@@ -2,7 +2,7 @@
 // export { default, directive } from './src/directive'
 // export { default as service } from './src/service'
 import { App } from 'vue'
-import LoadingIns from './src/index'
+import LoadingIns from './src/index.vue'
 import vLoading from './src/directive'
 import LoadingService from './src/service'
 

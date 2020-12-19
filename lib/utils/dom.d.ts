@@ -1,0 +1,12 @@
+export declare const on: (element: HTMLElement | Document | Window, event: string, handler: EventListenerOrEventListenerObject, useCapture?: boolean) => void;
+export declare const off: (element: HTMLElement | Document | Window, event: string, handler: EventListenerOrEventListenerObject) => void;
+export declare const once: (el: HTMLElement, event: string, fn: EventListener) => void;
+export declare function hasClass(el: HTMLElement, cls: string): boolean;
+export declare function addClass(el: HTMLElement, cls: string): void;
+export declare function removeClass(el: HTMLElement, cls: string): void;
+export declare const getStyle: (element: HTMLElement, styleName: string) => any;
+export declare const stop: (e: Event) => void;
+export declare const isScroll: (el: HTMLElement, isVertical?: Nullable<boolean>) => RegExpMatchArray;
+export declare const getScrollContainer: (el: HTMLElement, isVertical?: Nullable<boolean>) => Window | HTMLElement;
+export declare const isInContainer: (el: HTMLElement, container: HTMLElement) => boolean;
+export declare const stopPropagation: (e: Event) => void;

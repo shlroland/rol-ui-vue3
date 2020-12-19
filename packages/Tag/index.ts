@@ -4,7 +4,7 @@
 import { App } from 'vue'
 import Tag from './src/tag.vue'
 import Tags from './src/tags.vue'
-import TagsAddons from './src/tags-addons'
+import TagsAddons from './src/tags-addons.vue'
 
 Tag.install = (app: App) => {
   app.component(Tag.name, Tag)

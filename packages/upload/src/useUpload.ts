@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { PropType, computed, watch, onBeforeUnmount } from 'vue'
 import { ListType, PFileResultHandler, RolUploadFile, RolUploadFileMap, UploadPropsType, UploadStatus } from './upload'
 import { NOOP } from '@vue/shared'
-import Uppy, { Restrictions, UppyFile, UppyOptions } from '@uppy/core'
-import XHRUpload from '@uppy/xhr-upload'
+import { Restrictions, UppyFile, UppyOptions, DefaultPluginOptions } from '@uppy/core'
+const { Uppy } = require('@uppy/core')
+const { XHRUpload } = require('@uppy/xhr-upload')
+// import XHRUpload from '@uppy/xhr-upload'
 
 export const uploadProps = {
   action: {
@@ -40,7 +43,7 @@ export const uploadProps = {
   },
   beforeUpload: {
     type: Function,
-    default: () => true,
+    default: null,
   },
   beforeRemove: {
     type: Function,
@@ -126,14 +129,14 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
     }
   }
 
-  const xhrOptions = computed(() => {
+  const xhrOptions = computed<Partial<DefaultPluginOptions>>(() => {
     return {
       endpoint: options.action,
       withCredentials: options.withCredentials,
       limit: options.limit,
       headers: options.headers,
       fieldName: options.name,
-    }
+    } as Partial<DefaultPluginOptions>
   })
 
   const uppyOptions = computed<UppyOptions>(() => {
@@ -148,13 +151,13 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
     }
   })
 
-  const uppy = Uppy({ ...uppyOptions.value }).use(XHRUpload, { ...xhrOptions.value })
+  const uppy = new Uppy({ ...uppyOptions.value }).use(XHRUpload, { ...xhrOptions.value })
 
   uppy.on('file-added', (file: UppyFile<{ url: string }>) => {
     fileMap[file.id] = Object.assign<UppyFile, { status: UploadStatus; url: string }>(file, {
       status: 'ready',
       url: handleConvertBlobUrl(file),
-    })
+    }) as RolUploadFile
   })
 
   uppy.on('upload-progress', (file: RolUploadFile, progress) => {
@@ -187,8 +190,8 @@ export const useUpload = (options: UploadPropsType, emit, fileMap: RolUploadFile
     emit('restriction-failed', error, uppy.getFiles())
   })
 
-  watch(xhrOptions, newval => {
-    uppy.getPlugin('XHRUpload').setOptions(newval)
+  watch(xhrOptions, newVal => {
+    uppy.getPlugin('XHRUpload').setOptions(newVal)
   })
 
   watch(uppyOptions, newVal => {

@@ -1,0 +1,17 @@
+import { ComponentInternalInstance, Ref } from 'vue';
+import { AnyFunction } from './types';
+export declare type PartialCSSStyleDeclaration = Partial<Pick<CSSStyleDeclaration, 'transform' | 'transition' | 'animation'>>;
+export declare const clearTimer: (timer: Ref<TimeoutHandle>) => void;
+export declare const isValidWidthUnit: (val: string) => boolean;
+export declare const generateId: () => number;
+export declare const isBool: (val: unknown) => boolean;
+export declare const isNumber: (val: unknown) => boolean;
+export declare const isHTMLElement: (val: unknown) => boolean;
+export declare const coerceTruthyValueToArray: (arr: any) => any[];
+export declare const escapeRegexpString: (value?: string) => string;
+export declare const entries: <T>(obj: Indexable<T>) => [string, T][];
+export declare const rafThrottle: <T extends AnyFunction<any>>(fn: T) => AnyFunction<void>;
+export declare const autoprefixer: (style: PartialCSSStyleDeclaration) => PartialCSSStyleDeclaration;
+export declare const initDropdownDomEvent: (dropdownChildren: ComponentInternalInstance, triggerElm: HTMLButtonElement, _instance: any) => void;
+export declare function toObject<T>(arr: Array<T>): Record<string, T>;
+export declare const getValueByPath: (obj: any, paths?: string) => unknown;
