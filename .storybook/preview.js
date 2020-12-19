@@ -1,1 +1,1 @@
-// import '../packages/style/index.scss'
+// import '../packages/style/_index.scss'

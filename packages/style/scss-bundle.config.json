@@ -1,0 +1,8 @@
+{
+  "bundlerOptions": {
+    "entryFile": "./index.scss",
+    "rootDir": "packages/style",
+    "outFile": "./lib/scss/index.scss",
+    "logLevel": "silent"
+  }
+}

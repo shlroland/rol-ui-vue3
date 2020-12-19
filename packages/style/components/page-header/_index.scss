@@ -2,7 +2,6 @@
   display: flex;
   line-height: 24px;
   @include e(left) {
-    @debug &;
     display: flex;
     cursor: pointer;
     margin-right: 40px;

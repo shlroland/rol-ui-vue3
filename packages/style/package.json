@@ -1,0 +1,28 @@
+{
+  "name": "rol-ui-style",
+  "version": "1.0.0",
+  "description": "rol-ui default style",
+  "main": "lib/index.css",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "gulp build && scss-bundle -c ./scss-bundle.config.json",
+    "bundle": "scss-bundle -c ./scss-bundle.config.json"
+  },
+  "keywords": [
+    "rol-ui",
+    "style",
+    "scss",
+    "css"
+  ],
+  "author": "shlroland",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-dart-sass": "^1.0.2",
+    "gulp-rename": "^2.0.0",
+    "scss-bundle": "^3.1.2"
+  }
+}

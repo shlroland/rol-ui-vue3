@@ -1,5 +1,5 @@
 @import './initial-variables';
-
+$B: null;
 @mixin clearfix {
   &::after {
     clear: both;
@@ -142,7 +142,7 @@
 
 // BEM
 @mixin bem($block) {
-  $B: $namespace + '-' + $block !global;
+  $B: $namespace + '-' + $block ;
 
   .#{$B} {
     @content;
@@ -150,7 +150,7 @@
 }
 
 @mixin e($element) {
-  $E: $element !global;
+  //$E: $element !global;
   $selector: &;
   $currentSelector: '';
   @each $unit in $element {

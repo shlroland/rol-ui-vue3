@@ -7,43 +7,43 @@
 @import './utils/control';
 @import './utils/functions';
 @import './utils/popup';
-@import './utils//supprot';
+@import './utils/supprot';
 
 // components
-@import './components/button'; // button
-@import './components/grid'; // grid
-@import './components/icon'; //icon
-@import './components/layout'; // layout
-@import './components/modal'; // modal
-@import './components/scrollbar';
-@import './components/tabs';
-@import './components/popper';
-@import './components/transition';
-@import './components/popover';
-@import './components/popconfirm';
-@import './components/card';
-@import './components/image';
-@import './components/carousel';
-@import './components/collapse';
-@import './components/divider';
-@import './components/breadcrumb';
-@import './components/dropdown';
-@import './components/page-header';
-@import './components/notification';
-@import './components/message';
-@import './components/alert';
-@import './components/loading';
-@import './components/message-box';
-@import './components/input';
-@import './components/tag';
-@import './components/select';
-@import './components/pagination';
-@import './components/menu';
-@import './components/progress';
-@import './components/upload';
-@import './components/switch';
-@import './components/badge';
-@import './components/avatar';
-@import './components/time-date-picker';
-@import './components/checkbox';
-@import './components/radio';
+@import './components/button/index'; // button
+@import './components/grid/index'; // grid
+@import './components/icon/index'; //icon
+@import './components/layout/index'; // layout
+@import './components/modal/index'; // modal
+@import './components/scrollbar/index';
+@import './components/tabs/index';
+@import './components/popper/index';
+@import './components/transition/index';
+@import './components/popover/index';
+@import './components/popconfirm/index';
+@import './components/card/index';
+@import './components/image/index';
+@import './components/carousel/index';
+@import './components/collapse/index';
+@import './components/divider/index';
+@import './components/breadcrumb/index';
+@import './components/dropdown/index';
+@import './components/page-header/index';
+@import './components/notification/index';
+@import './components/message/index';
+@import 'components/alert/index';
+@import './components/loading/index';
+@import './components/message-box/index';
+@import './components/input/index';
+@import './components/tag/index';
+@import './components/select/index';
+@import './components/pagination/index';
+@import './components/menu/index';
+@import './components/progress/index';
+@import './components/upload/index';
+@import './components/switch/index';
+@import './components/badge/index';
+@import './components/avatar/index';
+@import './components/time-date-picker/index';
+@import './components/checkbox/index';
+@import './components/radio/index';
