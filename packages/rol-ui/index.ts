@@ -225,3 +225,7 @@ export {
   RolNotification,
   install,
 }
+
+export default {
+  install,
+}

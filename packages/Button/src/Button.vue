@@ -117,11 +117,8 @@ export default defineComponent({
     autofocus: Boolean,
     selected: Boolean,
   },
-  // setup(props) {
-  //   console.log(1)
-  //   // const IconSize = () {
-  //   //   sw
-  //   // }
+  // setup(props,) {
+  //
   // },
 })
 </script>

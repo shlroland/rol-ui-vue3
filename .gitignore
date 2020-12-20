@@ -5,3 +5,5 @@ dist
 /.idea
 *.log
 /packages/style/lib/
+/lib
+*.lock
