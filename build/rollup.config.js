@@ -26,7 +26,7 @@ export default [
       typescript({
         tsconfigOverride: {
           include: ['packages/**/*', 'typings/shims-vue.d.ts'],
-          exclude: ['node_modules', 'packages/**/__tests__/*'],
+          exclude: ['node_modules', 'packages/**/__tests__/*','packages/**/doc/*'],
         },
         abortOnError: false,
       }),

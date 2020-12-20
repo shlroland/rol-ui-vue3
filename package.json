@@ -14,7 +14,8 @@
     "build": "yarn build:esm && yarn build:style",
     "build:esm": "rollup --config ./build/rollup.config.js",
     "build:style": "rimraf packages/style/lib && yarn lerna run --scope rol-ui-style build && cp-cli packages/style/lib lib/style && rimraf packages/style/lib",
-    "build:lib": "cross-env LIBMODE=core webpack --config ./build/webpack.config.js"
+    "build:lib": "cross-env LIBMODE=core webpack --config ./build/webpack.config.js",
+    "build:type": "node build/gen-type.js"
   },
   "dependencies": {
     "dayjs": "1.x",
