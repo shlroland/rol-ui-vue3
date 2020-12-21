@@ -2,7 +2,7 @@ import { computed, nextTick, onMounted, ref, SetupContext, watch } from 'vue'
 import { isServer } from '@rol-ui/utils/is$'
 import { clearTimer } from '@rol-ui/utils/util'
 import { useModalEvent } from '@rol-ui/hooks'
-import useLockScreen from '@rol-ui/hooks/useLockScreen'
+import { useLockScreen } from '@rol-ui/hooks'
 import { UPDATE_VISIBLE_EVENT } from '@rol-ui/utils/constants'
 
 interface UseModalProps {

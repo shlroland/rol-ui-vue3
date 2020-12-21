@@ -56,7 +56,10 @@ const config = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   externals,
-  plugins: [new VueLoaderPlugin(), new BundleAnalyzerPlugin()],
+  plugins: [
+    new VueLoaderPlugin(),
+    // new BundleAnalyzerPlugin()
+  ],
   optimization: {
     minimize: true,
     minimizer: [new TerserWebpackPlugin()],

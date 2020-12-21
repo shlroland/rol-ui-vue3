@@ -94,10 +94,9 @@
       @change="handleChange"
       @keydown="handleKeydown"
     ></textarea>
-    <span
-      v-if="isWordLimitVisible && type === 'textarea'"
-      class="rol-input__count"
-    >{{ textLength }}/{{ upperLimit }}</span>
+    <span v-if="isWordLimitVisible && type === 'textarea'" class="rol-input__count"
+      >{{ textLength }}/{{ upperLimit }}</span
+    >
   </div>
 </template>
 
@@ -106,7 +105,7 @@ import { computed, getCurrentInstance, nextTick, onMounted, onUpdated, PropType,
 import { isObject } from '@vue/shared'
 import Icon from '@rol-ui/icon'
 import { UPDATE_MODELVALUE_EVENT } from '@rol-ui/utils/constants'
-import useAttrs from '@rol-ui/hooks/useAttrs'
+import { useAttrs } from '@rol-ui/hooks'
 import { isKorean, isServer } from '@rol-ui/utils/is$'
 import calcTextareaHeight from './calcTextareaHeight'
 
@@ -138,9 +137,9 @@ export default {
       default: 'text',
     },
     size: {
-      type: String as PropType<'large' | 'medium' | 'small' | 'mini' >,
+      type: String as PropType<'large' | 'medium' | 'small' | 'mini'>,
       default: 'normal',
-      validator: (val: string) =>  ['large', 'medium', 'small', 'mini','normal'].includes(val),
+      validator: (val: string) => ['large', 'medium', 'small', 'mini', 'normal'].includes(val),
     },
     resize: {
       type: String as PropType<'none' | 'both' | 'horizontal' | 'vertical'>,
@@ -176,7 +175,7 @@ export default {
       default: false,
     },
     suffixIcon: {
-      type: [Object, Array, String] ,
+      type: [Object, Array, String],
       default: '',
     },
     prefixIcon: {
@@ -196,7 +195,7 @@ export default {
       default: true,
     },
   },
-  emits: ['mouseenter', 'mouseleave', 'input', 'change', 'blur', 'focus', 'clear', UPDATE_MODELVALUE_EVENT,'keydown'],
+  emits: ['mouseenter', 'mouseleave', 'input', 'change', 'blur', 'focus', 'clear', UPDATE_MODELVALUE_EVENT, 'keydown'],
   setup(props, ctx) {
     const instance = getCurrentInstance()
     const attrs = useAttrs(true)
@@ -360,10 +359,10 @@ export default {
     const handleCompositionUpdate = (event: CompositionEvent) => {
       const text = (event.target as HTMLInputElement).value
       const lastCharacter = text[text.length - 1] || ''
-       isComposing.value = !isKorean(lastCharacter)
+      isComposing.value = !isKorean(lastCharacter)
     }
 
-    const handleCompositionEnd = (event:InputEvent) => {
+    const handleCompositionEnd = (event: InputEvent) => {
       if (isComposing.value) {
         isComposing.value = false
         handleInput(event)
@@ -377,7 +376,7 @@ export default {
     }
 
     const handlePasswordVisible = () => {
-        // debugger
+      // debugger
       passwordVisible.value = !passwordVisible.value
       focus()
     }

@@ -62,6 +62,9 @@ import RolTimePicker from '@rol-ui/time-picker'
 import RolTooltip from '@rol-ui/tooltip'
 import RolUpload from '@rol-ui/upload'
 import { InstallOptions } from '@rol-ui/utils/config'
+import { version as version_ } from './version'
+
+const version = version_
 
 let $ROLUI = {} as InstallOptions
 const setConfig = (option: InstallOptions): void => {
@@ -224,8 +227,10 @@ export {
   RolMessage,
   RolNotification,
   install,
+  version,
 }
 
 export default {
   install,
+  version,
 }

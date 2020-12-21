@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts">
-import usePopup from '@rol-ui/hooks/usePopup'
+import { usePopup } from '@rol-ui/hooks'
 import {
   computed,
   defineComponent,

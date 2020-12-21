@@ -30,7 +30,7 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeUnmount, onMounted, PropType, ref, watch } from 'vue'
 import { isString } from '@vue/shared'
-import useAttrs from '@rol-ui/hooks/useAttrs'
+import { useAttrs } from '@rol-ui/hooks'
 import { isHtmlEle, isServer, isSupportObjectFit } from '@rol-ui/utils/is$'
 import { getScrollContainer, isInContainer, off, on } from '@rol-ui/utils/dom'
 import throttle from 'lodash/throttle'
