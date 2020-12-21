@@ -1,6 +1,6 @@
 {
   "name": "rol-ui-style",
-  "version": "1.0.0",
+  "version": "1.1.0-alpha.0",
   "description": "rol-ui default style",
   "main": "lib/index.css",
   "files": [

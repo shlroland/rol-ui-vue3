@@ -1,6 +1,6 @@
 {
   "name": "@rol-ui/utils",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "license": "MIT",
   "peerDependencies": {
     "vue": "^3.0.0"

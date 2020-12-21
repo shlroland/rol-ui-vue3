@@ -1,7 +1,7 @@
 {
   "name": "@rol-ui/popconfirm",
   "description": "This is a internal util repo for components like tooltip and others",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "main": "dist/index.js",
   "license": "MIT",
   "peerDependencies": {
