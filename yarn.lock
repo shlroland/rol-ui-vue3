@@ -19115,7 +19115,7 @@ vue@^3.0.0-rc.5:
     "@vue/runtime-dom" "3.0.0-rc.11"
     "@vue/shared" "3.0.0-rc.11"
 
-vue@^3.0.3:
+vue@^3.0.3, vue@^3.0.4:
   version "3.0.4"
   resolved "https://registry.npm.taobao.org/vue/download/vue-3.0.4.tgz?cache=0&sync_timestamp=1606946259454&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue%2Fdownload%2Fvue-3.0.4.tgz#872c65c143f5717bd5387c61613d9f55f4cc0f43"
   integrity sha1-hyxlwUP1cXvVOHxhYT2fVfTMD0M=
