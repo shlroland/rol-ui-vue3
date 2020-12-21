@@ -7,3 +7,9 @@ dist
 /packages/style/lib/
 /lib
 *.lock
+.vscode
+.idea
+yarn-error.log
+lerna-debug.json
+lerna-debug.log
+packages/rol-ui/version.ts

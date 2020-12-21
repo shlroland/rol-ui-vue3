@@ -12,5 +12,6 @@
   "dependencies": {
     "@uppy/core": "^1.14.0",
     "@uppy/xhr-upload": "^1.6.6"
-  }
+  },
+  "gitHead": "74ff39e3f315b57379f5ae61e5004ed6fc0f4881"
 }

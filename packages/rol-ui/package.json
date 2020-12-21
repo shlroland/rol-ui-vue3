@@ -42,5 +42,6 @@
     "@rol-ui/tooltip": "^0.1.0-alpha.0",
     "@rol-ui/upload": "^0.1.0-alpha.0",
     "@rol-ui/utils": "^0.1.0-alpha.0"
-  }
+  },
+  "gitHead": "74ff39e3f315b57379f5ae61e5004ed6fc0f4881"
 }

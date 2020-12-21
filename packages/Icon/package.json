@@ -14,5 +14,6 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
     "@fortawesome/free-regular-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1"
-  }
+  },
+  "gitHead": "74ff39e3f315b57379f5ae61e5004ed6fc0f4881"
 }

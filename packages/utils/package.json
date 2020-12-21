@@ -10,5 +10,6 @@
   },
   "dependencies": {
     "resize-observer-polyfill": "^1.5.1"
-  }
+  },
+  "gitHead": "74ff39e3f315b57379f5ae61e5004ed6fc0f4881"
 }
