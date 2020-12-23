@@ -99,7 +99,7 @@ export default defineComponent({
     })
     const style = computed(() => {
       const gutter = scrollbarWidth()
-      let styleObj = {} as Record<string, string> | string
+      let styleObj:any = props.wrapStyle
       if (gutter) {
         const gutterWith = `-${gutter}px`
         const gutterStyle = `margin-bottom: ${gutterWith}; margin-right: ${gutterWith};`
@@ -113,6 +113,7 @@ export default defineComponent({
           styleObj = gutterStyle
         }
       }
+
       return styleObj
     })
 

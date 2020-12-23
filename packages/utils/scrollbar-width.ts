@@ -12,7 +12,7 @@ export default function (): number {
   outer.style.width = '100px'
   outer.style.position = 'absolute'
   outer.style.top = '-0px'
-  outer.style.backgroundColor = 'ref'
+  outer.style.backgroundColor = 'red'
   document.body.appendChild(outer)
 
   const widthNoScroll = outer.offsetWidth
