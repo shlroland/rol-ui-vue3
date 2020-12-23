@@ -21,9 +21,11 @@ if (!isFullMode) {
     {
       '@popperjs/core': '@popperjs/core',
       mitt: 'mitt',
+      'resize-observer-polyfill': 'resize-observer-polyfill',
     },
     /^dayjs.*/,
     /^lodash.*/,
+    /^@fortawesome.*/,
   )
 }
 
