@@ -13,3 +13,4 @@ yarn-error.log
 lerna-debug.json
 lerna-debug.log
 packages/rol-ui/version.ts
+yarn-error.log
