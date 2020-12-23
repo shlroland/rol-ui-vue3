@@ -60,7 +60,7 @@
 <script lang="ts">
 import { ComponentPublicInstance, computed, defineComponent, nextTick, onMounted, Ref, ref, watch } from 'vue'
 import RolScrollbar from '@rol-ui/scrollbar'
-import { Dayjs } from 'dayjs'
+import dayjs from 'dayjs/esm'
 import { getTimeLists } from './useTimePicker'
 import { on } from '@rol-ui/utils/dom'
 import { rafThrottle } from '@rol-ui/utils/util'
@@ -82,7 +82,7 @@ export default defineComponent({
       required: true,
     },
     spinnerDate: {
-      type: Dayjs,
+      type: dayjs.Dayjs,
       required: true,
     },
     showSeconds: {

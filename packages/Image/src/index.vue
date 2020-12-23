@@ -33,7 +33,7 @@ import { isString } from '@vue/shared'
 import { useAttrs } from '@rol-ui/hooks'
 import { isHtmlEle, isServer, isSupportObjectFit } from '@rol-ui/utils/is$'
 import { getScrollContainer, isInContainer, off, on } from '@rol-ui/utils/dom'
-import throttle from 'lodash/throttle'
+import { throttle } from 'lodash'
 import ImageViewer from './image-viewer.vue'
 
 enum ObjectFit {

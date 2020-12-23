@@ -33,9 +33,9 @@
 
 <script lang="ts">
 import { computed, PropType, reactive, ref, defineComponent } from 'vue'
-import type { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
 import { coerceTruthyValueToArray } from '@rol-ui/utils/util'
-import dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 import type { DatePickerTableCell } from '../date-picker-types'
 
 const weeks = {

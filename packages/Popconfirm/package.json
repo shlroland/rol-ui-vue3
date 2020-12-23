@@ -2,7 +2,7 @@
   "name": "@rol-ui/popconfirm",
   "description": "This is a internal util repo for components like tooltip and others",
   "version": "0.1.0-alpha.0",
-  "main": "dist/index.js",
+  "main": "index.ts",
   "license": "MIT",
   "peerDependencies": {
     "vue": "^3.0.0"

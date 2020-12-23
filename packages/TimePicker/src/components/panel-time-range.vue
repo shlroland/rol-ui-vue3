@@ -68,10 +68,11 @@
 
 <script lang="ts">
 import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
+import dayjs from 'dayjs/esm'
 import { computed, defineComponent, inject, PropType, ref } from 'vue'
 import TimeSpinner from './time-spinner.vue'
-import union from 'lodash/union'
+import { union } from 'lodash'
 import { getAvaliableArrs } from './useTimePicker'
 import { EVENT_CODE } from '@rol-ui/utils/aria'
 

@@ -4,10 +4,10 @@ import { getValueByPath } from '@rol-ui/utils/util'
 import mitt from 'mitt'
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { PopperVnode, RolSelectCtx, States } from './type'
-import isEqual from 'lodash/isEqual'
-import isUndefined from 'lodash/isUndefined'
-import isNull from 'lodash/isNull'
-import lodashDebounce from 'lodash/debounce'
+import { isEqual } from 'lodash'
+import { isUndefined } from 'lodash'
+import { isNull } from 'lodash'
+import { debounce as lodashDebounce } from 'lodash'
 import { selectEvents } from './token'
 
 export const useSelectStates = (props: { multiple?: boolean }) => {
@@ -456,7 +456,6 @@ export const useSelect = (props: any, states: States, ctx: RolSelectCtx) => {
         hoverOption.value = states.options[val] || {}
       }
       states.options.forEach(option => {
-        console.log(option)
         option.hover = hoverOption.value === option
       })
     },

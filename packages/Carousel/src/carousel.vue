@@ -47,7 +47,7 @@
 import { computed, defineComponent, onMounted, provide, reactive, Ref, ref, ToRefs, UnwrapRef, watch } from 'vue'
 import Icon from '@rol-ui/icon'
 import { RCarouselItemData, RCarouselItemProps } from './carousel-item.vue'
-import throttle from 'lodash/throttle'
+import { throttle } from 'lodash'
 
 interface RCarouselProps {
   initialIndex: number

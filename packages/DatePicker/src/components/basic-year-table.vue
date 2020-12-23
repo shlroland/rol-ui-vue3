@@ -44,7 +44,8 @@
 </template>
 
 <script lang="ts">
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
+import dayjs from 'dayjs/esm'
 import { defineComponent, PropType, computed } from 'vue'
 import { hasClass } from '@rol-ui/utils/dom'
 import { datesInYear } from '@rol-ui/utils/time-utils'

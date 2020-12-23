@@ -41,19 +41,19 @@
                 <span class="rol-select__tags-text">+ {{ selected.length - 1 }}</span>
               </rol-tag>
             </span>
-            <transition-group v-if="!collapseTags" @after-leave="resetInputHeight">
-              <rol-tag
-                v-for="item in selected"
-                :key="getValueKey(item)"
-                :closable="!selectDisabled"
-                :hit="item.hitState"
-                :size="collapseTagSize"
-                disable-transitions
-                @close="deleteTag($event, selected[0])"
-              >
-                <span class="rol-select__tags-text">{{ item.currentLabel }}</span>
-              </rol-tag>
-            </transition-group>
+            <!-- <transition v-if="!collapseTags" @after-leave="resetInputHeight"> -->
+            <rol-tag
+              v-for="item in selected"
+              :key="getValueKey(item)"
+              :closable="!selectDisabled"
+              :hit="item.hitState"
+              :size="collapseTagSize"
+              disable-transitions
+              @close="deleteTag($event, selected[0])"
+            >
+              <span class="rol-select__tags-text">{{ item.currentLabel }}</span>
+            </rol-tag>
+            <!-- </transition> -->
             <input
               v-if="filterable"
               ref="input"
@@ -157,6 +157,7 @@ import {
   getCurrentInstance,
   nextTick,
   onBeforeUnmount,
+  watch,
 } from 'vue'
 import { useSelect, useSelectStates } from './useSelect'
 import Popper from '@rol-ui/popper'
@@ -352,6 +353,10 @@ export default defineComponent({
     if (!props.multiple && Array.isArray(props.modelValue)) {
       ctx.emit(UPDATE_MODELVALUE_EVENT, '')
     }
+
+    watch(selected, val => {
+      console.log(val, props.collapseTags)
+    })
 
     return {
       selectSize,

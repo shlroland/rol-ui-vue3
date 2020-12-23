@@ -1,6 +1,6 @@
-import { App, ComponentInternalInstance, DirectiveBinding, nextTick, ObjectDirective, SetupContext } from 'vue'
+import { ComponentInternalInstance, DirectiveBinding, nextTick, ObjectDirective, SetupContext } from 'vue'
 import Loading from './index.vue'
-import assign from 'lodash/assign'
+import { assign } from 'lodash'
 import { createComponent } from '@rol-ui/utils/component'
 import { removeClass } from '@rol-ui/utils/dom'
 import { addStyle } from './addStyle'

@@ -20,7 +20,7 @@
 <script lang="ts">
 import { defineComponent, inject, ref, watch, computed } from 'vue'
 import { Select as RolSelect, SelectOption as RolSelectOption } from '@rol-ui/select'
-import isEqual from 'lodash/isEqual'
+import { isEqual } from 'lodash'
 
 export default defineComponent({
   name: 'RolSizes',

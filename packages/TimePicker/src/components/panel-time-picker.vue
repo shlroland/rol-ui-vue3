@@ -27,7 +27,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, onMounted, ref } from 'vue'
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
+import dayjs from 'dayjs/esm'
 import TimeSpinner from './time-spinner.vue'
 import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import { getAvaliableArrs } from './useTimePicker'

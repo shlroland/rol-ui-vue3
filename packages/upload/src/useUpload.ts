@@ -3,9 +3,10 @@ import { PropType, computed, watch, onBeforeUnmount } from 'vue'
 import { ListType, PFileResultHandler, RolUploadFile, RolUploadFileMap, UploadPropsType, UploadStatus } from './upload'
 import { NOOP } from '@vue/shared'
 import { Restrictions, UppyFile, UppyOptions, DefaultPluginOptions } from '@uppy/core'
-const { Uppy } = require('@uppy/core')
-const { XHRUpload } = require('@uppy/xhr-upload')
-// import XHRUpload from '@uppy/xhr-upload'
+// const { Uppy } = require('@uppy/core')
+// const { XHRUpload } = require('@uppy/xhr-upload')
+import XHRUpload from '@uppy/xhr-upload'
+import Uppy from '@uppy/core'
 
 export const uploadProps = {
   action: {

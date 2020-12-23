@@ -1,5 +1,5 @@
-import dayjs, { Dayjs } from 'dayjs'
-
+import dayjs from 'dayjs'
+// import type { Dayjs } from 'dayjs/esm'
 export const rangeArr = n => {
   return Array.from(Array(n).keys())
 }
@@ -15,7 +15,11 @@ export const extractTimeFormat = format => {
   return format.replace(/\W?D{1,2}|\W?Do|\W?d{1,4}|\W?M{1,4}|\W?Y{2,4}/g, '').trim()
 }
 
-export const limitTimeRange = (date: Dayjs | string | Date, ranges: Dayjs[][], format = 'HH:mm:ss'): Dayjs => {
+export const limitTimeRange = (
+  date: dayjs.Dayjs | string | Date,
+  ranges: dayjs.Dayjs[][],
+  format = 'HH:mm:ss',
+): dayjs.Dayjs => {
   const ndate = dayjs(date)
   const nranges = ranges.map(range => range.map(item => dayjs(item)))
   if (ranges.length === 0) return ndate

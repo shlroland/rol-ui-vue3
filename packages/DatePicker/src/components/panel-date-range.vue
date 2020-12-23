@@ -203,7 +203,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, PropType, ref, watch } from 'vue'
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
+import dayjs from 'dayjs/esm'
 import { OutSideClick } from '@rol-ui/directives'
 import { DEFAULT_FORMATS_TIME, months, PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import DateTable from './basic-date-table.vue'

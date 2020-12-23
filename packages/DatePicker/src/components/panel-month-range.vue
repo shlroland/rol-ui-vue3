@@ -78,7 +78,8 @@
 </template>
 
 <script lang="ts">
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
+import dayjs from 'dayjs/esm'
 import { computed, defineComponent, inject, PropType, ref, watch } from 'vue'
 import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import MonthTable from './basic-month-table.vue'
