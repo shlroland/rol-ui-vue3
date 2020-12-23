@@ -9,6 +9,10 @@ function webpack(config) {
       rules: [
         ...config.module.rules,
         {
+          test: /\.vue$/,
+          use: 'vue-loader',
+        },
+        {
           test: /\.(sass|scss)$/,
           use: [
             'style-loader',

@@ -1,11 +1,11 @@
 <template>
   <div class="demo-container">
-    <!-- <div>
+    <div>
       <Select v-model="value1" filterable multiple>
         <SelectOption v-for="item in options1" :key="item.value" :label="item.label" :value="item.value"></SelectOption>
       </Select>
     </div>
-    <div> value: {{ value1 }} </div> -->
+    <div> value: {{ value1 }} </div>
     <Select v-model="value" multiple filterable allow-create default-first-option placeholder="请输入关键词">
       <SelectOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </SelectOption>
     </Select>
@@ -56,29 +56,29 @@ export default defineComponent({
         },
       ],
       value: [],
-      // options1: [
-      //   {
-      //     value: '选项1',
-      //     label: '黄金糕',
-      //   },
-      //   {
-      //     value: '选项2',
-      //     label: '双皮奶',
-      //   },
-      //   {
-      //     value: '选项3',
-      //     label: '蚵仔煎',
-      //   },
-      //   {
-      //     value: '选项4',
-      //     label: '龙须面',
-      //   },
-      //   {
-      //     value: '选项5',
-      //     label: '北京烤鸭',
-      //   },
-      // ],
-      // value1: '',
+      options1: [
+        {
+          value: '选项1',
+          label: '黄金糕',
+        },
+        {
+          value: '选项2',
+          label: '双皮奶',
+        },
+        {
+          value: '选项3',
+          label: '蚵仔煎',
+        },
+        {
+          value: '选项4',
+          label: '龙须面',
+        },
+        {
+          value: '选项5',
+          label: '北京烤鸭',
+        },
+      ],
+      value1: '',
       // cities: [
       //   {
       //     value: 'Beijing',

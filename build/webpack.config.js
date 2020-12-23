@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
-const { VueLoaderPlugin } = require('vue-loader-v16')
+const { VueLoaderPlugin } = require('vue-loader')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
