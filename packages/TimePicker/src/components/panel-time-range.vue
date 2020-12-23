@@ -60,7 +60,7 @@
       </div>
       <div class="rol-time-panel__footer">
         <button class="rol-time-panel__btn cancel" @click="handleCancel">取消</button>
-        <button class="rol-time-panel__btn confirm" @click="handleConfirm">确认</button>
+        <button class="rol-time-panel__btn confirm" @click="handleConfirm(false)">确认</button>
       </div>
     </div>
   </transition>

@@ -407,7 +407,6 @@ export default defineComponent({
           }
         })
       } else {
-
         result = date ? date.toDate() : date
       }
       userInput.value = null
@@ -576,6 +575,7 @@ export default defineComponent({
       handleEndInput,
       handleStartChange,
       handleEndChange,
+      pickerOptions,
     }
   },
 })

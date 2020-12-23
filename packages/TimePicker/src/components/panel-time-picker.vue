@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, ref, watch } from 'vue'
+import { computed, defineComponent, inject, onMounted, ref } from 'vue'
 import dayjs, { Dayjs } from 'dayjs'
 import TimeSpinner from './time-spinner.vue'
 import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
@@ -140,7 +140,7 @@ export default defineComponent({
     }
     const setSelectionRange = (start, end) => {
       emit('select-range', start, end)
-      selectionRange.value = [start,end]
+      selectionRange.value = [start, end]
     }
 
     const changeSelectRange = step => {
@@ -189,7 +189,6 @@ export default defineComponent({
       const result = getRangeAvaliableTime(parsedDate)
       return parsedDate.isSame(result)
     }
-
     emit('set-picker-option', ['isValidValue', isValidValue])
     emit('set-picker-option', ['formatToString', formatToString])
     emit('set-picker-option', ['parseUserInput', parseUserInput])
@@ -197,9 +196,9 @@ export default defineComponent({
     emit('set-picker-option', ['getRangeAvaliableTime', getRangeAvaliableTime])
     emit('set-picker-option', ['getDefaultValue', getDefaultValue])
 
-    const comVisible = computed(() => {
-      return props.visible
-    })
+    // const comVisible = computed(() => {
+    //   return props.visible
+    // })
     // watch([popperRef, comVisible], () => {
     //   if (popperRef.value) {
     //     props.getPopperRef(popperRef.value)

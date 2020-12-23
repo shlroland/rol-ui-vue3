@@ -3314,20 +3314,22 @@
   dependencies:
     "@types/node" ">= 8"
 
+<<<<<<< HEAD
 "@polka/url@^1.0.0-next.9":
   version "1.0.0-next.11"
   resolved "https://registry.npm.taobao.org/@polka/url/download/@polka/url-1.0.0-next.11.tgz#aeb16f50649a91af79dbe36574b66d0f9e4d9f71"
   integrity sha1-rrFvUGSaka952+NldLZtD55Nn3E=
+=======
+"@popperjs/core@2.5.3", "@popperjs/core@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.npm.taobao.org/@popperjs/core/download/@popperjs/core-2.5.3.tgz?cache=0&sync_timestamp=1601388025218&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40popperjs%2Fcore%2Fdownload%2F%40popperjs%2Fcore-2.5.3.tgz#4982b0b66b7a4cf949b86f5d25a8cf757d3cfd9d"
+  integrity sha1-SYKwtmt6TPlJuG9dJajPdX08/Z0=
+>>>>>>> fix: fix timepicker
 
 "@popperjs/core@^2.4.4":
   version "2.4.4"
   resolved "https://registry.npm.taobao.org/@popperjs/core/download/@popperjs/core-2.4.4.tgz#11d5db19bd178936ec89cd84519c4de439574398"
   integrity sha1-EdXbGb0XiTbsic2EUZxN5DlXQ5g=
-
-"@popperjs/core@^2.5.3":
-  version "2.5.3"
-  resolved "https://registry.npm.taobao.org/@popperjs/core/download/@popperjs/core-2.5.3.tgz?cache=0&sync_timestamp=1601388025218&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40popperjs%2Fcore%2Fdownload%2F%40popperjs%2Fcore-2.5.3.tgz#4982b0b66b7a4cf949b86f5d25a8cf757d3cfd9d"
-  integrity sha1-SYKwtmt6TPlJuG9dJajPdX08/Z0=
 
 "@reach/router@^1.3.3":
   version "1.3.4"
@@ -4944,6 +4946,20 @@
     namespace-emitter "^2.0.1"
     preact "8.2.9"
 
+"@uppy/core@^1.14.2":
+  version "1.14.2"
+  resolved "https://registry.npmjs.org/@uppy/core/-/core-1.14.2.tgz#b5ff98364cdd95f4aafdfddca3f06cad3b4ac6f7"
+  integrity sha512-sBLEhqFM9aFyE2+30tzPBx7UzdCqbG4ifa/XYbMxrf36dwiELPurFJUDIA3VSxzsbzOVP4sWS1zVBO8w6Q3lNA==
+  dependencies:
+    "@transloadit/prettier-bytes" "0.0.7"
+    "@uppy/store-default" "^1.2.4"
+    "@uppy/utils" "^3.2.5"
+    cuid "^2.1.1"
+    lodash.throttle "^4.1.1"
+    mime-match "^1.0.2"
+    namespace-emitter "^2.0.1"
+    preact "8.2.9"
+
 "@uppy/store-default@^1.2.4":
   version "1.2.4"
   resolved "https://registry.npmjs.org/@uppy/store-default/-/store-default-1.2.4.tgz#480f50cbf23f36158557a42b7699da0cf629d368"
@@ -4961,6 +4977,15 @@
   version "1.6.6"
   resolved "https://registry.npmjs.org/@uppy/xhr-upload/-/xhr-upload-1.6.6.tgz#472bc62a69b53cb172368271fd0dbba9c649f170"
   integrity sha512-TRwhdejSJwaCeFoZzfS2pACxvEunb+VTFD/jz7oA8khaUnXMwGAGVg1rb7Kc21offpoLWQyl+wIeiISwbrDzzQ==
+  dependencies:
+    "@uppy/companion-client" "^1.6.1"
+    "@uppy/utils" "^3.2.5"
+    cuid "^2.1.1"
+
+"@uppy/xhr-upload@^1.6.7":
+  version "1.6.7"
+  resolved "https://registry.npmjs.org/@uppy/xhr-upload/-/xhr-upload-1.6.7.tgz#ed712a1406256e7f825e43cd67b67358bdb41496"
+  integrity sha512-15qOhG4InMWf8bpalqJLIXLU19UtrXNB07X6x6uXS1mZOizKIJONDvsTv+XZwMOc2KkWFIhgZn2w8TjkxEEk2Q==
   dependencies:
     "@uppy/companion-client" "^1.6.1"
     "@uppy/utils" "^3.2.5"
