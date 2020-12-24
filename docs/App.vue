@@ -1,23 +1,19 @@
 <template>
-  <div class="bg-white transition-colors duration-500 dark:bg-gray-800 text-gray-900 dark:text-gray-200"> </div>
-  <rol-select v-model="value1" multiple>
-    <rol-select-option
-      v-for="item in options1"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-    ></rol-select-option>
-  </rol-select>
+  <doc-header></doc-header>
 </template>
 
 <script lang="ts">
+import DocHeader from './components/DocHeader.vue'
 import { ref } from 'vue'
 
 export default {
   name: 'App',
+  components: {
+    DocHeader,
+  },
   setup() {
     const value1 = ref([])
-
+    const value2 = ref('')
     const options1 = ref([
       {
         value: '选项1',
@@ -43,6 +39,7 @@ export default {
 
     return {
       value1,
+      value2,
       options1,
     }
   },
