@@ -1,7 +1,7 @@
 import { ComponentOptions } from 'vue'
 
-// import Intro from '../../README.md'
-// import Button from '../../packages/ui/Button/README.md'
+import Intro from '../../README.md'
+import Button from '../../packages/Button/README.md'
 
 declare type Menu = {
   name: string
@@ -16,11 +16,23 @@ declare type SubMenu = {
 const menuConfig: Array<SubMenu> = [
   {
     name: 'GET STARTED',
-    children: [],
+    children: [
+      {
+        name: 'Introduction',
+        filePath: Intro,
+        path: 'Intro',
+      },
+    ],
   },
   {
     name: 'Components',
-    children: [],
+    children: [
+      {
+        name: 'button',
+        filePath: Button,
+        path: 'button',
+      },
+    ],
   },
 ]
 

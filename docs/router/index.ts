@@ -7,7 +7,7 @@ export default createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/doc/Intro',
+      redirect: '/doc/button',
     },
     {
       path: '/doc',

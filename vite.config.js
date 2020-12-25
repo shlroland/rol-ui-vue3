@@ -1,3 +1,4 @@
+import vitePluginVuedoc from 'vite-plugin-vuedoc'
 export default {
   optimizeDeps: {
     include: [
@@ -13,4 +14,12 @@ export default {
       'dayjs/plugin/customParseFormat',
     ],
   },
+  assetsDir: 'docs/assets',
+  plugins: [
+    vitePluginVuedoc({
+      prism: {
+        theme: 'okaidia',
+      },
+    }),
+  ],
 }

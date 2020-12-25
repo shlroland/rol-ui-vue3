@@ -77,5 +77,5 @@ module.exports = {
       rotate: ['first', 'last', 'odd', 'even'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }
