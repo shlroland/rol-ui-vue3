@@ -1,15 +1,25 @@
 <template>
   <doc-header></doc-header>
+  <div class="w-full max-w-8xl mx-auto">
+    <div class="lg:flex">
+      <doc-sidebar></doc-sidebar>
+      <div class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible">
+        <router-view></router-view>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import DocHeader from './components/DocHeader.vue'
+import DocSidebar from './components/DocSiderbar.vue'
 import { ref } from 'vue'
 
 export default {
   name: 'App',
   components: {
     DocHeader,
+    DocSidebar,
   },
   setup() {
     const value1 = ref([])

@@ -1,6 +1,6 @@
 <template>
-  <div class="pb-16 w-full pt-12 lg:pt-28">
-    <article class="prose max-w-none dark:prose-dark dark:text-gray-100">
+  <div class="w-full flex">
+    <article class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 pt-10 pb-24 lg:pb-16">
       <router-view></router-view>
     </article>
   </div>
