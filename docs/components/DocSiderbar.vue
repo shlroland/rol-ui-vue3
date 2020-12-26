@@ -13,17 +13,31 @@
         class="px-1 pt-6 overflow-y-auto font-medium text-base sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pt-10 lg:pb-14 sticky?lg:h-(screen-18)"
       >
         <ul>
-          <li class="mt-8">
-            <h5
-              :class="['px-3 mb-3 lg:mb-3 uppercase tracking-wide font-semibold text-sm lg:text-xs']"
-            >
-              GETTING STARTED
+          <li v-for="(item, index) in routes" :key="index" class="mt-8">
+            <h5 :class="['px-3 mb-3 lg:mb-3 uppercase tracking-wide font-semibold text-sm lg:text-xs text-gray-400']">
+              {{ item.name }}
             </h5>
             <ul>
-              <li>
-                <a :class="['px-3 py-2 transition-colors duration-200 relative block']">
-                  <span :class="['rounded-md absolute inset-0 bg-cyan-50']"></span>
-                  <span class="relative">Installation</span>
+              <li v-for="(child, childIndex) in item.children" :key="index + childIndex">
+                <a
+                  :class="[
+                    'px-3 py-2 transition-colors duration-200 relative block cursor-pointer',
+                    {
+                      'text-cyan-700': isActive(child.name),
+                      'hover:text-gray-900 text-gray-500': !isActive(child.name),
+                    },
+                  ]"
+                >
+                  <span
+                    :class="[
+                      'bg-cyan-50 rounded-md absolute inset-0 ',
+                      {
+                        'opacity-50': isActive(child.name),
+                        'opacity-0': !isActive(child.name),
+                      },
+                    ]"
+                  ></span>
+                  <span class="relative">{{ child.name }}</span>
                 </a>
               </li>
             </ul>
@@ -34,9 +48,21 @@
   </aside>
 </template>
 <script lang="ts">
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 export default {
   setup() {
-    return {}
+    const { options } = useRouter()
+    const route = useRoute()
+    const routes = ref(options.routes.slice(1))
+    const isActive = (name: string | symbol) => {
+      return name === route.name
+    }
+    console.log(route)
+    return {
+      routes,
+      isActive,
+    }
   },
 }
 </script>
