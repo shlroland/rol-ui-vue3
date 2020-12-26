@@ -1,13 +1,22 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import DocMain from '../components/DocMain.vue'
 import demos from './demo-routes'
+import start from './start-routes'
 
-export default createRouter({
+console.log(demos, start)
+
+const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
       path: '/',
-      redirect: '/doc/button',
+      redirect: '/start/intro',
+    },
+    {
+      path: '/start',
+      name: 'GET STARTED',
+      component: DocMain,
+      children: start,
     },
     {
       path: '/doc',
@@ -16,3 +25,7 @@ export default createRouter({
     },
   ],
 })
+
+console.log(router)
+
+export default router

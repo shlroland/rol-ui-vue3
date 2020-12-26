@@ -1,29 +1,7 @@
-import { ComponentOptions } from 'vue'
-
-import Intro from '../../README.md'
 import Button from '../../packages/Button/README.md'
-
-declare type Menu = {
-  name: string
-  filePath: ComponentOptions
-  path: string
-}
-declare type SubMenu = {
-  name: string
-  children: Array<Menu>
-}
+import { Menu, SubMenu } from './types'
 
 const menuConfig: Array<SubMenu> = [
-  {
-    name: 'GET STARTED',
-    children: [
-      {
-        name: 'Introduction',
-        filePath: Intro,
-        path: 'Intro',
-      },
-    ],
-  },
   {
     name: 'Components',
     children: [
