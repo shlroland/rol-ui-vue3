@@ -369,23 +369,23 @@ $button-colors: $colors !default;
   &:not(:last-child) {
     margin-bottom: 1rem;
   }
-  &.are-small {
-    .rol-button:not(.is-normal):not(.is-medium):not(.is-large) {
-      @include button-small;
-    }
-  }
+  // &.are-small {
+  //   .rol-button:not(.is-normal):not(.is-medium):not(.is-large) {
+  //     @include button-small;
+  //   }
+  // }
 
-  &.are-medium {
-    .rol-button:not(.is-small):not(.is-normal):not(.is-large) {
-      @include button-medium;
-    }
-  }
+  // &.are-medium {
+  //   .rol-button:not(.is-small):not(.is-normal):not(.is-large) {
+  //     @include button-medium;
+  //   }
+  // }
 
-  &.are-large {
-    .rol-button:not(.is-small):not(.is-normal):not(.is-medium) {
-      @include button-large;
-    }
-  }
+  // &.are-large {
+  //   .rol-button:not(.is-small):not(.is-normal):not(.is-medium) {
+  //     @include button-large;
+  //   }
+  // }
   &.has-addons {
     .rol-button {
       &:not(:first-child) {

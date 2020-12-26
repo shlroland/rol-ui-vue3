@@ -2,8 +2,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import RolUI from '../packages/rol-ui/index'
-import '../lib/style/css/index.css'
+import '../packages/style/index.scss'
 import './assets/style/main.css'
+import './assets/style/demo-wrapper.scss'
 // dev mode
 // import ui from "../packages/vitec";
 // import "../packages/theme/index.css";

@@ -74,7 +74,7 @@ export default defineComponent({
           'text',
           'white',
           'light',
-          'Dark',
+          'dark',
           'black',
           '',
         ].includes(val)
@@ -98,7 +98,7 @@ export default defineComponent({
       type: String as PropType<RButtonShapeType>,
       default: '',
       validator: (val: string) => {
-        return ['round', 'circle', ''].includes(val)
+        return ['rounded', 'circle', ''].includes(val)
       },
     },
     icon: {

@@ -7,7 +7,7 @@
       position ? `is-${position}` : '',
     ]"
   >
-    <component :is="item" v-for="(item, index) in defaults" :key="index" />
+    <component :is="item" v-for="(item, index) in defaults" :key="index" :size="groupSize" />
   </div>
 </template>
 
