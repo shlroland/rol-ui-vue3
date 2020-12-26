@@ -19,26 +19,30 @@
             </h5>
             <ul>
               <li v-for="(child, childIndex) in item.children" :key="index + childIndex">
-                <a
-                  :class="[
-                    'px-3 py-2 transition-colors duration-200 relative block cursor-pointer',
-                    {
-                      'text-cyan-700': isActive(child.name),
-                      'hover:text-gray-900 text-gray-500': !isActive(child.name),
-                    },
-                  ]"
-                >
-                  <span
+                <router-link v-slot="{ href, navigate, isExactActive }" :to="`${item.path}/${child.path}`" custom>
+                  <a
                     :class="[
-                      'bg-cyan-50 rounded-md absolute inset-0 ',
+                      'px-3 py-2 transition-colors duration-200 relative block cursor-pointer',
                       {
-                        'opacity-50': isActive(child.name),
-                        'opacity-0': !isActive(child.name),
+                        'text-cyan-700': isExactActive,
+                        'hover:text-gray-900 text-gray-500': !isExactActive,
                       },
                     ]"
-                  ></span>
-                  <span class="relative">{{ child.name }}</span>
-                </a>
+                    :href="href"
+                    @click="navigate"
+                  >
+                    <span
+                      :class="[
+                        'bg-cyan-50 rounded-md absolute inset-0 ',
+                        {
+                          'opacity-50': isExactActive,
+                          'opacity-0': !isExactActive,
+                        },
+                      ]"
+                    ></span>
+                    <span class="relative">{{ child.name }}</span>
+                  </a>
+                </router-link>
               </li>
             </ul>
           </li>
@@ -48,20 +52,15 @@
   </aside>
 </template>
 <script lang="ts">
-import { computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 export default {
   setup() {
     const { options } = useRouter()
-    const route = useRoute()
     const routes = ref(options.routes.slice(1))
-    const isActive = (name: string | symbol) => {
-      return name === route.name
-    }
-    console.log(route)
+
     return {
       routes,
-      isActive,
     }
   },
 }

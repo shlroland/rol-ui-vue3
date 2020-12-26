@@ -1,15 +1,15 @@
-import { Menu, SubMenu } from './types'
+import { routeChild } from './types'
 import Intro from '../../README.md'
 import QuickStart from '../docs/quick-start.md'
 
-const menuConfig = [
+const menuConfig: routeChild[] = [
   {
-    name: 'Introduction(项目介绍)',
+    name: 'Introduction 项目介绍',
     component: Intro,
     path: 'intro',
   },
   {
-    name: 'QuickStart(快速开始)',
+    name: 'QuickStart 快速上手',
     component: QuickStart,
     path: 'quickstart',
   },

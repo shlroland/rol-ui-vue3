@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import DocMain from '../components/DocMain.vue'
-import demos from './demo-routes'
 import start from './start-routes'
+import general from './general-routes'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -17,9 +17,10 @@ const router = createRouter({
       children: start,
     },
     {
-      path: '/doc',
+      path: '/general',
+      name: 'GENERAL COMPONENTS',
       component: DocMain,
-      children: demos,
+      children: general,
     },
   ],
 })

@@ -1,4 +1,6 @@
 import vitePluginVuedoc from 'vite-plugin-vuedoc'
+import path from 'path'
+
 export default {
   optimizeDeps: {
     include: [
@@ -22,4 +24,7 @@ export default {
       },
     }),
   ],
+  alias: {
+    '/@packages/': path.resolve(__dirname,'./packages'),
+  },
 }
