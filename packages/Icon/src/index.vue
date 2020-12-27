@@ -9,7 +9,7 @@ import {
   Transform,
   Icon,
 } from '@fortawesome/fontawesome-svg-core'
-import type { FlipProps, IconProps, RotateProps, SizeProps } from './IconType'
+import type { FlipProps, IconProps, PullProps, RotateProps, SizeProps } from './IconType'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
@@ -30,6 +30,11 @@ export default defineComponent({
       type: String as PropType<FlipProps>,
       default: null,
       validator: (value: string) => ['horizontal', 'vertical', 'both'].indexOf(value) > -1,
+    },
+    pull: {
+      type: String as PropType<PullProps>,
+      default: null,
+      validator: (value: string) => ['left', 'right'].indexOf(value) > -1,
     },
     name: {
       type: [Object, Array, String] as PropType<IconProps>,
@@ -116,7 +121,7 @@ export default defineComponent({
   },
 
   render() {
-    return h('i', { class: 'rol-icon' }, [this.node])
+    return h('i', { class: 'rol-icon', style: { display: this.pull ? 'inline' : '' } }, [this.node])
   },
 })
 </script>

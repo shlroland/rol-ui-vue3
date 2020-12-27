@@ -162,7 +162,7 @@ module.exports = {
               backgroundColor: theme('colors.gray.300'),
             },
             a: {
-              color: theme('colors.cyan.700'),
+              color: theme('colors.teal.700'),
               fontWeight: theme('fontWeight.medium'),
               textDecoration: 'none',
               boxShadow: theme('boxShadow.link'),
@@ -188,6 +188,9 @@ module.exports = {
             },
             'code::after': {
               content: '"" !important',
+            },
+            'blockquote > p:first-of-type::before': {
+              content: '""',
             },
             pre: {
               backgroundColor: '-',
