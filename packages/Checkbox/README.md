@@ -222,6 +222,60 @@ export default {
 </script>
 ```
 
+## 带有边框
+
+设置 border 属性可以渲染为带有边框的多选框。
+
+```vue demo
+<template>
+  <div>
+    <rol-checkbox v-model="checked1" label="备选项1" border></rol-checkbox>
+    <rol-checkbox v-model="checked2" label="备选项2" border></rol-checkbox>
+  </div>
+  <div class="mt-9">
+    <rol-checkbox v-model="checked3" label="备选项1" border size="medium"></rol-checkbox>
+    <rol-checkbox v-model="checked4" label="备选项2" border size="medium"></rol-checkbox>
+  </div>
+  <div class="mt-9">
+    <rol-checkbox-group v-model="checkboxGroup1" size="small">
+      <rol-checkbox label="备选项1" border></rol-checkbox>
+      <rol-checkbox label="备选项2" border disabled></rol-checkbox>
+    </rol-checkbox-group>
+  </div>
+  <div class="mt-9">
+    <rol-checkbox-group v-model="checkboxGroup2" size="mini" disabled>
+      <rol-checkbox label="备选项1" border></rol-checkbox>
+      <rol-checkbox label="备选项2" border></rol-checkbox>
+    </rol-checkbox-group>
+  </div>
+</template>
+<script>
+import { ref } from 'vue'
+
+const fruits = ['苹果', '樱桃', '橘子', '榴莲']
+
+export default {
+  setup(props) {
+    const checked1 = ref(true)
+    const checked2 = ref(false)
+    const checked3 = ref(false)
+    const checked4 = ref(true)
+    const checkboxGroup1 = ref([])
+    const checkboxGroup2 = ref([])
+
+    return {
+      checked1,
+      checked2,
+      checked3,
+      checked4,
+      checkboxGroup1,
+      checkboxGroup2,
+    }
+  },
+}
+</script>
+```
+
 ### Checkbox Attributes
 
 | 参数            | 说明                                                                  | 类型                      | 可选值                | 默认值 |
