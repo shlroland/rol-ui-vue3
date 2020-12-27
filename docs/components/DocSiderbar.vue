@@ -8,9 +8,9 @@
     <div
       class="h-full overflow-y-auto scrolling-touch lg:h-auto lg:block lg:sticky lg:bg-transparent overflow-hidden lg:top-18 bg-white mr-24 lg:mr-0"
     >
-      <div class="hidden lg:block h-12 pointer-events-none absolute inset-x-0 z-10 bg-gradient-to-b from-white"> </div>
+      <!-- <div class="hidden lg:block h-12 pointer-events-none absolute inset-x-0 z-10 bg-gradient-to-b from-white"> </div> -->
       <nav
-        class="px-1 pt-6 overflow-y-auto font-medium text-base sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pt-10 lg:pb-14 sticky?lg:h-(screen-18)"
+        class="px-1 pt-6 overflow-y-auto font-medium text-base sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pt-10 lg:pb-14 lg:max-h-lg"
       >
         <ul>
           <li v-for="(item, index) in routes" :key="index" class="mt-8">
@@ -24,7 +24,7 @@
                     :class="[
                       'px-3 py-2 transition-colors duration-200 relative block cursor-pointer',
                       {
-                        'text-cyan-700': isExactActive,
+                        'text-green-700': isExactActive,
                         'hover:text-gray-900 text-gray-500': !isExactActive,
                       },
                     ]"
@@ -33,7 +33,7 @@
                   >
                     <span
                       :class="[
-                        'bg-cyan-50 rounded-md absolute inset-0 ',
+                        'bg-green-50 rounded-md absolute inset-0 ',
                         {
                           'opacity-50': isExactActive,
                           'opacity-0': !isExactActive,
