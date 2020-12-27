@@ -61,7 +61,7 @@ export default defineComponent({
       const pos = ['span', 'offset', 'pull', 'push'] as const
       pos.forEach(prop => {
         const size = props[prop]
-        if (typeof size === 'number' && size >= 0) {
+        if (typeof size === 'number' && size > 0) {
           cent.push(
             prop !== 'span'
               ? `rol-col-${prop}-${props[prop]}`

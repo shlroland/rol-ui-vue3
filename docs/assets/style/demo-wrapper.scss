@@ -30,3 +30,29 @@
     @apply rounded h-12 flex justify-center items-center text-white text-2xl font-extrabold;
   }
 }
+
+.layout-wrapper-class {
+  .rol-header,
+  .rol-footer,
+  .rol-aside,
+  .rol-main {
+    @apply flex justify-center items-center text-white text-2xl font-extrabold;
+  }
+
+  .rol-main {
+    @apply h-64;
+  }
+
+  .rol-container {
+    margin-bottom: 40px;
+  }
+
+  .rol-container:nth-child(5) .rol-aside,
+  .rol-container:nth-child(6) .rol-aside {
+    @apply h-80;
+  }
+
+  .rol-container:nth-child(7) .rol-aside {
+    @apply h-96;
+  }
+}
