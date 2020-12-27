@@ -20,52 +20,52 @@ const menuConfig: routeChild[] = [
   {
     name: 'Image 图像',
     component: Image,
-    path: 'grid',
+    path: 'image',
   },
   {
     name: 'Badge 角标',
     component: Badge,
-    path: 'layout',
+    path: 'badge',
   },
   {
     name: 'Tag 标签',
     component: Tag,
-    path: 'layout',
+    path: 'tag',
   },
   {
     name: 'Card 卡片',
     component: Card,
-    path: 'layout',
+    path: 'card',
   },
   {
     name: 'PageHeader 页头',
     component: PageHeader,
-    path: 'layout',
+    path: 'pageHeader',
   },
   {
     name: 'Carousel 轮播',
     component: Carousel,
-    path: 'layout',
+    path: 'carousel',
   },
   {
     name: 'Collapse 折叠面板',
     component: Collapse,
-    path: 'layout',
+    path: 'collapse',
   },
   {
     name: 'Tooltip 文字提示',
     component: Tooltip,
-    path: 'layout',
+    path: 'tooltip',
   },
   {
     name: 'Popover 气泡卡片',
     component: Popover,
-    path: 'layout',
+    path: 'popover',
   },
   {
     name: 'Popconfirm 气泡确认框',
     component: Popconfirm,
-    path: 'layout',
+    path: 'popconfirm',
   },
 ]
 

@@ -5,6 +5,8 @@ import general from './general-routes'
 import layout from './layout-routes'
 import form from './form-routes'
 import data from './data-routes'
+import navigation from './navigation-routes'
+import feedback from './feedback-routes'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -42,6 +44,18 @@ const router = createRouter({
       name: 'DATA COMPONENTS',
       component: DocMain,
       children: data,
+    },
+    {
+      path: '/navigation',
+      name: 'NAVIGATION COMPONENTS',
+      component: DocMain,
+      children: navigation,
+    },
+    {
+      path: '/feedback',
+      name: 'FEEDBACK COMPONENTS',
+      component: DocMain,
+      children: feedback,
     },
   ],
 })

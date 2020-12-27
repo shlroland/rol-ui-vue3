@@ -1,3 +1,17 @@
+/*! @import */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* @layer utilities {
+  .h-sidebar-height {
+    height: calc(100vh - 4.5rem);
+  }
+} */
+
+@media (min-width: 1024px) {
+  .h-sidebar-height {
+    height: calc(100vh - 4.5rem);
+  }
+}

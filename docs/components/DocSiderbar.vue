@@ -10,7 +10,7 @@
     >
       <!-- <div class="hidden lg:block h-12 pointer-events-none absolute inset-x-0 z-10 bg-gradient-to-b from-white"> </div> -->
       <nav
-        class="px-1 pt-6 overflow-y-auto font-medium text-base sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pt-10 lg:pb-14 lg:max-h-lg"
+        class="px-1 pt-6 overflow-y-auto font-medium text-base sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pt-10 lg:pb-14 h-sidebar-height"
       >
         <ul>
           <li v-for="(item, index) in routes" :key="index" class="mt-8">
