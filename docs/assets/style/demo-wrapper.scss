@@ -3,6 +3,7 @@
     .rol-button {
       margin: 5px;
     }
+
     .rol-buttons {
       .rol-button {
         margin: 0;
@@ -17,5 +18,15 @@
       font-size: 26px;
       margin: 5px;
     }
+  }
+}
+
+.grid-wrapper-class {
+  .rol-row {
+    margin: 5px;
+  }
+
+  .content-col {
+    @apply rounded h-12 flex justify-center items-center text-white text-2xl font-extrabold;
   }
 }

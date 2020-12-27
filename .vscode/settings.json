@@ -1,4 +1,7 @@
 {
   "eslint.enable": true,
-  "vue3snippets.enable-compile-vue-file-on-did-save-code": false
+  "vue3snippets.enable-compile-vue-file-on-did-save-code": false,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false
 }

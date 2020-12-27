@@ -12,4 +12,4 @@
 * 🔥 基于Vue3，使用Composition API
 * 🐂 使用TypeScript编写
 * 👍 参考element-ui和element-plus的接口实现
-
+* 🚫 不支持IE
