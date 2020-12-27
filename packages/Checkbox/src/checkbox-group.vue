@@ -25,9 +25,9 @@ export default defineComponent({
       default: undefined,
     },
     size: {
-      type: String as PropType<'normal' | 'medium' | 'small' | 'mini'>,
+      type: String as PropType<'normal' | 'medium' | 'small' | 'mini' | 'large'>,
       default: 'normal',
-      validator: (val: string) => ['medium', 'small', 'mini', 'normal'].includes(val),
+      validator: (val: string) => ['medium', 'small', 'mini', 'normal','large'].includes(val),
     },
     fill: {
       type: String,
@@ -69,5 +69,3 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>

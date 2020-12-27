@@ -2,7 +2,7 @@ import { Component, ComputedRef, WritableComputedRef } from 'vue'
 
 export type RModelType = boolean | string | number
 
-export type RRadioSize = 'small' | 'normal' | 'medium'
+export type RRadioSize = 'small' | 'normal' | 'medium' | 'mini' | 'large'
 
 export interface RadioGroupContext {
   name: 'RolRadioGroup'

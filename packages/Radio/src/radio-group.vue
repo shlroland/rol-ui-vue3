@@ -27,7 +27,7 @@ export default defineComponent({
       type: String as PropType<RRadioSize>,
       default: 'normal',
       validator: (val: string) => {
-        return ['small', 'normal', 'medium'].includes(val)
+        return ['small', 'normal', 'medium','mini','large'].includes(val)
       },
     },
     fill: {
@@ -98,5 +98,3 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>

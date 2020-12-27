@@ -99,7 +99,7 @@ $radio-button-disabled-checked-fill: $grey-lighter !default;
       }
     }
   }
-  @include modify(small) {
+  @include modify(mini) {
     &.is-bordered {
       padding: $radio-bordered-mini-padding;
       border-radius: $radius-small;

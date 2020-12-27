@@ -2,21 +2,26 @@
   <label
     :id="id"
     class="rol-checkbox"
-    :class="[border && checkboxSize ? 'rol-checkbox--' + checkboxSize : '',
-             { 'is-disabled': isDisabled },
-             { 'is-bordered': border },
-             { 'is-checked': isChecked }]"
+    :class="[
+      border && checkboxSize ? 'rol-checkbox--' + checkboxSize : '',
+      { 'is-disabled': isDisabled },
+      { 'is-bordered': border },
+      { 'is-checked': isChecked },
+    ]"
   >
     <span
-      :class="['rol-checkbox__input',{
-        'is-disabled': isDisabled,
-        'is-checked': isChecked,
-        'is-indeterminate': indeterminate,
-        'is-focus': focus
-      }]"
-      :tabindex="indeterminate ? 0:false"
-      :role="indeterminate? 'checkbox': false"
-      :aria-checked="indeterminate ? 'mixed': false"
+      :class="[
+        'rol-checkbox__input',
+        {
+          'is-disabled': isDisabled,
+          'is-checked': isChecked,
+          'is-indeterminate': indeterminate,
+          'is-focus': focus,
+        },
+      ]"
+      :tabindex="indeterminate ? 0 : false"
+      :role="indeterminate ? 'checkbox' : false"
+      :aria-checked="indeterminate ? 'mixed' : false"
     >
       <span class="rol-checkbox__inner"></span>
       <input
@@ -96,22 +101,14 @@ export default defineComponent({
     },
     border: Boolean,
     size: {
-      type: String as PropType<'normal' | 'medium' | 'small' | 'mini'>,
+      type: String as PropType<'normal' | 'medium' | 'small' | 'mini' | 'large'>,
       default: 'normal',
-      validator: (val: string) => ['medium', 'small', 'mini', 'normal'].includes(val),
+      validator: (val: string) => ['large', 'medium', 'small', 'mini', 'normal'].includes(val),
     },
   },
   emits: [UPDATE_MODELVALUE_EVENT, 'change'],
   setup(props) {
-    const {
-      focus,
-      isChecked,
-      checkboxSize,
-      model,
-      isDisabled,
-      handleChange,
-      isLimitExceeded,
-    } = useCheckbox(props)
+    const { focus, isChecked, checkboxSize, model, isDisabled, handleChange, isLimitExceeded } = useCheckbox(props)
     const instance = getCurrentInstance()
 
     onMounted(() => {
@@ -131,5 +128,3 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
