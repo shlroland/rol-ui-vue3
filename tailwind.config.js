@@ -231,6 +231,9 @@ module.exports = {
         system: defaultTheme.fontFamily.sans,
         flow: 'Flow',
       },
+      zIndex: {
+        fixed: 9999,
+      },
       spacing: {
         18: '4.5rem',
         88: '22rem',

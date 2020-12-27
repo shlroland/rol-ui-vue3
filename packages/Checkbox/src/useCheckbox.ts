@@ -52,7 +52,6 @@ const useCheckboxStatus = (props: RCheckboxProps, { model }: PartialReturnType<t
   const size = computed<string | undefined>(() => checkboxGroup?.checkboxGroupSize?.value)
   const isChecked = computed(() => {
     const value = model.value
-    console.log(value)
     if (Object.prototype.toString.call(value) === '[object Boolean]') {
       return value
     } else if (Array.isArray(value)) {

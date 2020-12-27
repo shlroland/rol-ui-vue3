@@ -2,7 +2,7 @@
   <rol-button
     :class="['rol-checkbox-button', { 'is-checked': isChecked }]"
     :size="size"
-    :disabled="disabled"
+    :disabled="disabled || isDisabled"
     :style="isChecked ? activeStyle : null"
     role="checkbox"
     :aria-checked="isChecked"
@@ -112,4 +112,3 @@ export default defineComponent({
 })
 </script>
 
-<style></style>

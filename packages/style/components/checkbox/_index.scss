@@ -125,6 +125,7 @@ $checkbox-button-checked-border-color: $link !default;
     line-height: 1;
     position: relative;
     vertical-align: middle;
+
     @include when(disabled) {
       .rol-checkbox__inner {
         background-color: $checkbox-disabled-input-fill;
@@ -135,19 +136,23 @@ $checkbox-button-checked-border-color: $link !default;
           cursor: not-allowed;
           border-color: $checkbox-disabled-checked-icon-color;
         }
+
         & + .rol-checkbox__label {
           cursor: not-allowed;
         }
       }
+
       &.is-checked {
         .rol-checkbox__inner {
           background-color: $checkbox-disabled-input-fill;
           border-color: $checkbox-disabled-border-color;
+
           &::after {
             border-color: $checkbox-disabled-checked-icon-color;
           }
         }
       }
+
       &.is-indeterminate {
         .rol-checkbox__inner {
           background-color: $checkbox-disabled-checked-input-fill;
@@ -159,11 +164,13 @@ $checkbox-button-checked-border-color: $link !default;
           }
         }
       }
-      & + .rol-checkbox__label {
+
+      & + span.rol-checkbox__label {
         color: $grey-light;
         cursor: not-allowed;
       }
     }
+
     @include when(checked) {
       .rol-checkbox__inner {
         background-color: $checkbox-checked-background-color;
@@ -173,6 +180,7 @@ $checkbox-button-checked-border-color: $link !default;
           transform: rotate(45deg) scaleY(1);
         }
       }
+
       & + .rol-checkbox__label {
         color: $checkbox-checked-font-color;
       }
@@ -213,7 +221,7 @@ $checkbox-button-checked-border-color: $link !default;
     width: $checkbox-input-width;
     height: $checkbox-input-height;
     background-color: $checkbox-background-color;
-    z-index: 2000;
+    // z-index: 2000;
     transition: border-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46),
       background-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46);
     &:hover {
@@ -274,4 +282,3 @@ $checkbox-button-checked-border-color: $link !default;
     box-shadow: -1px 0 0 0 $grey-lighter;
   }
 }
-
