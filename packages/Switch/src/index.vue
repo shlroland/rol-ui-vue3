@@ -26,7 +26,9 @@
       <span v-if="inactiveText" :aria-hidden="checked">{{ inactiveText }}</span>
     </span>
     <span ref="core" class="rol-switch__core" :style="{ width: coreWidth + 'px' }">
-      <div class="rol-switch__action"></div>
+      <div class="rol-switch__action">
+        <rol-icon v-if="loading" name="spinner" size="xs" spin></rol-icon>
+      </div>
     </span>
     <span
       v-if="activeIconClass || activeText"
@@ -40,9 +42,13 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue'
 import { ValueType } from './switch'
+import RolIcon from '@rol-ui/icon'
 
 export default defineComponent({
   name: 'RolSwitch',
+  components: {
+    RolIcon,
+  },
   props: {
     modelValue: {
       type: [Boolean, String, Number],
@@ -100,6 +106,10 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['update:modelValue', 'change', 'input'],
   setup(props, { emit }) {
@@ -122,7 +132,7 @@ export default defineComponent({
     )
 
     const switchDisabled = computed((): boolean => {
-      return props.disabled
+      return props.disabled || props.loading
     })
     const actualValue = computed(
       (): ValueType => {
@@ -185,5 +195,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style></style>
