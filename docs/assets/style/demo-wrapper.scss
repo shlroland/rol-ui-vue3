@@ -56,3 +56,13 @@
     @apply h-96;
   }
 }
+
+.input-wrapper-class {
+  .rol-input {
+    @apply max-w-xl m-2;
+  }
+
+  .input-with-select .rol-input-group__prepend {
+    background-color: #fff;
+  }
+}

@@ -94,9 +94,10 @@
       @change="handleChange"
       @keydown="handleKeydown"
     ></textarea>
-    <span v-if="isWordLimitVisible && type === 'textarea'" class="rol-input__count"
-      >{{ textLength }}/{{ upperLimit }}</span
-    >
+    <span
+      v-if="isWordLimitVisible && type === 'textarea'"
+      class="rol-input__count"
+    >{{ textLength }}/{{ upperLimit }}</span>
   </div>
 </template>
 
@@ -448,4 +449,3 @@ export default {
 }
 </script>
 
-<style></style>
