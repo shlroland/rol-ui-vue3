@@ -13,7 +13,7 @@ export default {
       'dayjs/plugin/weekYear',
       'dayjs/plugin/isSameOrAfter',
       'dayjs/plugin/isSameOrBefore',
-      'dayjs/plugin/customParseFormat',
+      'dayjs/esm/plugin/customParseFormat',
     ],
   },
   assetsDir: 'docs/assets',

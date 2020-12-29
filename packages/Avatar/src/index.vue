@@ -1,11 +1,12 @@
 <template>
   <div
-    :class="['rol-avatar',
-             size && typeof size === 'string' ?`rol-avatar--${size}`: '',
-             icon && 'rol-avatar--icon',
-             shape && `rol-avatar--${shape}`
+    :class="[
+      'rol-avatar',
+      size && typeof size === 'string' ? `rol-avatar--${size}` : '',
+      icon && 'rol-avatar--icon',
+      shape && `rol-avatar--${shape}`,
     ]"
-    :style="sizeStyle"
+    :style="customStyle"
   >
     <img
       v-if="(src || srcSet) && !hasLoadError"
@@ -56,6 +57,10 @@ export default defineComponent({
       type: String,
       default: 'cover',
     },
+    backgroundColor: {
+      type: String,
+      default: '#b5b5b5',
+    },
   },
   emits: ['error'],
   setup(props, { emit }) {
@@ -71,6 +76,10 @@ export default defineComponent({
         : {}
     })
 
+    const customStyle = computed(()=>{
+      return Object.assign({},sizeStyle.value,{ backgroundColor: props.backgroundColor })
+    })
+
     const fitStyle = computed(() => ({
       objectFit: props.fit,
     }))
@@ -81,7 +90,7 @@ export default defineComponent({
     }
 
     return {
-      sizeStyle,
+      customStyle,
       fitStyle,
       handleError,
       hasLoadError,
@@ -90,5 +99,3 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
