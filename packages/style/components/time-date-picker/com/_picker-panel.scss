@@ -78,11 +78,18 @@
     outline: none;
     margin-top: 6px;
     padding: 1px 6px;
+
     &:hover {
       color: $datepicker-hover-font-color;
     }
+
+    &:focus {
+      outline: none !important;
+    }
+
     @include when(disabled) {
       color: $text-light;
+
       &:hover {
         cursor: not-allowed;
       }
@@ -94,7 +101,7 @@
   }
 }
 
-.rol-picker-panel *[slot=sidebar],
+.rol-picker-panel *[slot='sidebar'],
 .rol-picker-panel__sidebar {
   position: absolute;
   top: 0;
@@ -107,7 +114,7 @@
   overflow: auto;
 }
 
-.rol-picker-panel *[slot=sidebar] + .rol-picker-panel__body,
+.rol-picker-panel *[slot='sidebar'] + .rol-picker-panel__body,
 .rol-picker-panel__sidebar + .rol-picker-panel__body {
   margin-left: 110px;
 }
