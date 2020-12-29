@@ -278,7 +278,7 @@ export default defineComponent({
     const formatEmit = (emitDayjs: Dayjs) => {
       if (showTime.value) {
         if (defaultTime) {
-          const defaultTimeD = dayjs(defaultTime, DEFAULT_FORMATS_TIME)
+          const defaultTimeD = dayjs(defaultTime)
           return defaultTimeD.year(emitDayjs.year()).month(emitDayjs.month()).date(emitDayjs.date())
         } else {
           return emitDayjs.millisecond(0)
@@ -543,5 +543,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style></style>

@@ -120,7 +120,7 @@ import { PICKER_BASE_PROVIDER } from '@rol-ui/utils/time-constant'
 import { PickerOptions } from '../../time-picker-type'
 import type { Dayjs } from 'dayjs/esm'
 import dayjs from 'dayjs/esm'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
+import customParseFormat from 'dayjs/esm/plugin/customParseFormat'
 import { EVENT_CODE } from '@rol-ui/utils/aria'
 
 dayjs.extend(customParseFormat)

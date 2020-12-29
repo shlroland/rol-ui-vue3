@@ -90,3 +90,37 @@
     }
   }
 }
+
+.date-time-picker-demo-wrapper {
+  .container {
+    @apply flex flex-wrap;
+
+    .block {
+      @apply w-1/2 flex-auto flex-wrap p-5 border-r border-gray-300 border-solid text-center;
+
+      &:not(:nth-child(2n + 1)) {
+        @apply border-none;
+      }
+    }
+
+    .demonstration {
+      @apply block text-gray-400 text-sm mb-7;
+    }
+  }
+
+  .container-three {
+    @apply flex flex-wrap;
+
+    .block {
+      @apply flex-auto flex-wrap p-5 border-r border-gray-300 border-solid text-center;
+
+      &:last-child {
+        @apply border-none;
+      }
+    }
+
+    .demonstration {
+      @apply block text-gray-400 text-sm mb-7;
+    }
+  }
+}

@@ -5,9 +5,6 @@ import RolUI from '../packages/rol-ui/index'
 import '../packages/style/index.scss'
 import './assets/style/main.css'
 import './assets/style/demo-wrapper.scss'
-// dev mode
-// import ui from "../packages/vitec";
-// import "../packages/theme/index.css";
 
 const app = createApp(App)
 app.use(RolUI)
