@@ -97,7 +97,7 @@ export default {
     const img = ref<HTMLImageElement | null>(null)
     const wrapper = ref<HTMLDivElement | null>(null)
     const mode = ref(Mode.CONTAIN)
-    let transform = reactive({
+    let transform = ref({
       scale: 1,
       deg: 0,
       offsetX: 0,
@@ -124,7 +124,8 @@ export default {
     })
 
     const imgStyle = computed(() => {
-      const { scale, deg, offsetX, offsetY, enableTransition } = transform
+      const { scale, deg, offsetX, offsetY, enableTransition } = transform.value
+
       const style: {
         transform: string
         transition: string
@@ -160,12 +161,15 @@ export default {
 
     const handleMouseDown = (e: MouseEvent) => {
       if (loading.value || e.button !== 0) return
-      const { offsetX, offsetY } = transform
+      const { offsetX, offsetY } = transform.value
       const startX = e.pageX
       const startY = e.pageY
       _dragHandler = rafThrottle(ev => {
-        transform.offsetX = offsetX + ev.pageX - startX
-        transform.offsetY = offsetY + ev.pageY - startY
+        transform.value = {
+          ...transform.value,
+          offsetX: offsetX + ev.pageX - startX,
+          offsetY: offsetY + ev.pageY - startY,
+        }
       })
       on(document, 'mousemove', _dragHandler)
       on(document, 'mouseup', () => {
@@ -209,26 +213,26 @@ export default {
 
       switch (action) {
         case 'zoomOut':
-          if (transform.scale > 0.2) {
-            transform.scale = parseFloat((transform.scale - zoomRate).toFixed(3))
+          if (transform.value.scale > 0.2) {
+            transform.value.scale = parseFloat((transform.value.scale - zoomRate).toFixed(3))
           }
           break
         case 'zoomIn':
-          transform.scale = parseFloat((transform.scale + zoomRate).toFixed(3))
+          transform.value.scale = parseFloat((transform.value.scale + zoomRate).toFixed(3))
           break
         case 'clocelise':
-          transform.deg += rotateDeg
+          transform.value.deg += rotateDeg
           break
         case 'anticlocelise':
-          transform.deg -= rotateDeg
+          transform.value.deg -= rotateDeg
           break
       }
 
-      transform.enableTransition = enableTransition
+      transform.value.enableTransition = enableTransition
     }
 
     const reset = () => {
-      transform = {
+      transform.value = {
         scale: 1,
         deg: 0,
         offsetX: 0,
@@ -325,9 +329,9 @@ export default {
       wrapper,
       toggleMode,
       handleMouseDown,
+      transform,
     }
   },
 }
 </script>
 
-<style></style>

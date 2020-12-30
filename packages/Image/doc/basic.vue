@@ -52,6 +52,7 @@ export default {
   width: 20%;
   box-sizing: border-box;
   vertical-align: top;
+  
   .demonstration {
     display: block;
     color: #8492a6;
