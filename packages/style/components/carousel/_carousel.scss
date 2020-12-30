@@ -41,6 +41,9 @@ $carousel-indicator-out-color: $border-hover !default;
     transform: translateY(-50%);
     text-align: center;
     font-size: $carousel-arrow-font-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     @include modify(left) {
       left: 16px;

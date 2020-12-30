@@ -82,6 +82,7 @@ export default {
   opacity: 0.75;
   line-height: 150px;
   margin: 0;
+
 }
 
 .rol-carousel__item:nth-child(2n) {
@@ -91,4 +92,6 @@ export default {
 .rol-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
 }
+
+
 </style>
