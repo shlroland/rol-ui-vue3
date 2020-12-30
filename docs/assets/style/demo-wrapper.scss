@@ -394,6 +394,10 @@
       padding: 8px 10px;
     }
   }
+}
 
-  
+.popover-demo-wrapper {
+  .rol-button {
+    @apply ml-6;
+  }
 }
