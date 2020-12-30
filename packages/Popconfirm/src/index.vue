@@ -32,7 +32,7 @@ import { IconProps } from '@rol-ui/icon'
 import { ON_CANCEL, ON_CONFIRM } from '@rol-ui/utils/constants'
 
 export default {
-  name: 'Popconfirm',
+  name: 'RolPopconfirm',
   components: {
     Popover,
     Button,
