@@ -262,3 +262,48 @@
     @apply mr-9;
   }
 }
+
+.card-demo-wrapper {
+  img {
+    margin: 0;
+  }
+
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
+
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    float: right;
+    margin-bottom: 10px;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .box-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .box-card {
+    width: 480px;
+  }
+}
