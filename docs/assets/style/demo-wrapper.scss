@@ -256,3 +256,9 @@
     }
   }
 }
+
+.badge-demo-wrapper {
+  .demo-grid {
+    @apply mr-9;
+  }
+}
