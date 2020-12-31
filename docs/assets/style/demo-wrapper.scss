@@ -417,3 +417,29 @@
     margin-bottom: 0;
   }
 }
+
+.menu-demo-wrapper {
+  ul > li {
+    position: relative;
+    padding-left: 0;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .tac {
+    text-align: center;
+  }
+
+  .rol-menu-vertical-demo {
+    text-align: left;
+  }
+
+  .rol-menu-vertical-demo:not(.rol-menu--collapse) {
+    width: 240px;
+    min-height: 400px;
+  }
+}
+
+

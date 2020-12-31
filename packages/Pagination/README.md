@@ -4,7 +4,7 @@ description: Pagination component doc
 wrapperClass: pagination-demo-wrapper
 tags:
   - 'components'
-  - 'data'
+  - 'navigation'
 ---
 
 # Pagination 分页
