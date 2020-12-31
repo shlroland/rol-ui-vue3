@@ -217,7 +217,7 @@ $pagination-hover-color: $link !default;
       }
 
       &.active {
-        background-color: $info;
+        background-color: $link;
         color: $white;
       }
     }

@@ -401,3 +401,19 @@
     @apply ml-6;
   }
 }
+
+.pagination-demo-wrapper {
+  ul > li {
+    position: static;
+    padding-left: 4px;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  li {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
