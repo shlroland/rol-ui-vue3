@@ -442,4 +442,13 @@
   }
 }
 
+.dropdown-demo-wrapper {
+  ul > li {
+    position: relative;
+    padding-left: 0;
 
+    &::before {
+      display: none;
+    }
+  }
+}
