@@ -1,7 +1,7 @@
 <template>
   <ul
-    class="rol-dropdown-menu"
-    :class="[size && `rol-dropdown-menu--${size}`]"
+    v-clickOutside:[triggerElm]="innerHide"
+    :class="['rol-dropdown-menu',size && `rol-dropdown-menu--${size}`]"
     @mouseenter.stop="show"
     @mouseleave.stop="hide"
   >
@@ -10,13 +10,17 @@
 </template>
 
 <script lang="ts">
-import { initDropdownDomEvent } from '@rol-ui/utils/util'
-import { computed, defineComponent, getCurrentInstance, inject, onMounted } from 'vue'
-import { DropdownInstance } from './dropdown'
+import { computed, defineComponent, getCurrentInstance, onMounted } from 'vue'
+import { useDropdown, initDropdownDomEvent } from './useDropdown'
+import { OutSideClick } from '@rol-ui/directives'
+
 export default defineComponent({
   name: 'RolDropdownMenu',
+  directives: {
+    ClickOutside: OutSideClick,
+  },
   setup() {
-    const rolDropdown = inject<DropdownInstance>('rolDropdown')
+    const { rolDropdown } = useDropdown()
     const size = computed(() => rolDropdown?.dropdownSize)
 
     const show = () => {
@@ -28,6 +32,10 @@ export default defineComponent({
       rolDropdown.hide()
     }
 
+    function _hide() {
+      rolDropdown.hide?.()
+    }
+
     onMounted(() => {
       const dropdownMenu = getCurrentInstance()
       initDropdownDomEvent(dropdownMenu, rolDropdown.triggerElm.value, rolDropdown.instance)
@@ -37,9 +45,9 @@ export default defineComponent({
       size,
       show,
       hide,
+      innerHide: _hide,
+      triggerElm: rolDropdown.triggerElm,
     }
   },
 })
 </script>
-
-<style></style>

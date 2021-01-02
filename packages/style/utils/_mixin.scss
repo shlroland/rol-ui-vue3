@@ -1,5 +1,7 @@
 @import './initial-variables';
+
 $B: null;
+
 @mixin clearfix {
   &::after {
     clear: both;
@@ -10,6 +12,7 @@ $B: null;
 
 @mixin vertical-center {
   $selector: &;
+
   @at-root {
     #{$selector}::after {
       display: inline-block;
@@ -22,6 +25,7 @@ $B: null;
 
 @mixin center($width, $height: 0) {
   position: absolute;
+
   @if $height != 0 {
     left: calc(50% - (#{$width} / 2));
     top: calc(50% - (#{$height} / 2));
@@ -47,6 +51,7 @@ $B: null;
   height: $dimensions;
   position: relative;
   width: $dimensions;
+
   span {
     background-color: currentColor;
   }
@@ -369,4 +374,27 @@ $B: null;
   -moz-user-select: $value;
   -webkit-user-select: $value;
   -ms-user-select: $value;
+}
+
+@mixin picker-popper($background, $border, $box-shadow) {
+  &.rol-popper[role="'tooltip'"] {
+    background: $background;
+    border: $border;
+    box-shadow: $box-shadow;
+
+    .rol-popper__arrow {
+      &::before {
+        border: $border;
+      }
+    }
+
+    @each $placement, $adjacency in ('top': 'left', 'bottom': 'right', 'left': 'bottom', 'right': 'top') {
+      &[data-popper-placement^='#{$placement}'] {
+        .rol-popper__arrow::before {
+          border-#{$placement}-color: transparent;
+          border-#{$adjacency}-color: transparent;
+        }
+      }
+    }
+  }
 }

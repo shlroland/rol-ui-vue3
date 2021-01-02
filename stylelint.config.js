@@ -11,5 +11,7 @@ module.exports = {
     'declaration-block-trailing-semicolon': null,
     'no-descending-specificity': null,
     'prettier/prettier': true,
+    'at-rule-no-unknown': null,
+    'scss/at-rule-no-unknown': true,
   },
 }
