@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-0 z-40 lg:z-50 w-full max-w-8xl mx-auto bg-white flex-none flex ">
+  <header class="sticky top-0 z-40 lg:z-50 w-full max-w-8xl mx-auto bg-white flex-none flex">
     <div
       class="flex-none pl-4 sm:pl-6 xl:pl-8 flex items-center justify-center border-b border-gray-200 lg:border-b-0 lg:w-60 xl:w-72"
     >
@@ -29,9 +29,7 @@
           />
         </svg>
         <span> Quick search<span class="hidden sm:inline"> for anything</span> </span>
-        <span
-          class="hidden sm:block text-gray-400 text-sm leading-5 py-0.5 px-1.5 border border-gray-300 rounded-md"
-        >
+        <span class="hidden sm:block text-gray-400 text-sm leading-5 py-0.5 px-1.5 border border-gray-300 rounded-md">
           <span class="sr-only">Press </span>
           <kbd class="font-sans">
             <abbr title="actionKey[1]" class="no-underline">
@@ -45,10 +43,11 @@
       </button>
       <div class="flex items-center space-x-6">
         <a
-          href="https://github.com/tailwindlabs/tailwindcss"
+          href="https://github.com/shlroland/rol-ui-vue3"
           class="text-gray-400 hover:text-gray-500 transition-colors duration-200"
+          target="blank"
         >
-          <span class="sr-only">Tailwind CSS on GitHub</span>
+          <span class="sr-only">rol-ui on GitHub</span>
           <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
             <path
               fillRule="evenodd"
