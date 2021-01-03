@@ -66,12 +66,16 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
   transform: scaleX(0);
 }
 
-.rol-zoom-in-top-enter-from,
+.rol-zoom-in-top-enter-active,
 .rol-zoom-in-top-leave-active {
   opacity: 1;
   transform: scaleY(1);
   transition: $md-fade-transition;
   transform-origin: center top;
+
+  &[data-popper-placement^="'top'"] {
+    transform-origin: center bottom;
+  }
 }
 .rol-zoom-in-top-enter-from,
 .rol-zoom-in-top-leave-active {

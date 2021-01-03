@@ -95,7 +95,9 @@ export default defineComponent({
     const dropdownSize = computed(() => props.size)
 
     const triggerElm = computed<Nullable<HTMLButtonElement>>(() => {
+        console.log(triggerVnode.value)
       const _: any = (triggerVnode.value?.$refs.triggerRef as HTMLElement)?.children[0] ?? {}
+      console.log(_)
       return !props.splitButton ? _ : _.children?.[1]
     })
 

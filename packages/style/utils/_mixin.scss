@@ -377,7 +377,7 @@ $B: null;
 }
 
 @mixin picker-popper($background, $border, $box-shadow) {
-  &.rol-popper[role="'tooltip'"] {
+  &.rol-popper[role="tooltip"] {
     background: $background;
     border: $border;
     box-shadow: $box-shadow;

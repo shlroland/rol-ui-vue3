@@ -89,6 +89,7 @@ $dropdown-content-shadow: 0 0.5em 1em -0.125em rgba($scheme-invert, 0.1), 0 0 0 
         bottom: 0;
       }
     }
+
     & .rol-dropdown__icon {
       padding-left: 0;
     }
@@ -97,13 +98,14 @@ $dropdown-content-shadow: 0 0.5em 1em -0.125em rgba($scheme-invert, 0.1), 0 0 0 
   @include e(icon) {
     font-size: 12px;
     margin: 0 3px;
-  }
 
-  .rol-dropdown-selfdefine {
-    outline: none;
-    &:focus:active,
-    &:focus:not(.focusing) {
-      outline-width: 0;
+    &.rol-dropdown-selfdefine {
+      outline: none;
+
+      &:focus:active,
+      &:focus:not(.focusing) {
+        outline-width: 0;
+      }
     }
   }
 }
