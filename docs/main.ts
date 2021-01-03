@@ -6,7 +6,6 @@ import './assets/style/main.css'
 import './assets/style/demo-wrapper.scss'
 import '../packages/style/index.scss'
 
-
 const app = createApp(App)
 app.use(RolUI)
 app.use(router)

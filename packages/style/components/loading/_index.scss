@@ -47,6 +47,8 @@ $loading-fullscreen-spinner-size: 50px !default;
     font-size: $size-6;
   }
   .circular {
+    display: inline;
+    color: $primary;
     height: $loading-spinner-size;
     width: $loading-spinner-size;
     animation: loading-rotate 2s linear infinite;

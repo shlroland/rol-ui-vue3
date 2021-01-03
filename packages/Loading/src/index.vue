@@ -10,7 +10,7 @@
         <svg v-if="!spinner" class="circular" viewBox="25 25 50 50">
           <circle class="path" cx="50" cy="50" r="20" fill="none" />
         </svg>
-        <Icon v-else :name="spinner" />
+        <Icon v-else class="circular" :name="spinner" spin />
         <p v-if="text" class="rol-loading-text">{{ text }}</p>
       </div>
     </div>
@@ -76,5 +76,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style></style>
