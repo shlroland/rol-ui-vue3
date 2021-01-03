@@ -15,6 +15,7 @@ $notification-colors: $colors !default;
   position: fixed;
   transition: opacity 0.3s, transform 0.3s, left 0.3s, right 0.3s, top 0.4s, bottom 0.3s;
   overflow: hidden;
+  z-index: $index-top;
 
   &.right {
     right: 16px;
