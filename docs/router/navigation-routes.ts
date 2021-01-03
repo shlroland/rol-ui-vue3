@@ -21,16 +21,16 @@ const menuConfig: routeChild[] = [
     component: Menu,
     path: 'Menu',
   },
-  {
-    name: 'Dropdown 下拉菜单',
-    component: Dropdown,
-    path: 'dropdown',
-  },
-  {
-    name: 'Breadcrumb 面包屑',
-    component: Breadcrumb,
-    path: 'breadcrumb',
-  },
+  // {
+  //   name: 'Dropdown 下拉菜单',
+  //   component: Dropdown,
+  //   path: 'dropdown',
+  // },
+  // {
+  //   name: 'Breadcrumb 面包屑',
+  //   component: Breadcrumb,
+  //   path: 'breadcrumb',
+  // },
 ]
 
 export default menuConfig
