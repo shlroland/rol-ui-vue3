@@ -17,6 +17,7 @@
     "build:type": "node build/gen-type.js",
     "gen:version": "node build/gen-version.js",
     "docs:dev": "vite",
+    "docs:build": "cross-env NODE_ENV=production vite build",
     "test:global": "./node_modules/.bin/jest",
     "test:single": "node ./scripts/test-single"
   },
