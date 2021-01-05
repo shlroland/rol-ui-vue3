@@ -120,6 +120,7 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
+  "homepage": "https://shlroland.github.io/rol-ui",
   "workspaces": [
     "packages/*"
   ],
