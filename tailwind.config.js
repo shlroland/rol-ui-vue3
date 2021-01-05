@@ -3,7 +3,8 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: ['./index.html', './packages/**/*.{vue,js,ts,jsx,tsx}','./docs/**/*.{vue,js,ts,jsx,tsx}'],
+  // purge: ['./index.html', './packages/**/*.{vue,js,ts,jsx,tsx}','./docs/**/*.{vue,js,ts,jsx,tsx}'],
+  purge: false,
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
