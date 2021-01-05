@@ -16,7 +16,12 @@
 
 ## 查看文档
 
-文档页由`vite`编写，目前`vite` 版本不稳定，文档页官网暂未上线，请`git clone`后执行
+文档页由`vite`编写，目前`vite` 版本不稳定，文档页坑存在Bug。敬请谅解
+
+[Documentation](https://shlroland.github.io/rol-ui-vue3/)
+
+## 启动项目
+
 ```bash
-$ yarn bootstrap && yarn docs:build
+$ yarn bootstrap 
 ```
