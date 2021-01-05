@@ -14,57 +14,57 @@ import { routeChild } from './types'
 const menuConfig: routeChild[] = [
   {
     name: 'Avatar 头像',
-    component: import('/@packages/Avatar/README.md'),
+    component: () => import('/@packages/Avatar/README.md'),
     path: 'grid',
   },
   {
     name: 'Image 图像',
-    component: import('/@packages/Image/README.md'),
+    component: () => import('/@packages/Image/README.md'),
     path: 'image',
   },
   {
     name: 'Badge 角标',
-    component: import('/@packages/Badge/README.md'),
+    component: () => import('/@packages/Badge/README.md'),
     path: 'badge',
   },
   {
     name: 'Tag 标签',
-    component: import('/@packages/Tag/README.md'),
+    component: () => import('/@packages/Tag/README.md'),
     path: 'tag',
   },
   {
     name: 'Card 卡片',
-    component: import('/@packages/Card/README.md'),
+    component: () => import('/@packages/Card/README.md'),
     path: 'card',
   },
   {
     name: 'PageHeader 页头',
-    component: import('/@packages/PageHeader/README.md'),
+    component: () => import('/@packages/PageHeader/README.md'),
     path: 'pageHeader',
   },
   {
     name: 'Carousel 轮播',
-    component: import('/@packages/Carousel/README.md'),
+    component: () => import('/@packages/Carousel/README.md'),
     path: 'carousel',
   },
   {
     name: 'Collapse 折叠面板',
-    component: import('/@packages/Collapse/README.md'),
+    component: () => import('/@packages/Collapse/README.md'),
     path: 'collapse',
   },
   {
     name: 'Tooltip 文字提示',
-    component: import('/@packages/Tooltip/README.md'),
+    component: () => import('/@packages/Tooltip/README.md'),
     path: 'tooltip',
   },
   {
     name: 'Popover 气泡卡片',
-    component: import('/@packages/Popover/README.md'),
+    component: () => import('/@packages/Popover/README.md'),
     path: 'popover',
   },
   {
     name: 'Popconfirm 气泡确认框',
-    component: import('/@packages/Popconfirm/README.md'),
+    component: () => import('/@packages/Popconfirm/README.md'),
     path: 'popconfirm',
   },
 ]

@@ -2,6 +2,7 @@ import vitePluginVuedoc from 'vite-plugin-vuedoc'
 import path from 'path'
 
 export default {
+  base: './',
   optimizeDeps: {
     include: [
       'dayjs',

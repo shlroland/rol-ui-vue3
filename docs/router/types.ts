@@ -12,6 +12,6 @@ import { ComponentOptions } from 'vue'
 
 export interface routeChild {
   name: string
-  component: ComponentOptions
+  component: ComponentOptions | (() => ComponentOptions)
   path: string
 }
