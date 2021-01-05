@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   deploy-docs:
-    runs-on: ubuntu-latest
+    runs-on: macos-11.0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
