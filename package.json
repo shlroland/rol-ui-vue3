@@ -4,7 +4,6 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "storybook": "node_modules/.bin/start-storybook -p 6006",
     "test": "./node_modules/.bin/jest",
     "commit": "git-cz",
     "bootstrap": "yarn --frozen-lockfile && yarn lerna bootstrap && yarn gen:version",
@@ -38,7 +37,6 @@
     "vue": ">=3.0.0"
   },
   "devDependencies": {
-    "@andoshin11/storybook-vue3": "^0.0.5",
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -50,10 +48,6 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.1",
     "@rollup/plugin-typescript": "^8.1.0",
-    "@storybook/addon-essentials": "^6.0.21",
-    "@storybook/addon-links": "^6.0.21",
-    "@storybook/addon-storysource": "^6.0.21",
-    "@storybook/core": "^6.1.0-alpha.9",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@tailwindcss/typography": "^0.3.1",
     "@types/jest": "^26.0.14",
