@@ -4,12 +4,13 @@ interface ModifierProps {
   offset?: number
   arrow?: HTMLElement
   arrowOffset?: number
+  gpuAcceleration?: boolean
 }
 
 export default function buildModifier(props: ModifierProps, externalModifiers: StrictModifiers[] = []) {
-  const { arrow, arrowOffset, offset } = props
+  const { offset, arrow, arrowOffset, gpuAcceleration } = props
 
-  const modifiers: Array<StrictModifiers> = [
+  const modifiers: StrictModifiers[] = [
     {
       name: 'offset',
       options: {
@@ -36,10 +37,12 @@ export default function buildModifier(props: ModifierProps, externalModifiers: S
     {
       name: 'computeStyles',
       options: {
-        adaptive: true,
+        gpuAcceleration,
+        adaptive: gpuAcceleration,
       },
     },
   ]
+
   if (arrow) {
     modifiers.push({
       name: 'arrow',

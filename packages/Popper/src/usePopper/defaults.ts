@@ -1,17 +1,19 @@
+import type { PropType } from 'vue'
 import type { Placement, PositioningStrategy, Instance as PopperInstance, Options } from '@popperjs/core'
-import { PropType } from 'vue'
 
 export enum Effect {
   DARK = 'dark',
   LIGHT = 'light',
 }
 
-export type { Placement, PositioningStrategy, PopperInstance, Options }
-export type RTriggerType = 'click' | 'hover' | 'focus' | 'manual'
-export type RTrigger = RTriggerType | RTriggerType[]
 export type RefElement = Nullable<HTMLElement>
 export type Offset = [number, number] | number
-export type RPopperStyle = string | CSSStyleDeclaration
+
+export type { Placement, PositioningStrategy, PopperInstance, Options }
+
+export type TriggerType = 'click' | 'hover' | 'focus' | 'manual'
+
+export type Trigger = TriggerType | TriggerType[]
 
 export type RPopperOptions = {
   arrowOffset: number
@@ -29,18 +31,17 @@ export type RPopperOptions = {
   showAfter: number
   showArrow: boolean
   strategy: PositioningStrategy
-  tabIndex: string
-  trigger: RTrigger
+  trigger: Trigger
   visible: boolean
-  popperClass: string
-  popperStyle: RPopperStyle
+  stopPopperMouseEvent: boolean
+  gpuAcceleration: boolean
 }
 
+export const DEFAULT_TRIGGER = 'hover'
+
 export default {
-  trigger: {
-    type: [String, Array] as PropType<RTrigger>,
-    default: 'hover',
-  },
+  // the arrow size is an equailateral triangle with 10px side length, the 3rd side length ~ 14.1px
+  // adding a offset to the ceil of 4.1 should be 5 this resolves the problem of arrow overflowing out of popper.
   arrowOffset: {
     type: Number,
     default: 5,
@@ -61,6 +62,7 @@ export default {
     type: String,
     default: '',
   },
+  style: Object,
   closeDelay: {
     type: Number,
     default: 200,
@@ -105,14 +107,11 @@ export default {
     type: String,
     default: '',
   },
-  popperStyle: {
-    type: [String, Object] as PropType<RPopperStyle>,
-    default: '',
-  },
   pure: {
     type: Boolean,
     default: false,
   },
+  // Once this option were given, the entire popper is under the users' control, top priority
   popperOptions: {
     type: Object as PropType<Options>,
     default: () => null,
@@ -127,16 +126,22 @@ export default {
   },
   transition: {
     type: String,
-    default: 'rol-fade-in-linear',
+    default: 'el-fade-in-linear',
   },
-
-  tabIndex: {
-    type: String,
-    default: '0',
+  trigger: {
+    type: [String, Array] as PropType<Trigger>,
+    default: DEFAULT_TRIGGER,
   },
   visible: {
     type: Boolean,
     default: undefined,
   },
+  stopPopperMouseEvent: {
+    type: Boolean,
+    default: true,
+  },
+  gpuAcceleration: {
+    type: Boolean,
+    default: true,
+  },
 }
-
