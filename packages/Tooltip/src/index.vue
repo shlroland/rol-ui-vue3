@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, h, PropType } from 'vue'
+import { defineComponent, h, PropType, ref } from 'vue'
 import RolPopper, { Effect, Options, Placement, RTrigger } from '@rol-ui/popper'
 import { UPDATE_VISIBLE_EVENT } from '@rol-ui/utils/constants'
 import throwError from '@rol-ui/utils/error'
@@ -32,13 +32,9 @@ export default defineComponent({
   props: {
     effect: {
       type: String as PropType<Effect>,
-      default: Effect.DARK,
+      default: 'dark' as Effect,
     },
     class: {
-      type: String,
-      default: '',
-    },
-    popperClass: {
       type: String,
       default: '',
     },
@@ -64,11 +60,18 @@ export default defineComponent({
     },
     visible: {
       type: Boolean,
+      validator: (val: unknown) => {
+        return typeof val === 'boolean'
+      },
       default: undefined,
     },
     offset: {
       type: Number,
       default: 12,
+    },
+    openDelay: {
+      type: Number,
+      default: 0,
     },
     placement: {
       type: String as PropType<Placement>,
@@ -82,19 +85,19 @@ export default defineComponent({
       type: Number,
       default: 0,
     },
-    tabindex: {
-      type: [Number, String],
-      default: 0,
-    },
     transition: {
       type: String,
       default: 'rol-fade-in-linear',
     },
     trigger: {
-      type: [String, Array] as PropType<RTrigger>,
+      type: [String, Array] as PropType<string | string[]>,
       default: () => ['hover'],
     },
     visibleArrow: {
+      type: Boolean,
+      default: true,
+    },
+    stopPopperMouseEvent: {
       type: Boolean,
       default: true,
     },
@@ -104,37 +107,71 @@ export default defineComponent({
     if (props.manual && typeof props.visible === 'undefined') {
       throwError('[RolTooltip]', 'You need to pass a v-model to rol-tooltip when `manual` is true')
     }
+
+    const popper = ref(null)
     const onUpdateVisible = val => {
       ctx.emit(UPDATE_VISIBLE_EVENT, val)
     }
-    return () => {
-      return h(
-        RolPopper,
-        {
-          class: props.class,
-          disabled: props.disabled,
-          effect: props.effect,
-          enterable: props.enterable,
-          hideAfter: props.hideAfter,
-          manualMode: props.manual,
-          offset: props.offset,
-          placement: props.placement,
-          showAfter: props.showAfter,
-          showArrow: props.visibleArrow,
-          tabIndex: String(props.tabindex),
-          transition: props.transition,
-          trigger: props.trigger,
-          popperOptions: props.popperOptions,
-          visible: props.visible,
-          popperClass: props.popperClass,
-          'onUpdate:visible': onUpdateVisible,
-        },
-        {
-          default: () => (ctx.slots.content ? ctx.slots.content() : props.content),
-          trigger: () => ctx.slots.default(),
-        },
-      )
+
+    const updatePopper = () => {
+      return popper.value.update()
     }
+
+    return {
+      popper,
+      onUpdateVisible,
+      updatePopper,
+    }
+  },
+  render() {
+    const {
+      $slots,
+      content,
+      disabled,
+      effect,
+      enterable,
+      hideAfter,
+      manual,
+      offset,
+      openDelay,
+      onUpdateVisible,
+      placement,
+      popperOptions,
+      showAfter,
+      transition,
+      trigger,
+      visibleArrow,
+      stopPopperMouseEvent,
+    } = this
+
+    const popper = h(
+      RolPopper,
+      {
+        ref: 'popper',
+        appendToBody: true,
+        class: this.class,
+        disabled,
+        effect,
+        enterable,
+        hideAfter,
+        manualMode: manual,
+        offset,
+        placement,
+        showAfter: openDelay || showAfter, // this is for mapping API due to we decided to rename the current openDelay API to showAfter for better readability,
+        showArrow: visibleArrow,
+        stopPopperMouseEvent,
+        transition,
+        trigger,
+        popperOptions, // Breakings!: Once popperOptions is provided, the whole popper is under user's control, ElPopper nolonger generates the default options for popper, this is by design if the user wants the full control on @PopperJS, read the doc @https://popper.js.org/docs/v2/
+        visible: this.visible,
+        'onUpdate:visible': onUpdateVisible,
+      },
+      {
+        default: () => ($slots.content ? $slots.content() : content),
+        trigger: () => $slots.default(),
+      },
+    )
+    return popper
   },
 })
 </script>
