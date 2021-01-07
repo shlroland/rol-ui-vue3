@@ -1,3 +1,5 @@
+import { Ref } from 'vue'
+
 export const isServer = typeof window === undefined
 export const isBool = (val: unknown) => typeof val === 'boolean'
 export const isObject = (value: any) => Object.prototype.toString.call(value).toLowerCase() === '[object object]'
@@ -18,4 +20,12 @@ export const isEdge = function (): boolean {
 export function isKorean(text: string): boolean {
   const reg = /([(\uAC00-\uD7AF)|(\u3130-\u318F)])+/gi
   return reg.test(text)
+}
+
+/**
+ * Unwraps refed value
+ * @param ref Refed value
+ */
+export function $<T>(ref: Ref<T>)  {
+  return ref.value
 }

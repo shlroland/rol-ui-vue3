@@ -7,5 +7,5 @@ Popper.install = (app: App): void => {
 
 export default Popper
 
-export { Effect } from './src/core/props'
-export type { Placement, Options, RTrigger } from './src/core/props'
+export { Effect } from './src/usePopper/defaults'
+export type { Placement, Options, Trigger as RTrigger } from './src/usePopper/defaults'

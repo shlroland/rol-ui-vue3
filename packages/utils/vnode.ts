@@ -33,10 +33,7 @@ export const renderBlock = (
 
 export const getFirstValidNode = (nodes: VNodeChild, maxDepth = 3): ReturnType<typeof getChildren> => {
   if (Array.isArray(nodes)) {
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i]
-      return getChildren(node as VNode, maxDepth)
-    }
+    return getChildren(nodes[0] as VNode, maxDepth)
   } else {
     return getChildren(nodes as VNode, maxDepth)
   }
