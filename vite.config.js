@@ -1,4 +1,5 @@
 import vitePluginVuedoc from 'vite-plugin-vuedoc'
+import vue from '@vitejs/plugin-vue'
 import path from 'path'
 
 export default {
@@ -21,11 +22,12 @@ export default {
   plugins: [
     vitePluginVuedoc({
       prism: {
-        theme: 'okaidia',
+        theme: 'one-dark',
       },
     }),
+    vue(),
   ],
   alias: {
-    '/@packages/': path.resolve(__dirname,'./packages'),
+    '/@packages': path.resolve(__dirname, './packages'),
   },
 }
