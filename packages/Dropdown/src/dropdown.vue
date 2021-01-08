@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, watch, ref, getCurrentInstance, provide } from 'vue'
+import { computed, defineComponent, onMounted, watch, ref, getCurrentInstance, provide, ComponentPublicInstance } from 'vue'
 import RolPopper from '@rol-ui/popper'
 import { Button as RolButton, ButtonGroup as RolButtonGroup } from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'

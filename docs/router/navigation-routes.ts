@@ -21,11 +21,11 @@ const menuConfig: routeChild[] = [
     component: () => import('/@packages/Menu/README.md'),
     path: 'Menu',
   },
-  // {
-  //   name: 'Dropdown 下拉菜单',
-  //   component: Dropdown,
-  //   path: 'dropdown',
-  // },
+  {
+    name: 'Dropdown 下拉菜单',
+    component: () => import('/@packages/Dropdown/README.md'),
+    path: 'dropdown',
+  },
   // {
   //   name: 'Breadcrumb 面包屑',
   //   component: Breadcrumb,
