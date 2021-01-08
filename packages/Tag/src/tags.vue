@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: 'RolTags',
+  name: 'RolTagGroup',
   props: {
     addons: Boolean,
     allSize: {
@@ -21,4 +21,3 @@ export default defineComponent({
 })
 </script>
 
-<style></style>

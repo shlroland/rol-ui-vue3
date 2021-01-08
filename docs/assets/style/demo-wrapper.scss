@@ -452,3 +452,25 @@
     }
   }
 }
+
+.tag-demo-wrapper {
+  .rol-tag {
+    @apply mr-4;
+  }
+  a.rol-tag {
+    box-shadow: none;
+  }
+
+  .demo-tag-group {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+
+    &__title {
+      width: 45px;
+      font-size: 14px;
+      color: #606266;
+      margin-right: 10px;
+    }
+  }
+}

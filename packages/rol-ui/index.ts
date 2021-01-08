@@ -57,7 +57,7 @@ import {
 } from '@rol-ui/select'
 import RolSwitch from '@rol-ui/switch'
 import { Tabs as RolTabs, TabsNav as RolTabsNav, TabPane as RolTabPane } from '@rol-ui/tabs'
-import { Tag as RolTag, Tags as RolTags, TagsAddons as RolTagsAddons } from '@rol-ui/tag'
+import { Tag as RolTag, Tags as RolTagGroup, TagsAddons as RolTagsAddons } from '@rol-ui/tag'
 import RolTimePicker from '@rol-ui/time-picker'
 import RolTooltip from '@rol-ui/tooltip'
 import RolUpload from '@rol-ui/upload'
@@ -135,7 +135,7 @@ const components = [
   RolTabsNav,
   RolTabPane,
   RolTag,
-  RolTags,
+  RolTagGroup,
   RolTagsAddons,
   RolTimePicker,
   RolTooltip,
@@ -217,7 +217,7 @@ export {
   RolTabsNav,
   RolTabPane,
   RolTag,
-  RolTags,
+  RolTagGroup,
   RolTagsAddons,
   RolTimePicker,
   RolTooltip,
