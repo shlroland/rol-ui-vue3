@@ -214,21 +214,6 @@ export default {
 </template>
 ```
 
-## 均分宽度
-
-`fullwidth`属性可以让标签页均分父容器宽度
-
-```vue demo
-<template>
-  <rol-tabs type="boxed" fullwidth>
-    <rol-tab-pane label="消息中心">我的行程</rol-tab-pane>
-    <rol-tab-pane label="消息中心">消息中心</rol-tab-pane>
-    <rol-tab-pane label="角色管理">角色管理</rol-tab-pane>
-    <rol-tab-pane label="定时任务补偿">定时任务补偿</rol-tab-pane>
-  </rol-tabs>
-</template>
-```
-
 ### Tabs Attributes
 
 | 参数            | 说明                                                                        | 类型                                | 可选值                | 默认值              |

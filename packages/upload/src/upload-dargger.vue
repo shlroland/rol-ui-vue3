@@ -33,11 +33,12 @@ export default defineComponent({
     }
 
     const onDrop = (event: DragEvent) => {
+      event.preventDefault()
       if (props.disabled || !uploader) return
       const accept = Array.isArray(uploader.accept) ? uploader.accept.join(',') : uploader.accept
       dragover.value = false
       if (!accept) {
-        emit('file', event.dataTransfer.files)
+        emit('file', Array.from(event.dataTransfer.files))
         return
       }
       emit(

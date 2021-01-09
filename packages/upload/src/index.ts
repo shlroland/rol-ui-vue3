@@ -15,7 +15,7 @@ export default defineComponent({
     const uploadFiles = reactive<Record<string, RolUploadFile>>({})
 
     const { uppy } = useUpload(props, emit, uploadFiles)
-    useFileList(uppy, props.fileList)
+    useFileList(uppy, props.fileList, props.autoUpload,uploadFiles)
 
     const addFile = (files: File[]) => {
       if (props.limit && files.length + Object.keys(uploadFiles).length > props.limit) {
