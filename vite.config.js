@@ -3,7 +3,10 @@ import vue from '@vitejs/plugin-vue'
 import path from 'path'
 
 export default {
-  base: './',
+  build: {
+    base: './',
+    assetsDir: 'docs/assets',
+  },
   optimizeDeps: {
     include: [
       'dayjs',
@@ -18,7 +21,6 @@ export default {
       'dayjs/esm/plugin/customParseFormat',
     ],
   },
-  assetsDir: 'docs/assets',
   plugins: [
     vitePluginVuedoc({
       prism: {
