@@ -31,7 +31,7 @@ import {
   Header as RolHeader,
   Main as RolMain,
 } from '@rol-ui/layout'
-import RolLoading, { LoadingIns as RolLoadingWrap } from '@rol-ui/loading'
+import RolLoading from '@rol-ui/loading'
 import {
   Menu as RolMenu,
   MenuGroup as RolMenuGroup,
@@ -108,7 +108,6 @@ const components = [
   RolFooter,
   RolHeader,
   RolMain,
-  RolLoadingWrap,
   RolMenu,
   RolMenuGroup,
   RolMenuItem,
@@ -190,7 +189,6 @@ export {
   RolFooter,
   RolHeader,
   RolMain,
-  RolLoadingWrap,
   RolMenu,
   RolMenuGroup,
   RolMenuItem,

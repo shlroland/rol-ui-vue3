@@ -2,19 +2,14 @@
 // export { default, directive } from './src/directive'
 // export { default as service } from './src/service'
 import { App } from 'vue'
-import LoadingIns from './src/index.vue'
 import vLoading from './src/directive'
-import LoadingService from './src/service'
-
-LoadingIns.install = (app: App): void => {
-  app.component(LoadingIns.name, LoadingIns)
-}
+import Loading from './src/index'
 
 export default {
   install(app: App) {
     app.directive('loading', vLoading)
-    app.config.globalProperties.$loading = LoadingService
+    app.config.globalProperties.$loading = Loading
   },
 }
 
-export { LoadingIns, vLoading, LoadingService }
+export { vLoading, Loading }

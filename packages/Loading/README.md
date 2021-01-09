@@ -100,19 +100,19 @@ export default {
 Loading 还可以以服务的方式调用。引入 Loading 服务：
 
 ```javascript
-import { RolLoadingWrap } from 'rol-ui'
+import { RolLoading } from 'rol-ui'
 ```
 
 在需要调用时：
 
 ```javascript
-RolLoadingWrap.service(options)
+RolLoading.service(options)
 ```
 
 其中 `options` 参数为 Loading 的配置项，具体见下表。`LoadingService` 会返回一个 Loading 实例，可通过调用该实例的 `close` 方法来关闭它：
 
 ```javascript
-let loadingInstance = RolLoadingWrap.service(options)
+let loadingInstance = RolLoading.service(options)
 this.$nextTick(() => {
   // 以服务的方式调用的 Loading 需要异步关闭
   loadingInstance.close()
@@ -122,8 +122,8 @@ this.$nextTick(() => {
 需要注意的是，以服务的方式调用的全屏 Loading 是单例的：若在前一个全屏 Loading 关闭前再次调用全屏 Loading，并不会创建一个新的 Loading 实例，而是返回现有全屏 Loading 的实例：
 
 ```javascript
-let loadingInstance1 = RolLoadingWrap.service({ fullscreen: true })
-let loadingInstance2 = RolLoadingWrap.service({ fullscreen: true })
+let loadingInstance1 = RolLoading.service({ fullscreen: true })
+let loadingInstance2 = RolLoading.service({ fullscreen: true })
 console.log(loadingInstance1 === loadingInstance2)
 ```
 
