@@ -25,14 +25,14 @@ Message 在配置上与 Notification 非常类似，所以部分 options 在此�
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       open() {
-        instance.ctx.$message('只是一条消息提示')
+        globalFuncs.$message('只是一条消息提示')
       },
       openVn() {
-        instance.ctx.$message({
+        globalFuncs.$message({
           message: h('p', null, [h('span', null, '内容可以是 '), h('i', { style: 'color: teal' }, 'VNode')]),
         })
       },
@@ -58,20 +58,20 @@ export default defineComponent({
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       open1() {
-        instance.ctx.$message.success('只是一条成功提示')
+        globalFuncs.$message.success('只是一条成功提示')
       },
       open2() {
-        instance.ctx.$message.warning('只是一条警告提示')
+        globalFuncs.$message.warning('只是一条警告提示')
       },
       open3() {
-        instance.ctx.$message('只是一条消息提示')
+        globalFuncs.$message('只是一条消息提示')
       },
       open4() {
-        instance.ctx.$message.danger('只是一条错误提示')
+        globalFuncs.$message.danger('只是一条错误提示')
       },
     }
   },
@@ -95,31 +95,31 @@ export default defineComponent({
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       open1() {
-        instance.ctx.$message({
+        globalFuncs.$message({
           showClose: true,
           message: '这是一条消息提示',
         })
       },
       open2() {
-        instance.ctx.$message({
+        globalFuncs.$message({
           showClose: true,
           message: '恭喜你，这是一条成功消息',
           type: 'success',
         })
       },
       open3() {
-        instance.ctx.$message({
+        globalFuncs.$message({
           showClose: true,
           message: '警告哦，这是一条警告消息',
           type: 'warning',
         })
       },
       open4() {
-        instance.ctx.$message({
+        globalFuncs.$message({
           showClose: true,
           message: '错了哦，这是一条错误消息',
           type: 'danger',
@@ -144,11 +144,11 @@ export default defineComponent({
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       openCenter() {
-        instance.ctx.$message({
+        globalFuncs.$message({
           message: '居中的文字',
           center: true,
         })
@@ -172,11 +172,11 @@ export default defineComponent({
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       openHTML() {
-        instance.ctx.$message({
+        globalFuncs.$message({
           dangerouslyUseHTMLString: true,
           message: '<strong>这是 <i>HTML</i> 片段</strong>',
         })

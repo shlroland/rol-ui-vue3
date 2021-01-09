@@ -24,14 +24,14 @@ tags:
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+     const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       open() {
-        instance.ctx.$alert('这是一段内容', '标题名称', {
+        globalFuncs.$alert('这是一段内容', '标题名称', {
           confirmButtonText: '确定',
           callback: action => {
-            instance.ctx.$message({
+            globalFuncs.$message({
               type: 'info',
               message: `action: ${action}`,
             })
@@ -57,24 +57,24 @@ export default defineComponent({
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       open() {
-        instance.ctx
+        globalFuncs
           .$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning',
           })
           .then(() => {
-            instance.ctx.$message({
+            globalFuncs.$message({
               type: 'success',
               message: '删除成功!',
             })
           })
           .catch(() => {
-            instance.ctx.$message({
+            globalFuncs.$message({
               type: 'info',
               message: '已取消删除',
             })
@@ -99,11 +99,11 @@ export default defineComponent({
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       open() {
-        instance.ctx
+        globalFuncs
           .$prompt('请输入邮箱', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -111,13 +111,13 @@ export default defineComponent({
             inputErrorMessage: '邮箱格式不正确',
           })
           .then(({ value }) => {
-            instance.ctx.$message({
+            globalFuncs.$message({
               type: 'success',
               message: '你的邮箱是: ' + value,
             })
           })
           .catch(() => {
-            instance.ctx.$message({
+            globalFuncs.$message({
               type: 'info',
               message: '取消输入',
             })
@@ -142,11 +142,11 @@ export default defineComponent({
 import { defineComponent, h, getCurrentInstance } from 'vue'
 export default defineComponent({
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     return {
       open() {
-        instance.ctx
+        globalFuncs
           .$msgbox({
             title: '消息',
             message: h('p', null, [h('span', null, '内容可以是 '), h('i', { style: 'color: teal' }, 'VNode')]),
@@ -169,7 +169,7 @@ export default defineComponent({
             },
           })
           .then(action => {
-            instance.ctx.$message({
+            globalFuncs.$message({
               type: 'info',
               message: 'action: ' + action,
             })

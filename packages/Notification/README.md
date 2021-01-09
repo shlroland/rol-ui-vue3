@@ -32,10 +32,10 @@ import { h, getCurrentInstance } from 'vue'
 
 export default {
   setup() {
-    const instance = getCurrentInstance()
+   const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     const open1 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '标题名称',
         message: h(
           'i',
@@ -46,7 +46,7 @@ export default {
     }
 
     const open2 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '提示',
         message: '这是一条不会自动关闭的消息',
         duration: 0,
@@ -87,10 +87,10 @@ import { h, getCurrentInstance } from 'vue'
 
 export default {
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     const open1 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '成功',
         message: '这是一条成功的提示消息',
         type: 'success',
@@ -98,7 +98,7 @@ export default {
     }
 
     const open2 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '警告',
         message: '这是一条警告的提示消息',
         type: 'warning',
@@ -106,14 +106,14 @@ export default {
     }
 
     const open3 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '消息',
         message: '这是一条消息的提示消息',
       })
     }
 
     const open4 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '错误',
         message: '这是一条错误的提示消息',
         type: 'danger',
@@ -156,17 +156,17 @@ import { h, getCurrentInstance } from 'vue'
 
 export default {
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     const open1 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '自定义位置',
         message: '右上角弹出的消息',
       })
     }
 
     const open2 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '自定义位置',
         message: '右下角弹出的消息',
         position: 'bottom-right',
@@ -174,7 +174,7 @@ export default {
     }
 
     const open3 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '自定义位置',
         message: '左下角弹出的消息',
         position: 'bottom-left',
@@ -182,7 +182,7 @@ export default {
     }
 
     const open4 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '自定义位置',
         message: '左上角弹出的消息',
         position: 'top-left',
@@ -216,10 +216,10 @@ import { h, getCurrentInstance } from 'vue'
 
 export default {
   setup() {
-    const instance = getCurrentInstance()
+    const globalFuncs = getCurrentInstance().appContext.config.globalProperties
 
     const open1 = () => {
-      instance.ctx.$notify({
+      globalFuncs.$notify({
         title: '偏移',
         message: '这是一条带有偏移的提示消息',
         offset: 100,

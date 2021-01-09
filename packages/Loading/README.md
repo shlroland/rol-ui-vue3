@@ -64,8 +64,7 @@ import { ref, getCurrentInstance } from 'vue'
 export default {
   setup(props, ctx) {
     const fullscreenLoading = ref(false)
-    const instance = getCurrentInstance()
-    const $loading = instance.ctx.$loading
+    const $loading = getCurrentInstance().appContext.config.globalProperties.$loading
 
     const openFullScreen1 = () => {
       fullscreenLoading.value = true

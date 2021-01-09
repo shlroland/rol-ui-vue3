@@ -5,7 +5,7 @@ import { routeChild } from './types'
 // import Notification from '/@packages/Notification/README.md'
 // import Modal from '/@packages/Modal/README.md'
 // import MessageBox from '/@packages/MessageBox/README.md'
-// import Message from '/@packages/Message/README.md'
+import Message from '/@packages/Message/README.md'
 
 const menuConfig: routeChild[] = [
   {
@@ -40,7 +40,7 @@ const menuConfig: routeChild[] = [
   },
   {
     name: 'Message 消息提示',
-    component: () => import('/@packages/Message/README.md'),
+    component: Message,
     path: 'message',
   },
 ]
