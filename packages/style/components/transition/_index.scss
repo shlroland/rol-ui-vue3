@@ -10,8 +10,7 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
   transition: $fade-linear-transition;
 }
 .fade-in-linear-enter-from,
-.fade-in-linear-leave-from,
-.fade-in-linear-leave-active {
+.fade-in-linear-leave-to {
   opacity: 0;
 }
 
@@ -20,8 +19,7 @@ $color-transition-base: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !default
   transition: $fade-linear-transition;
 }
 .rol-fade-in-linear-enter-from,
-.rol-fade-in-linear-leave-from,
-.rol-fade-in-linear-leave-active {
+.rol-fade-in-linear-leave-to{
   opacity: 0;
 }
 

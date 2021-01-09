@@ -10,30 +10,42 @@
     append-to-body
     popper-class="rol-dropdown__popper"
     transition="rol-zoom-in-top"
+    :gpu-acceleration="false"
   >
     <template #default>
       <slot name="dropdown"></slot>
     </template>
     <template #trigger>
-      <slot v-if="!splitButton" name="default"></slot>
-      <template v-else>
-        <rol-button-group>
-          <rol-button :size="dropdownSize" :type="type" @click="handlerMainButtonClick">
-            <slot name="default"></slot>
-          </rol-button>
-          <rol-button :size="dropdownSize" :type="type" class="rol-dropdown__caret-button">
-            <span class="rol-dropdown__icon">
-              <rol-icon name="chevron-down"></rol-icon>
-            </span>
-          </rol-button>
-        </rol-button-group>
-      </template>
+      <div class="rol-dropdown">
+        <slot v-if="!splitButton" name="default"></slot>
+        <template v-else>
+          <rol-button-group :group-size="dropdownSize">
+            <rol-button :size="dropdownSize" :type="type" @click="handlerMainButtonClick">
+              <slot name="default"></slot>
+            </rol-button>
+            <rol-button :size="dropdownSize" :type="type" class="rol-dropdown__caret-button">
+              <span class="rol-dropdown__icon">
+                <rol-icon name="chevron-down"></rol-icon>
+              </span>
+            </rol-button>
+          </rol-button-group>
+        </template>
+      </div>
     </template>
   </rol-popper>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, watch, ref, getCurrentInstance, provide, ComponentPublicInstance } from 'vue'
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  watch,
+  ref,
+  getCurrentInstance,
+  provide,
+  ComponentPublicInstance,
+} from 'vue'
 import RolPopper from '@rol-ui/popper'
 import { Button as RolButton, ButtonGroup as RolButtonGroup } from '@rol-ui/button'
 import RolIcon from '@rol-ui/icon'
@@ -95,9 +107,7 @@ export default defineComponent({
     const dropdownSize = computed(() => props.size)
 
     const triggerElm = computed<Nullable<HTMLButtonElement>>(() => {
-        console.log(triggerVnode.value)
       const _: any = (triggerVnode.value?.$refs.triggerRef as HTMLElement)?.children[0] ?? {}
-      console.log(_)
       return !props.splitButton ? _ : _.children?.[1]
     })
 

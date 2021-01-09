@@ -479,3 +479,14 @@
     }
   }
 }
+
+.dropdown-demo-wrapper {
+  .split-wrapper {
+    display: flex;
+    align-items: center;
+
+    .rol-dropdown {
+      margin-right: 15px;
+    }
+  }
+}

@@ -47,6 +47,8 @@ module.exports = {
     // vue
     'vue/no-v-html': 'off',
     'vue/singleline-html-element-content-newline': 'off',
+    'vue/no-deprecated-props-default-this': 'off',
+    'vue/experimental-script-setup-vars': 'off',
     'vue/html-self-closing': [
       'error',
       {

@@ -47,7 +47,6 @@ export default function usePopper(props: RPopperOptions, { emit }: SetupContext<
   })
 
   const _show = () => {
-    console.log(props.hideAfter)
     if (props.hideAfter) {
       hideTimer = window.setTimeout(() => {
         _hide()
