@@ -419,9 +419,14 @@
 }
 
 .menu-demo-wrapper {
+  ul {
+    margin: 0 !important;
+  }
+
   ul > li {
     position: relative;
     padding-left: 0;
+    margin: 0 !important;
 
     &::before {
       display: none;
