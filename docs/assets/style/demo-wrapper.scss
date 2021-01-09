@@ -448,10 +448,33 @@
 }
 
 .dropdown-demo-wrapper {
+  ul {
+    margin: 0 !important;
+  }
+
   ul > li {
     position: relative;
     padding-left: 0;
+    margin: 0 !important;
 
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.tabs-demo-wrapper {
+  ul {
+    margin: 0;
+  }
+
+  ul > li {
+    position: relative;
+    padding-left: 0;
+    margin: 0;
+    a {
+      box-shadow: none;
+    }
     &::before {
       display: none;
     }

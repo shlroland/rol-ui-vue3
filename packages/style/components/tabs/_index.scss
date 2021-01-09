@@ -40,7 +40,7 @@ $tabs-scroll-button-text-color: $text-light;
 
   @include e(active-bar) {
     position: absolute;
-    bottom: 0;
+    bottom: -1px;
     left: 0;
     height: 1px;
     background-color: $tabs-active-bar;
@@ -161,9 +161,9 @@ $tabs-scroll-button-text-color: $text-light;
     }
     ul {
       align-items: center;
-      // border-bottom-color: $tabs-border-bottom-color;
-      // border-bottom-style: $tabs-border-bottom-style;
-      // border-bottom-width: $tabs-border-bottom-width;
+      border-bottom-color: $tabs-border-bottom-color;
+      border-bottom-style: $tabs-border-bottom-style;
+      border-bottom-width: $tabs-border-bottom-width;
       display: flex;
       flex-grow: 1;
       flex-shrink: 0;
@@ -191,12 +191,6 @@ $tabs-scroll-button-text-color: $text-light;
       }
     }
 
-    &.is-right {
-      ul {
-        justify-content: flex-end;
-      }
-    }
-
     &.is-boxed {
       a {
         border: 1px solid transparent;
@@ -213,7 +207,7 @@ $tabs-scroll-button-text-color: $text-light;
       }
       li {
         position: relative;
-
+        bottom: -2px;
         &.is-active {
           a {
             background-color: $tabs-boxed-link-active-background-color;

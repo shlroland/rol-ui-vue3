@@ -8,13 +8,13 @@ import {
   h,
   nextTick,
   onMounted,
+  onUpdated,
   PropType,
   provide,
   Ref,
   ref,
   VNode,
   watch,
-  watchEffect,
 } from 'vue'
 import TabNav from './tabs-nav.vue'
 
@@ -53,7 +53,7 @@ export type RTabsSize = PropType<'small' | 'medium' | 'large'>
 export type RTabsType = PropType<'boxed'>
 
 export default defineComponent({
-  name: 'Tabs',
+  name: 'RolTabs',
   components: { TabNav },
   props: {
     activeName: {
@@ -143,7 +143,7 @@ export default defineComponent({
         let type = node.type
         type = (type as Component).name || type
 
-        if (type === 'TabsPane' && node.component) {
+        if (type === 'RolTabPane' && node.component) {
           paneInstanceList.push(node.component)
         } else if (type === Fragment || type === 'template') {
           getPaneInstanceFromSlot(node, paneInstanceList)
@@ -159,7 +159,6 @@ export default defineComponent({
           return props.class === 'rol-tabs__content'
         })
         if (!content) return
-
         const paneInstanceList: Pane[] = getPaneInstanceFromSlot(content).map(paneComponent => {
           return paneStatesMap[paneComponent.uid]
         })
@@ -214,10 +213,12 @@ export default defineComponent({
       ctx.emit('tab-remove', pane.props.name)
     }
 
+    onUpdated(() => {
+      setPaneInstances()
+    })
+
     onMounted(() => {
-      watchEffect(() => {
-        setPaneInstances()
-      })
+      setPaneInstances()
     })
     return {
       nav$,
@@ -228,7 +229,7 @@ export default defineComponent({
     }
   },
   render() {
-    const { handleTabClick, panes, currentName, type, size, align, fullwidth, tabPosition,handleTabRemove } = this
+    const { handleTabClick, panes, currentName, type, size, align, fullwidth, tabPosition, handleTabRemove } = this
 
     const header = h(
       'div',

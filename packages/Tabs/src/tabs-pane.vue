@@ -17,7 +17,7 @@ import { computed, defineComponent, getCurrentInstance, inject, ref } from 'vue'
 import { RPaneProps, RootTabs, UpdatePaneStateCallback } from './tabs'
 
 export default defineComponent({
-  name: 'TabsPane',
+  name: 'RolTabPane',
   props: {
     label: {
       type: String,

@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref, computed } from 'vue'
+import { defineComponent, inject, ref } from 'vue'
 import { RPagination } from './pagination.d.ts'
 import RolInput from '@rol-ui/input'
 

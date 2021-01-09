@@ -7,7 +7,7 @@ import { capitalize, defineComponent, getCurrentInstance, inject, nextTick, Prop
 import { Pane, RootTabs } from './tabs'
 
 export default defineComponent({
-  name: 'TabsBar',
+  name: 'RolTabBar',
   props: {
     tabs: {
       type: Array as PropType<Pane[]>,

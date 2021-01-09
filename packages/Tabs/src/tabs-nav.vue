@@ -10,8 +10,6 @@ import {
   onUpdated,
   PropType,
   ref,
-  watch,
-  watchEffect,
 } from 'vue'
 import { NOOP } from '@vue/shared'
 import { addResizeListener, removeResizeListener, ResizableElement } from '@rol-ui/utils/resize-event'
@@ -329,7 +327,7 @@ export default defineComponent({
         {
           class: [
             'rol-tabs__nav-wrap',
-            align ? `is-align-${align}` : '',
+            align ? `is-${align}` : '',
             size ? `is-${size}` : '',
             type ? `is-${type}` : '',
             fullwidth ? 'is-fullwidth' : '',
