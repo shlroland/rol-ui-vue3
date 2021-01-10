@@ -14,3 +14,7 @@
     height: calc(100vh - 4.5rem);
   }
 }
+
+button:focus , button:active {
+  outline: none;
+}

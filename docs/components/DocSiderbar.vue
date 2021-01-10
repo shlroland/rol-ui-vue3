@@ -3,6 +3,9 @@
     role="sidebar"
     :class="[
       'fixed z-40 inset-0 flex-none  h-full bg-black bg-opacity-25 w-full lg:bg-white lg:static lg:h-auto lg:overflow-y-visible lg:pt-0 lg:w-60 xl:w-72 lg:block',
+      {
+        hidden: !navIsOpen,
+      },
     ]"
   >
     <div
@@ -18,7 +21,7 @@
               {{ item.name }}
             </h5>
             <ul>
-              <li v-for="(child, childIndex) in item.children" :key="index + childIndex">
+              <li v-for="(child, childIndex) in item.children" :key="index + childIndex" @click="navIsOpen = false">
                 <router-link v-slot="{ href, navigate, isExactActive }" :to="`${item.path}/${child.path}`" custom>
                   <a
                     :class="[
@@ -50,18 +53,27 @@
       </nav>
     </div>
   </aside>
+  <doc-menu-button v-model:navIsOpen="navIsOpen"></doc-menu-button>
 </template>
 <script lang="ts">
-import { ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
-export default {
+import DocMenuButton from './DocMenuButton.vue'
+
+export default defineComponent({
+  components: {
+    DocMenuButton,
+  },
   setup() {
+    const navIsOpen = ref(false)
+
     const { options } = useRouter()
     const routes = ref(options.routes.slice(1))
 
     return {
       routes,
+      navIsOpen,
     }
   },
-}
+})
 </script>
