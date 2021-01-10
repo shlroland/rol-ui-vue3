@@ -16,7 +16,7 @@
         class="px-1 pt-6 overflow-y-auto font-medium text-base sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pt-10 lg:pb-14 h-sidebar-height"
       >
         <ul>
-          <li v-for="(item, index) in routes" :key="index" class="mt-8">
+          <li v-for="(item, index) in routeArray" :key="index" class="mt-8">
             <h5 :class="['px-3 mb-3 lg:mb-3 uppercase tracking-wide font-semibold text-sm lg:text-xs text-gray-400']">
               {{ item.name }}
             </h5>
@@ -70,18 +70,18 @@ export default defineComponent({
     const { options } = useRouter()
 
     const route = useRoute()
-    const routes = ref(options.routes.slice(1))
+    const routeArray = options.routes.slice(1)
 
     // watch(route, newVal => {
     //   document.title = newVal.name
     // })
 
     watchEffect(() => {
-      document.title = route.name
+      document.title = String(route.name)
     })
 
     return {
-      routes,
+      routeArray,
       navIsOpen,
     }
   },
