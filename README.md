@@ -19,6 +19,7 @@
 文档页由`vite`编写，目前`vite` 版本不稳定，文档页坑存在Bug。敬请谅解
 
 [Documentation](https://shlroland.github.io/rol-ui-vue3/)
+[码云文档镜像](https://shlroland.gitee.io/rol-ui-vue3/)
 
 ## 启动项目
 
