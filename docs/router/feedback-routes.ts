@@ -5,7 +5,7 @@ import { routeChild } from './types'
 // import Notification from '/@packages/Notification/README.md'
 // import Modal from '/@packages/Modal/README.md'
 // import MessageBox from '/@packages/MessageBox/README.md'
-// import Message from '/@packages/Message/README.md'
+import Message from '/@packages/Message/README.md'
 
 const menuConfig: routeChild[] = [
   {
