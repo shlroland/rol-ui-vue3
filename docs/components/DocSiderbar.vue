@@ -56,8 +56,8 @@
   <doc-menu-button v-model:navIsOpen="navIsOpen"></doc-menu-button>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent, ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import DocMenuButton from './DocMenuButton.vue'
 
 export default defineComponent({
@@ -68,7 +68,13 @@ export default defineComponent({
     const navIsOpen = ref(false)
 
     const { options } = useRouter()
+
+    const route = useRoute()
     const routes = ref(options.routes.slice(1))
+
+    watch(route, newVal => {
+      document.title = newVal.name
+    })
 
     return {
       routes,

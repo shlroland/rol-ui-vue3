@@ -32,9 +32,7 @@
         <span class="hidden sm:block text-gray-400 text-sm leading-5 py-0.5 px-1.5 border border-gray-300 rounded-md">
           <span class="sr-only">Press </span>
           <kbd class="font-sans">
-            <abbr title="actionKey[1]" class="no-underline">
-              {actionKey[0]}
-            </abbr>
+            <abbr :title="actionKey[1]" class="no-underline"> {{ actionKey[0] }} </abbr>
           </kbd>
           <span class="sr-only"> and </span>
           <kbd class="font-sans">K</kbd>
@@ -60,13 +58,30 @@
   </header>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 // import { isDark } from '../store'
+
+const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
+const ACTION_KEY_APPLE = ['⌘', 'Command']
 
 export default defineComponent({
   components: {},
   setup() {
-    // 12312312
+    const actionKey = computed(() => {
+      if (typeof navigator !== 'undefined') {
+        if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+          return ACTION_KEY_APPLE
+        } else {
+          return ACTION_KEY_DEFAULT
+        }
+      } else {
+        return ['', '']
+      }
+    })
+
+    return {
+      actionKey,
+    }
   },
 })
 </script>
