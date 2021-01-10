@@ -7,18 +7,21 @@
     "test": "./node_modules/.bin/jest",
     "commit": "git-cz",
     "bootstrap": "yarn --frozen-lockfile && yarn lerna bootstrap && yarn gen:version",
-    "clean:lib": "rimraf lib",
+    "clean:lib": "rimraf lib && rimraf es",
     "build": "yarn bootstrap && yarn clean:lib && yarn build:esm-bundle && yarn build:lib && yarn build:esm && yarn build:style",
     "build:esm-bundle": "rollup --config ./build/rollup.config.js && yarn build:type",
     "build:esm": "node build/bincomp.js",
     "build:style": "rimraf packages/style/lib && yarn lerna run --scope rol-ui-style build && cp-cli packages/style/lib lib/style && rimraf packages/style/lib",
     "build:lib": "cross-env LIBMODE=core webpack --config ./build/webpack.config.js",
+    "build:lib-full": "cross-env LIBMODE=full webpack --config ./build/webpack.config.js",
     "build:type": "node build/gen-type.js",
     "gen:version": "node build/gen-version.js",
     "docs:dev": "vite",
     "docs:build": "cross-env NODE_ENV=production vite build",
     "test:global": "./node_modules/.bin/jest",
-    "test:single": "node ./scripts/test-single"
+    "test:single": "node ./scripts/test-single",
+    "lint": "eslint ./packages --ext .vue,.js,.ts",
+    "lint-fix": "eslint --fix ./packages --ext .vue,.js,.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -132,6 +135,7 @@
   },
   "files": [
     "lib",
+    "es",
     "packages"
   ],
   "main": "lib/index.js",
