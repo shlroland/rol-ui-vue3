@@ -2,7 +2,6 @@
 const fs = require('fs')
 const path = require('path')
 const tagVer = process.env.TAG_VERSION
-const { version } = require('../package.json')
 if (tagVer) {
   version = tagVer.startsWith('v') ? tagVer.slice(1) : tagVer
 } else {
