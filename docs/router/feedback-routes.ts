@@ -40,7 +40,7 @@ const menuConfig: routeChild[] = [
   },
   {
     name: 'Message 消息提示',
-    component: Message,
+    component: () => import('/@packages/Message/README.md'),
     path: 'message',
   },
 ]
