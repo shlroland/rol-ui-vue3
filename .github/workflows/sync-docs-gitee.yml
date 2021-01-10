@@ -1,8 +1,10 @@
 name: Sync docs to Gitee
 on:
-  push:
-    branches:
-      - gh-pages  
+   workflow_run:
+    workflows: ["Deploy Github doc"]
+    branches: [master]
+    types: 
+      - completed
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
